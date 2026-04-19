@@ -1,8 +1,11 @@
-# PROJECT NAME
+# Catan
 
 ## Contributors
-- PERSON
-- PERSON
+- Connor Lai
+- Benjamin Auby
+- Kevin Wang
+- Spencer Davis
+- Theodore Maurino
 
 ## Dependencies
 - JDK 11
