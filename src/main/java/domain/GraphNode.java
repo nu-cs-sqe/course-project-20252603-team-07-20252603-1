@@ -17,9 +17,14 @@ public class GraphNode {
     }
 
     boolean playerClaimNode(PlayerColor color){
-        this.occupied = true;
-        this.owningPlayerColor = color;
-        return true;
+        if (this.occupied) {
+            throw new IllegalArgumentException("Node Already Claimed");
+        }
+        else {
+            this.occupied = true;
+            this.owningPlayerColor = color;
+            return true;
+        }
     }
 
     boolean checkOccupied(){
