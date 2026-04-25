@@ -53,7 +53,7 @@ max possible size
 Input: empty strings
 Output: empty collection, contains just one element, contains more than one element, duplicate elements,
 max possible size -> not possible
-Output: "No player to remove."
+Output: "Player does not have a building on hex."
 
 
 |              | System under test                                    | Expected output                       | Implemented? |

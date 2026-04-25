@@ -33,7 +33,7 @@ public class Hex {
     }
 
     public void removePlayerSettlementFromHex(String playerName){
-        return;
+        throw new IllegalStateException("Player does not have a building on hex.");
     }
 
     public void addPlayerCityToHex(String playerName){
