@@ -109,5 +109,21 @@ public class HexTests {
         int actual = h.getSettlements().size();
         assertEquals(expected, actual);
     }
+
+    @Test // Test Case 9
+    public void RemoveFromList_PlayerDoesNotExist_ExpectError() {
+        Hex h = new Hex(1, "Lumber", 9);
+
+        h.addPlayerSettlementToHex("abd");
+        h.addPlayerSettlementToHex("ab");
+
+        Exception exception = assertThrows(IllegalStateException.class, () -> {
+            h.removePlayerSettlementFromHex("abc");
+        });
+
+        String expectedMessage = "Player does not have a building on hex.";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
 }
 

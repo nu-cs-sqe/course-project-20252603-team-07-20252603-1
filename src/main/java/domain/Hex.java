@@ -33,10 +33,9 @@ public class Hex {
     }
 
     public void removePlayerSettlementFromHex(String playerName) {
-        if (playerSettlements.size() <= 0) {
+        boolean success = playerSettlements.remove(playerName);
+        if (!success){
             throw new IllegalStateException("Player does not have a building on hex.");
-        } else {
-            playerSettlements.remove(playerName);
         }
     }
 
