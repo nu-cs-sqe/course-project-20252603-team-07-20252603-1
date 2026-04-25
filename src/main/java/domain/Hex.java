@@ -24,7 +24,12 @@ public class Hex {
     }
 
     public void addPlayerSettlementToHex(String playerName) {
-        playerSettlements.add(playerName);
+        if (playerSettlements.size() >= 3){
+            throw new IllegalStateException("Already three settlements on hex.");
+        }
+        else{
+            playerSettlements.add(playerName);
+        }
     }
 
     public void removePlayerSettlementFromHex(String playerName){
