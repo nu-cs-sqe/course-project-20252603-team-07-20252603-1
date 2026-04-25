@@ -66,4 +66,18 @@ public class HexTests {
         String actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
     }
+
+    @Test // Test Case 6
+    public void RemoveFromList_WithOneElement(){
+        Hex h = new Hex(1, "Lumber", 9);
+
+        h.addPlayerSettlementToHex("Blue");
+
+        h.removePlayerSettlementFromHex("Blue");
+
+        int expected = 0;
+        int actual = h.getSettlements().size();
+        assertEquals(expected, actual);
+
+    }
 }

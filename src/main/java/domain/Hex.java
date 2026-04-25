@@ -32,8 +32,12 @@ public class Hex {
         }
     }
 
-    public void removePlayerSettlementFromHex(String playerName){
-        throw new IllegalStateException("Player does not have a building on hex.");
+    public void removePlayerSettlementFromHex(String playerName) {
+        if (playerSettlements.size() <= 0) {
+            throw new IllegalStateException("Player does not have a building on hex.");
+        } else {
+            playerSettlements.remove(playerName);
+        }
     }
 
     public void addPlayerCityToHex(String playerName){

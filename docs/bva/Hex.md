@@ -56,15 +56,15 @@ max possible size -> not possible
 Output: "Player does not have a building on hex."
 
 
-|              | System under test                                    | Expected output                       | Implemented? |
-|--------------|------------------------------------------------------|---------------------------------------|--------------|
-| Test Case 5  | empty list                                           | error                                 | x            |
-| Test Case 6  | remove from list with 1 element                      | list with size 0                      | x            |
-| Test Case 7  | remove from list with duplicates                     | list with size 1                      | x            |
-| Test Case 8  | remove from with 3 elements                          | list with size 2                      | x            |
-| Test Case 9  | attempt removing "abc" while list has "abd" and "ab" | error                                 | x            |
-| Test Case 10 | attempt removing "ab" while list has "abc"           | error                                 | x            |
-| Test Case 11 | remove from list with 3 duplicates                   | list with size 2, contains duplicates |              |
+|              | System under test                                    | Expected output                       | Implemented?       |
+|--------------|------------------------------------------------------|---------------------------------------|--------------------|
+| Test Case 5  | empty list                                           | error                                 | :white_check_mark: |
+| Test Case 6  | remove from list with 1 element                      | list with size 0                      | :white_check_mark: |
+| Test Case 7  | remove from list with duplicates                     | list with size 1                      | x                  |
+| Test Case 8  | remove from with 3 elements                          | list with size 2                      | x                  |
+| Test Case 9  | attempt removing "abc" while list has "abd" and "ab" | error                                 | x                  |
+| Test Case 10 | attempt removing "ab" while list has "abc"           | error                                 | x                  |
+| Test Case 11 | remove from list with 3 duplicates                   | list with size 2, contains duplicates |                    |
 
 ### Method under test: `addPlayerCityToHex(String playerName)`
 Step 1:
