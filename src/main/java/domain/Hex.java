@@ -1,18 +1,49 @@
 package domain;
 
-public class HexDTO {
-    private final String resource;
-    private final int roll_number;
-    private int[] player_settlements;
-    private int[] player_cities;
+import java.util.ArrayList;
+import java.util.List;
 
-    public HexDTO(String resource, int roll_number) {
+public class Hex {
+    private final int hexId;
+    private final String resource;
+    private final int hexRollNum;
+    private List<String> playerSettlements;
+    private List<String> playerCities;
+
+    public Hex(int hexId, String resource, int rollNumber) {
+        this.hexId = hexId;
         this.resource = resource;
-        this.roll_number = roll_number;
-        this.player_settlements = new int[3]; // can at most have three settlements on a hex
-        this.player_cities = new int[3];      // likewise, can have at most three cities
+        this.hexRollNum = rollNumber;
+        this.playerSettlements = new ArrayList<>();
+        this.playerCities = new ArrayList<>();
     }
 
-    void
+    public List<String> getSettlements(){
+        List<String> settlementsCopy = new ArrayList<>(playerSettlements);
+        return settlementsCopy;
+    }
+
+    public void addPlayerSettlementToHex(String playerName) {
+        playerSettlements.add(playerName);
+    }
+
+    public void removePlayerSettlementFromHex(String playerName){
+        return;
+    }
+
+    public void addPlayerCityToHex(String playerName){
+        return;
+    }
+
+    public void awardSettlementResources(){
+        return;
+    }
+
+    public void awardCityResources(){
+        return;
+    }
+
+
+
 
 }
