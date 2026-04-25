@@ -1,0 +1,23 @@
+package domain;
+
+public class GraphNode {
+    // Graph node represents vertexes of hexagons on board
+    // Each node has a unique ID
+    // Keep track of:
+    // NodeID -> unique ID to identify Node in Graph -> int
+    // Occupied -> is this Node occupied?
+    private int nodeID;
+    private boolean occupied;
+    private PlayerColor owningPlayerColor;
+
+    GraphNode(int nodeID) {
+        this.nodeID = nodeID;
+        this.occupied = false;
+        this.owningPlayerColor = PlayerColor.SETUP;
+    }
+
+    boolean setGraphNodeColor(PlayerColor color) {
+        return true;
+    }
+
+}
