@@ -68,7 +68,7 @@ public class HexTests {
     }
 
     @Test // Test Case 6
-    public void RemoveFromList_WithOneElement(){
+    public void RemoveFromList_WithOneElement_ExpectLenZero(){
         Hex h = new Hex(1, "Lumber", 9);
 
         h.addPlayerSettlementToHex("Blue");
@@ -76,6 +76,20 @@ public class HexTests {
         h.removePlayerSettlementFromHex("Blue");
 
         int expected = 0;
+        int actual = h.getSettlements().size();
+        assertEquals(expected, actual);
+    }
+
+    @Test // Test Case 6
+    public void RemoveFromList_WithTwoDuplicates_ExpectLenOne(){
+        Hex h = new Hex(1, "Lumber", 9);
+
+        h.addPlayerSettlementToHex("Blue");
+        h.addPlayerSettlementToHex("Blue");
+
+        h.removePlayerSettlementFromHex("Blue");
+
+        int expected = 1;
         int actual = h.getSettlements().size();
         assertEquals(expected, actual);
 
