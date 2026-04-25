@@ -141,5 +141,20 @@ public class HexTests {
         assertEquals(expectedMessage, actualMessage);
     }
 
+    @Test // Test Case 11
+    public void RemoveFromList_WithThreeDuplicates_ExpectLenTwo() {
+        Hex h = new Hex(1, "Lumber", 9);
+
+        h.addPlayerSettlementToHex("Blue");
+        h.addPlayerSettlementToHex("Blue");
+        h.addPlayerSettlementToHex("Blue");
+
+        h.removePlayerSettlementFromHex("Blue");
+
+        int expected = 2;
+        int actual = h.getSettlements().size();
+        assertEquals(expected, actual);
+    }
+
 }
 
