@@ -15,4 +15,15 @@ public class HexTests {
         int actual = h.getSettlements().size();
         assertEquals(expected, actual);
     }
+
+    @Test // Test Case 2
+    public void AddTwoStrings_OneEmpty_ExpectLenTwo(){
+        Hex h = new Hex(1, "Lumber", 9);
+        h.addPlayerSettlementToHex("Blue");
+        h.addPlayerSettlementToHex("");
+
+        int expected = 2;
+        int actual = h.getSettlements().size();
+        assertEquals(expected, actual);
+    }
 }

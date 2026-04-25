@@ -23,12 +23,12 @@ max possible size
 Output: "Already three settlements on hex."
 
 
-|             | System under test                        | Expected output  | Implemented?        |
-|-------------|------------------------------------------|------------------|---------------------|
-| Test Case 1 | empty string into empty list             | list with size 1 | :white_check_mark:  |
-| Test Case 2 | add list with 1 element, an empty string | list with size 2 | x                   |
-| Test Case 3 | add to list with duplicates              | list with size 3 | x                   |
-| Test Case 4 | add to list with 3 elements              | error            | x                   |
+|             | System under test                        | Expected output  | Implemented?       |
+|-------------|------------------------------------------|------------------|--------------------|
+| Test Case 1 | empty string into empty list             | list with size 1 | :white_check_mark: |
+| Test Case 2 | add list with 1 element, an empty string | list with size 2 | :white_check_mark: |
+| Test Case 3 | add to list with duplicates              | list with size 3 | x                  |
+| Test Case 4 | add to list with 3 elements              | error            | x                  |
 
 
 ### Method under test: `removePlayerSettlementFromHex(String playerName)`
