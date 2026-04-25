@@ -26,4 +26,16 @@ public class HexTests {
         int actual = h.getSettlements().size();
         assertEquals(expected, actual);
     }
+
+    @Test // Test Case 3
+    public void AddString_ToListWithDuplicates_ExpectLenThree(){
+        Hex h = new Hex(1, "Lumber", 9);
+        h.addPlayerSettlementToHex("Blue");
+        h.addPlayerSettlementToHex("Blue");
+        h.addPlayerSettlementToHex("Orange");
+
+        int expected = 3;
+        int actual = h.getSettlements().size();
+        assertEquals(expected, actual);
+    }
 }
