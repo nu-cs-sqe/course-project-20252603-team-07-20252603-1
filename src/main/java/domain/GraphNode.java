@@ -16,8 +16,17 @@ public class GraphNode {
         this.owningPlayerColor = PlayerColor.SETUP;
     }
 
-    boolean setGraphNodeColor(PlayerColor color) {
+    boolean playerClaimNode(PlayerColor color){
+        this.occupied = true;
+        this.owningPlayerColor = color;
         return true;
     }
 
+    boolean checkOccupied(){
+        return this.occupied;
+    }
+
+    PlayerColor checkColor(){
+        return this.owningPlayerColor;
+    }
 }
