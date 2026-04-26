@@ -68,81 +68,95 @@ Output: "Player does not have a building on hex."
 
 ### Method under test: `addPlayerCityToHex(String playerName)`
 Step 1:
-Input: playerName String
+Input: playerNColor
 Input: state of the list
 Input: values of the list
 Output: state of the list
 Output: exception
 
 Step 2:
-playerName - String
+playerName - enum / cases
 State - collection
-Values - Strings
+Values - enum / cases
 Exception - too large
 
 Step 3:
-Input: empty string
+Input: all possible inputs, impossible input
 Input: empty collection, contains just one element, contains more than one element, duplicate elements,
 max possible size
-Input: empty strings
+Input: all possible inputs, impossible input
 Output: empty collection, contains just one element, contains more than one element, duplicate elements,
 max possible size
-Output: "Already three settlements on hex."
+Output: "Already three buildings on hex."
 
 
-|              | System under test                        | Expected output  | Implemented? |
-|--------------|------------------------------------------|------------------|--------------|
-| Test Case 12 | empty string into empty list             | list with size 1 | x            |
-| Test Case 13 | add list with 1 element, an empty string | list with size 2 | x            |
-| Test Case 14 | add to list with duplicates              | list with size 3 | x            |
-| Test Case 15 | add to list with 3 elements              | error            | x            |
+|              | System under test           | Expected output  | Implemented? |
+|--------------|-----------------------------|------------------|--------------|
+| Test Case 12 | RED into empty list         | list with size 1 | x            |
+| Test Case 13 | add BLUE, ORANGE to list    | list with size 2 | x            |
+| Test Case 14 | add WHITE to ORANGE ORANGE  | list with size 3 | x            |
+| Test Case 15 | add to list with 3 elements | error            | x            |
+| Test Case 16 | add NULL to a list          | error            | x            |
+
 
 ### Method under test: `awardSettlementResources()`
 Step 1:
 Input: state of the list
+Input: resource
 Input: values of the list
 Output: state of the list
 
 Step 2:
 State - collection
-Values - Strings
+Resource - cases / enums
+Values - cases / enums
 
 Step 3:
 Input: empty collection, contains just one element, contains more than one element, duplicate elements,
 max possible size
-Input: empty strings
+Input: all possible inputs, 
+impossible inputs - not feasible
 Output: empty collection, contains just one element, contains more than one element, duplicate elements,
 max possible size
 
 
-|              | System under test                     | Expected output                      | Implemented? |
-|--------------|---------------------------------------|--------------------------------------|--------------|
-| Test Case 16 | empty list                            | no update                            | x            |
-| Test Case 17 | list with 1 element, an empty string  | call to update player resources once | x            |
-| Test Case 18 | list with 2 elements                  | two calls to update                  | x            |
-| Test Case 19 | list with 3 elements, with duplicates | three calls to update                | x            |
+|              | System under test                   | Expected output                      | Implemented? |
+|--------------|-------------------------------------|--------------------------------------|--------------|
+| Test Case 16 | empty list                          | no update                            | x            |
+| Test Case 17 | list RED, brick                     | call to update player resources once | x            |
+| Test Case 18 | list ORANGE, WHITE, grain           | two calls to update                  | x            |
+| Test Case 19 | list with BLUE, BLUE, WHITE, lumber | three calls to update                | x            |
+| Test Case 20 | list with RED, RED, RED, ore        | three calls to update                | x            |
+| Test Case 21 | list with RED, WHITE, BLUE, wool    | three calls to update                | x            |
+| Test Case 22 | list with ORANGE, desert            | no update                            | x            |
 
 ### Method under test: `awardCityResources()`
 Step 1:
 Input: state of the list
+Input: resource
 Input: values of the list
 Output: state of the list
 
 Step 2:
 State - collection
-Values - Strings
+Resource - cases / enums
+Values - cases / enums
 
 Step 3:
 Input: empty collection, contains just one element, contains more than one element, duplicate elements,
 max possible size
-Input: empty strings
+Input: all possible inputs,
+impossible inputs - not feasible
 Output: empty collection, contains just one element, contains more than one element, duplicate elements,
 max possible size
 
 
-|              | System under test                     | Expected output                      | Implemented? |
-|--------------|---------------------------------------|--------------------------------------|--------------|
-| Test Case 20 | empty list                            | no update                            | x            |
-| Test Case 21 | list with 1 element, an empty string  | call to update player resources once | x            |
-| Test Case 22 | list with 2 elements                  | two calls to update                  | x            |
-| Test Case 23 | list with 3 elements, with duplicates | three calls to update                | x            |
+|              | System under test                   | Expected output                      | Implemented? |
+|--------------|-------------------------------------|--------------------------------------|--------------|
+| Test Case 23 | empty list                          | no update                            | x            |
+| Test Case 24 | list RED, brick                     | call to update player resources once | x            |
+| Test Case 25 | list ORANGE, WHITE, grain           | two calls to update                  | x            |
+| Test Case 26 | list with BLUE, BLUE, WHITE, lumber | three calls to update                | x            |
+| Test Case 27 | list with RED, RED, RED, ore        | three calls to update                | x            |
+| Test Case 28 | list with RED, WHITE, BLUE, wool    | three calls to update                | x            |
+| Test Case 29 | list with ORANGE, desert            | no update                            | x            |
