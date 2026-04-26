@@ -11,7 +11,7 @@ public class HexTests {
         h.addPlayerSettlementToHex("");
 
         int expected = 1;
-        int actual = h.getSettlements().size();
+        int actual = h.getSettlementCount();
         assertEquals(expected, actual);
     }
 
@@ -22,7 +22,7 @@ public class HexTests {
         h.addPlayerSettlementToHex("");
 
         int expected = 2;
-        int actual = h.getSettlements().size();
+        int actual = h.getSettlementCount();
         assertEquals(expected, actual);
     }
 
@@ -34,7 +34,7 @@ public class HexTests {
         h.addPlayerSettlementToHex("Orange");
 
         int expected = 3;
-        int actual = h.getSettlements().size();
+        int actual = h.getSettlementCount();
         assertEquals(expected, actual);
     }
 
@@ -76,7 +76,7 @@ public class HexTests {
         h.removePlayerSettlementFromHex("Blue");
 
         int expected = 0;
-        int actual = h.getSettlements().size();
+        int actual = h.getSettlementCount();
         assertEquals(expected, actual);
     }
 
@@ -90,7 +90,7 @@ public class HexTests {
         h.removePlayerSettlementFromHex("Blue");
 
         int expected = 1;
-        int actual = h.getSettlements().size();
+        int actual = h.getSettlementCount();
         assertEquals(expected, actual);
 
     }
@@ -106,7 +106,7 @@ public class HexTests {
         h.removePlayerSettlementFromHex("Blue");
 
         int expected = 2;
-        int actual = h.getSettlements().size();
+        int actual = h.getSettlementCount();
         assertEquals(expected, actual);
     }
 
@@ -147,12 +147,12 @@ public class HexTests {
 
         h.addPlayerSettlementToHex("Blue");
         h.addPlayerSettlementToHex("Blue");
-        h.addPlayerSettlementToHex("Blue");
+        h.addPlayerSettlementToHex("Orange");
 
         h.removePlayerSettlementFromHex("Blue");
 
         int expected = 2;
-        int actual = h.getSettlements().size();
+        int actual = h.getSettlementCount();
         assertEquals(expected, actual);
     }
 

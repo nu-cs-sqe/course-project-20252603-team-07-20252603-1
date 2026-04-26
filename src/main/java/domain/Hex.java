@@ -18,9 +18,8 @@ public class Hex {
         this.playerCities = new ArrayList<>();
     }
 
-    public List<String> getSettlements(){
-        List<String> settlementsCopy = new ArrayList<>(playerSettlements);
-        return settlementsCopy;
+    public int getSettlementCount(){
+        return playerSettlements.size();
     }
 
     public void addPlayerSettlementToHex(String playerName) {
