@@ -15,9 +15,15 @@ public class GraphEdge {
 
     // need to be able to claim an edge
     boolean claimGraphEdge(PlayerColor color) {
-        this.roadBuilt = true;
-        this.owningPlayerColor = color;
-        return true;
+        if (this.roadBuilt) {
+            // Edge already occupied
+            throw new IllegalArgumentException("Edge already claimed");
+        }
+        else {
+            this.roadBuilt = true;
+            this.owningPlayerColor = color;
+            return true;
+        }
     }
 
     boolean checkRoadExists() {
