@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Hex {
-    private final int hexId;
-    private final String resource;
-    private final int hexRollNum;
-    private List<String> playerSettlements;
-    private List<String> playerCities;
+    public final int hexId;
+    public final String resource;
+    public final int hexRollNum;
+    private List<PlayerColor> playerSettlements;
+    private List<PlayerColor> playerCities;
 
     public Hex(int hexId, String resource, int rollNumber) {
         this.hexId = hexId;
@@ -22,17 +22,17 @@ public class Hex {
         return playerSettlements.size();
     }
 
-    public void addPlayerSettlementToHex(String playerName) {
+    public void addPlayerSettlementToHex(PlayerColor player) {
         if (playerSettlements.size() >= 3){
             throw new IllegalStateException("Already three settlements on hex.");
         }
         else{
-            playerSettlements.add(playerName);
+            playerSettlements.add(player);
         }
     }
 
-    public void removePlayerSettlementFromHex(String playerName) {
-        boolean success = playerSettlements.remove(playerName);
+    public void removePlayerSettlementFromHex(PlayerColor player) {
+        boolean success = playerSettlements.remove(player);
         if (!success){
             throw new IllegalStateException("Player does not have a building on hex.");
         }

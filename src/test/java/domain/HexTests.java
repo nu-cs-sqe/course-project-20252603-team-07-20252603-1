@@ -8,7 +8,7 @@ public class HexTests {
     @Test // Test Case 1
     public void AddEmptyString_OnEmptyList_ExpectLenOne() {
         Hex h = new Hex(1, "Lumber", 9);
-        h.addPlayerSettlementToHex("");
+        h.addPlayerSettlementToHex(PlayerColor.RED);
 
         int expected = 1;
         int actual = h.getSettlementCount();
@@ -18,8 +18,8 @@ public class HexTests {
     @Test // Test Case 2
     public void AddTwoStrings_OneEmpty_ExpectLenTwo() {
         Hex h = new Hex(1, "Lumber", 9);
-        h.addPlayerSettlementToHex("Blue");
-        h.addPlayerSettlementToHex("");
+        h.addPlayerSettlementToHex(PlayerColor.BLUE);
+        h.addPlayerSettlementToHex(PlayerColor.ORANGE);
 
         int expected = 2;
         int actual = h.getSettlementCount();
@@ -29,9 +29,9 @@ public class HexTests {
     @Test // Test Case 3
     public void AddString_ToListWithDuplicates_ExpectLenThree() {
         Hex h = new Hex(1, "Lumber", 9);
-        h.addPlayerSettlementToHex("Blue");
-        h.addPlayerSettlementToHex("Blue");
-        h.addPlayerSettlementToHex("Orange");
+        h.addPlayerSettlementToHex(PlayerColor.ORANGE);
+        h.addPlayerSettlementToHex(PlayerColor.ORANGE);
+        h.addPlayerSettlementToHex(PlayerColor.WHITE);
 
         int expected = 3;
         int actual = h.getSettlementCount();
@@ -41,12 +41,12 @@ public class HexTests {
     @Test // Test Case 4
     public void AddString_ToListWithThreeElements_ExpectError() {
         Hex h = new Hex(1, "Lumber", 9);
-        h.addPlayerSettlementToHex("Blue");
-        h.addPlayerSettlementToHex("Blue");
-        h.addPlayerSettlementToHex("Blue");
+        h.addPlayerSettlementToHex(PlayerColor.BLUE);
+        h.addPlayerSettlementToHex(PlayerColor.BLUE);
+        h.addPlayerSettlementToHex(PlayerColor.BLUE);
 
         Exception exception = assertThrows(IllegalStateException.class, () -> {
-            h.addPlayerSettlementToHex("White");
+            h.addPlayerSettlementToHex(PlayerColor.WHITE);
         });
 
         String expectedMessage = "Already three settlements on hex.";
@@ -59,7 +59,7 @@ public class HexTests {
         Hex h = new Hex(1, "Lumber", 9);
 
         Exception exception = assertThrows(IllegalStateException.class, () -> {
-            h.removePlayerSettlementFromHex("White");
+            h.removePlayerSettlementFromHex(PlayerColor.WHITE);
         });
 
         String expectedMessage = "Player does not have a building on hex.";
@@ -71,9 +71,9 @@ public class HexTests {
     public void RemoveFromList_WithOneElement_ExpectLenZero() {
         Hex h = new Hex(1, "Lumber", 9);
 
-        h.addPlayerSettlementToHex("Blue");
+        h.addPlayerSettlementToHex(PlayerColor.BLUE);
 
-        h.removePlayerSettlementFromHex("Blue");
+        h.removePlayerSettlementFromHex(PlayerColor.BLUE);
 
         int expected = 0;
         int actual = h.getSettlementCount();
@@ -84,10 +84,10 @@ public class HexTests {
     public void RemoveFromList_WithTwoDuplicates_ExpectLenOne() {
         Hex h = new Hex(1, "Lumber", 9);
 
-        h.addPlayerSettlementToHex("Blue");
-        h.addPlayerSettlementToHex("Blue");
+        h.addPlayerSettlementToHex(PlayerColor.RED);
+        h.addPlayerSettlementToHex(PlayerColor.RED);
 
-        h.removePlayerSettlementFromHex("Blue");
+        h.removePlayerSettlementFromHex(PlayerColor.RED);
 
         int expected = 1;
         int actual = h.getSettlementCount();
@@ -99,57 +99,27 @@ public class HexTests {
     public void RemoveFromList_WithThreeElements_ExpectLenTwo() {
         Hex h = new Hex(1, "Lumber", 9);
 
-        h.addPlayerSettlementToHex("Blue");
-        h.addPlayerSettlementToHex("Blue");
-        h.addPlayerSettlementToHex("Orange");
+        h.addPlayerSettlementToHex(PlayerColor.ORANGE);
+        h.addPlayerSettlementToHex(PlayerColor.WHITE);
+        h.addPlayerSettlementToHex(PlayerColor.RED);
 
-        h.removePlayerSettlementFromHex("Blue");
+        h.removePlayerSettlementFromHex(PlayerColor.ORANGE);
 
         int expected = 2;
         int actual = h.getSettlementCount();
         assertEquals(expected, actual);
     }
 
+
     @Test // Test Case 9
-    public void RemoveFromList_PlayerDoesNotExist_ExpectError() {
-        Hex h = new Hex(1, "Lumber", 9);
-
-        h.addPlayerSettlementToHex("abd");
-        h.addPlayerSettlementToHex("ab");
-
-        Exception exception = assertThrows(IllegalStateException.class, () -> {
-            h.removePlayerSettlementFromHex("abc");
-        });
-
-        String expectedMessage = "Player does not have a building on hex.";
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
-    }
-
-    @Test // Test Case 10
-    public void RemoveFromList_ShorterPlayerName_ExpectError() {
-        Hex h = new Hex(1, "Lumber", 9);
-
-        h.addPlayerSettlementToHex("abc");
-
-        Exception exception = assertThrows(IllegalStateException.class, () -> {
-            h.removePlayerSettlementFromHex("ab");
-        });
-
-        String expectedMessage = "Player does not have a building on hex.";
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
-    }
-
-    @Test // Test Case 11
     public void RemoveFromList_WithThreeDuplicates_ExpectLenTwo() {
         Hex h = new Hex(1, "Lumber", 9);
 
-        h.addPlayerSettlementToHex("Blue");
-        h.addPlayerSettlementToHex("Blue");
-        h.addPlayerSettlementToHex("Orange");
+        h.addPlayerSettlementToHex(PlayerColor.WHITE);
+        h.addPlayerSettlementToHex(PlayerColor.WHITE);
+        h.addPlayerSettlementToHex(PlayerColor.WHITE);
 
-        h.removePlayerSettlementFromHex("Blue");
+        h.removePlayerSettlementFromHex(PlayerColor.WHITE);
 
         int expected = 2;
         int actual = h.getSettlementCount();

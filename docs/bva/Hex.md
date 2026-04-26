@@ -1,70 +1,70 @@
 ### Method under test: `addPlayerSettlementToHex(String playerName)`
 
 Step 1:
-Input: playerName String
+Input: playerColor
 Input: state of the list
 Input: values of the list
 Output: state of the list
 Output: exception
 
 Step 2:
-playerName - String
+playerName - Enums/Cases
 State - collection
-Values - Strings
+Values - Enums/Cases
 Exception - too large
 
 Step 3:
-Input: empty string
+Input: All four possibilities, an impossible case
 Input: empty collection, contains just one element, contains more than one element, duplicate elements,
 max possible size
-Input: empty strings
+Input: All four possibilities, an impossible case
 Output: empty collection, contains just one element, contains more than one element, duplicate elements,
 max possible size
 Output: "Already three settlements on hex."
 
 
-|             | System under test                        | Expected output  | Implemented?       |
-|-------------|------------------------------------------|------------------|--------------------|
-| Test Case 1 | empty string into empty list             | list with size 1 | :white_check_mark: |
-| Test Case 2 | add list with 1 element, an empty string | list with size 2 | :white_check_mark: |
-| Test Case 3 | add to list with duplicates              | list with size 3 | :white_check_mark: |
-| Test Case 4 | add to list with 3 elements              | error            | :white_check_mark: |
+|             | System under test           | Expected output  | Implemented?       |
+|-------------|-----------------------------|------------------|--------------------|
+| Test Case 1 | RED into empty list         | list with size 1 | :white_check_mark: |
+| Test Case 2 | add BLUE, ORANGE to list    | list with size 2 | :white_check_mark: |
+| Test Case 3 | add WHITE to ORANGE ORANGE  | list with size 3 | :white_check_mark: |
+| Test Case 4 | add to list with 3 elements | error            | :white_check_mark: |
+| Test Case 5 | add NULL to a list          | error            | x                  |
 
 
 ### Method under test: `removePlayerSettlementFromHex(String playerName)`
 
 Step 1:
-Input: playerName String
+Input: playerColor
 Input: state of the list
 Input: values of the list
 Output: state of the list
 Output: exception
 
 Step 2:
-playerName - String
+playerName - PlayerColor enum / cases
 State - collection
-Values - Strings
+Values - PlayerColor enum / cases
 Exception - too large
 
 Step 3:
-Input: empty string, same length but differ in last letter, same elements but one element1 is shorter, element2 is shorter
+Input: All four possibilities, an impossible case
 Input: empty collection, contains just one element, contains more than one element, duplicate elements,
 max possible size
-Input: empty strings
+Input: All four possibilities, an impossible case
 Output: empty collection, contains just one element, contains more than one element, duplicate elements,
 max possible size -> not possible
 Output: "Player does not have a building on hex."
 
 
-|              | System under test                                    | Expected output                       | Implemented?       |
-|--------------|------------------------------------------------------|---------------------------------------|--------------------|
-| Test Case 5  | empty list                                           | error                                 | :white_check_mark: |
-| Test Case 6  | remove from list with 1 element                      | list with size 0                      | :white_check_mark: |
-| Test Case 7  | remove from list with duplicates                     | list with size 1                      | :white_check_mark: |
-| Test Case 8  | remove from with 3 elements                          | list with size 2                      | :white_check_mark: |
-| Test Case 9  | attempt removing "abc" while list has "abd" and "ab" | error                                 | :white_check_mark: |
-| Test Case 10 | attempt removing "ab" while list has "abc"           | error                                 | :white_check_mark: |
-| Test Case 11 | remove from list with 3 duplicates                   | list with size 2, contains duplicates | :white_check_mark: |
+|              | System under test                    | Expected output                       | Implemented?       |
+|--------------|--------------------------------------|---------------------------------------|--------------------|
+| Test Case 6  | empty list, remove WHITE             | error                                 | :white_check_mark: |
+| Test Case 7  | remove BLUE from BLUE                | list with size 0                      | :white_check_mark: |
+| Test Case 8  | remove RED from RED RED              | list with size 1                      | :white_check_mark: |
+| Test Case 9  | remove ORANGE from ORANGE WHITE RED  | list with size 2                      | :white_check_mark: |
+| Test Case 10 | remove WHITE from list with 3 WHITEs | list with size 2, contains duplicates | :white_check_mark: |
+| Test Case 11 | add NULL to a list                   | error                                 | x                  |
 
 ### Method under test: `addPlayerCityToHex(String playerName)`
 Step 1:
