@@ -26,6 +26,9 @@ public class Hex {
         if (playerSettlements.size() >= 3){
             throw new IllegalStateException("Already three settlements on hex.");
         }
+        else if (player == null){
+            throw new IllegalArgumentException("Adding invalid player name to Hex.");
+        }
         else{
             playerSettlements.add(player);
         }

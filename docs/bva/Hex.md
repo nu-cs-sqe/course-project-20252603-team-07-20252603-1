@@ -29,7 +29,7 @@ Output: "Already three settlements on hex."
 | Test Case 2 | add BLUE, ORANGE to list    | list with size 2 | :white_check_mark: |
 | Test Case 3 | add WHITE to ORANGE ORANGE  | list with size 3 | :white_check_mark: |
 | Test Case 4 | add to list with 3 elements | error            | :white_check_mark: |
-| Test Case 5 | add NULL to a list          | error            | x                  |
+| Test Case 5 | add NULL to a list          | error            | :white_check_mark: |
 
 
 ### Method under test: `removePlayerSettlementFromHex(String playerName)`

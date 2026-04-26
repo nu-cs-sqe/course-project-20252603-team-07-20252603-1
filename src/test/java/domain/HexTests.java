@@ -55,6 +55,19 @@ public class HexTests {
     }
 
     @Test // Test Case 5
+    public void AddNullToList_ExpectError() {
+        Hex h = new Hex(1, "Lumber", 9);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            h.addPlayerSettlementToHex(null);
+        });
+
+        String expectedMessage = "Adding invalid player name to Hex.";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test // Test Case 6
     public void RemoveFromEmptyList_ExpectError() {
         Hex h = new Hex(1, "Lumber", 9);
 
@@ -67,7 +80,7 @@ public class HexTests {
         assertEquals(expectedMessage, actualMessage);
     }
 
-    @Test // Test Case 6
+    @Test // Test Case 7
     public void RemoveFromList_WithOneElement_ExpectLenZero() {
         Hex h = new Hex(1, "Lumber", 9);
 
@@ -80,7 +93,7 @@ public class HexTests {
         assertEquals(expected, actual);
     }
 
-    @Test // Test Case 7
+    @Test // Test Case 8
     public void RemoveFromList_WithTwoDuplicates_ExpectLenOne() {
         Hex h = new Hex(1, "Lumber", 9);
 
@@ -95,7 +108,7 @@ public class HexTests {
 
     }
 
-    @Test // Test Case 8
+    @Test // Test Case 9
     public void RemoveFromList_WithThreeElements_ExpectLenTwo() {
         Hex h = new Hex(1, "Lumber", 9);
 
@@ -111,7 +124,7 @@ public class HexTests {
     }
 
 
-    @Test // Test Case 9
+    @Test // Test Case 10
     public void RemoveFromList_WithThreeDuplicates_ExpectLenTwo() {
         Hex h = new Hex(1, "Lumber", 9);
 
