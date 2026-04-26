@@ -37,7 +37,7 @@ public class Hex {
     public void removePlayerSettlementFromHex(PlayerColor player) {
         boolean success = playerSettlements.remove(player);
         if (!success){
-            throw new IllegalStateException("Player does not have a building on hex.");
+            throw new IllegalArgumentException("Player does not have a building on hex.");
         }
     }
 

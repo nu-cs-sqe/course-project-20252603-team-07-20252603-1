@@ -71,7 +71,7 @@ public class HexTests {
     public void RemoveFromEmptyList_ExpectError() {
         Hex h = new Hex(1, "Lumber", 9);
 
-        Exception exception = assertThrows(IllegalStateException.class, () -> {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             h.removePlayerSettlementFromHex(PlayerColor.WHITE);
         });
 
@@ -137,6 +137,19 @@ public class HexTests {
         int expected = 2;
         int actual = h.getSettlementCount();
         assertEquals(expected, actual);
+    }
+    @Test // Test Case 11
+    public void RemoveNull_FromList_ExpectError() {
+        Hex h = new Hex(1, "Lumber", 9);
+        h.addPlayerSettlementToHex(PlayerColor.WHITE);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            h.removePlayerSettlementFromHex(null);
+        });
+
+        String expectedMessage = "Player does not have a building on hex.";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
     }
 
 }

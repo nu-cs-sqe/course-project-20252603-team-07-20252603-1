@@ -64,7 +64,7 @@ Output: "Player does not have a building on hex."
 | Test Case 8  | remove RED from RED RED              | list with size 1                      | :white_check_mark: |
 | Test Case 9  | remove ORANGE from ORANGE WHITE RED  | list with size 2                      | :white_check_mark: |
 | Test Case 10 | remove WHITE from list with 3 WHITEs | list with size 2, contains duplicates | :white_check_mark: |
-| Test Case 11 | add NULL to a list                   | error                                 | x                  |
+| Test Case 11 | remove NULL to a list                | error                                 | :white_check_mark: |
 
 ### Method under test: `addPlayerCityToHex(String playerName)`
 Step 1:
