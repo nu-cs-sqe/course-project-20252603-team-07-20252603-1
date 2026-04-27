@@ -22,6 +22,10 @@ public class Hex {
         return playerSettlements.size();
     }
 
+    public int getCityCount(){
+        return playerCities.size();
+    }
+
     public void addPlayerSettlementToHex(PlayerColor player) {
         if (playerSettlements.size() >= 3){
             throw new IllegalStateException("Already three settlements on hex.");
@@ -41,8 +45,8 @@ public class Hex {
         }
     }
 
-    public void addPlayerCityToHex(String playerName){
-        return;
+    public void addPlayerCityToHex(PlayerColor player){
+        playerCities.add(player);
     }
 
     public void awardSettlementResources(){

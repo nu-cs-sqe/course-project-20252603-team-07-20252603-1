@@ -152,5 +152,15 @@ public class HexTests {
         assertEquals(expectedMessage, actualMessage);
     }
 
+    @Test // Test Case 12
+    public void AddOneCity_ExpectLenOne() {
+        Hex h = new Hex(1, "Lumber", 9);
+        h.addPlayerCityToHex(PlayerColor.RED);
+
+        int expected = 1;
+        int actual = h.getCityCount();
+        assertEquals(expected, actual);
+    }
+
 }
 

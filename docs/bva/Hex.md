@@ -90,13 +90,13 @@ max possible size
 Output: "Already three buildings on hex."
 
 
-|              | System under test           | Expected output  | Implemented? |
-|--------------|-----------------------------|------------------|--------------|
-| Test Case 12 | RED into empty list         | list with size 1 | x            |
-| Test Case 13 | add BLUE, ORANGE to list    | list with size 2 | x            |
-| Test Case 14 | add WHITE to ORANGE ORANGE  | list with size 3 | x            |
-| Test Case 15 | add to list with 3 elements | error            | x            |
-| Test Case 16 | add NULL to a list          | error            | x            |
+|              | System under test           | Expected output  | Implemented?       |
+|--------------|-----------------------------|------------------|--------------------|
+| Test Case 12 | RED into empty list         | list with size 1 | :white_check_mark: |
+| Test Case 13 | add BLUE, ORANGE to list    | list with size 2 | x                  |
+| Test Case 14 | add WHITE to ORANGE ORANGE  | list with size 3 | x                  |
+| Test Case 15 | add to list with 3 elements | error            | x                  |
+| Test Case 16 | add NULL to a list          | error            | x                  |
 
 
 ### Method under test: `awardSettlementResources()`
