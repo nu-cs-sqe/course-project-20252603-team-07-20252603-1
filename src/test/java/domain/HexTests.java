@@ -186,5 +186,21 @@ public class HexTests {
         assertEquals(expected, actual);
     }
 
+    @Test // Test Case 15
+    public void AddFourCities_ExpectError() {
+        Hex h = new Hex(1, "Lumber", 9);
+        h.addPlayerCityToHex(PlayerColor.BLUE);
+        h.addPlayerCityToHex(PlayerColor.BLUE);
+        h.addPlayerCityToHex(PlayerColor.BLUE);
+
+        Exception exception = assertThrows(IllegalStateException.class, () -> {
+            h.addPlayerCityToHex(PlayerColor.WHITE);
+        });
+
+        String expectedMessage = "Already three buildings on hex.";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
 }
 

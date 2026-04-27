@@ -46,7 +46,12 @@ public class Hex {
     }
 
     public void addPlayerCityToHex(PlayerColor player){
-        playerCities.add(player);
+        if (playerCities.size() >= 3){
+            throw new IllegalStateException("Already three buildings on hex.");
+        }
+        else{
+            playerCities.add(player);
+        }
     }
 
     public void awardSettlementResources(){
