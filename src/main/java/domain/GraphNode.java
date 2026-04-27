@@ -34,4 +34,8 @@ public class GraphNode {
     PlayerColor checkColor(){
         return this.owningPlayerColor;
     }
+
+    int getNodeID(){
+        return this.nodeID;
+    }
 }
