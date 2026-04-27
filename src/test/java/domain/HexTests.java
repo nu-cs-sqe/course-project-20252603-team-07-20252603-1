@@ -173,5 +173,18 @@ public class HexTests {
         assertEquals(expected, actual);
     }
 
+    @Test // Test Case 14
+    public void AddToTwoDuplicateCities_ExpectLenThree() {
+        Hex h = new Hex(1, "Lumber", 9);
+        h.addPlayerCityToHex(PlayerColor.ORANGE);
+        h.addPlayerCityToHex(PlayerColor.ORANGE);
+
+        h.addPlayerCityToHex(PlayerColor.BLUE);
+
+        int expected = 3;
+        int actual = h.getCityCount();
+        assertEquals(expected, actual);
+    }
+
 }
 
