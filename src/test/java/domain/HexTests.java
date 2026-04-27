@@ -202,5 +202,18 @@ public class HexTests {
         assertEquals(expectedMessage, actualMessage);
     }
 
+    @Test // Test Case 16
+    public void AddNullCity_ExpectError() {
+        Hex h = new Hex(1, "Lumber", 9);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            h.addPlayerCityToHex(null);
+        });
+
+        String expectedMessage = "Adding invalid player name to Hex.";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
 }
 

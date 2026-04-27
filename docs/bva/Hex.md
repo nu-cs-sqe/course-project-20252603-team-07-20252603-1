@@ -96,7 +96,7 @@ Output: "Already three buildings on hex."
 | Test Case 13 | add BLUE, ORANGE to list    | list with size 2 | :white_check_mark: |
 | Test Case 14 | add WHITE to ORANGE ORANGE  | list with size 3 | :white_check_mark: |
 | Test Case 15 | add to list with 3 elements | error            | :white_check_mark: |
-| Test Case 16 | add NULL to a list          | error            | x                  |
+| Test Case 16 | add NULL to a list          | error            | :white_check_mark: |
 
 
 ### Method under test: `awardSettlementResources()`

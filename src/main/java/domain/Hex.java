@@ -49,6 +49,9 @@ public class Hex {
         if (playerCities.size() >= 3){
             throw new IllegalStateException("Already three buildings on hex.");
         }
+        else if (player == null){
+            throw new IllegalArgumentException("Adding invalid player name to Hex.");
+        }
         else{
             playerCities.add(player);
         }
