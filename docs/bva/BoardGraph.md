@@ -15,7 +15,7 @@
 |             | State of the System                                 | Expected output   | Implemented?       |
 |-------------|-----------------------------------------------------|-------------------|--------------------|
 | Test Case 1 | Empty collection, adding NodeID 0                   | Updated Map, True | :white_check_mark: |
-| Test Case 2 | Collection with one element, adding NodeID 53       | Updated Map, True | :x:                |
+| Test Case 2 | Collection with one element, adding NodeID 53       | Updated Map, True | :white_check_mark: |
 | Test Case 3 | Collection with multiple elements, adding NodeID 53 | Updated Map, True | :x:                |
 
 ## Blank Template:
