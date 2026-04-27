@@ -162,5 +162,16 @@ public class HexTests {
         assertEquals(expected, actual);
     }
 
+    @Test // Test Case 13
+    public void AddTwoCities_ExpectLenTwo() {
+        Hex h = new Hex(1, "Lumber", 9);
+        h.addPlayerCityToHex(PlayerColor.BLUE);
+        h.addPlayerCityToHex(PlayerColor.ORANGE);
+
+        int expected = 2;
+        int actual = h.getCityCount();
+        assertEquals(expected, actual);
+    }
+
 }
 
