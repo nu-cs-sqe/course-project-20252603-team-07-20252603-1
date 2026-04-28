@@ -1,4 +1,4 @@
-package domain.model;
+package domain.model.development_cards;
 
 public enum DevelopmentCardType {
     KNIGHT,

@@ -1,10 +1,9 @@
-package domain.model;
-
-import java.util.ArrayList;
+package domain.model.development_cards;
 import java.util.Collections;
 import java.util.Stack;
 
-import domain.model.DevelopmentCard;
+import domain.model.EmptyDeckException;
+
 
 public class DevelopmentCardDeck {
 
@@ -18,8 +17,9 @@ public class DevelopmentCardDeck {
     private int yearOfPlentyCount;
     private int monopolyCount;
 
-
     public DevelopmentCardDeck() {
+
+        this.deck = new Stack<DevelopmentCard>();
 
         this.cardsLeft = 25; // basic counts for now -- maybe overload constructor later
 
@@ -68,7 +68,14 @@ public class DevelopmentCardDeck {
     }
 
 
-    public DevelopmentCard drawCard() {
+    public DevelopmentCard drawCard() throws EmptyDeckException {
+
+        if (this.cardsLeft <= 0) {
+            // throw an error or return something bad?
+            // expect this called in try,catch --> throw error
+
+            throw new EmptyDeckException("Cannot draw new DevelopmentCard, no cards remain.");
+        }
 
         // we may not need this -- i can't actually think whyt he deck needs to know how many of each are left
         DevelopmentCard drawn = this.deck.pop();
