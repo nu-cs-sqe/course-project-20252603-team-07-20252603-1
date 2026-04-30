@@ -11,7 +11,10 @@ public class HexTests {
     @Test // Test Case 1
     public void AddEmptyString_OnEmptyList_ExpectLenOne() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
-        h.addPlayerSettlementToHex(PlayerColor.RED);
+
+        Player mockRedPlayer = EasyMock.createMock(Player.class);
+
+        h.addPlayerSettlementToHex(mockRedPlayer);
 
         int expected = 1;
         int actual = h.getSettlementCount();
@@ -21,8 +24,12 @@ public class HexTests {
     @Test // Test Case 2
     public void AddTwoStrings_OneEmpty_ExpectLenTwo() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
-        h.addPlayerSettlementToHex(PlayerColor.BLUE);
-        h.addPlayerSettlementToHex(PlayerColor.ORANGE);
+
+        Player mockBluePlayer = EasyMock.createMock(Player.class);
+        Player mockOrangePlayer = EasyMock.createMock(Player.class);
+        
+        h.addPlayerSettlementToHex(mockBluePlayer);
+        h.addPlayerSettlementToHex(mockOrangePlayer);
 
         int expected = 2;
         int actual = h.getSettlementCount();
@@ -32,9 +39,13 @@ public class HexTests {
     @Test // Test Case 3
     public void AddString_ToListWithDuplicates_ExpectLenThree() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
-        h.addPlayerSettlementToHex(PlayerColor.ORANGE);
-        h.addPlayerSettlementToHex(PlayerColor.ORANGE);
-        h.addPlayerSettlementToHex(PlayerColor.WHITE);
+        
+        Player mockOrangePlayer = EasyMock.createMock(Player.class);
+        Player mockWhitePlayer = EasyMock.createMock(Player.class);
+
+        h.addPlayerSettlementToHex(mockOrangePlayer);
+        h.addPlayerSettlementToHex(mockOrangePlayer);
+        h.addPlayerSettlementToHex(mockWhitePlayer);
 
         int expected = 3;
         int actual = h.getSettlementCount();
@@ -44,12 +55,16 @@ public class HexTests {
     @Test // Test Case 4
     public void AddString_ToListWithThreeElements_ExpectError() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
-        h.addPlayerSettlementToHex(PlayerColor.BLUE);
-        h.addPlayerSettlementToHex(PlayerColor.BLUE);
-        h.addPlayerSettlementToHex(PlayerColor.BLUE);
+
+        Player mockBluePlayer = EasyMock.createMock(Player.class);
+        Player mockWhitePlayer = EasyMock.createMock(Player.class);
+
+        h.addPlayerSettlementToHex(mockBluePlayer);
+        h.addPlayerSettlementToHex(mockBluePlayer);
+        h.addPlayerSettlementToHex(mockBluePlayer);
 
         Exception exception = assertThrows(IllegalStateException.class, () -> {
-            h.addPlayerSettlementToHex(PlayerColor.WHITE);
+            h.addPlayerSettlementToHex(mockWhitePlayer);
         });
 
         String expectedMessage = "Already three settlements on hex.";
@@ -74,8 +89,10 @@ public class HexTests {
     public void RemoveFromEmptyList_ExpectError() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
+        Player mockWhitePlayer = EasyMock.createMock(Player.class);
+
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            h.removePlayerSettlementFromHex(PlayerColor.WHITE);
+            h.removePlayerSettlementFromHex(mockWhitePlayer);
         });
 
         String expectedMessage = "Player does not have a building on hex.";
@@ -87,9 +104,11 @@ public class HexTests {
     public void RemoveFromList_WithOneElement_ExpectLenZero() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
-        h.addPlayerSettlementToHex(PlayerColor.BLUE);
+        Player mockBluePlayer = EasyMock.createMock(Player.class);
 
-        h.removePlayerSettlementFromHex(PlayerColor.BLUE);
+        h.addPlayerSettlementToHex(mockBluePlayer);
+
+        h.removePlayerSettlementFromHex(mockBluePlayer);
 
         int expected = 0;
         int actual = h.getSettlementCount();
@@ -100,10 +119,12 @@ public class HexTests {
     public void RemoveFromList_WithTwoDuplicates_ExpectLenOne() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
-        h.addPlayerSettlementToHex(PlayerColor.RED);
-        h.addPlayerSettlementToHex(PlayerColor.RED);
+        Player mockRedPlayer = EasyMock.createMock(Player.class);
 
-        h.removePlayerSettlementFromHex(PlayerColor.RED);
+        h.addPlayerSettlementToHex(mockRedPlayer);
+        h.addPlayerSettlementToHex(mockRedPlayer);
+
+        h.removePlayerSettlementFromHex(mockRedPlayer);
 
         int expected = 1;
         int actual = h.getSettlementCount();
@@ -115,11 +136,15 @@ public class HexTests {
     public void RemoveFromList_WithThreeElements_ExpectLenTwo() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
-        h.addPlayerSettlementToHex(PlayerColor.ORANGE);
-        h.addPlayerSettlementToHex(PlayerColor.WHITE);
-        h.addPlayerSettlementToHex(PlayerColor.RED);
+        Player mockOrangePlayer = EasyMock.createMock(Player.class);
+        Player mockWhitePlayer = EasyMock.createMock(Player.class);
+        Player mockRedPlayer = EasyMock.createMock(Player.class);
 
-        h.removePlayerSettlementFromHex(PlayerColor.ORANGE);
+        h.addPlayerSettlementToHex(mockOrangePlayer);
+        h.addPlayerSettlementToHex(mockWhitePlayer);
+        h.addPlayerSettlementToHex(mockRedPlayer);
+
+        h.removePlayerSettlementFromHex(mockOrangePlayer);
 
         int expected = 2;
         int actual = h.getSettlementCount();
@@ -131,11 +156,13 @@ public class HexTests {
     public void RemoveFromList_WithThreeDuplicates_ExpectLenTwo() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
-        h.addPlayerSettlementToHex(PlayerColor.WHITE);
-        h.addPlayerSettlementToHex(PlayerColor.WHITE);
-        h.addPlayerSettlementToHex(PlayerColor.WHITE);
+        Player mockWhitePlayer = EasyMock.createMock(Player.class);
 
-        h.removePlayerSettlementFromHex(PlayerColor.WHITE);
+        h.addPlayerSettlementToHex(mockWhitePlayer);
+        h.addPlayerSettlementToHex(mockWhitePlayer);
+        h.addPlayerSettlementToHex(mockWhitePlayer);
+
+        h.removePlayerSettlementFromHex(mockWhitePlayer);
 
         int expected = 2;
         int actual = h.getSettlementCount();
@@ -144,7 +171,10 @@ public class HexTests {
     @Test // Test Case 11
     public void RemoveNull_FromList_ExpectError() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
-        h.addPlayerSettlementToHex(PlayerColor.WHITE);
+
+        Player mockWhitePlayer = EasyMock.createMock(Player.class);
+
+        h.addPlayerSettlementToHex(mockWhitePlayer);
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             h.removePlayerSettlementFromHex(null);
@@ -158,7 +188,10 @@ public class HexTests {
     @Test // Test Case 12
     public void AddOneCity_ExpectLenOne() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
-        h.addPlayerCityToHex(PlayerColor.RED);
+
+        Player mockRedPlayer = EasyMock.createMock(Player.class);
+
+        h.addPlayerCityToHex(mockRedPlayer);
 
         int expected = 1;
         int actual = h.getCityCount();
@@ -168,8 +201,12 @@ public class HexTests {
     @Test // Test Case 13
     public void AddTwoCities_ExpectLenTwo() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
-        h.addPlayerCityToHex(PlayerColor.BLUE);
-        h.addPlayerCityToHex(PlayerColor.ORANGE);
+
+        Player mockBluePlayer = EasyMock.createMock(Player.class);
+        Player mockOrangePlayer = EasyMock.createMock(Player.class);
+
+        h.addPlayerCityToHex(mockBluePlayer);
+        h.addPlayerCityToHex(mockOrangePlayer);
 
         int expected = 2;
         int actual = h.getCityCount();
@@ -179,10 +216,14 @@ public class HexTests {
     @Test // Test Case 14
     public void AddToTwoDuplicateCities_ExpectLenThree() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
-        h.addPlayerCityToHex(PlayerColor.ORANGE);
-        h.addPlayerCityToHex(PlayerColor.ORANGE);
 
-        h.addPlayerCityToHex(PlayerColor.BLUE);
+        Player mockOrangePlayer = EasyMock.createMock(Player.class);
+        Player mockBluePlayer = EasyMock.createMock(Player.class);
+
+        h.addPlayerCityToHex(mockOrangePlayer);
+        h.addPlayerCityToHex(mockOrangePlayer);
+
+        h.addPlayerCityToHex(mockBluePlayer);
 
         int expected = 3;
         int actual = h.getCityCount();
@@ -192,12 +233,16 @@ public class HexTests {
     @Test // Test Case 15
     public void AddFourCities_ExpectError() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
-        h.addPlayerCityToHex(PlayerColor.BLUE);
-        h.addPlayerCityToHex(PlayerColor.BLUE);
-        h.addPlayerCityToHex(PlayerColor.BLUE);
+
+        Player mockBluePlayer = EasyMock.createMock(Player.class);
+        Player mockWhitePlayer = EasyMock.createMock(Player.class);
+
+        h.addPlayerCityToHex(mockBluePlayer);
+        h.addPlayerCityToHex(mockBluePlayer);
+        h.addPlayerCityToHex(mockBluePlayer);
 
         Exception exception = assertThrows(IllegalStateException.class, () -> {
-            h.addPlayerCityToHex(PlayerColor.WHITE);
+            h.addPlayerCityToHex(mockWhitePlayer);
         });
 
         String expectedMessage = "Already three buildings on hex.";
@@ -230,6 +275,24 @@ public class HexTests {
         h.awardSettlementResources();
 
         EasyMock.verify(mockPlayer);
+    }
+
+    @Test // Test Case 18
+    public void AwardResourcesToRedSettlement_ExpectOneUpdateCall() {
+        Hex h = new Hex(1, Resource.BRICK, 9);
+
+        Player mockRedPlayer = EasyMock.createMock(Player.class);
+
+        h.addPlayerSettlementToHex(mockRedPlayer);
+
+        mockRedPlayer.updateResources(h.resource, 1);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(mockRedPlayer);
+
+        h.awardSettlementResources();
+
+        EasyMock.verify(mockRedPlayer);
     }
 
 }

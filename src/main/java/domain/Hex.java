@@ -7,8 +7,8 @@ public class Hex {
     public final int hexId;
     public final Resource resource;
     public final int hexRollNum;
-    private List<PlayerColor> playerSettlements;
-    private List<PlayerColor> playerCities;
+    private List<Player> playerSettlements;
+    private List<Player> playerCities;
 
     public Hex(int hexId, Resource resource, int rollNumber) {
         this.hexId = hexId;
@@ -26,7 +26,7 @@ public class Hex {
         return playerCities.size();
     }
 
-    public void addPlayerSettlementToHex(PlayerColor player) {
+    public void addPlayerSettlementToHex(Player player) {
         if (playerSettlements.size() >= 3){
             throw new IllegalStateException("Already three settlements on hex.");
         }
@@ -38,14 +38,14 @@ public class Hex {
         }
     }
 
-    public void removePlayerSettlementFromHex(PlayerColor player) {
+    public void removePlayerSettlementFromHex(Player player) {
         boolean success = playerSettlements.remove(player);
         if (!success){
             throw new IllegalArgumentException("Player does not have a building on hex.");
         }
     }
 
-    public void addPlayerCityToHex(PlayerColor player){
+    public void addPlayerCityToHex(Player player){
         if (playerCities.size() >= 3){
             throw new IllegalStateException("Already three buildings on hex.");
         }
@@ -58,7 +58,9 @@ public class Hex {
     }
 
     public void awardSettlementResources(){
-        return;
+        playerSettlements.forEach(player ->{
+            player.updateResources(resource, 1);
+        });
     }
 
     public void awardCityResources(){
