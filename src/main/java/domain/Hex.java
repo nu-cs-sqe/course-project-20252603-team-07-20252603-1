@@ -5,12 +5,12 @@ import java.util.List;
 
 public class Hex {
     public final int hexId;
-    public final String resource;
+    public final Resource resource;
     public final int hexRollNum;
     private List<PlayerColor> playerSettlements;
     private List<PlayerColor> playerCities;
 
-    public Hex(int hexId, String resource, int rollNumber) {
+    public Hex(int hexId, Resource resource, int rollNumber) {
         this.hexId = hexId;
         this.resource = resource;
         this.hexRollNum = rollNumber;

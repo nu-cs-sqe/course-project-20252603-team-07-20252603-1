@@ -1,6 +1,6 @@
 package domain;
 
-public enum Resources {
+public enum Resource {
     BRICK,
     GRAIN,
     LUMBER,

@@ -122,13 +122,13 @@ max possible size
 
 |              | System under test                   | Expected output                      | Implemented? |
 |--------------|-------------------------------------|--------------------------------------|--------------|
-| Test Case 16 | empty list                          | no update                            | x            |
-| Test Case 17 | list RED, brick                     | call to update player resources once | x            |
-| Test Case 18 | list ORANGE, WHITE, grain           | two calls to update                  | x            |
-| Test Case 19 | list with BLUE, BLUE, WHITE, lumber | three calls to update                | x            |
-| Test Case 20 | list with RED, RED, RED, ore        | three calls to update                | x            |
-| Test Case 21 | list with RED, WHITE, BLUE, wool    | three calls to update                | x            |
-| Test Case 22 | list with ORANGE, desert            | no update                            | x            |
+| Test Case 17 | empty list                          | no update                            | x            |
+| Test Case 18 | list RED, brick                     | call to update player resources once | x            |
+| Test Case 19 | list ORANGE, WHITE, grain           | two calls to update                  | x            |
+| Test Case 20 | list with BLUE, BLUE, WHITE, lumber | three calls to update                | x            |
+| Test Case 21 | list with RED, RED, RED, ore        | three calls to update                | x            |
+| Test Case 22 | list with RED, WHITE, BLUE, wool    | three calls to update                | x            |
+| Test Case 23 | list with ORANGE, desert            | no update                            | x            |
 
 ### Method under test: `awardCityResources()`
 Step 1:
@@ -153,10 +153,10 @@ max possible size
 
 |              | System under test                   | Expected output                      | Implemented? |
 |--------------|-------------------------------------|--------------------------------------|--------------|
-| Test Case 23 | empty list                          | no update                            | x            |
-| Test Case 24 | list RED, brick                     | call to update player resources once | x            |
-| Test Case 25 | list ORANGE, WHITE, grain           | two calls to update                  | x            |
-| Test Case 26 | list with BLUE, BLUE, WHITE, lumber | three calls to update                | x            |
-| Test Case 27 | list with RED, RED, RED, ore        | three calls to update                | x            |
-| Test Case 28 | list with RED, WHITE, BLUE, wool    | three calls to update                | x            |
-| Test Case 29 | list with ORANGE, desert            | no update                            | x            |
+| Test Case 24 | empty list                          | no update                            | x            |
+| Test Case 25 | list RED, brick                     | call to update player resources once | x            |
+| Test Case 26 | list ORANGE, WHITE, grain           | two calls to update                  | x            |
+| Test Case 27 | list with BLUE, BLUE, WHITE, lumber | three calls to update                | x            |
+| Test Case 28 | list with RED, RED, RED, ore        | three calls to update                | x            |
+| Test Case 29 | list with RED, WHITE, BLUE, wool    | three calls to update                | x            |
+| Test Case 30 | list with ORANGE, desert            | no update                            | x            |
