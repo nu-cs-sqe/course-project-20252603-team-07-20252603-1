@@ -2,6 +2,9 @@ package domain;
 
 import org.junit.jupiter.api.Test;
 
+import org.easymock.EasyMock;
+import org.opentest4j.AssertionFailedError;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class HexTests {
@@ -213,6 +216,20 @@ public class HexTests {
         String expectedMessage = "Adding invalid player name to Hex.";
         String actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test // Test Case 17
+    public void AwardResourcesToNoSettlements_ExpectNoUpdate() {
+        Hex h = new Hex(1, Resource.LUMBER, 9);
+
+        Player mockPlayer = EasyMock.createMock(Player.class);
+        EasyMock.replay(mockPlayer);
+
+        // If not expecting to call anything, will throw error
+        // We want awardSettlementResources to not have any calls to update
+        h.awardSettlementResources();
+
+        EasyMock.verify(mockPlayer);
     }
 
 }
