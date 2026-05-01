@@ -65,10 +65,12 @@ public class Hex {
         }
     }
 
-    public void awardCityResources(){
-        playerCities.forEach(player -> {
-            player.updateResources(resource, 2);
-        });
+    public void awardCityResources() {
+        if (resource != Resource.DESERT) {
+            playerCities.forEach(player -> {
+                player.updateResources(resource, 2);
+            });
+        }
     }
 
 

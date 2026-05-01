@@ -159,4 +159,4 @@ max possible size
 | Test Case 27 | list with BLUE, BLUE, WHITE, lumber | three calls to update                | :white_check_mark: |
 | Test Case 28 | list with RED, RED, RED, ore        | three calls to update                | :white_check_mark: |
 | Test Case 29 | list with RED, WHITE, BLUE, wool    | three calls to update                | :white_check_mark: |
-| Test Case 30 | list with ORANGE, desert            | no update                            | x                  |
+| Test Case 30 | list with ORANGE, BLUE on desert    | no update                            | :white_check_mark: |
