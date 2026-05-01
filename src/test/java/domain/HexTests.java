@@ -3,7 +3,6 @@ package domain;
 import org.junit.jupiter.api.Test;
 
 import org.easymock.EasyMock;
-import org.opentest4j.AssertionFailedError;
 
 import static org.junit.jupiter.api.Assertions.*;
 
