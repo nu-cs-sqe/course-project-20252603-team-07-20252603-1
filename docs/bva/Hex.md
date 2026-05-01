@@ -154,8 +154,8 @@ max possible size
 |              | System under test                   | Expected output                      | Implemented?       |
 |--------------|-------------------------------------|--------------------------------------|--------------------|
 | Test Case 24 | empty list                          | no update                            | :white_check_mark: |
-| Test Case 25 | list RED, brick                     | call to update player resources once | x                  |
-| Test Case 26 | list ORANGE, WHITE, grain           | two calls to update                  | x                  |
+| Test Case 25 | list RED, brick                     | call to update player resources once | :white_check_mark: |
+| Test Case 26 | list ORANGE, WHITE, grain           | two calls to update                  | :white_check_mark: |
 | Test Case 27 | list with BLUE, BLUE, WHITE, lumber | three calls to update                | x                  |
 | Test Case 28 | list with RED, RED, RED, ore        | three calls to update                | x                  |
 | Test Case 29 | list with RED, WHITE, BLUE, wool    | three calls to update                | x                  |
