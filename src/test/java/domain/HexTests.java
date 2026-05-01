@@ -415,6 +415,20 @@ public class HexTests {
         EasyMock.verify(mockOrangePlayer);
     }
 
+    @Test // Test Case 24
+    public void AwardResourcesToNoCities_ExpectNoUpdate() {
+        Hex h = new Hex(1, Resource.LUMBER, 9);
+
+        Player mockPlayer = EasyMock.createMock(Player.class);
+        EasyMock.replay(mockPlayer);
+
+        // If not expecting to call anything, will throw error if something is called
+        // We want awardCityResources to not have any calls to update
+        h.awardCityResources();
+
+        EasyMock.verify(mockPlayer);
+    }
+
 
 
 }
