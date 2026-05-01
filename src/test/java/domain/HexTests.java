@@ -470,6 +470,33 @@ public class HexTests {
         EasyMock.verify(mockOrangePlayer, mockWhitePlayer);
     }
 
+    @Test // Test Case 27
+    public void AwardResourcesToTwoSameCities_OneDifferent_ExpectThreeCalls() {
+        Hex h = new Hex(1, Resource.LUMBER, 1);
+
+        Player mockBluePlayer = EasyMock.createMock(Player.class);
+        Player mockWhitePlayer = EasyMock.createMock(Player.class);
+
+        h.addPlayerCityToHex(mockBluePlayer);
+        h.addPlayerCityToHex(mockBluePlayer);
+        h.addPlayerCityToHex(mockWhitePlayer);
+
+        mockBluePlayer.updateResources(h.resource, 2);
+        EasyMock.expectLastCall();
+
+        mockBluePlayer.updateResources(h.resource, 2);
+        EasyMock.expectLastCall();
+
+        mockWhitePlayer.updateResources(h.resource, 2);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(mockBluePlayer, mockWhitePlayer);
+
+        h.awardCityResources();
+
+        EasyMock.verify(mockBluePlayer, mockWhitePlayer);
+    }
+
 
 
 }
