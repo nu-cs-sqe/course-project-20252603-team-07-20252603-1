@@ -66,7 +66,9 @@ public class Hex {
     }
 
     public void awardCityResources(){
-        return;
+        playerCities.forEach(player -> {
+            player.updateResources(resource, 2);
+        });
     }
 
 

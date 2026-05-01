@@ -429,6 +429,24 @@ public class HexTests {
         EasyMock.verify(mockPlayer);
     }
 
+    @Test // Test Case 25
+    public void AwardResourcesToRedCity_ExpectOneUpdateCall() {
+        Hex h = new Hex(29, Resource.BRICK, 3);
+
+        Player mockRedPlayer = EasyMock.createMock(Player.class);
+
+        h.addPlayerCityToHex(mockRedPlayer);
+
+        mockRedPlayer.updateResources(h.resource, 2);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(mockRedPlayer);
+
+        h.awardCityResources();
+
+        EasyMock.verify(mockRedPlayer);
+    }
+
 
 
 }
