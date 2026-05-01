@@ -58,9 +58,11 @@ public class Hex {
     }
 
     public void awardSettlementResources(){
-        playerSettlements.forEach(player ->{
-            player.updateResources(resource, 1);
-        });
+        if (resource != Resource.DESERT) {
+            playerSettlements.forEach(player -> {
+                player.updateResources(resource, 1);
+            });
+        }
     }
 
     public void awardCityResources(){

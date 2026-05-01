@@ -399,6 +399,22 @@ public class HexTests {
         EasyMock.verify(mockRedPlayer, mockWhitePlayer, mockBluePlayer);
     }
 
+    @Test // Test Case 23
+    public void AwardResources_WithOnePlayer_OnDesert_ExpectNoUpdate() {
+        Hex h = new Hex(1, Resource.DESERT, 9);
+
+        Player mockOrangePlayer = EasyMock.createMock(Player.class);
+
+        h.addPlayerSettlementToHex(mockOrangePlayer);
+
+        EasyMock.replay(mockOrangePlayer);
+
+        // Want no update to happen, as we are on a desert
+        h.awardSettlementResources();
+
+        EasyMock.verify(mockOrangePlayer);
+    }
+
 
 
 }
