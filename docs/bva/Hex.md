@@ -127,7 +127,7 @@ max possible size
 | Test Case 19 | list ORANGE, WHITE, grain           | two calls to update                  | :white_check_mark: |
 | Test Case 20 | list with BLUE, BLUE, WHITE, lumber | three calls to update                | :white_check_mark: |
 | Test Case 21 | list with RED, RED, RED, ore        | three calls to update                | :white_check_mark: |
-| Test Case 22 | list with RED, WHITE, BLUE, wool    | three calls to update                | x                  |
+| Test Case 22 | list with RED, WHITE, BLUE, wool    | three calls to update                | :white_check_mark: |
 | Test Case 23 | list with ORANGE, desert            | no update                            | x                  |
 
 ### Method under test: `awardCityResources()`

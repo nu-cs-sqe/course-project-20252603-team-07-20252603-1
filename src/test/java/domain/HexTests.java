@@ -371,5 +371,35 @@ public class HexTests {
         EasyMock.verify(mockRedPlayer);
     }
 
+    @Test // Test Case 22
+    public void AwardWool_ThreeDifferentSettlements_ExpectThreeCalls() {
+        Hex h = new Hex(1, Resource.WOOL, 1);
+
+        Player mockRedPlayer = EasyMock.createMock(Player.class);
+        Player mockWhitePlayer = EasyMock.createMock(Player.class);
+        Player mockBluePlayer = EasyMock.createMock(Player.class);
+
+        h.addPlayerSettlementToHex(mockRedPlayer);
+        h.addPlayerSettlementToHex(mockWhitePlayer);
+        h.addPlayerSettlementToHex(mockBluePlayer);
+
+        mockRedPlayer.updateResources(h.resource, 1);
+        EasyMock.expectLastCall();
+
+        mockWhitePlayer.updateResources(h.resource, 1);
+        EasyMock.expectLastCall();
+
+        mockBluePlayer.updateResources(h.resource, 1);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(mockRedPlayer, mockWhitePlayer, mockBluePlayer);
+
+        h.awardSettlementResources();
+
+        EasyMock.verify(mockRedPlayer, mockWhitePlayer, mockBluePlayer);
+    }
+
+
+
 }
 
