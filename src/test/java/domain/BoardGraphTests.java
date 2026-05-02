@@ -267,4 +267,28 @@ public class BoardGraphTests {
         assertTrue(b.getConnectingEdgesByID(53).contains(edgeStub));
     }
 
+    @Test
+    void test04_getEdgeSet_MultipleNodesExist_ExpectMultipleEdgeSet() {
+        BoardGraph b = new BoardGraph();
+        GraphNode nodeStub0 = EasyMock.createMock(GraphNode.class);
+        GraphNode nodeStub53 = EasyMock.createMock(GraphNode.class);
+        GraphEdge edgeStub0 = EasyMock.createMock(GraphEdge.class);
+        GraphEdge edgeStub1 = EasyMock.createMock(GraphEdge.class);
+
+        EasyMock.expect(nodeStub0.getNodeID()).andStubReturn(0);
+        EasyMock.expect(nodeStub53.getNodeID()).andStubReturn(53);
+
+        EasyMock.replay(nodeStub0, nodeStub53, edgeStub0, edgeStub1);
+
+        b.addGraphNodeObject(nodeStub0);
+        b.addGraphNodeObject(nodeStub53);
+        b.addGraphNodeConnection(53, edgeStub0);
+        b.addGraphNodeConnection(53, edgeStub1);
+
+        assertNotNull(b.getConnectingEdgesByID(53));
+        assertEquals(2, b.getConnectingEdgesByID(53).size());
+        assertTrue(b.getConnectingEdgesByID(53).contains(edgeStub0));
+        assertTrue(b.getConnectingEdgesByID(53).contains(edgeStub1));
+    }
+
 }
