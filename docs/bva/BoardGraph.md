@@ -76,7 +76,7 @@
 |-------------|------------------------------------------------------------------|----------------------|--------------------|
 | Test Case 1 | Get ID 0, no nodes exist                                         | Error                | :white_check_mark: |
 | Test Case 2 | Get ID 0, Only one Node exists, ID 0 has empty set of edges      | Empty set            | :white_check_mark: |
-| Test Case 3 | Get ID 53, multiple Nodes Exist, ID 53 has set of one edge       | One element set      | :x:                |
+| Test Case 3 | Get ID 53, multiple Nodes Exist, ID 53 has set of one edge       | One element set      | :white_check_mark: |
 | Test Case 4 | Get ID 53, multiple Nodes Exist, ID 53 has set of multiple edges | Multiple Element set | :x:                |
 
 ## Blank Template:
