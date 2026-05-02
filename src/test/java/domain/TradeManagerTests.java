@@ -138,4 +138,35 @@ public class TradeManagerTests {
         assertSame(mockOffer, trades.get(0));
         assertSame(mockOffer, trades.get(1));
     }
+
+    @Test // Test Case 12
+    public void AcceptTrade_BlueAcceptsRedBrickForWool_ExpectListSizeZero() {
+        Player mockRed = EasyMock.createMock(Player.class);
+        Player mockBlue = EasyMock.createMock(Player.class);
+
+        ResourceQuantity giving = new ResourceQuantity(Resource.BRICK, 1);
+        ResourceQuantity receiving = new ResourceQuantity(Resource.WOOL, 1);
+
+        TradeOffer mockOffer = EasyMock.createMock(TradeOffer.class);
+        EasyMock.expect(mockOffer.getOfferingPlayer()).andStubReturn(mockRed);
+        EasyMock.expect(mockOffer.getGiving()).andStubReturn(giving);
+        EasyMock.expect(mockOffer.getReceiving()).andStubReturn(receiving);
+
+        EasyMock.expect(mockRed.getResourceCount(Resource.BRICK)).andStubReturn(1);
+        EasyMock.expect(mockBlue.getResourceCount(Resource.WOOL)).andStubReturn(1);
+
+        mockRed.updateResources(Resource.BRICK, -1);
+        mockRed.updateResources(Resource.WOOL, 1);
+        mockBlue.updateResources(Resource.WOOL, -1);
+        mockBlue.updateResources(Resource.BRICK, 1);
+
+        EasyMock.replay(mockOffer, mockRed, mockBlue);
+
+        TradeManager tm = new TradeManager();
+        tm.offerTrade(mockOffer);
+        tm.acceptTrade(mockOffer, mockBlue);
+
+        assertEquals(0, tm.listTrades().size());
+        EasyMock.verify(mockOffer, mockRed, mockBlue);
+    }
 }

@@ -17,4 +17,17 @@ public class TradeManager {
     public List<TradeOffer> listTrades() {
         return offers;
     }
+
+    public void acceptTrade(TradeOffer offer, Player acceptingPlayer) {
+        Player offerer = offer.getOfferingPlayer();
+        ResourceQuantity giving = offer.getGiving();
+        ResourceQuantity receiving = offer.getReceiving();
+
+        offers.remove(offer);
+
+        offerer.updateResources(giving.getResource(), -giving.getQuantity());
+        offerer.updateResources(receiving.getResource(), receiving.getQuantity());
+        acceptingPlayer.updateResources(receiving.getResource(), -receiving.getQuantity());
+        acceptingPlayer.updateResources(giving.getResource(), giving.getQuantity());
+    }
 }
