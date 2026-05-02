@@ -11,12 +11,14 @@
 
 - Change of state of Internal Map
 - Boolean to represent success
+  - Upon failure -> insertion of a duplicate, error with message "Node already exists"
 
-|             | State of the System                                 | Expected output   | Implemented?       |
-|-------------|-----------------------------------------------------|-------------------|--------------------|
-| Test Case 1 | Empty collection, adding NodeID 0                   | Updated Map, True | :white_check_mark: |
-| Test Case 2 | Collection with one element, adding NodeID 53       | Updated Map, True | :white_check_mark: |
-| Test Case 3 | Collection with multiple elements, adding NodeID 53 | Updated Map, True | :white_check_mark: |
+|             | State of the System                                        | Expected output            | Implemented?       |
+|-------------|------------------------------------------------------------|----------------------------|--------------------|
+| Test Case 1 | Empty collection, adding NodeID 0                          | Updated Map, True          | :white_check_mark: |
+| Test Case 2 | Collection with one element, adding NodeID 53              | Updated Map, True          | :white_check_mark: |
+| Test Case 3 | Collection with multiple elements, adding NodeID 53        | Updated Map, True          | :white_check_mark: |
+| Test Case 4 | Collection with multiple elements, adding duplicate node 0 | Map Stays the same, Error  | :white_check_mark: |
 
 ## Blank Template:
 

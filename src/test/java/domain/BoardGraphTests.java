@@ -3,8 +3,7 @@ package domain;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BoardGraphTests {
     @Test
@@ -60,4 +59,33 @@ public class BoardGraphTests {
         EasyMock.verify(nodeMock1, nodeMock2, nodeMock3);
 
     }
+
+    @Test
+    void addDuplicateNodeToGraph_ExpectError() {
+        BoardGraph b = new BoardGraph();
+
+        GraphNode nodeMock1 = EasyMock.createMock(GraphNode.class);
+        GraphNode nodeMock2 = EasyMock.createMock(GraphNode.class);
+        GraphNode nodeMock3 = EasyMock.createMock(GraphNode.class);
+
+        EasyMock.expect(nodeMock1.getNodeID()).andReturn(0);
+        EasyMock.expect(nodeMock2.getNodeID()).andReturn(1);
+        EasyMock.expect(nodeMock3.getNodeID()).andReturn(0);
+
+        EasyMock.replay(nodeMock1, nodeMock2, nodeMock3);
+
+        b.addGraphNodeObject(nodeMock1);
+        b.addGraphNodeObject(nodeMock2);
+
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> b.addGraphNodeObject(nodeMock3));
+
+        assertEquals("Node already exists", exception.getMessage());
+
+        assertNotNull(b.getGraphNodeByID(0));
+
+        EasyMock.verify(nodeMock1, nodeMock2);
+
+    }
+
 }

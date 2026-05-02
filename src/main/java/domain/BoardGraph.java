@@ -16,8 +16,13 @@ public class BoardGraph {
     // Add a new GraphNode to the Map
     boolean addGraphNodeObject(GraphNode graphNode) {
         int nodeID = graphNode.getNodeID();
-        this.NodeID_to_NodeObject.put(nodeID, graphNode);
-        return true;
+        if (NodeID_to_NodeObject.containsKey(nodeID)) {
+            throw new IllegalArgumentException("Node already exists");
+        }
+        else {
+            this.NodeID_to_NodeObject.put(nodeID, graphNode);
+            return true;
+        }
     }
 
     // Add a Graphnode and an edge to the adjacency list
