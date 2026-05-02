@@ -241,4 +241,32 @@ public class TradeManagerTests {
         assertEquals(1, tm.listTrades().size());
         EasyMock.verify(mockOffer, mockRed, mockBlue);
     }
+
+    @Test // Test Case 15
+    public void AcceptTrade_SelfAccept_ExpectError() {
+        Player mockRed = EasyMock.createMock(Player.class);
+
+        ResourceQuantity giving = new ResourceQuantity(Resource.BRICK, 1);
+        ResourceQuantity receiving = new ResourceQuantity(Resource.WOOL, 1);
+
+        TradeOffer mockOffer = EasyMock.createMock(TradeOffer.class);
+        EasyMock.expect(mockOffer.getOfferingPlayer()).andStubReturn(mockRed);
+        EasyMock.expect(mockOffer.getGiving()).andStubReturn(giving);
+        EasyMock.expect(mockOffer.getReceiving()).andStubReturn(receiving);
+
+        EasyMock.replay(mockOffer, mockRed);
+
+        TradeManager tm = new TradeManager();
+        tm.offerTrade(mockOffer);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            tm.acceptTrade(mockOffer, mockRed);
+        });
+
+        String expectedMessage = "A player cannot accept their own trade.";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+        assertEquals(1, tm.listTrades().size());
+        EasyMock.verify(mockOffer, mockRed);
+    }
 }

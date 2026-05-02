@@ -20,6 +20,10 @@ public class TradeManager {
 
     public void acceptTrade(TradeOffer offer, Player acceptingPlayer) {
         Player offerer = offer.getOfferingPlayer();
+        if (offerer == acceptingPlayer) {
+            throw new IllegalArgumentException("A player cannot accept their own trade.");
+        }
+
         ResourceQuantity giving = offer.getGiving();
         ResourceQuantity receiving = offer.getReceiving();
 
