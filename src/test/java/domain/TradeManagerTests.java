@@ -85,4 +85,11 @@ public class TradeManagerTests {
 
         assertEquals(0, tm.listTrades().size());
     }
+
+    @Test // Test Case 8
+    public void ListTrades_OnEmptyList_ExpectEmpty() {
+        TradeManager tm = new TradeManager();
+
+        assertEquals(0, tm.listTrades().size());
+    }
 }
