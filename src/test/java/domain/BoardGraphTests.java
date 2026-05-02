@@ -88,4 +88,15 @@ public class BoardGraphTests {
 
     }
 
+    @Test
+    void getNodeID0_EmptyMap_ExpectError(){
+        BoardGraph b = new BoardGraph();
+
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> b.getGraphNodeByID(0));
+
+        assertEquals("Node does not exist", exception.getMessage());
+
+    }
+
 }
