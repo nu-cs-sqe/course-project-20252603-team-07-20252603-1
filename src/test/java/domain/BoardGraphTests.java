@@ -231,4 +231,19 @@ public class BoardGraphTests {
         assertEquals("Node does not exist", exception.getMessage());
     }
 
+    @Test
+    void test02_getEdgeSet_OneNodeExists_ExpectEmptySet() {
+        BoardGraph b = new BoardGraph();
+        GraphNode nodeStub = EasyMock.createMock(GraphNode.class);
+
+        EasyMock.expect(nodeStub.getNodeID()).andStubReturn(0);
+
+        EasyMock.replay(nodeStub);
+
+        b.addGraphNodeObject(nodeStub);
+
+        assertNotNull(b.getConnectingEdgesByID(0));
+        assertEquals(0, b.getConnectingEdgesByID(0).size());
+    }
+
 }
