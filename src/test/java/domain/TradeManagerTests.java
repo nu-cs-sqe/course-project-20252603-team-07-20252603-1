@@ -16,4 +16,16 @@ public class TradeManagerTests {
 
         assertEquals(1, tm.listTrades().size());
     }
+
+    @Test // Test Case 2
+    public void OfferTrade_IntoListOfSizeOne_ExpectListSizeTwo() {
+        TradeOffer mockOfferA = EasyMock.createMock(TradeOffer.class);
+        TradeOffer mockOfferB = EasyMock.createMock(TradeOffer.class);
+
+        TradeManager tm = new TradeManager();
+        tm.offerTrade(mockOfferA);
+        tm.offerTrade(mockOfferB);
+
+        assertEquals(2, tm.listTrades().size());
+    }
 }
