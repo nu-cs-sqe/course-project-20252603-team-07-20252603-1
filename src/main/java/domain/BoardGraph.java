@@ -25,13 +25,19 @@ public class BoardGraph {
         }
     }
 
-    // Add a Graphnode and an edge to the adjacency list
+    //
     boolean addGraphNodeConnection(int currentNodeID, GraphEdge connectingEdge){
         return false;
     }
 
     GraphNode getGraphNodeByID(int nodeID) {
-        return this.NodeID_to_NodeObject.get(nodeID);
+        if (!NodeID_to_NodeObject.containsKey(nodeID)) {
+            throw new IllegalArgumentException("Node does not exist");
+        }
+        else {
+            return this.NodeID_to_NodeObject.get(nodeID);
+        }
     }
+
 
 }
