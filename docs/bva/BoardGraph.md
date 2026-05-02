@@ -38,7 +38,7 @@
 |-------------|-----------------------------------------------------|-----------------|--------------------|
 | Test Case 1 | Get ID 0, empty collection                          | Error           | :white_check_mark: |
 | Test Case 2 | Get ID 0, one element, ID 0 exists                  | GraphNode Obj   | :white_check_mark: |
-| Test Case 3 | Get ID 53, multiple  elements, ID 53 does not exist | Error           | :x:                |
+| Test Case 3 | Get ID 53, multiple  elements, ID 53 does not exist | Error           | :white_check_mark: |
 
 ### Method under test: `addGraphNodeConnection(int nodeID, GraphEdge connectingEdge)`
 

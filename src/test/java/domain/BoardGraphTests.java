@@ -115,4 +115,25 @@ public class BoardGraphTests {
 
     }
 
+    @Test
+    void getNodeID53_MultipleElementMap_ID53DoesNotExists_ExpectError(){
+        BoardGraph b = new BoardGraph();
+
+        GraphNode nodeStub0 = EasyMock.createMock(GraphNode.class);
+        GraphNode nodeStub1 = EasyMock.createMock(GraphNode.class);
+
+        EasyMock.expect(nodeStub0.getNodeID()).andStubReturn(0);
+        EasyMock.expect(nodeStub1.getNodeID()).andStubReturn(1);
+        EasyMock.replay(nodeStub0, nodeStub1);
+
+        b.addGraphNodeObject(nodeStub0);
+        b.addGraphNodeObject(nodeStub1);
+
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> b.getGraphNodeByID(53));
+
+
+        assertEquals("Node does not exist", exception.getMessage());
+    }
+
 }
