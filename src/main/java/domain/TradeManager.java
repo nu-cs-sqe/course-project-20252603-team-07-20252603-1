@@ -33,6 +33,9 @@ public class TradeManager {
         if (offerer.getResourceCount(giving.getResource()) < giving.getQuantity()) {
             throw new IllegalStateException("Offering player has insufficient resources.");
         }
+        if (acceptingPlayer.getResourceCount(receiving.getResource()) < receiving.getQuantity()) {
+            throw new IllegalStateException("Accepting player has insufficient resources.");
+        }
 
         offers.remove(offer);
 
