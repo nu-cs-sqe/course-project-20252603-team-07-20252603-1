@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BoardGraphTests {
+
+    // addGraphNodeObj() Tests
     @Test
     void addNodeToGraph_EmptyGraph_ExpectTrue(){
         BoardGraph b = new BoardGraph();
@@ -92,6 +94,7 @@ public class BoardGraphTests {
 
     }
 
+    // getGraphNodeByID() Tests
     @Test
     void getNodeID0_EmptyMap_ExpectError(){
         BoardGraph b = new BoardGraph();
@@ -140,6 +143,7 @@ public class BoardGraphTests {
         assertEquals("Node does not exist", exception.getMessage());
     }
 
+    // addGraphNodeConnection() Tests
     @Test
     void addNewEdge_NotDuplicate_NodeExistsInMap_ExpectTrue() {
         BoardGraph b = new BoardGraph();
@@ -155,6 +159,28 @@ public class BoardGraphTests {
         assertTrue(b.addGraphNodeConnection(0, edgeStub));
 
         assertTrue(b.getConnectingEdgesByID(0).contains(edgeStub));
+    }
+
+    @Test
+    void addNewEdge_Duplicate_NodeExistsInMap_ExpectError() {
+        BoardGraph b = new BoardGraph();
+
+        GraphNode nodeStub = EasyMock.createMock(GraphNode.class);
+        GraphEdge edgeStub = EasyMock.createMock(GraphEdge.class);
+
+        EasyMock.expect(nodeStub.getNodeID()).andStubReturn(0);
+        EasyMock.replay(nodeStub, edgeStub);
+
+        b.addGraphNodeObject(nodeStub);
+
+        b.addGraphNodeConnection(0, edgeStub);
+
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> b.addGraphNodeConnection(0, edgeStub));
+
+
+        assertEquals("Node already has specified edge", exception.getMessage());
+
     }
 
 }
