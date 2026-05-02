@@ -25,4 +25,15 @@ public class ResourceQuantityTests {
         String actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
     }
+
+    @Test // Test Case 4
+    public void Construct_Desert_ExpectError() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new ResourceQuantity(Resource.DESERT, 1);
+        });
+
+        String expectedMessage = "Resource must be tradeable.";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
 }
