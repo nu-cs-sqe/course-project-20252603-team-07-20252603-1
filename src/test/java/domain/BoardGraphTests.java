@@ -16,7 +16,8 @@ public class BoardGraphTests {
 
         assertTrue(b.addGraphNodeObject(nodeMock));
         assertNotNull(b.getGraphNodeByID(0));
-        EasyMock.verify();
+        EasyMock.verify(nodeMock);
+
     }
 
     @Test
@@ -33,6 +34,6 @@ public class BoardGraphTests {
         assertTrue(b.addGraphNodeObject(nodeMock1));
         assertTrue(b.addGraphNodeObject(nodeMock2));
         assertNotNull(b.getGraphNodeByID(53));
-        EasyMock.verify();
+        EasyMock.verify(nodeMock1, nodeMock2);
     }
 }
