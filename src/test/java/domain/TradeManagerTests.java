@@ -209,4 +209,36 @@ public class TradeManagerTests {
         assertSame(mockOfferC, remaining.get(1));
         EasyMock.verify(mockOfferA, mockOfferB, mockOfferC, mockOrange, mockWhite);
     }
+
+    @Test // Test Case 14
+    public void AcceptTrade_OneOfTwoDuplicates_ExpectListSizeOne() {
+        Player mockRed = EasyMock.createMock(Player.class);
+        Player mockBlue = EasyMock.createMock(Player.class);
+
+        ResourceQuantity giving = new ResourceQuantity(Resource.BRICK, 1);
+        ResourceQuantity receiving = new ResourceQuantity(Resource.WOOL, 1);
+
+        TradeOffer mockOffer = EasyMock.createMock(TradeOffer.class);
+        EasyMock.expect(mockOffer.getOfferingPlayer()).andStubReturn(mockRed);
+        EasyMock.expect(mockOffer.getGiving()).andStubReturn(giving);
+        EasyMock.expect(mockOffer.getReceiving()).andStubReturn(receiving);
+
+        EasyMock.expect(mockRed.getResourceCount(Resource.BRICK)).andStubReturn(1);
+        EasyMock.expect(mockBlue.getResourceCount(Resource.WOOL)).andStubReturn(1);
+
+        mockRed.updateResources(Resource.BRICK, -1);
+        mockRed.updateResources(Resource.WOOL, 1);
+        mockBlue.updateResources(Resource.WOOL, -1);
+        mockBlue.updateResources(Resource.BRICK, 1);
+
+        EasyMock.replay(mockOffer, mockRed, mockBlue);
+
+        TradeManager tm = new TradeManager();
+        tm.offerTrade(mockOffer);
+        tm.offerTrade(mockOffer);
+        tm.acceptTrade(mockOffer, mockBlue);
+
+        assertEquals(1, tm.listTrades().size());
+        EasyMock.verify(mockOffer, mockRed, mockBlue);
+    }
 }
