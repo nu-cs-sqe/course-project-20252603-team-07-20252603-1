@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 
 import org.easymock.EasyMock;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TradeManagerTests {
@@ -91,5 +93,17 @@ public class TradeManagerTests {
         TradeManager tm = new TradeManager();
 
         assertEquals(0, tm.listTrades().size());
+    }
+
+    @Test // Test Case 9
+    public void ListTrades_AfterOneOffer_ExpectListSizeOneContainsOffer() {
+        TradeOffer mockOffer = EasyMock.createMock(TradeOffer.class);
+
+        TradeManager tm = new TradeManager();
+        tm.offerTrade(mockOffer);
+
+        List<TradeOffer> trades = tm.listTrades();
+        assertEquals(1, trades.size());
+        assertSame(mockOffer, trades.get(0));
     }
 }
