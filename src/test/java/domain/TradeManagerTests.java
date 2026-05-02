@@ -58,4 +58,19 @@ public class TradeManagerTests {
 
         assertEquals(0, tm.listTrades().size());
     }
+
+    @Test // Test Case 6
+    public void ClearOffers_OnThreeOffers_ExpectEmpty() {
+        TradeOffer mockOfferA = EasyMock.createMock(TradeOffer.class);
+        TradeOffer mockOfferB = EasyMock.createMock(TradeOffer.class);
+        TradeOffer mockOfferC = EasyMock.createMock(TradeOffer.class);
+
+        TradeManager tm = new TradeManager();
+        tm.offerTrade(mockOfferA);
+        tm.offerTrade(mockOfferB);
+        tm.offerTrade(mockOfferC);
+        tm.clearOffers();
+
+        assertEquals(0, tm.listTrades().size());
+    }
 }
