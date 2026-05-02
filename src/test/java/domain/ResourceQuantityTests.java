@@ -9,4 +9,9 @@ public class ResourceQuantityTests {
     public void Construct_BrickAtLowerBoundary_ExpectValid() {
         assertDoesNotThrow(() -> new ResourceQuantity(Resource.BRICK, 1));
     }
+
+    @Test // Test Case 2
+    public void Construct_WoolAtUpperBoundary_ExpectValid() {
+        assertDoesNotThrow(() -> new ResourceQuantity(Resource.WOOL, Integer.MAX_VALUE));
+    }
 }
