@@ -206,4 +206,18 @@ public class BoardGraphTests {
 
     }
 
+    @Test
+    void test04_addNewEdge_NodeDoesNotExist_ExpectError() {
+        BoardGraph b = new BoardGraph();
+        GraphEdge edgeStub = EasyMock.createMock(GraphEdge.class);
+
+        EasyMock.replay(edgeStub);
+
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> b.addGraphNodeConnection(0, edgeStub));
+
+        assertEquals("Node does not exist", exception.getMessage());
+
+    }
+
 }
