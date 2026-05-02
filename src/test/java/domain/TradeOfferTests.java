@@ -24,4 +24,19 @@ public class TradeOfferTests {
 
         assertDoesNotThrow(() -> new TradeOffer(mockBlue, giving, receiving));
     }
+
+    @Test // Test Case 3
+    public void Construct_LumberForLumber_ExpectError() {
+        Player mockRed = EasyMock.createMock(Player.class);
+        ResourceQuantity giving = new ResourceQuantity(Resource.LUMBER, 1);
+        ResourceQuantity receiving = new ResourceQuantity(Resource.LUMBER, 1);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new TradeOffer(mockRed, giving, receiving);
+        });
+
+        String expectedMessage = "Cannot trade a resource for itself.";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
 }
