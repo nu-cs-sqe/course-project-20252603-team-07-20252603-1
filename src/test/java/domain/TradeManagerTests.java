@@ -124,4 +124,18 @@ public class TradeManagerTests {
         assertSame(mockOfferB, trades.get(1));
         assertSame(mockOfferC, trades.get(2));
     }
+
+    @Test // Test Case 11
+    public void ListTrades_WithDuplicates_ExpectListSizeTwoWithDuplicates() {
+        TradeOffer mockOffer = EasyMock.createMock(TradeOffer.class);
+
+        TradeManager tm = new TradeManager();
+        tm.offerTrade(mockOffer);
+        tm.offerTrade(mockOffer);
+
+        List<TradeOffer> trades = tm.listTrades();
+        assertEquals(2, trades.size());
+        assertSame(mockOffer, trades.get(0));
+        assertSame(mockOffer, trades.get(1));
+    }
 }
