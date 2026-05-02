@@ -269,4 +269,32 @@ public class TradeManagerTests {
         assertEquals(1, tm.listTrades().size());
         EasyMock.verify(mockOffer, mockRed);
     }
+
+    @Test // Test Case 16
+    public void AcceptTrade_OfferNotInList_ExpectError() {
+        Player mockRed = EasyMock.createMock(Player.class);
+        Player mockBlue = EasyMock.createMock(Player.class);
+
+        ResourceQuantity giving = new ResourceQuantity(Resource.BRICK, 1);
+        ResourceQuantity receiving = new ResourceQuantity(Resource.WOOL, 1);
+
+        TradeOffer mockOffer = EasyMock.createMock(TradeOffer.class);
+        EasyMock.expect(mockOffer.getOfferingPlayer()).andStubReturn(mockRed);
+        EasyMock.expect(mockOffer.getGiving()).andStubReturn(giving);
+        EasyMock.expect(mockOffer.getReceiving()).andStubReturn(receiving);
+
+        EasyMock.replay(mockOffer, mockRed, mockBlue);
+
+        TradeManager tm = new TradeManager();
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            tm.acceptTrade(mockOffer, mockBlue);
+        });
+
+        String expectedMessage = "Trade not found.";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+        assertEquals(0, tm.listTrades().size());
+        EasyMock.verify(mockOffer, mockRed, mockBlue);
+    }
 }

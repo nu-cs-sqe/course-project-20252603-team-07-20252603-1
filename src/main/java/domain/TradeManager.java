@@ -23,6 +23,9 @@ public class TradeManager {
         if (offerer == acceptingPlayer) {
             throw new IllegalArgumentException("A player cannot accept their own trade.");
         }
+        if (!offers.contains(offer)) {
+            throw new IllegalArgumentException("Trade not found.");
+        }
 
         ResourceQuantity giving = offer.getGiving();
         ResourceQuantity receiving = offer.getReceiving();
