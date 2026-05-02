@@ -14,4 +14,15 @@ public class ResourceQuantityTests {
     public void Construct_WoolAtUpperBoundary_ExpectValid() {
         assertDoesNotThrow(() -> new ResourceQuantity(Resource.WOOL, Integer.MAX_VALUE));
     }
+
+    @Test // Test Case 3
+    public void Construct_GrainBelowLowerBoundary_ExpectError() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new ResourceQuantity(Resource.GRAIN, 0);
+        });
+
+        String expectedMessage = "Quantity must be at least 1.";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
 }
