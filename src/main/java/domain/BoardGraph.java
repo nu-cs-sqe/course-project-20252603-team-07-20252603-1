@@ -1,6 +1,7 @@
 package domain;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -21,15 +22,18 @@ public class BoardGraph {
         }
         else {
             this.NodeID_to_NodeObject.put(nodeID, graphNode);
+            this.NodeID_to_Connecting_Edges.put(nodeID, new HashSet<>());
             return true;
         }
     }
 
-    //
-    boolean addGraphNodeConnection(int currentNodeID, GraphEdge connectingEdge){
-        return false;
+    // Add a connecting edge to the set of edges within the map <GraphID, set of Edges>
+    boolean addGraphNodeConnection(int nodeID, GraphEdge connectingEdge){
+        this.NodeID_to_Connecting_Edges.get(nodeID).add(connectingEdge);
+        return true;
     }
 
+    // Getter function to get the graphNode Object from the map
     GraphNode getGraphNodeByID(int nodeID) {
         if (!NodeID_to_NodeObject.containsKey(nodeID)) {
             throw new IllegalArgumentException("Node does not exist");
@@ -37,6 +41,12 @@ public class BoardGraph {
         else {
             return this.NodeID_to_NodeObject.get(nodeID);
         }
+    }
+
+    // Getter function to get the set of edges from the map
+
+    Set<GraphEdge> getConnectingEdgesByID(int nodeID) {
+        return this.NodeID_to_Connecting_Edges.get(nodeID);
     }
 
 
