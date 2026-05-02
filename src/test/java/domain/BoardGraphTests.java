@@ -145,7 +145,7 @@ public class BoardGraphTests {
 
     // addGraphNodeConnection() Tests
     @Test
-    void addNewEdge_NotDuplicate_NodeExistsInMap_ExpectTrue() {
+    void test01_addNewEdge_NotDuplicate_NodeExistsInMap_ExpectTrue() {
         BoardGraph b = new BoardGraph();
 
         GraphNode nodeStub = EasyMock.createMock(GraphNode.class);
@@ -162,7 +162,7 @@ public class BoardGraphTests {
     }
 
     @Test
-    void addNewEdge_Duplicate_NodeExistsInMap_ExpectError() {
+    void test02_addNewEdge_Duplicate_NodeExistsInMap_ExpectError() {
         BoardGraph b = new BoardGraph();
 
         GraphNode nodeStub = EasyMock.createMock(GraphNode.class);
@@ -180,6 +180,29 @@ public class BoardGraphTests {
 
 
         assertEquals("Node already has specified edge", exception.getMessage());
+
+    }
+
+    @Test
+    void test03_addNewEdge_Duplicate_SeparateExistingNode_ExpectTrue() {
+        BoardGraph b = new BoardGraph();
+
+        GraphNode nodeStub0 = EasyMock.createMock(GraphNode.class);
+        GraphNode nodeStub1 = EasyMock.createMock(GraphNode.class);
+        GraphEdge edgeStub = EasyMock.createMock(GraphEdge.class);
+
+        EasyMock.expect(nodeStub0.getNodeID()).andStubReturn(0);
+        EasyMock.expect(nodeStub1.getNodeID()).andStubReturn(1);
+
+        EasyMock.replay(nodeStub0, nodeStub1, edgeStub);
+
+        b.addGraphNodeObject(nodeStub0);
+        b.addGraphNodeObject(nodeStub1);
+        b.addGraphNodeConnection(0, edgeStub);
+
+        assertTrue(b.addGraphNodeConnection(1, edgeStub));
+        assertTrue(b.getConnectingEdgesByID(0).contains(edgeStub));
+        assertTrue(b.getConnectingEdgesByID(1).contains(edgeStub));
 
     }
 
