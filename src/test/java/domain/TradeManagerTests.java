@@ -28,4 +28,15 @@ public class TradeManagerTests {
 
         assertEquals(2, tm.listTrades().size());
     }
+
+    @Test // Test Case 3
+    public void OfferTrade_DuplicateOfferTwice_ExpectListSizeTwo() {
+        TradeOffer mockOffer = EasyMock.createMock(TradeOffer.class);
+
+        TradeManager tm = new TradeManager();
+        tm.offerTrade(mockOffer);
+        tm.offerTrade(mockOffer);
+
+        assertEquals(2, tm.listTrades().size());
+    }
 }
