@@ -15,4 +15,13 @@ public class TradeOfferTests {
 
         assertDoesNotThrow(() -> new TradeOffer(mockRed, giving, receiving));
     }
+
+    @Test // Test Case 2
+    public void Construct_BlueOreForGrain_ExpectValid() {
+        Player mockBlue = EasyMock.createMock(Player.class);
+        ResourceQuantity giving = new ResourceQuantity(Resource.ORE, 2);
+        ResourceQuantity receiving = new ResourceQuantity(Resource.GRAIN, 1);
+
+        assertDoesNotThrow(() -> new TradeOffer(mockBlue, giving, receiving));
+    }
 }
