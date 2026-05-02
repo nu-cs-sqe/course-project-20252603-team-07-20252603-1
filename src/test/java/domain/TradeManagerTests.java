@@ -297,4 +297,35 @@ public class TradeManagerTests {
         assertEquals(0, tm.listTrades().size());
         EasyMock.verify(mockOffer, mockRed, mockBlue);
     }
+
+    @Test // Test Case 17
+    public void AcceptTrade_OffererInsufficient_ExpectError() {
+        Player mockRed = EasyMock.createMock(Player.class);
+        Player mockBlue = EasyMock.createMock(Player.class);
+
+        ResourceQuantity giving = new ResourceQuantity(Resource.BRICK, 5);
+        ResourceQuantity receiving = new ResourceQuantity(Resource.WOOL, 1);
+
+        TradeOffer mockOffer = EasyMock.createMock(TradeOffer.class);
+        EasyMock.expect(mockOffer.getOfferingPlayer()).andStubReturn(mockRed);
+        EasyMock.expect(mockOffer.getGiving()).andStubReturn(giving);
+        EasyMock.expect(mockOffer.getReceiving()).andStubReturn(receiving);
+
+        EasyMock.expect(mockRed.getResourceCount(Resource.BRICK)).andReturn(0);
+
+        EasyMock.replay(mockOffer, mockRed, mockBlue);
+
+        TradeManager tm = new TradeManager();
+        tm.offerTrade(mockOffer);
+
+        Exception exception = assertThrows(IllegalStateException.class, () -> {
+            tm.acceptTrade(mockOffer, mockBlue);
+        });
+
+        String expectedMessage = "Offering player has insufficient resources.";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+        assertEquals(1, tm.listTrades().size());
+        EasyMock.verify(mockOffer, mockRed, mockBlue);
+    }
 }
