@@ -99,4 +99,20 @@ public class BoardGraphTests {
 
     }
 
+    @Test
+    void getNodeID0_OneElementMap_ID0Exists_ExpectGraphNode(){
+        BoardGraph b = new BoardGraph();
+
+        GraphNode nodeStub = EasyMock.createMock(GraphNode.class);
+        EasyMock.expect(nodeStub.getNodeID()).andStubReturn(0);
+
+        b.addGraphNodeObject(nodeStub);
+
+        GraphNode result = b.getGraphNodeByID(0);
+
+        assertNotNull(result);
+        assertEquals(nodeStub, result);
+
+    }
+
 }
