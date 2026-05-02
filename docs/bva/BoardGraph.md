@@ -53,11 +53,12 @@
 - state of map -> new edge added
 
 
-|             | State of the System                     | Expected output                 | Implemented?       |
-|-------------|-----------------------------------------|---------------------------------|--------------------|
-| Test Case 1 | Node exists, not duplicate edge         | True, map updates               | :white_check_mark: |
-| Test Case 2 | Node exists, duplicate edge             | Error, "Node already has edge"  | :white_check_mark: |
-| Test Case 3 | Node does not exist, not duplicate edge | Error 2,  "Node does not exist" | :x:                |
+|             | State of the System                               | Expected output                 | Implemented?       |
+|-------------|---------------------------------------------------|---------------------------------|--------------------|
+| Test Case 1 | Node exists, not duplicate edge                   | True, map updates               | :white_check_mark: |
+| Test Case 2 | Node exists, duplicate edge                       | Error, "Node already has edge"  | :white_check_mark: |
+| Test Case 2 | Node exists, duplicate edges, into separate nodes | True, map updates               | :white_check_mark: |
+| Test Case 4 | Node does not exist, not duplicate edge           | Error 2,  "Node does not exist" | :x:                |
 
 
 
