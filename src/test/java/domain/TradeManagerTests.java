@@ -39,4 +39,12 @@ public class TradeManagerTests {
 
         assertEquals(2, tm.listTrades().size());
     }
+
+    @Test // Test Case 4
+    public void ClearOffers_OnEmptyList_ExpectEmpty() {
+        TradeManager tm = new TradeManager();
+        tm.clearOffers();
+
+        assertEquals(0, tm.listTrades().size());
+    }
 }

@@ -10,6 +10,10 @@ public class TradeManager {
         offers.add(offer);
     }
 
+    public void clearOffers() {
+        offers.clear();
+    }
+
     public List<TradeOffer> listTrades() {
         return offers;
     }
