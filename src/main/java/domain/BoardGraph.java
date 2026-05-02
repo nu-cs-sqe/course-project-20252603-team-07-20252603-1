@@ -50,9 +50,13 @@ public class BoardGraph {
     }
 
     // Getter function to get the set of edges from the map
-
     Set<GraphEdge> getConnectingEdgesByID(int nodeID) {
-        return this.NodeID_to_Connecting_Edges.get(nodeID);
+        if (!NodeID_to_Connecting_Edges.containsKey(nodeID)) {
+            throw new IllegalArgumentException("Node does not exist");
+        }
+        else {
+            return this.NodeID_to_Connecting_Edges.get(nodeID);
+        }
     }
 
 

@@ -220,4 +220,15 @@ public class BoardGraphTests {
 
     }
 
+    // getConnectingEdgesByID Tests
+    @Test
+    void test01_getEdgeSet_NodeDoesNotExist_ExpectError() {
+        BoardGraph b = new BoardGraph();
+
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> b.getConnectingEdgesByID(0));
+
+        assertEquals("Node does not exist", exception.getMessage());
+    }
+
 }
