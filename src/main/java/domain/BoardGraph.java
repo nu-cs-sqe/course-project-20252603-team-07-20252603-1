@@ -29,8 +29,13 @@ public class BoardGraph {
 
     // Add a connecting edge to the set of edges within the map <GraphID, set of Edges>
     boolean addGraphNodeConnection(int nodeID, GraphEdge connectingEdge){
-        this.NodeID_to_Connecting_Edges.get(nodeID).add(connectingEdge);
-        return true;
+        if (this.NodeID_to_Connecting_Edges.get(nodeID).contains(connectingEdge)) {
+            throw new IllegalArgumentException("Node already has specified edge");
+        }
+        else {
+            this.NodeID_to_Connecting_Edges.get(nodeID).add(connectingEdge);
+            return true;
+        }
     }
 
     // Getter function to get the graphNode Object from the map
