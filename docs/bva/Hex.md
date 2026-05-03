@@ -1,26 +1,26 @@
 ### Method under test: `addPlayerSettlementToHex(String playerName)`
 
 Step 1:
-Input: playerColor
-Input: state of the list
-Input: values of the list
-Output: state of the list
-Output: exception
+- Input: playerColor
+- Input: state of the list
+- Input: values of the list
+- Output: state of the list
+- Output: exception
 
 Step 2:
-playerName - Enums/Cases
-State - collection
-Values - Enums/Cases
-Exception - too large
+- playerName - Enums/Cases
+- State - collection
+- Values - Enums/Cases
+- Exception - too large
 
 Step 3:
-Input: All four possibilities, an impossible case
-Input: empty collection, contains just one element, contains more than one element, duplicate elements,
-max possible size
-Input: All four possibilities, an impossible case
-Output: empty collection, contains just one element, contains more than one element, duplicate elements,
-max possible size
-Output: "Already three settlements on hex."
+- Input: All four possibilities, an impossible case
+- Input: empty collection, contains just one element, contains more than one element, duplicate elements,
+- max possible size
+- Input: All four possibilities, an impossible case
+- Output: empty collection, contains just one element, contains more than one element, duplicate elements,
+- max possible size
+- Output: "Already three settlements on hex."
 
 
 |             | System under test           | Expected output  | Implemented?       |
@@ -35,26 +35,24 @@ Output: "Already three settlements on hex."
 ### Method under test: `removePlayerSettlementFromHex(String playerName)`
 
 Step 1:
-Input: playerColor
-Input: state of the list
-Input: values of the list
-Output: state of the list
-Output: exception
+- Input: playerColor
+- Input: state of the list
+- Input: values of the list
+- Output: state of the list
+- Output: exception
 
 Step 2:
-playerName - PlayerColor enum / cases
-State - collection
-Values - PlayerColor enum / cases
-Exception - too large
+- playerName - PlayerColor enum / cases
+- State - collection
+- Values - PlayerColor enum / cases
+- Exception - too large
 
 Step 3:
-Input: All four possibilities, an impossible case
-Input: empty collection, contains just one element, contains more than one element, duplicate elements,
-max possible size
-Input: All four possibilities, an impossible case
-Output: empty collection, contains just one element, contains more than one element, duplicate elements,
-max possible size -> not possible
-Output: "Player does not have a building on hex."
+- Input: All four possibilities, an impossible case
+- Input: empty collection, contains just one element, contains more than one element, duplicate elements, max possible size
+- Input: All four possibilities, an impossible case
+- Output: empty collection, contains just one element, contains more than one element, duplicate elements, max possible size -> not possible
+- Output: "Player does not have a building on hex."
 
 
 |              | System under test                    | Expected output                       | Implemented?       |
@@ -68,26 +66,24 @@ Output: "Player does not have a building on hex."
 
 ### Method under test: `addPlayerCityToHex(String playerName)`
 Step 1:
-Input: playerNColor
-Input: state of the list
-Input: values of the list
-Output: state of the list
-Output: exception
+- Input: playerNColor
+- Input: state of the list
+- Input: values of the list
+- Output: state of the list
+- Output: exception
 
 Step 2:
-playerName - enum / cases
-State - collection
-Values - enum / cases
-Exception - too large
+- playerName - enum / cases
+- State - collection
+- Values - enum / cases
+- Exception - too large
 
 Step 3:
-Input: all possible inputs, impossible input
-Input: empty collection, contains just one element, contains more than one element, duplicate elements,
-max possible size
-Input: all possible inputs, impossible input
-Output: empty collection, contains just one element, contains more than one element, duplicate elements,
-max possible size
-Output: "Already three buildings on hex."
+- Input: all possible inputs, impossible input
+- Input: empty collection, contains just one element, contains more than one element, duplicate elements, max possible size
+- Input: all possible inputs, impossible input
+- Output: empty collection, contains just one element, contains more than one element, duplicate elements, max possible size
+- Output: "Already three buildings on hex."
 
 
 |              | System under test           | Expected output  | Implemented?       |
@@ -101,23 +97,20 @@ Output: "Already three buildings on hex."
 
 ### Method under test: `awardSettlementResources()`
 Step 1:
-Input: state of the list
-Input: resource
-Input: values of the list
-Output: state of the list
+- Input: state of the list
+- Input: resource
+- Input: values of the list
+- Output: state of the list
 
 Step 2:
-State - collection
-Resource - cases / enums
-Values - cases / enums
+- State - collection
+- Resource - cases / enums
+- Values - cases / enums
 
 Step 3:
-Input: empty collection, contains just one element, contains more than one element, duplicate elements,
-max possible size
-Input: all possible inputs, 
-impossible inputs - not feasible
-Output: empty collection, contains just one element, contains more than one element, duplicate elements,
-max possible size
+- Input: empty collection, contains just one element, contains more than one element, duplicate elements, max possible size
+- Input: all possible inputs, impossible inputs - not feasible
+- Output: empty collection, contains just one element, contains more than one element, duplicate elements, max possible size
 
 
 |              | System under test                   | Expected output                      | Implemented?       |
@@ -132,23 +125,20 @@ max possible size
 
 ### Method under test: `awardCityResources()`
 Step 1:
-Input: state of the list
-Input: resource
-Input: values of the list
-Output: state of the list
+- Input: state of the list
+- Input: resource
+- Input: values of the list
+- Output: state of the list
 
 Step 2:
-State - collection
-Resource - cases / enums
-Values - cases / enums
+- State - collection
+- Resource - cases / enums
+- Values - cases / enums
 
 Step 3:
-Input: empty collection, contains just one element, contains more than one element, duplicate elements,
-max possible size
-Input: all possible inputs,
-impossible inputs - not feasible
-Output: empty collection, contains just one element, contains more than one element, duplicate elements,
-max possible size
+- Input: empty collection, contains just one element, contains more than one element, duplicate elements, max possible size
+- Input: all possible inputs, impossible inputs - not feasible
+- Output: empty collection, contains just one element, contains more than one element, duplicate elements, max possible size
 
 
 |              | System under test                   | Expected output                      | Implemented?       |
