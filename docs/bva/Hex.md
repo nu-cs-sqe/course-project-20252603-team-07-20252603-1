@@ -4,6 +4,7 @@ Step 1:
 - Input: playerColor
 - Input: state of the list
 - Input: values of the list
+- Input: size of totalBuildingsOnHex
 - Output: state of the list
 - Output: exception
 
@@ -12,24 +13,27 @@ Step 2:
 - State - collection
 - Values - Enums/Cases
 - Exception - too large
+- totalBuildingsOnHex - interval
 
 Step 3:
 - Input: All four possibilities, an impossible case
 - Input: empty collection, contains just one element, contains more than one element, duplicate elements,
 - max possible size
 - Input: All four possibilities, an impossible case
+- Input: 0, 3, -1 (not feasible), 4 (not feasible)
 - Output: empty collection, contains just one element, contains more than one element, duplicate elements,
 - max possible size
 - Output: "Already three settlements on hex.", "Adding invalid player name to Hex."
 
 
-|             | System under test           | Expected output                              | Implemented?       |
-|-------------|-----------------------------|----------------------------------------------|--------------------|
-| Test Case 1 | RED into empty list         | list with size 1                             | :white_check_mark: |
-| Test Case 2 | add BLUE, ORANGE to list    | list with size 2                             | :white_check_mark: |
-| Test Case 3 | add WHITE to ORANGE ORANGE  | list with size 3                             | :white_check_mark: |
-| Test Case 4 | add to list with 3 elements | error - "Already three settlements on hex."  | :white_check_mark: |
-| Test Case 5 | add NULL to a list          | error - "Adding invalid player name to Hex." | :white_check_mark: |
+|             | System under test                       | Expected output                              | Implemented?       |
+|-------------|-----------------------------------------|----------------------------------------------|--------------------|
+| Test Case 1 | RED into empty list                     | list with size 1                             | :white_check_mark: |
+| Test Case 2 | add BLUE, ORANGE to list                | list with size 2                             | :white_check_mark: |
+| Test Case 3 | add WHITE to ORANGE ORANGE              | list with size 3                             | :white_check_mark: |
+| Test Case 4 | add to list with 3 elements             | error - "Already three buildings on hex."    | :white_check_mark: |
+| Test Case 5 | add NULL to a list                      | error - "Adding invalid player name to Hex." | :white_check_mark: |
+| Test Case 6 | add three cities, try to add settlement | error - "Already three buildings on hex."    | :white_check_mark: |
 
 
 ### Method under test: `removePlayerSettlementFromHex(String playerName)`

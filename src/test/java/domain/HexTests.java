@@ -66,7 +66,7 @@ public class HexTests {
             h.addPlayerSettlementToHex(mockWhitePlayer);
         });
 
-        String expectedMessage = "Already three settlements on hex.";
+        String expectedMessage = "Already three buildings on hex.";
         String actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
     }
@@ -80,6 +80,25 @@ public class HexTests {
         });
 
         String expectedMessage = "Adding invalid player name to Hex.";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test // Test Case 6
+    public void AddThreeCities_AddSettlement_ExpectError() {
+        Hex h = new Hex(1, Resource.LUMBER, 0);
+
+        Player mockWhitePlayer = EasyMock.createMock(Player.class);
+
+        h.addPlayerSettlementToHex(mockWhitePlayer);
+        h.addPlayerSettlementToHex(mockWhitePlayer);
+        h.addPlayerSettlementToHex(mockWhitePlayer);
+
+        Exception exception = assertThrows(IllegalStateException.class, () -> {
+            h.addPlayerSettlementToHex(mockWhitePlayer);
+        });
+
+        String expectedMessage = "Already three buildings on hex.";
         String actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
     }
