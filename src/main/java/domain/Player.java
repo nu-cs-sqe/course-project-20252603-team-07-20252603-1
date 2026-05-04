@@ -10,4 +10,8 @@ public class Player {
     void updateResources(Resource resource, int amount){
 
     }
+
+    int getResourceCount(Resource resource) {
+        return 0;
+    }
 }
