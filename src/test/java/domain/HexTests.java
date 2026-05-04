@@ -18,6 +18,9 @@ public class HexTests {
         int expected = 1;
         int actual = h.getSettlementCount();
         assertEquals(expected, actual);
+
+        boolean isPlayerOnSettlement = h.isPlayerSettlementOnHex(mockRedPlayer);
+        assertTrue(isPlayerOnSettlement);
     }
 
     @Test // Test Case 2
@@ -33,6 +36,13 @@ public class HexTests {
         int expected = 2;
         int actual = h.getSettlementCount();
         assertEquals(expected, actual);
+
+        boolean isBlueOnSettlement = h.isPlayerSettlementOnHex(mockBluePlayer);
+        assertTrue(isBlueOnSettlement);
+
+        boolean isOrangeOnSettlement = h.isPlayerSettlementOnHex(mockOrangePlayer);
+        assertTrue(isOrangeOnSettlement);
+
     }
 
     @Test // Test Case 3
@@ -49,6 +59,13 @@ public class HexTests {
         int expected = 3;
         int actual = h.getSettlementCount();
         assertEquals(expected, actual);
+
+        boolean isOrangeOnSettlement = h.isPlayerSettlementOnHex(mockOrangePlayer);
+        assertTrue(isOrangeOnSettlement);
+
+        boolean isWhiteOnSettlement = h.isPlayerSettlementOnHex(mockWhitePlayer);
+        assertTrue(isWhiteOnSettlement);
+
     }
 
     @Test // Test Case 4
@@ -131,6 +148,9 @@ public class HexTests {
         int expected = 0;
         int actual = h.getSettlementCount();
         assertEquals(expected, actual);
+
+        boolean isBlueOnSettlement = h.isPlayerSettlementOnHex(mockBluePlayer);
+        assertFalse(isBlueOnSettlement);
     }
 
     @Test // Test Case 9
@@ -147,6 +167,9 @@ public class HexTests {
         int expected = 1;
         int actual = h.getSettlementCount();
         assertEquals(expected, actual);
+
+        boolean isRedOnSettlement = h.isPlayerSettlementOnHex(mockRedPlayer);
+        assertTrue(isRedOnSettlement);
 
     }
 
@@ -167,6 +190,15 @@ public class HexTests {
         int expected = 2;
         int actual = h.getSettlementCount();
         assertEquals(expected, actual);
+
+        boolean isOrangeOnSettlement = h.isPlayerSettlementOnHex(mockOrangePlayer);
+        assertFalse(isOrangeOnSettlement);
+
+        boolean isRedOnSettlement = h.isPlayerSettlementOnHex(mockRedPlayer);
+        assertTrue(isRedOnSettlement);
+
+        boolean isWhiteOnSettlement = h.isPlayerSettlementOnHex(mockWhitePlayer);
+        assertTrue(isWhiteOnSettlement);
     }
 
 
@@ -185,6 +217,10 @@ public class HexTests {
         int expected = 2;
         int actual = h.getSettlementCount();
         assertEquals(expected, actual);
+
+        boolean isWhiteOnSettlement = h.isPlayerSettlementOnHex(mockWhitePlayer);
+        assertTrue(isWhiteOnSettlement);
+
     }
     @Test // Test Case 12
     public void RemoveNull_FromList_ExpectError() {
@@ -234,6 +270,9 @@ public class HexTests {
         int expected = 1;
         int actual = h.getCityCount();
         assertEquals(expected, actual);
+
+        boolean isRedOnCity = h.isPlayerCityOnHex(mockRedPlayer);
+        assertTrue(isRedOnCity);
     }
 
     @Test // Test Case 15
@@ -249,6 +288,12 @@ public class HexTests {
         int expected = 2;
         int actual = h.getCityCount();
         assertEquals(expected, actual);
+
+        boolean isBlueOnCity = h.isPlayerCityOnHex(mockBluePlayer);
+        assertTrue(isBlueOnCity);
+
+        boolean isOrangeOnCity = h.isPlayerCityOnHex(mockOrangePlayer);
+        assertTrue(isOrangeOnCity);
     }
 
     @Test // Test Case 16
@@ -256,16 +301,22 @@ public class HexTests {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
         Player mockOrangePlayer = EasyMock.createMock(Player.class);
-        Player mockBluePlayer = EasyMock.createMock(Player.class);
+        Player mockWhitePlayer = EasyMock.createMock(Player.class);
 
         h.addPlayerCityToHex(mockOrangePlayer);
         h.addPlayerCityToHex(mockOrangePlayer);
 
-        h.addPlayerCityToHex(mockBluePlayer);
+        h.addPlayerCityToHex(mockWhitePlayer);
 
         int expected = 3;
         int actual = h.getCityCount();
         assertEquals(expected, actual);
+
+        boolean isWhiteOnCity = h.isPlayerCityOnHex(mockWhitePlayer);
+        assertTrue(isWhiteOnCity);
+
+        boolean isOrangeOnCity = h.isPlayerCityOnHex(mockOrangePlayer);
+        assertTrue(isOrangeOnCity);
     }
 
     @Test // Test Case 17

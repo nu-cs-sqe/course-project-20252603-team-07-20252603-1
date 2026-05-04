@@ -28,9 +28,9 @@ Step 3:
 
 |             | System under test                       | Expected output                              | Implemented?       |
 |-------------|-----------------------------------------|----------------------------------------------|--------------------|
-| Test Case 1 | RED into empty list                     | list with size 1                             | :white_check_mark: |
-| Test Case 2 | add BLUE, ORANGE to list                | list with size 2                             | :white_check_mark: |
-| Test Case 3 | add WHITE to ORANGE ORANGE              | list with size 3                             | :white_check_mark: |
+| Test Case 1 | RED into empty list                     | list with size 1, red player                 | :white_check_mark: |
+| Test Case 2 | add BLUE, ORANGE to list                | list with size 2, blue, orange               | :white_check_mark: |
+| Test Case 3 | add WHITE to ORANGE ORANGE              | list with size 3, white, orange              | :white_check_mark: |
 | Test Case 4 | add to list with 3 elements             | error - "Already three buildings on hex."    | :white_check_mark: |
 | Test Case 5 | add NULL to a list                      | error - "Adding invalid player name to Hex." | :white_check_mark: |
 | Test Case 6 | add three cities, try to add settlement | error - "Already three buildings on hex."    | :white_check_mark: |
@@ -66,9 +66,9 @@ Step 3:
 |--------------|----------------------------------------------|-----------------------------------------------------|--------------------|
 | Test Case 7  | empty list, remove WHITE                     | error - "Player does not have a settlement on hex." | :white_check_mark: |
 | Test Case 8  | remove BLUE from BLUE                        | list with size 0                                    | :white_check_mark: |
-| Test Case 9  | remove RED from RED RED                      | list with size 1                                    | :white_check_mark: |
-| Test Case 10 | remove ORANGE from ORANGE WHITE RED          | list with size 2                                    | :white_check_mark: |
-| Test Case 11 | remove WHITE from list with 3 WHITEs         | list with size 2, contains duplicates               | :white_check_mark: |
+| Test Case 9  | remove RED from RED RED                      | list with size 1, red                               | :white_check_mark: |
+| Test Case 10 | remove ORANGE from ORANGE WHITE RED          | list with size 2, white, red, no orange             | :white_check_mark: |
+| Test Case 11 | remove WHITE from list with 3 WHITEs         | list with size 2, contains duplicates, white        | :white_check_mark: |
 | Test Case 12 | remove NULL to a list                        | error - "Player does not have a settlement on hex." | :white_check_mark: |
 | Test Case 13 | remove settlement from hex with three cities | error - "Player does not have a settlement on hex." | :white_check_mark: |
 
@@ -99,9 +99,9 @@ Step 3:
 
 |              | System under test                                 | Expected output                              | Implemented?       |
 |--------------|---------------------------------------------------|----------------------------------------------|--------------------|
-| Test Case 14 | RED into empty list                               | list with size 1                             | :white_check_mark: |
-| Test Case 15 | add BLUE, ORANGE to list                          | list with size 2                             | :white_check_mark: |
-| Test Case 16 | add WHITE to ORANGE ORANGE                        | list with size 3                             | :white_check_mark: |
+| Test Case 14 | RED into empty list                               | list with size 1, red                        | :white_check_mark: |
+| Test Case 15 | add BLUE, ORANGE to list                          | list with size 2, blue, orange               | :white_check_mark: |
+| Test Case 16 | add WHITE to ORANGE ORANGE                        | list with size 3, white, orange              | :white_check_mark: |
 | Test Case 17 | add to list with 3 elements                       | error - "Already three buildings on hex."    | :white_check_mark: |
 | Test Case 18 | add NULL to a list                                | error - "Adding invalid player name to Hex." | :white_check_mark: |
 | Test Case 19 | add three settlements, remove one, add two cities | error - "Already three buildings on hex."    | :white_check_mark: |

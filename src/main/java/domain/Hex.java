@@ -26,6 +26,14 @@ public class Hex {
         return playerCities.size();
     }
 
+    public boolean isPlayerSettlementOnHex(Player player){
+        return playerSettlements.contains(player);
+    }
+
+    public boolean isPlayerCityOnHex(Player player){
+        return playerCities.contains(player);
+    }
+
     public void addPlayerSettlementToHex(Player player) {
         if (this.totalBuildingsOnHex >= 3){
             throw new IllegalStateException("Already three buildings on hex.");
