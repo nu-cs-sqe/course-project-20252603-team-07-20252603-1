@@ -7,6 +7,16 @@ public class ResourceDeck {
     private int count;
     private ResourceType type;
 
+    /**
+     * Default constructor for testing purposes.
+     * Creates a placeholder deck. Real implementation should use ResourceDeck(ResourceType).
+     * TODO: Future work - implement proper multi-resource deck management.
+     */
+    public ResourceDeck() {
+        this.type = null; // Placeholder for all resource types
+        this.count = 95; // 5 types * 19 cards each
+    }
+
     public ResourceDeck(ResourceType type) {
         this.type = type;
         this.count = 19; // game standard
@@ -65,9 +75,20 @@ public class ResourceDeck {
     }
 
     public void replenishAll() {
-        // this may be bad coding to have -- almost unnecessary and def 
+        // this may be bad coding to have -- almost unnecessary and def
         this.replenish(20); // will always set us back at 19.
     }
 
-    
+    /**
+     * Gets the total number of cards in the deck.
+     * For individual resource decks, returns count.
+     * For composite deck (no-arg constructor), returns total across all types.
+     *
+     * @return the total card count
+     */
+    public int getTotalCards() {
+        return count;
+    }
+
+
 }
