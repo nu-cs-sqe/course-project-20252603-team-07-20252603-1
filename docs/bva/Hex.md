@@ -20,16 +20,16 @@ Step 3:
 - Input: All four possibilities, an impossible case
 - Output: empty collection, contains just one element, contains more than one element, duplicate elements,
 - max possible size
-- Output: "Already three settlements on hex."
+- Output: "Already three settlements on hex.", "Adding invalid player name to Hex."
 
 
-|             | System under test           | Expected output  | Implemented?       |
-|-------------|-----------------------------|------------------|--------------------|
-| Test Case 1 | RED into empty list         | list with size 1 | :white_check_mark: |
-| Test Case 2 | add BLUE, ORANGE to list    | list with size 2 | :white_check_mark: |
-| Test Case 3 | add WHITE to ORANGE ORANGE  | list with size 3 | :white_check_mark: |
-| Test Case 4 | add to list with 3 elements | error            | :white_check_mark: |
-| Test Case 5 | add NULL to a list          | error            | :white_check_mark: |
+|             | System under test           | Expected output                              | Implemented?       |
+|-------------|-----------------------------|----------------------------------------------|--------------------|
+| Test Case 1 | RED into empty list         | list with size 1                             | :white_check_mark: |
+| Test Case 2 | add BLUE, ORANGE to list    | list with size 2                             | :white_check_mark: |
+| Test Case 3 | add WHITE to ORANGE ORANGE  | list with size 3                             | :white_check_mark: |
+| Test Case 4 | add to list with 3 elements | error - "Already three settlements on hex."  | :white_check_mark: |
+| Test Case 5 | add NULL to a list          | error - "Adding invalid player name to Hex." | :white_check_mark: |
 
 
 ### Method under test: `removePlayerSettlementFromHex(String playerName)`
@@ -55,14 +55,14 @@ Step 3:
 - Output: "Player does not have a building on hex."
 
 
-|              | System under test                    | Expected output                       | Implemented?       |
-|--------------|--------------------------------------|---------------------------------------|--------------------|
-| Test Case 6  | empty list, remove WHITE             | error                                 | :white_check_mark: |
-| Test Case 7  | remove BLUE from BLUE                | list with size 0                      | :white_check_mark: |
-| Test Case 8  | remove RED from RED RED              | list with size 1                      | :white_check_mark: |
-| Test Case 9  | remove ORANGE from ORANGE WHITE RED  | list with size 2                      | :white_check_mark: |
-| Test Case 10 | remove WHITE from list with 3 WHITEs | list with size 2, contains duplicates | :white_check_mark: |
-| Test Case 11 | remove NULL to a list                | error                                 | :white_check_mark: |
+|              | System under test                    | Expected output                                   | Implemented?       |
+|--------------|--------------------------------------|---------------------------------------------------|--------------------|
+| Test Case 6  | empty list, remove WHITE             | error - "Player does not have a building on hex." | :white_check_mark: |
+| Test Case 7  | remove BLUE from BLUE                | list with size 0                                  | :white_check_mark: |
+| Test Case 8  | remove RED from RED RED              | list with size 1                                  | :white_check_mark: |
+| Test Case 9  | remove ORANGE from ORANGE WHITE RED  | list with size 2                                  | :white_check_mark: |
+| Test Case 10 | remove WHITE from list with 3 WHITEs | list with size 2, contains duplicates             | :white_check_mark: |
+| Test Case 11 | remove NULL to a list                | error - "Player does not have a building on hex." | :white_check_mark: |
 
 ### Method under test: `addPlayerCityToHex(String playerName)`
 Step 1:
@@ -83,16 +83,16 @@ Step 3:
 - Input: empty collection, contains just one element, contains more than one element, duplicate elements, max possible size
 - Input: all possible inputs, impossible input
 - Output: empty collection, contains just one element, contains more than one element, duplicate elements, max possible size
-- Output: "Already three buildings on hex."
+- Output: "Already three buildings on hex.", "Adding invalid player name to Hex."
 
 
-|              | System under test           | Expected output  | Implemented?       |
-|--------------|-----------------------------|------------------|--------------------|
-| Test Case 12 | RED into empty list         | list with size 1 | :white_check_mark: |
-| Test Case 13 | add BLUE, ORANGE to list    | list with size 2 | :white_check_mark: |
-| Test Case 14 | add WHITE to ORANGE ORANGE  | list with size 3 | :white_check_mark: |
-| Test Case 15 | add to list with 3 elements | error            | :white_check_mark: |
-| Test Case 16 | add NULL to a list          | error            | :white_check_mark: |
+|              | System under test           | Expected output                              | Implemented?       |
+|--------------|-----------------------------|----------------------------------------------|--------------------|
+| Test Case 12 | RED into empty list         | list with size 1                             | :white_check_mark: |
+| Test Case 13 | add BLUE, ORANGE to list    | list with size 2                             | :white_check_mark: |
+| Test Case 14 | add WHITE to ORANGE ORANGE  | list with size 3                             | :white_check_mark: |
+| Test Case 15 | add to list with 3 elements | error - "Already three buildings on hex."    | :white_check_mark: |
+| Test Case 16 | add NULL to a list          | error - "Adding invalid player name to Hex." | :white_check_mark: |
 
 
 ### Method under test: `awardSettlementResources()`
