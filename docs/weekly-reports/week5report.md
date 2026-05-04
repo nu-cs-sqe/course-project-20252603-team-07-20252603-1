@@ -11,7 +11,9 @@ We continued to work on the game set-up phase, working to get basic classes impl
 - But close to finishing set-up implementation
 3. [20% done] Connor: Player Class https://github.com/nu-cs-sqe/course-project-20252603-team-07-20252603-1/pull/29
 - Working through BVA and testing
-4. [] Kevin:
+4. [80% done] Kevin: Created the Trading Class: https://github.com/nu-cs-sqe/course-project-20252603-team-07-20252603-1/pull/28
+- reviewed both Ben and Spencer's PRs
+- waiting on reviews for my work
 5. [] Theo: 
 
 ## Goals
