@@ -103,7 +103,7 @@ public class HexTests {
         assertEquals(expectedMessage, actualMessage);
     }
 
-    @Test // Test Case 6
+    @Test // Test Case 7
     public void RemoveFromEmptyList_ExpectError() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
@@ -118,7 +118,7 @@ public class HexTests {
         assertEquals(expectedMessage, actualMessage);
     }
 
-    @Test // Test Case 7
+    @Test // Test Case 8
     public void RemoveFromList_WithOneElement_ExpectLenZero() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
@@ -133,7 +133,7 @@ public class HexTests {
         assertEquals(expected, actual);
     }
 
-    @Test // Test Case 8
+    @Test // Test Case 9
     public void RemoveFromList_WithTwoDuplicates_ExpectLenOne() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
@@ -150,7 +150,7 @@ public class HexTests {
 
     }
 
-    @Test // Test Case 9
+    @Test // Test Case 10
     public void RemoveFromList_WithThreeElements_ExpectLenTwo() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
@@ -170,7 +170,7 @@ public class HexTests {
     }
 
 
-    @Test // Test Case 10
+    @Test // Test Case 11
     public void RemoveFromList_WithThreeDuplicates_ExpectLenTwo() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
@@ -186,7 +186,7 @@ public class HexTests {
         int actual = h.getSettlementCount();
         assertEquals(expected, actual);
     }
-    @Test // Test Case 11
+    @Test // Test Case 12
     public void RemoveNull_FromList_ExpectError() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
@@ -223,7 +223,7 @@ public class HexTests {
         assertEquals(expectedMessage, actualMessage);
     }
 
-    @Test // Test Case 12
+    @Test // Test Case 14
     public void AddOneCity_ExpectLenOne() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
@@ -236,7 +236,7 @@ public class HexTests {
         assertEquals(expected, actual);
     }
 
-    @Test // Test Case 13
+    @Test // Test Case 15
     public void AddTwoCities_ExpectLenTwo() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
@@ -251,7 +251,7 @@ public class HexTests {
         assertEquals(expected, actual);
     }
 
-    @Test // Test Case 14
+    @Test // Test Case 16
     public void AddToTwoDuplicateCities_ExpectLenThree() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
@@ -268,7 +268,7 @@ public class HexTests {
         assertEquals(expected, actual);
     }
 
-    @Test // Test Case 15
+    @Test // Test Case 17
     public void AddFourCities_ExpectError() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
@@ -288,7 +288,7 @@ public class HexTests {
         assertEquals(expectedMessage, actualMessage);
     }
 
-    @Test // Test Case 16
+    @Test // Test Case 18
     public void AddNullCity_ExpectError() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
@@ -301,7 +301,31 @@ public class HexTests {
         assertEquals(expectedMessage, actualMessage);
     }
 
-    @Test // Test Case 17
+    @Test // Test Case 19
+    public void AddThreeSettlements_RemoveSettlement_AddTwoCities_ExpectError() {
+        Hex h = new Hex(1, Resource.LUMBER, 0);
+
+        Player mockWhitePlayer = EasyMock.createMock(Player.class);
+        Player mockOrangePlayer = EasyMock.createMock(Player.class);
+
+        h.addPlayerSettlementToHex(mockWhitePlayer);
+        h.addPlayerSettlementToHex(mockOrangePlayer);
+        h.addPlayerSettlementToHex(mockOrangePlayer);
+
+        h.removePlayerSettlementFromHex(mockOrangePlayer);
+
+        h.addPlayerCityToHex(mockOrangePlayer);
+
+        Exception exception = assertThrows(IllegalStateException.class, () -> {
+            h.addPlayerCityToHex(mockOrangePlayer);
+        });
+
+        String expectedMessage = "Already three buildings on hex.";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test // Test Case 20
     public void AwardResourcesToNoSettlements_ExpectNoUpdate() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
@@ -315,7 +339,7 @@ public class HexTests {
         EasyMock.verify(mockPlayer);
     }
 
-    @Test // Test Case 18
+    @Test // Test Case 21
     public void AwardResourcesToRedSettlement_ExpectOneUpdateCall() {
         Hex h = new Hex(1, Resource.BRICK, 9);
 
@@ -333,7 +357,7 @@ public class HexTests {
         EasyMock.verify(mockRedPlayer);
     }
 
-    @Test // Test Case 19
+    @Test // Test Case 22
     public void AwardResourcesToTwoDifferentSettlements_ExpectTwoCalls() {
         Hex h = new Hex(1, Resource.GRAIN, 1);
 
@@ -356,7 +380,7 @@ public class HexTests {
         EasyMock.verify(mockOrangePlayer, mockWhitePlayer);
     }
 
-    @Test // Test Case 20
+    @Test // Test Case 23
     public void AwardResourcesToTwoSameSettlements_OneDifferent_ExpectThreeCalls() {
         Hex h = new Hex(1, Resource.LUMBER, 1);
 
@@ -383,7 +407,7 @@ public class HexTests {
         EasyMock.verify(mockBluePlayer, mockWhitePlayer);
     }
 
-    @Test // Test Case 21
+    @Test // Test Case 24
     public void AwardResourcesToThreeRedSettlements_ExpectThreeCalls() {
         Hex h = new Hex(1, Resource.ORE, 1);
 
@@ -409,7 +433,7 @@ public class HexTests {
         EasyMock.verify(mockRedPlayer);
     }
 
-    @Test // Test Case 22
+    @Test // Test Case 25
     public void AwardWool_ThreeDifferentSettlements_ExpectThreeCalls() {
         Hex h = new Hex(1, Resource.WOOL, 1);
 
@@ -437,7 +461,7 @@ public class HexTests {
         EasyMock.verify(mockRedPlayer, mockWhitePlayer, mockBluePlayer);
     }
 
-    @Test // Test Case 23
+    @Test // Test Case 26
     public void AwardSettlementResources_WithOnePlayer_OnDesert_ExpectNoUpdate() {
         Hex h = new Hex(1, Resource.DESERT, 9);
 
@@ -453,7 +477,7 @@ public class HexTests {
         EasyMock.verify(mockOrangePlayer);
     }
 
-    @Test // Test Case 24
+    @Test // Test Case 27
     public void AwardResourcesToNoCities_ExpectNoUpdate() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
@@ -467,7 +491,7 @@ public class HexTests {
         EasyMock.verify(mockPlayer);
     }
 
-    @Test // Test Case 25
+    @Test // Test Case 28
     public void AwardResourcesToRedCity_ExpectOneUpdateCall() {
         Hex h = new Hex(29, Resource.BRICK, 3);
 
@@ -485,7 +509,7 @@ public class HexTests {
         EasyMock.verify(mockRedPlayer);
     }
 
-    @Test // Test Case 26
+    @Test // Test Case 29
     public void AwardResourcesToTwoDifferentCities_ExpectTwoCalls() {
         Hex h = new Hex(1, Resource.GRAIN, 1);
 
@@ -508,7 +532,7 @@ public class HexTests {
         EasyMock.verify(mockOrangePlayer, mockWhitePlayer);
     }
 
-    @Test // Test Case 27
+    @Test // Test Case 30
     public void AwardResourcesToTwoSameCities_OneDifferent_ExpectThreeCalls() {
         Hex h = new Hex(1, Resource.LUMBER, 1);
 
@@ -535,7 +559,7 @@ public class HexTests {
         EasyMock.verify(mockBluePlayer, mockWhitePlayer);
     }
 
-    @Test // Test Case 28
+    @Test // Test Case 31
     public void AwardResourcesToThreeRedCities_ExpectThreeCalls() {
         Hex h = new Hex(1, Resource.ORE, 1);
 
@@ -561,7 +585,7 @@ public class HexTests {
         EasyMock.verify(mockRedPlayer);
     }
 
-    @Test // Test Case 29
+    @Test // Test Case 32
     public void AwardWool_ThreeDifferentCities_ExpectThreeCalls() {
         Hex h = new Hex(1, Resource.WOOL, 1);
 
@@ -589,7 +613,7 @@ public class HexTests {
         EasyMock.verify(mockRedPlayer, mockWhitePlayer, mockBluePlayer);
     }
 
-    @Test // Test Case 30
+    @Test // Test Case 33
     public void AwardCityResources_WithTwoPlayers_OnDesert_ExpectNoUpdate() {
         Hex h = new Hex(1, Resource.DESERT, 9);
 
