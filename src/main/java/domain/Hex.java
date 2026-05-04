@@ -42,7 +42,7 @@ public class Hex {
     public void removePlayerSettlementFromHex(Player player) {
         boolean success = playerSettlements.remove(player);
         if (!success){
-            throw new IllegalArgumentException("Player does not have a building on hex.");
+            throw new IllegalArgumentException("Player does not have a settlement on hex.");
         }
         else{
             this.totalBuildingsOnHex--;

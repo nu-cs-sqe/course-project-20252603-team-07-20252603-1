@@ -42,6 +42,7 @@ Step 1:
 - Input: playerColor
 - Input: state of the list
 - Input: values of the list
+- Input: size of totalBuildingsOnHex
 - Output: state of the list
 - Output: exception
 
@@ -50,23 +51,26 @@ Step 2:
 - State - collection
 - Values - PlayerColor enum / cases
 - Exception - too large
+- totalBuildingsOnHex - interval
 
 Step 3:
 - Input: All four possibilities, an impossible case
 - Input: empty collection, contains just one element, contains more than one element, duplicate elements, max possible size
 - Input: All four possibilities, an impossible case
+- Input: size of totalBuildingsOnHex is 0, max, -1 (not feasible), 4 (not feasible)
 - Output: empty collection, contains just one element, contains more than one element, duplicate elements, max possible size -> not possible
 - Output: "Player does not have a building on hex."
 
 
-|              | System under test                    | Expected output                                   | Implemented?       |
-|--------------|--------------------------------------|---------------------------------------------------|--------------------|
-| Test Case 6  | empty list, remove WHITE             | error - "Player does not have a building on hex." | :white_check_mark: |
-| Test Case 7  | remove BLUE from BLUE                | list with size 0                                  | :white_check_mark: |
-| Test Case 8  | remove RED from RED RED              | list with size 1                                  | :white_check_mark: |
-| Test Case 9  | remove ORANGE from ORANGE WHITE RED  | list with size 2                                  | :white_check_mark: |
-| Test Case 10 | remove WHITE from list with 3 WHITEs | list with size 2, contains duplicates             | :white_check_mark: |
-| Test Case 11 | remove NULL to a list                | error - "Player does not have a building on hex." | :white_check_mark: |
+|              | System under test                            | Expected output                                     | Implemented?       |
+|--------------|----------------------------------------------|-----------------------------------------------------|--------------------|
+| Test Case 6  | empty list, remove WHITE                     | error - "Player does not have a settlement on hex." | :white_check_mark: |
+| Test Case 7  | remove BLUE from BLUE                        | list with size 0                                    | :white_check_mark: |
+| Test Case 8  | remove RED from RED RED                      | list with size 1                                    | :white_check_mark: |
+| Test Case 9  | remove ORANGE from ORANGE WHITE RED          | list with size 2                                    | :white_check_mark: |
+| Test Case 10 | remove WHITE from list with 3 WHITEs         | list with size 2, contains duplicates               | :white_check_mark: |
+| Test Case 11 | remove NULL to a list                        | error - "Player does not have a settlement on hex." | :white_check_mark: |
+| Test Case 13 | remove settlement from hex with three cities | error - "Player does not have a settlement on hex." | :white_check_mark: |
 
 ### Method under test: `addPlayerCityToHex(String playerName)`
 Step 1:

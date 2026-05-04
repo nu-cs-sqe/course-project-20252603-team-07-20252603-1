@@ -113,7 +113,7 @@ public class HexTests {
             h.removePlayerSettlementFromHex(mockWhitePlayer);
         });
 
-        String expectedMessage = "Player does not have a building on hex.";
+        String expectedMessage = "Player does not have a settlement on hex.";
         String actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
     }
@@ -198,7 +198,27 @@ public class HexTests {
             h.removePlayerSettlementFromHex(null);
         });
 
-        String expectedMessage = "Player does not have a building on hex.";
+        String expectedMessage = "Player does not have a settlement on hex.";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test // Test Case 13
+    public void RemoveSettlement_FromHexWithThreeCities_ExpectError() {
+        Hex h = new Hex(1, Resource.LUMBER, 12);
+
+        Player mockWhitePlayer = EasyMock.createMock(Player.class);
+        Player mockBluePlayer = EasyMock.createMock(Player.class);
+
+        h.addPlayerCityToHex(mockWhitePlayer);
+        h.addPlayerCityToHex(mockBluePlayer);
+        h.addPlayerCityToHex(mockWhitePlayer);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            h.removePlayerSettlementFromHex(mockWhitePlayer);
+        });
+
+        String expectedMessage = "Player does not have a settlement on hex.";
         String actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
     }
