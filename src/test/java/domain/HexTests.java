@@ -103,7 +103,7 @@ public class HexTests {
 
     @Test // Test Case 6
     public void AddThreeCities_AddSettlement_ExpectError() {
-        Hex h = new Hex(1, Resource.LUMBER, 0);
+        Hex h = new Hex(1, Resource.LUMBER, 2);
 
         Player mockWhitePlayer = EasyMock.createMock(Player.class);
 
@@ -354,7 +354,7 @@ public class HexTests {
 
     @Test // Test Case 19
     public void AddThreeSettlements_RemoveSettlement_AddTwoCities_ExpectError() {
-        Hex h = new Hex(1, Resource.LUMBER, 0);
+        Hex h = new Hex(1, Resource.LUMBER, 2);
 
         Player mockWhitePlayer = EasyMock.createMock(Player.class);
         Player mockOrangePlayer = EasyMock.createMock(Player.class);
@@ -410,7 +410,7 @@ public class HexTests {
 
     @Test // Test Case 22
     public void AwardResourcesToTwoDifferentSettlements_ExpectTwoCalls() {
-        Hex h = new Hex(1, Resource.GRAIN, 1);
+        Hex h = new Hex(1, Resource.GRAIN, 2);
 
         Player mockOrangePlayer = EasyMock.createMock(Player.class);
         Player mockWhitePlayer = EasyMock.createMock(Player.class);
@@ -433,7 +433,7 @@ public class HexTests {
 
     @Test // Test Case 23
     public void AwardResourcesToTwoSameSettlements_OneDifferent_ExpectThreeCalls() {
-        Hex h = new Hex(1, Resource.LUMBER, 1);
+        Hex h = new Hex(1, Resource.LUMBER, 2);
 
         Player mockBluePlayer = EasyMock.createMock(Player.class);
         Player mockWhitePlayer = EasyMock.createMock(Player.class);
@@ -460,7 +460,7 @@ public class HexTests {
 
     @Test // Test Case 24
     public void AwardResourcesToThreeRedSettlements_ExpectThreeCalls() {
-        Hex h = new Hex(1, Resource.ORE, 1);
+        Hex h = new Hex(1, Resource.ORE, 2);
 
         Player mockRedPlayer = EasyMock.createMock(Player.class);
 
@@ -486,7 +486,7 @@ public class HexTests {
 
     @Test // Test Case 25
     public void AwardWool_ThreeDifferentSettlements_ExpectThreeCalls() {
-        Hex h = new Hex(1, Resource.WOOL, 1);
+        Hex h = new Hex(1, Resource.WOOL, 2);
 
         Player mockRedPlayer = EasyMock.createMock(Player.class);
         Player mockWhitePlayer = EasyMock.createMock(Player.class);
@@ -544,7 +544,7 @@ public class HexTests {
 
     @Test // Test Case 28
     public void AwardResourcesToRedCity_ExpectOneUpdateCall() {
-        Hex h = new Hex(29, Resource.BRICK, 3);
+        Hex h = new Hex(12, Resource.BRICK, 3);
 
         Player mockRedPlayer = EasyMock.createMock(Player.class);
 
@@ -562,7 +562,7 @@ public class HexTests {
 
     @Test // Test Case 29
     public void AwardResourcesToTwoDifferentCities_ExpectTwoCalls() {
-        Hex h = new Hex(1, Resource.GRAIN, 1);
+        Hex h = new Hex(1, Resource.GRAIN, 2);
 
         Player mockOrangePlayer = EasyMock.createMock(Player.class);
         Player mockWhitePlayer = EasyMock.createMock(Player.class);
@@ -585,7 +585,7 @@ public class HexTests {
 
     @Test // Test Case 30
     public void AwardResourcesToTwoSameCities_OneDifferent_ExpectThreeCalls() {
-        Hex h = new Hex(1, Resource.LUMBER, 1);
+        Hex h = new Hex(1, Resource.LUMBER, 2);
 
         Player mockBluePlayer = EasyMock.createMock(Player.class);
         Player mockWhitePlayer = EasyMock.createMock(Player.class);
@@ -612,7 +612,7 @@ public class HexTests {
 
     @Test // Test Case 31
     public void AwardResourcesToThreeRedCities_ExpectThreeCalls() {
-        Hex h = new Hex(1, Resource.ORE, 1);
+        Hex h = new Hex(1, Resource.ORE, 2);
 
         Player mockRedPlayer = EasyMock.createMock(Player.class);
 
@@ -638,7 +638,7 @@ public class HexTests {
 
     @Test // Test Case 32
     public void AwardWool_ThreeDifferentCities_ExpectThreeCalls() {
-        Hex h = new Hex(1, Resource.WOOL, 1);
+        Hex h = new Hex(1, Resource.WOOL, 2);
 
         Player mockRedPlayer = EasyMock.createMock(Player.class);
         Player mockWhitePlayer = EasyMock.createMock(Player.class);
@@ -666,7 +666,7 @@ public class HexTests {
 
     @Test // Test Case 33
     public void AwardCityResources_WithTwoPlayers_OnDesert_ExpectNoUpdate() {
-        Hex h = new Hex(1, Resource.DESERT, 9);
+        Hex h = new Hex(1, Resource.DESERT, 7);
 
         Player mockOrangePlayer = EasyMock.createMock(Player.class);
         Player mockBluePlayer = EasyMock.createMock(Player.class);
@@ -714,6 +714,17 @@ public class HexTests {
         Resource expectedResource = Resource.GRAIN;
         Resource actualResource = h.resource;
         assertEquals(expectedResource, actualResource);
+    }
+
+    @Test // Test Case 36
+    public void CreateLumberHex_WithId0_RollNum1_ExpectError() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Hex(0, Resource.LUMBER, 1);
+        });
+
+        String expectedMessage = "Invalid Hex - rollNumber must be within [2, 12].";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
     }
 
 

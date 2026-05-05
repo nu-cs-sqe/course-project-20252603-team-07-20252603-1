@@ -14,6 +14,9 @@ public class Hex {
     public Hex(int hexId, Resource resource, int rollNumber) {
         this.hexId = hexId;
         this.resource = resource;
+        if (rollNumber < 2){
+            throw new IllegalArgumentException("Invalid Hex - rollNumber must be within [2, 12].");
+        }
         this.hexRollNum = rollNumber;
         this.playerSettlements = new ArrayList<>();
         this.playerCities = new ArrayList<>();
