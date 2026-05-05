@@ -760,6 +760,23 @@ public class HexTests {
         assertEquals(expectedMessage, actualMessage);
     }
 
+    @Test // Test Case 40
+    public void CreateDesertHex_WithId0_RollNum7_ExpectUpdatedFields() {
+        Hex h = new Hex(0, Resource.DESERT, 7);
+
+        int expectedRoll = 7;
+        int actualRoll = h.hexRollNum;
+        assertEquals(expectedRoll, actualRoll);
+
+        int expectedId = 0;
+        int actualId = h.hexId;
+        assertEquals(expectedId, actualId);
+
+        Resource expectedResource = Resource.DESERT;
+        Resource actualResource = h.resource;
+        assertEquals(expectedResource, actualResource);
+    }
+
 
 
 }
