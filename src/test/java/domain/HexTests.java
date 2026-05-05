@@ -699,6 +699,23 @@ public class HexTests {
         assertEquals(expectedResource, actualResource);
     }
 
+    @Test // Test Case 35
+    public void CreateGrainHex_WithId18_RollNum12_ExpectUpdatedFields() {
+        Hex h = new Hex(18, Resource.GRAIN, 12);
+
+        int expectedRoll = 12;
+        int actualRoll = h.hexRollNum;
+        assertEquals(expectedRoll, actualRoll);
+
+        int expectedId = 18;
+        int actualId = h.hexId;
+        assertEquals(expectedId, actualId);
+
+        Resource expectedResource = Resource.GRAIN;
+        Resource actualResource = h.resource;
+        assertEquals(expectedResource, actualResource);
+    }
+
 
 
 }
