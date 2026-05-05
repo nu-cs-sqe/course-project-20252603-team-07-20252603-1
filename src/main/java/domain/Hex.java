@@ -12,19 +12,27 @@ public class Hex {
     private int totalBuildingsOnHex;
 
     public Hex(int hexId, Resource resource, int rollNumber) {
-        validateResourceAndHexNumber(resource, rollNumber);
-        if (hexId < 0 || hexId > 18){
-            throw new IllegalArgumentException("Invalid Hex - hexId must be within [0, 18].");
-        }
+        validateHexId(hexId);
         this.hexId = hexId;
-        this.resource = resource;
-        if (rollNumber < 2 || rollNumber > 12){
-            throw new IllegalArgumentException("Invalid Hex - rollNumber must be within [2, 12].");
-        }
+        validateRollNum(rollNumber);
         this.hexRollNum = rollNumber;
+        validateResourceAndHexNumber(resource, rollNumber);
+        this.resource = resource;
         this.playerSettlements = new ArrayList<>();
         this.playerCities = new ArrayList<>();
         this.totalBuildingsOnHex = 0;
+    }
+
+    private void validateHexId(int hexId){
+        if (hexId < 0 || hexId > 18){
+            throw new IllegalArgumentException("Invalid Hex - hexId must be within [0, 18].");
+        }
+    }
+
+    private void validateRollNum(int rollNumber){
+        if (rollNumber < 2 || rollNumber > 12){
+            throw new IllegalArgumentException("Invalid Hex - rollNumber must be within [2, 12].");
+        }
     }
 
     private void validateResourceAndHexNumber(Resource resource, int rollNum){
