@@ -17,5 +17,8 @@
 - Gradle 8.10
 - JavaFX
 
+## JavaFX
+We have decided to use JavaFX as the core GUI engine for this project, because JavaFX is the modern successor of Swing and we're hoping to leverage its expanded feature set and more flexible support for styling and animations. 
+
 ## Acknowledgements
 REFERENCES, SOURCE OF HELP ETC
