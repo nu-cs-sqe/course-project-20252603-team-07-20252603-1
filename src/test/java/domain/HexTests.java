@@ -749,6 +749,17 @@ public class HexTests {
         assertEquals(expectedMessage, actualMessage);
     }
 
+    @Test // Test Case 39
+    public void CreateWoolHex_WithId19_RollNum5_ExpectError() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Hex(19, Resource.WOOL, 5);
+        });
+
+        String expectedMessage = "Invalid Hex - hexId must be within [0, 18].";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
 
 
 }
