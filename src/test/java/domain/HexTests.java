@@ -727,6 +727,17 @@ public class HexTests {
         assertEquals(expectedMessage, actualMessage);
     }
 
+    @Test // Test Case 37
+    public void CreateOreHex_WithId0_RollNum13_ExpectError() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Hex(0, Resource.ORE, 13);
+        });
+
+        String expectedMessage = "Invalid Hex - rollNumber must be within [2, 12].";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
 
 
 }
