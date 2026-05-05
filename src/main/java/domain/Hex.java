@@ -31,6 +31,9 @@ public class Hex {
         if (resource != Resource.DESERT && rollNum == 7){
             throw new IllegalArgumentException("Invalid Hex - Only Desert Hex can have rollNumber 7");
         }
+        else if (resource == Resource.DESERT && rollNum != 7){
+            throw new IllegalArgumentException("Invalid Hex - Desert Hex must have rollNumber 7.");
+        }
     }
 
     public void addPlayerSettlementToHex(Player player) {

@@ -514,7 +514,7 @@ public class HexTests {
 
     @Test // Test Case 26
     public void AwardSettlementResources_WithOnePlayer_OnDesert_ExpectNoUpdate() {
-        Hex h = new Hex(1, Resource.DESERT, 9);
+        Hex h = new Hex(1, Resource.DESERT, 7);
 
         Player mockOrangePlayer = EasyMock.createMock(Player.class);
 
@@ -784,6 +784,17 @@ public class HexTests {
         });
 
         String expectedMessage = "Invalid Hex - Only Desert Hex can have rollNumber 7";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test // Test Case 42
+    public void CreateDesertHex_WithId0_RollNum8_ExpectError() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Hex(0, Resource.DESERT, 8);
+        });
+
+        String expectedMessage = "Invalid Hex - Desert Hex must have rollNumber 7.";
         String actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
     }
