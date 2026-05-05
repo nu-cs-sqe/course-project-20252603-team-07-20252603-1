@@ -196,7 +196,7 @@ Step 3:
 | Test Case 38 | create hex with id -1, rollNumber 5, wool   | error - "Invalid Hex - hexId must be within [0, 18]."          | :white_check_mark: |
 | Test Case 39 | create hex with id 19, rollNumber 5, wool   | error - "Invalid Hex - hexId must be within [0, 18]."          | :white_check_mark: |
 | Test Case 40 | create hex with id 0, rollNumber 7, desert  | Hex with id 0, rollNumber 7, desert                            | :white_check_mark: |
-| Test Case 41 | create hex with id 0, rollNumber 7, lumber  | error - "Invalid Hex - Only Desert Hex can have rollNumber 7". | x                  |
+| Test Case 41 | create hex with id 0, rollNumber 7, lumber  | error - "Invalid Hex - Only Desert Hex can have rollNumber 7". | :white_check_mark: |
 | Test Case 42 | create hex with id 0, rollNumber 8, desert  | error - "Invalid Hex - Desert Hex must have rollNumber 7."     | x                  |
 
 

@@ -777,6 +777,17 @@ public class HexTests {
         assertEquals(expectedResource, actualResource);
     }
 
+    @Test // Test Case 41
+    public void CreateLumberHex_WithId0_RollNum7_ExpectError() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Hex(0, Resource.LUMBER, 7);
+        });
+
+        String expectedMessage = "Invalid Hex - Only Desert Hex can have rollNumber 7";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
 
 
 }

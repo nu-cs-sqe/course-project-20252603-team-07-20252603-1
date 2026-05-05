@@ -12,6 +12,7 @@ public class Hex {
     private int totalBuildingsOnHex;
 
     public Hex(int hexId, Resource resource, int rollNumber) {
+        validateResourceAndHexNumber(resource, rollNumber);
         if (hexId < 0 || hexId > 18){
             throw new IllegalArgumentException("Invalid Hex - hexId must be within [0, 18].");
         }
@@ -26,18 +27,10 @@ public class Hex {
         this.totalBuildingsOnHex = 0;
     }
 
-    public int getSettlementCount(){return playerSettlements.size();}
-
-    public int getCityCount(){
-        return playerCities.size();
-    }
-
-    public boolean isPlayerSettlementOnHex(Player player){
-        return playerSettlements.contains(player);
-    }
-
-    public boolean isPlayerCityOnHex(Player player){
-        return playerCities.contains(player);
+    private void validateResourceAndHexNumber(Resource resource, int rollNum){
+        if (resource != Resource.DESERT && rollNum == 7){
+            throw new IllegalArgumentException("Invalid Hex - Only Desert Hex can have rollNumber 7");
+        }
     }
 
     public void addPlayerSettlementToHex(Player player) {
@@ -90,6 +83,20 @@ public class Hex {
                 player.updateResources(resource, 2);
             });
         }
+    }
+
+    public int getSettlementCount(){return playerSettlements.size();}
+
+    public int getCityCount(){
+        return playerCities.size();
+    }
+
+    public boolean isPlayerSettlementOnHex(Player player){
+        return playerSettlements.contains(player);
+    }
+
+    public boolean isPlayerCityOnHex(Player player){
+        return playerCities.contains(player);
     }
 
 
