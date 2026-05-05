@@ -12,6 +12,9 @@ public class Hex {
     private int totalBuildingsOnHex;
 
     public Hex(int hexId, Resource resource, int rollNumber) {
+        if (hexId < 0){
+            throw new IllegalArgumentException("Invalid Hex - hexId must be within [0, 18].");
+        }
         this.hexId = hexId;
         this.resource = resource;
         if (rollNumber < 2 || rollNumber > 12){
