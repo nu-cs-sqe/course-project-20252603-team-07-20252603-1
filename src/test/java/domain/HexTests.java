@@ -682,6 +682,23 @@ public class HexTests {
         EasyMock.verify(mockOrangePlayer, mockBluePlayer);
     }
 
+    @Test // Test Case 34
+    public void CreateBrickHex_WithId0_RollNum2_ExpectUpdatedFields() {
+        Hex h = new Hex(0, Resource.BRICK, 2);
+
+        int expectedRoll = 2;
+        int actualRoll = h.hexRollNum;
+        assertEquals(expectedRoll, actualRoll);
+
+        int expectedId = 0;
+        int actualId = h.hexId;
+        assertEquals(expectedId, actualId);
+
+        Resource expectedResource = Resource.BRICK;
+        Resource actualResource = h.resource;
+        assertEquals(expectedResource, actualResource);
+    }
+
 
 
 }

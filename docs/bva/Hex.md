@@ -187,16 +187,16 @@ Step 3:
 - Output: "Invalid Hex - rollNumber must be within [2, 12].", "Invalid Hex - hexId must be within [0, 18]." "Invalid Hex - Only Desert Hex can have rollNumber 7". "Invalid Hex - Desert Hex must have rollNumber 7."
 
 
-|              | System under test                           | Expected output                                                | Implemented? |
-|--------------|---------------------------------------------|----------------------------------------------------------------|--------------|
-| Test Case 34 | create hex with id 0, rollNumber 2, brick   | Hex with id 0, rollNumber 2, brick                             | x            |
-| Test Case 2  | create hex with id 18, rollNumber 12, grain | Hex with id 18, rollNumber 12, grain                           | x            |
-| Test Case 3  | create hex with id 0, rollNumber 1, lumber  | error - "Invalid Hex - rollNumber must be within [2, 12]."     | x            |
-| Test Case 4  | create hex with id 0, rollNumber 13, ore    | error - "Invalid Hex - rollNumber must be within [2, 12]."     | x            |
-| Test Case 5  | create hex with id -1, rollNumber 5, wool   | error - "Invalid Hex - hexId must be within [0, 18]."          | x            |
-| Test Case 6  | create hex with id 19, rollNumber 5, wool   | error - "Invalid Hex - hexId must be within [0, 18]."          | x            |
-| Test Case 40 | create hex with id 0, rollNumber 7, desert  | Hex with id 0, rollNumber 7, desert                            | x            |
-| Test Case 41 | create hex with id 0, rollNumber 7, lumber  | error - "Invalid Hex - Only Desert Hex can have rollNumber 7". | x            |
-| Test Case 42 | create hex with id 0, rollNumber 8, desert  | error - "Invalid Hex - Desert Hex must have rollNumber 7."     | x            |
+|              | System under test                           | Expected output                                                | Implemented?       |
+|--------------|---------------------------------------------|----------------------------------------------------------------|--------------------|
+| Test Case 34 | create hex with id 0, rollNumber 2, brick   | Hex with id 0, rollNumber 2, brick                             | :white_check_mark: |
+| Test Case 35 | create hex with id 18, rollNumber 12, grain | Hex with id 18, rollNumber 12, grain                           | x                  |
+| Test Case 36 | create hex with id 0, rollNumber 1, lumber  | error - "Invalid Hex - rollNumber must be within [2, 12]."     | x                  |
+| Test Case 37 | create hex with id 0, rollNumber 13, ore    | error - "Invalid Hex - rollNumber must be within [2, 12]."     | x                  |
+| Test Case 38 | create hex with id -1, rollNumber 5, wool   | error - "Invalid Hex - hexId must be within [0, 18]."          | x                  |
+| Test Case 39 | create hex with id 19, rollNumber 5, wool   | error - "Invalid Hex - hexId must be within [0, 18]."          | x                  |
+| Test Case 40 | create hex with id 0, rollNumber 7, desert  | Hex with id 0, rollNumber 7, desert                            | x                  |
+| Test Case 41 | create hex with id 0, rollNumber 7, lumber  | error - "Invalid Hex - Only Desert Hex can have rollNumber 7". | x                  |
+| Test Case 42 | create hex with id 0, rollNumber 8, desert  | error - "Invalid Hex - Desert Hex must have rollNumber 7."     | x                  |
 
 
