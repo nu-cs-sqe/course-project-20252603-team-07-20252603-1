@@ -30,4 +30,9 @@ public class Player {
         // add settlement to player's settlements list
         settlements.add(new Settlement());
     }
+
+    public void placeRoad(Edge edge) {
+        if (edge == null)
+            throw new IllegalArgumentException("Edge cannot be null.");
+    }
 }

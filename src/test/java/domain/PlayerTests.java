@@ -134,4 +134,16 @@ public class PlayerTests {
         assertEquals("Settlement violates the distance rule.", exception.getMessage());
         EasyMock.verify(vertex);
     }
+
+    @Test // test case 7
+    public void PlaceRoad_OnNullEdge_ExpectError() {
+        Player player = new Player();
+        Edge edge = null;
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            player.placeRoad(edge);
+        });
+        assertEquals("Edge cannot be null.", exception.getMessage());
+    }
+
 }
