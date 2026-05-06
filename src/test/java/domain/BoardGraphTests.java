@@ -390,4 +390,38 @@ public class BoardGraphTests {
 
         assertEquals("Can not claim node adjacent to node already claimed", exception.getMessage());
     }
+
+    @Test
+    void playerClaimStoredNode_test06_NeighboringNodeNotClaimed_ExpectTrue(){
+        BoardGraph b = new BoardGraph();
+        GraphNode nodeMock0 = EasyMock.createMock(GraphNode.class);
+        GraphNode nodeMock1 = EasyMock.createMock(GraphNode.class);
+        GraphNode nodeMock2 = EasyMock.createMock(GraphNode.class);
+        GraphEdge edgeMock0to1 = EasyMock.createMock(GraphEdge.class);
+        GraphEdge edgeMock0to2 = EasyMock.createMock(GraphEdge.class);
+
+        EasyMock.expect(nodeMock0.getNodeID()).andStubReturn(0);
+        EasyMock.expect(nodeMock1.getNodeID()).andStubReturn(1);
+        EasyMock.expect(nodeMock2.getNodeID()).andStubReturn(2);
+
+        EasyMock.expect(edgeMock0to1.getNodeID1()).andStubReturn(0);
+        EasyMock.expect(edgeMock0to1.getNodeID2()).andStubReturn(1);
+        EasyMock.expect(edgeMock0to2.getNodeID1()).andStubReturn(0);
+        EasyMock.expect(edgeMock0to2.getNodeID2()).andStubReturn(2);
+
+        EasyMock.expect(nodeMock1.checkOccupied()).andStubReturn(false);
+        EasyMock.expect(nodeMock2.checkOccupied()).andStubReturn(false);
+
+        EasyMock.expect(nodeMock0.playerClaimNode(PlayerColor.RED)).andStubReturn(true);
+
+        EasyMock.replay(nodeMock0, nodeMock1, nodeMock2, edgeMock0to1, edgeMock0to2);
+
+        b.addGraphNodeObject(nodeMock0);
+        b.addGraphNodeObject(nodeMock1);
+        b.addGraphNodeObject(nodeMock2);
+        b.addGraphNodeConnection(0, edgeMock0to1);
+        b.addGraphNodeConnection(0, edgeMock0to2);
+
+        assertTrue(b.playerClaimStoredNode(PlayerColor.RED, 0));
+    }
 }

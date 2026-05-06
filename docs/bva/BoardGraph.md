@@ -103,4 +103,4 @@
 | Test Case 3 | Orange Claims ID 53, node exists, is claimed    | Error "Node already claimed" | :white_check_mark: |
 | Test Case 4 | White Claims ID 53, node exists, is not claimed | True                         | :white_check_mark: |
 | Test Case 5 | Blue Claims ID 0, but adjacent node claimed     | Error 3                      | :white_check_mark: |
-| Test Case 6 | Red Claims ID 0, adjacent nodes not claimed     | True                         | :x:                |
+| Test Case 6 | Red Claims ID 0, adjacent nodes not claimed     | True                         | :white_check_mark: |
