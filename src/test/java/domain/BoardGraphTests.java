@@ -3,8 +3,6 @@ package domain;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Executable;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BoardGraphTests {
@@ -369,10 +367,10 @@ public class BoardGraphTests {
         EasyMock.expect(nodeMock1.getNodeID()).andStubReturn(1);
         EasyMock.expect(nodeMock2.getNodeID()).andStubReturn(2);
 
-        EasyMock.expect(edgeMock0to1.getNodeID1()).andStubReturn(0);
-        EasyMock.expect(edgeMock0to1.getNodeID2()).andStubReturn(1);
-        EasyMock.expect(edgeMock0to2.getNodeID1()).andStubReturn(0);
-        EasyMock.expect(edgeMock0to2.getNodeID2()).andStubReturn(2);
+        EasyMock.expect(edgeMock0to1.getStartingNodeID()).andStubReturn(0);
+        EasyMock.expect(edgeMock0to1.getEndingNodeID()).andStubReturn(1);
+        EasyMock.expect(edgeMock0to2.getStartingNodeID()).andStubReturn(0);
+        EasyMock.expect(edgeMock0to2.getEndingNodeID()).andStubReturn(2);
 
         EasyMock.expect(nodeMock1.checkOccupied()).andStubReturn(true);
         EasyMock.expect(nodeMock2.checkOccupied()).andStubReturn(false);
@@ -404,10 +402,10 @@ public class BoardGraphTests {
         EasyMock.expect(nodeMock1.getNodeID()).andStubReturn(1);
         EasyMock.expect(nodeMock2.getNodeID()).andStubReturn(2);
 
-        EasyMock.expect(edgeMock0to1.getNodeID1()).andStubReturn(0);
-        EasyMock.expect(edgeMock0to1.getNodeID2()).andStubReturn(1);
-        EasyMock.expect(edgeMock0to2.getNodeID1()).andStubReturn(0);
-        EasyMock.expect(edgeMock0to2.getNodeID2()).andStubReturn(2);
+        EasyMock.expect(edgeMock0to1.getStartingNodeID()).andStubReturn(0);
+        EasyMock.expect(edgeMock0to1.getEndingNodeID()).andStubReturn(1);
+        EasyMock.expect(edgeMock0to2.getStartingNodeID()).andStubReturn(0);
+        EasyMock.expect(edgeMock0to2.getEndingNodeID()).andStubReturn(2);
 
         EasyMock.expect(nodeMock1.checkOccupied()).andStubReturn(false);
         EasyMock.expect(nodeMock2.checkOccupied()).andStubReturn(false);
@@ -423,5 +421,33 @@ public class BoardGraphTests {
         b.addGraphNodeConnection(0, edgeMock0to2);
 
         assertTrue(b.playerClaimStoredNode(PlayerColor.RED, 0));
+    }
+
+    @Test
+    void playerClaimStoredEdge_test01_PlayerOwnsNeighboringNode_EdgeUnclaimed_ExpectTrue(){
+        BoardGraph b = new BoardGraph();
+
+        GraphNode nodeStub0 = EasyMock.createNiceMock(GraphNode.class);
+        GraphNode nodeStub1 = EasyMock.createNiceMock(GraphNode.class);
+        GraphEdge edgeMock0to1 = EasyMock.createMock(GraphEdge.class);
+
+        EasyMock.expect(nodeStub0.getNodeID()).andStubReturn(0);
+        EasyMock.expect(nodeStub0.checkOccupied()).andStubReturn(true);
+        EasyMock.expect(nodeStub0.checkColor()).andStubReturn(PlayerColor.RED);
+        EasyMock.expect(nodeStub1.getNodeID()).andStubReturn(1);
+
+        EasyMock.expect(edgeMock0to1.getStartingNodeID()).andReturn(0);
+        EasyMock.expect(edgeMock0to1.getEndingNodeID()).andReturn(1);
+        EasyMock.expect(edgeMock0to1.claimGraphEdge(PlayerColor.RED)).andReturn(true);
+
+        EasyMock.replay(nodeStub0, nodeStub1, edgeMock0to1);
+
+        b.addGraphNodeObject(nodeStub0);
+        b.addGraphNodeObject(nodeStub1);
+        b.addGraphNodeConnection(0, edgeMock0to1);
+        b.addGraphNodeConnection(1, edgeMock0to1);
+
+        assertTrue(b.playerClaimStoredEdge(PlayerColor.RED, 0, 1));
+        EasyMock.verify(edgeMock0to1);
     }
 }
