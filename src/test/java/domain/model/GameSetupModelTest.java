@@ -30,4 +30,9 @@ class GameSetupModelTest {
         model.addPlayer("Alice", "Red");
         assertTrue(model.isNameAvailable("alice"));
     }
+
+    @Test
+    void testIsNameAvailableForEmptyStringReturnsTrue() {
+        assertTrue(model.isNameAvailable(""));
+    }
 }
