@@ -1,7 +1,5 @@
 package ui.view;
 
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -13,17 +11,16 @@ public class HomeScreenView {
 
     public HomeScreenView(SetupNavigator navigator) {
         Label title = new Label("Welcome to Catan");
-        title.setStyle("-fx-font-size: 28px; -fx-font-weight: bold;");
+        title.getStyleClass().add("title");
 
         Label subtitle = new Label("Set up a new game");
-        subtitle.setStyle("-fx-font-size: 14px;");
+        subtitle.getStyleClass().add("subtitle");
 
         Button startButton = new Button("Start Game");
         startButton.setOnAction(e -> navigator.goToPlayerCount());
 
-        root = new VBox(20, title, subtitle, startButton);
-        root.setAlignment(Pos.CENTER);
-        root.setPadding(new Insets(40));
+        root = new VBox(title, subtitle, startButton);
+        root.getStyleClass().add("screen");
     }
 
     public Parent getRoot() {

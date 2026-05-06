@@ -1,0 +1,29 @@
+.screen {
+    -fx-padding: 40;
+    -fx-spacing: 20;
+    -fx-alignment: center;
+}
+
+.title {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+.subtitle {
+    -fx-font-size: 14px;
+}
+
+.prompt {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.option-list {
+    -fx-spacing: 10;
+    -fx-alignment: center;
+}
+
+.button-bar {
+    -fx-spacing: 10;
+    -fx-alignment: center;
+}

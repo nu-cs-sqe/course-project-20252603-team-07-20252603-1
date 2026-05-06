@@ -1,7 +1,5 @@
 package ui.view;
 
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,7 +16,7 @@ public class PlayerCountView {
 
     public PlayerCountView(SetupNavigator navigator) {
         Label prompt = new Label("How many players?");
-        prompt.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
+        prompt.getStyleClass().add("prompt");
 
         countGroup = new ToggleGroup();
         RadioButton three = new RadioButton("3 Players");
@@ -29,8 +27,8 @@ public class PlayerCountView {
         four.setUserData(4);
         four.setToggleGroup(countGroup);
 
-        VBox options = new VBox(10, three, four);
-        options.setAlignment(Pos.CENTER);
+        VBox options = new VBox(three, four);
+        options.getStyleClass().add("option-list");
 
         Button back = new Button("Back");
         back.setOnAction(e -> navigator.goToHome());
@@ -38,12 +36,11 @@ public class PlayerCountView {
         Button next = new Button("Next");
         next.setOnAction(e -> {});
 
-        HBox buttons = new HBox(10, back, next);
-        buttons.setAlignment(Pos.CENTER);
+        HBox buttons = new HBox(back, next);
+        buttons.getStyleClass().add("button-bar");
 
-        root = new VBox(20, prompt, options, buttons);
-        root.setAlignment(Pos.CENTER);
-        root.setPadding(new Insets(40));
+        root = new VBox(prompt, options, buttons);
+        root.getStyleClass().add("screen");
     }
 
     public Parent getRoot() {
