@@ -650,4 +650,14 @@ class GameSetupControllerTest {
         assertEquals(PlayerAddResult.NAME_EMPTY, result);
         verify(mockModel);
     }
+
+    @Test
+    void testFullValidationMixedWhitespaceNameReturnsNameEmpty() {
+        replay(mockModel);
+
+        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, " \t\n ", "Red");
+
+        assertEquals(PlayerAddResult.NAME_EMPTY, result);
+        verify(mockModel);
+    }
 }
