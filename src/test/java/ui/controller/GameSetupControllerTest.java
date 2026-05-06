@@ -660,4 +660,18 @@ class GameSetupControllerTest {
         assertEquals(PlayerAddResult.NAME_EMPTY, result);
         verify(mockModel);
     }
+
+    @Test
+    void testFullValidationSingleCharNameSucceeds() {
+        expect(mockModel.isNameAvailable("A")).andReturn(true);
+        expect(mockModel.isColorAvailable("Red")).andReturn(true);
+        mockModel.addPlayer("A", "Red");
+        expectLastCall();
+        replay(mockModel);
+
+        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, "A", "Red");
+
+        assertEquals(PlayerAddResult.SUCCESS, result);
+        verify(mockModel);
+    }
 }
