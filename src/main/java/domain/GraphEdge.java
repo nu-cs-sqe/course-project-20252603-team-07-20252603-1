@@ -2,15 +2,15 @@ package domain;
 
 public class GraphEdge {
     // unique Edge_id
-    private int nodeID_1;
-    private int nodeID_2;
+    private int nodeID1;
+    private int nodeID2;
     // keep track of the
     private boolean roadBuilt;
     private PlayerColor owningPlayerColor;
 
-    GraphEdge(int nodeID_1, int nodeID_2) {
-        this.nodeID_1 = nodeID_1;
-        this.nodeID_2 = nodeID_2;
+    GraphEdge(int nodeID1, int nodeID2) {
+        this.nodeID1 = nodeID1;
+        this.nodeID2 = nodeID2;
         this.roadBuilt = false;
         this.owningPlayerColor = PlayerColor.SETUP;
     }
@@ -34,4 +34,12 @@ public class GraphEdge {
     PlayerColor checkOwningColor() {
         return this.owningPlayerColor;
     }
+
+    int getNodeID1(){
+        return this.nodeID1;
+    }
+    int getNodeID2() {
+        return this.nodeID2;
+    }
+
 }
