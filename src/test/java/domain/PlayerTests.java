@@ -197,5 +197,32 @@ public class PlayerTests {
         );
         EasyMock.verify(edge);
     }
+    
+    @Test // test case 10
+    public void PlaceRoad_OnUnoccupiedEdgeFifteenExistingRoads_ExpectError() {
+        // mock 15 setup edges to reach state of 15 existing roads
+        Edge setupEdge = EasyMock.createMock(Edge.class);
+        EasyMock.expect(setupEdge.isOccupied()).andReturn(false).times(15);
+        EasyMock.expect(setupEdge.isConnectedToPlayerNetwork()).andReturn(false).times(15);
+        EasyMock.replay(setupEdge);
+
+        // mock the edge under test
+        Edge edge = EasyMock.createMock(Edge.class);
+        EasyMock.replay(edge);
+
+        // create player, append first 15 roads to mocked edges
+        Player player = new Player();
+        for (int i = 0; i < 15; i++) {
+            player.placeRoad(setupEdge);
+        }
+        EasyMock.verify(setupEdge);
+
+        // expect error for the 16th road
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
+            player.placeRoad(edge);
+        });
+        assertEquals("No roads remaining.", exception.getMessage());
+        EasyMock.verify(edge);
+    }
 
 }

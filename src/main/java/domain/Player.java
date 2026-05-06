@@ -37,13 +37,18 @@ public class Player {
         return Collections.unmodifiableList(roads);
     }
 
+    // TODO: consider refactoring this code later for legibility
     public void placeRoad(Edge edge) {
+        // validate road conditions
         if (edge == null)
             throw new IllegalArgumentException("Edge cannot be null.");
+        if (roads.size() >= 15)
+            throw new IllegalStateException("No roads remaining.");
         if (edge.isOccupied())
             throw new IllegalArgumentException("Edge is already occupied.");
         edge.isConnectedToPlayerNetwork();
 
+        // add edge to list of roads
         roads.add(edge);
     }
 }
