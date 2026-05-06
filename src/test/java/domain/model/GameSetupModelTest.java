@@ -56,4 +56,16 @@ class GameSetupModelTest {
         assertTrue(model.isColorAvailable("Red"));
         assertTrue(model.getTurnOrder().isEmpty());
     }
+
+    @Test
+    void testClearPlayersAllowsReusingNamesAndColors() {
+        model.addPlayer("Alice", "Red");
+        model.clearPlayers();
+
+        model.addPlayer("Alice", "Red");
+
+        assertEquals(1, model.getPlayerCount());
+        assertEquals("Alice", model.getPlayer(0).getName());
+        assertEquals("Red", model.getPlayer(0).getColor());
+    }
 }
