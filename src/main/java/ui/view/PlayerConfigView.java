@@ -10,9 +10,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import ui.controller.GameSetupController;
+import ui.controller.PlayerAddResult;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -101,33 +101,28 @@ public class PlayerConfigView {
     }
 
     private void handleStart(GameSetupController controller, GameSetupModel model) {
-        List<String> names = new ArrayList<>();
-        List<String> colors = new ArrayList<>();
-        Set<String> seenNames = new HashSet<>();
+        controller.clearPlayers(model);
+        int playerCount = nameFields.size();
 
-        for (int i = 0; i < nameFields.size(); i++) {
-            String name = nameFields.get(i).getText().trim();
+        for (int i = 0; i < playerCount; i++) {
+            String name = nameFields.get(i).getText();
             String color = colorBoxes.get(i).getValue();
-            if (name.isEmpty()) {
-                showError("Player " + (i + 1) + " needs a name.");
-                return;
-            }
-            if (color == null) {
-                showError("Player " + (i + 1) + " needs a color.");
-                return;
-            }
-            if (!seenNames.add(name)) {
-                showError("Player names must be unique.");
-                return;
-            }
-            names.add(name);
-            colors.add(color);
-        }
-
-        for (int i = 0; i < names.size(); i++) {
-            if (!controller.addPlayerWithColorValidation(model, names.get(i), colors.get(i))) {
-                showError("Color " + colors.get(i) + " is already taken.");
-                return;
+            PlayerAddResult result = controller.addPlayerWithFullValidation(model, name, color);
+            switch (result) {
+                case SUCCESS:
+                    break;
+                case NAME_EMPTY:
+                    showError("Player " + (i + 1) + " needs a name.");
+                    return;
+                case NAME_TAKEN:
+                    showError("Player " + (i + 1) + "'s name is already used.");
+                    return;
+                case COLOR_EMPTY:
+                    showError("Player " + (i + 1) + " needs a color.");
+                    return;
+                case COLOR_TAKEN:
+                    showError("Player " + (i + 1) + "'s color is already taken.");
+                    return;
             }
         }
         controller.initializeBoard(model);
@@ -135,7 +130,7 @@ public class PlayerConfigView {
         controller.initializeDevelopmentCardDeck(model);
         controller.determineTurnOrder(model);
 
-        showSuccess("Game ready. " + names.size() + " players configured.");
+        showSuccess("Game ready. " + playerCount + " players configured.");
         startButton.setDisable(true);
     }
 

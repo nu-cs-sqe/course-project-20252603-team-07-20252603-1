@@ -311,10 +311,10 @@ class GameSetupControllerTest {
     void testHexOrderContainsNineteenElements() {
         // Arrange
         List<String> mockHexOrder = List.of(
-            "WHEAT", "SHEEP", "WOOD", "BRICK", "ORE",
-            "WHEAT", "SHEEP", "WOOD", "BRICK", "ORE",
-            "WHEAT", "SHEEP", "WOOD", "BRICK", "ORE",
-            "WHEAT", "SHEEP", "WOOD", "DESERT"
+                "WHEAT", "SHEEP", "WOOD", "BRICK", "ORE",
+                "WHEAT", "SHEEP", "WOOD", "BRICK", "ORE",
+                "WHEAT", "SHEEP", "WOOD", "BRICK", "ORE",
+                "WHEAT", "SHEEP", "WOOD", "DESERT"
         );
         expect(mockBoard.getHexOrder()).andReturn(mockHexOrder);
         replay(mockBoard);
@@ -445,9 +445,9 @@ class GameSetupControllerTest {
     void testTurnOrderIsDetermined() {
         // Arrange
         List<Player> mockPlayers = List.of(
-            createMock(Player.class),
-            createMock(Player.class),
-            createMock(Player.class)
+                createMock(Player.class),
+                createMock(Player.class),
+                createMock(Player.class)
         );
         expect(mockModel.getTurnOrder()).andReturn(mockPlayers);
         replay(mockModel);
@@ -486,10 +486,10 @@ class GameSetupControllerTest {
     void testTurnOrderIsNotEmpty() {
         // Arrange
         List<Player> mockPlayers = List.of(
-            createMock(Player.class),
-            createMock(Player.class),
-            createMock(Player.class),
-            createMock(Player.class)
+                createMock(Player.class),
+                createMock(Player.class),
+                createMock(Player.class),
+                createMock(Player.class)
         );
         expect(mockModel.getTurnOrder()).andReturn(mockPlayers);
         replay(mockModel);
@@ -556,9 +556,9 @@ class GameSetupControllerTest {
         ResourceDeck mockResourceDeck = createMock(ResourceDeck.class);
         DevelopmentCardDeck mockDevDeck = createMock(DevelopmentCardDeck.class);
         List<Player> mockPlayers = List.of(
-            createMock(Player.class),
-            createMock(Player.class),
-            createMock(Player.class)
+                createMock(Player.class),
+                createMock(Player.class),
+                createMock(Player.class)
         );
 
         expect(mockModel.getPlayerCount()).andReturn(3);
