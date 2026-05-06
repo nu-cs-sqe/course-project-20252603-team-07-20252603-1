@@ -746,4 +746,15 @@ class GameSetupControllerTest {
         assertEquals(PlayerAddResult.NAME_EMPTY, result);
         verify(mockModel);
     }
+
+    @Test
+    void testFullValidationDuplicateNameShortCircuitsColorCheck() {
+        expect(mockModel.isNameAvailable("Alice")).andReturn(false);
+        replay(mockModel);
+
+        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, "Alice", "Red");
+
+        assertEquals(PlayerAddResult.NAME_TAKEN, result);
+        verify(mockModel);
+    }
 }
