@@ -78,3 +78,26 @@
 | Test Case 2 | Get ID 0, Only one Node exists, ID 0 has empty set of edges      | Empty set            | :white_check_mark: |
 | Test Case 3 | Get ID 53, multiple Nodes Exist, ID 53 has set of one edge       | One element set      | :white_check_mark: |
 | Test Case 4 | Get ID 53, multiple Nodes Exist, ID 53 has set of multiple edges | Multiple Element set | :white_check_mark: |
+
+
+### Method under test: `playerClaimStoredNode(PlayerColor color, int NodeID)`
+
+#### Inputs:
+- NodeID -> Integer -> Interval [0, 53]
+- State of map -> NodeID exists or not
+- State of Node -> claimed or not
+- PlayerColor Color -> Cases -> [Red, Blue, Orange, White]
+
+#### Outputs:
+- Change of state of color class -> will need to Mock
+- True -> on success
+- Error 1 -> "Node does not exist"
+- Error 2 -> "Node already claimed"
+
+
+|             | State of the System                             | Expected output              | Implemented?       |
+|-------------|-------------------------------------------------|------------------------------|--------------------|
+| Test Case 1 | Red Claims ID 0, node exists, is not claimed    | True                         | :white_check_mark: |
+| Test Case 2 | Blue Claims ID 0, node does not exist           | Error "Node does not exist"  | :x:                |
+| Test Case 3 | Orange Claims ID 53, node exists, is claimed    | Error "Node already claimed" | :x:                |
+| Test Case 4 | White Claims ID 53, node exists, is not claimed | True                         | :x:                |

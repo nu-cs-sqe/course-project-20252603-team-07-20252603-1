@@ -291,4 +291,16 @@ public class BoardGraphTests {
         assertTrue(b.getConnectingEdgesByID(53).contains(edgeStub1));
     }
 
+    @Test
+    void playerClaimStoredNode_test01_NodeExists_NodeUnclaimed_ExpectTrue(){
+        BoardGraph b = new BoardGraph();
+        GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
+
+        EasyMock.expect(nodeMock.getNodeID()).andReturn(0);
+        EasyMock.expect(nodeMock.playerClaimNode(PlayerColor.RED)).andReturn(true);
+        EasyMock.replay(nodeMock);
+
+        b.addGraphNodeObject(nodeMock);
+        assertTrue(b.playerClaimStoredNode(PlayerColor.RED, 0));
+    }
 }

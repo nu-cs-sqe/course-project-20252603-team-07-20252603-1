@@ -59,5 +59,11 @@ public class BoardGraph {
         }
     }
 
+    boolean playerClaimStoredNode(PlayerColor color, int nodeID){
+        GraphNode nodeToClaim = getGraphNodeByID(nodeID);
+        nodeToClaim.playerClaimNode(color);
+        return true;
+    }
+
 
 }
