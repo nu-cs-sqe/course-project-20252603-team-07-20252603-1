@@ -93,6 +93,7 @@
 - True -> on success
 - Error 1 -> "Node does not exist"
 - Error 2 -> "Node already claimed"
+- Error 3 -> "Can not claim node adjacent to node already claimed"
 
 
 |             | State of the System                             | Expected output              | Implemented?       |
@@ -101,3 +102,5 @@
 | Test Case 2 | Blue Claims ID 0, node does not exist           | Error "Node does not exist"  | :white_check_mark: |
 | Test Case 3 | Orange Claims ID 53, node exists, is claimed    | Error "Node already claimed" | :white_check_mark: |
 | Test Case 4 | White Claims ID 53, node exists, is not claimed | True                         | :white_check_mark: |
+| Test Case 5 | Blue Claims ID 0, but adjacent node claimed     | Error 3                      | :white_check_mark: |
+| Test Case 6 | Red Claims ID 0, adjacent nodes not claimed     | True                         | :x:                |

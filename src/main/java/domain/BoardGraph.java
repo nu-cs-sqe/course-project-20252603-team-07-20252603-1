@@ -61,10 +61,33 @@ public class BoardGraph {
 
     boolean playerClaimStoredNode(PlayerColor color, int nodeID){
         GraphNode nodeToClaim = getGraphNodeByID(nodeID);
-        // playerClaimNode(color) will propagate an error up if the node is already claimed
+        checkAdjacentClaimedNodes(nodeID);
         nodeToClaim.playerClaimNode(color);
         return true;
     }
+
+    boolean checkAdjacentClaimedNodes(int nodeID) {
+        Set<GraphEdge> connectingEdges = getConnectingEdgesByID(nodeID);
+        for (GraphEdge edge: connectingEdges) {
+            int edgeNodeID1 = edge.getNodeID1();
+            int edgeNodeID2 = edge.getNodeID2();
+            GraphNode nodeToCheck;
+            // One of these IDs will be the current node trying to be claimed, so we don't need to check it
+            if (edgeNodeID1 != nodeID) {
+                nodeToCheck = getGraphNodeByID(edgeNodeID1);
+            }
+            else {
+                nodeToCheck = getGraphNodeByID(edgeNodeID2);
+            }
+
+            if (nodeToCheck.checkOccupied()) {
+                throw new IllegalArgumentException("Can not claim node adjacent to node already claimed");
+            }
+        }
+        // we have checked all the neighboring nodes, none of them are occupied
+        return true;
+    }
+
 
 
 }
