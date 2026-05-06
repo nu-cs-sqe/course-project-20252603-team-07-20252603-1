@@ -27,3 +27,20 @@
     -fx-spacing: 10;
     -fx-alignment: center;
 }
+
+.player-row {
+    -fx-spacing: 10;
+    -fx-alignment: center-left;
+}
+
+.status {
+    -fx-font-size: 13px;
+}
+
+.error {
+    -fx-text-fill: red;
+}
+
+.success {
+    -fx-text-fill: green;
+}

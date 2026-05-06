@@ -22,7 +22,9 @@ public class PlayerCountView {
         RadioButton three = new RadioButton("3 Players");
         three.setUserData(3);
         three.setToggleGroup(countGroup);
+
         three.setSelected(true);
+
         RadioButton four = new RadioButton("4 Players");
         four.setUserData(4);
         four.setToggleGroup(countGroup);
@@ -34,7 +36,7 @@ public class PlayerCountView {
         back.setOnAction(e -> navigator.goToHome());
 
         Button next = new Button("Next");
-        next.setOnAction(e -> {});
+        next.setOnAction(e -> navigator.goToPlayerConfig(getSelectedCount()));
 
         HBox buttons = new HBox(back, next);
         buttons.getStyleClass().add("button-bar");

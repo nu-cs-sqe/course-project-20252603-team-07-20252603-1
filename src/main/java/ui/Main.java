@@ -7,6 +7,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import ui.controller.GameSetupController;
 import ui.view.HomeScreenView;
+import ui.view.PlayerConfigView;
 import ui.view.PlayerCountView;
 import ui.view.SetupNavigator;
 
@@ -36,6 +37,12 @@ public class Main extends Application {
             @Override
             public void goToPlayerCount() {
                 scene.setRoot(new PlayerCountView(this).getRoot());
+            }
+
+            @Override
+            public void goToPlayerConfig(int count) {
+                setupModel = new GameSetupModel();
+                scene.setRoot(new PlayerConfigView(this, setupController, setupModel, count).getRoot());
             }
         };
 
