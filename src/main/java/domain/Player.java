@@ -6,9 +6,11 @@ import java.util.List;
 
 public class Player {
     private final List<Settlement> settlements;
+    private final List<Edge> roads;
 
     public Player() {
         this.settlements = new ArrayList<>();
+        this.roads = new ArrayList<>();
     }
 
     public List<Settlement> getSettlements() {
@@ -31,8 +33,17 @@ public class Player {
         settlements.add(new Settlement());
     }
 
+    public List<Edge> getRoads() {
+        return Collections.unmodifiableList(roads);
+    }
+
     public void placeRoad(Edge edge) {
         if (edge == null)
             throw new IllegalArgumentException("Edge cannot be null.");
+        if (edge.isOccupied())
+            throw new IllegalArgumentException("Edge is already occupied.");
+        edge.isConnectedToPlayerNetwork();
+
+        roads.add(edge);
     }
 }

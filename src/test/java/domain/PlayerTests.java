@@ -146,4 +146,22 @@ public class PlayerTests {
         assertEquals("Edge cannot be null.", exception.getMessage());
     }
 
+    @Test // test case 8
+    public void PlaceRoad_OnUnoccupiedEdgeZeroRoads_ExpectLenOne() {
+        final int expectedNumRoadsAfterPlace = 1;
+
+        // mock edge
+        Edge edge = EasyMock.createMock(Edge.class);
+        EasyMock.expect(edge.isOccupied()).andReturn(false);
+        EasyMock.expect(edge.isConnectedToPlayerNetwork()).andReturn(false);
+        EasyMock.replay(edge);
+
+        // create player
+        Player player = new Player();
+        player.placeRoad(edge);
+
+        assertEquals(expectedNumRoadsAfterPlace, player.getRoads().size());
+        EasyMock.verify(edge);
+    }
+
 }
