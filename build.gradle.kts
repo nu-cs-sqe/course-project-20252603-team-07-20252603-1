@@ -1,5 +1,6 @@
 plugins {
     id("java")
+    id("checkstyle")
 }
 
 group = "nu.csse.sqe"
@@ -24,6 +25,11 @@ java {
 
 tasks.compileJava {
     options.release = 11
+}
+
+checkstyle {
+    toolVersion = "10.21.0"
+    configFile = file("config/checkstyle/google_checks.xml")
 }
 
 tasks.test {
