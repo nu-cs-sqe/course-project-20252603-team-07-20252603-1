@@ -35,4 +35,11 @@ class GameSetupModelTest {
     void testIsNameAvailableForEmptyStringReturnsTrue() {
         assertTrue(model.isNameAvailable(""));
     }
+
+    @Test
+    void testIsNameAvailableDistinguishesAcrossNames() {
+        model.addPlayer("Alice", "Red");
+        assertFalse(model.isNameAvailable("Alice"));
+        assertTrue(model.isNameAvailable("Bob"));
+    }
 }
