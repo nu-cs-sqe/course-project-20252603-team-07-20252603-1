@@ -18,4 +18,10 @@ class GameSetupModelTest {
     void testIsNameAvailableForUnusedNameReturnsTrue() {
         assertTrue(model.isNameAvailable("Alice"));
     }
+
+    @Test
+    void testIsNameAvailableAfterAddReturnsFalse() {
+        model.addPlayer("Alice", "Red");
+        assertFalse(model.isNameAvailable("Alice"));
+    }
 }
