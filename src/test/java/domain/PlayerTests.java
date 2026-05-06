@@ -73,4 +73,31 @@ public class PlayerTests {
         );
         EasyMock.verify(vertex);
     }
+
+    @Test // test case 4
+    public void PlaceSettlement_OnUnoccupiedVertexNoAdjacentSettlementsFiveExisting_ExpectError() {
+        // mock 5 setup vertices to reach state of 5 existing settlements
+        Vertex setupVertex = EasyMock.createMock(Vertex.class);
+        EasyMock.expect(setupVertex.isOccupied()).andReturn(false).times(5);
+        EasyMock.expect(setupVertex.hasAdjacentSettlementViolatingDistanceRule()).andReturn(false).times(5);
+        EasyMock.replay(setupVertex);
+
+        // create player, append settlements to mocked vertices
+        Player player = new Player();
+        for (int i = 0; i < 5; i++) {
+            player.placeSettlement(setupVertex);
+        }
+        EasyMock.verify(setupVertex);
+
+        // mock the vertex under test
+        Vertex vertex = EasyMock.createMock(Vertex.class);
+        EasyMock.replay(vertex);
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
+            player.placeSettlement(vertex);
+        });
+        assertEquals("No settlements remaining.", exception.getMessage());
+        EasyMock.verify(vertex);
+    }
+
 }

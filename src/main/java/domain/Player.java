@@ -15,17 +15,19 @@ public class Player {
         return Collections.unmodifiableList(settlements);
     }
 
-    // TODO: refactor this code later for legibility
+    // TODO: consider refactoring this code later for legibility
     public void placeSettlement(Vertex vertex) {
-        if (vertex == null) {
+        // validate vertex before adding settlement
+        if (vertex == null)
             throw new IllegalArgumentException("Vertex cannot be null");
-        }
-        if (vertex.isOccupied()) {
+        if (settlements.size() >= 5)
+            throw new IllegalStateException("No settlements remaining.");
+        if (vertex.isOccupied())
             throw new IllegalArgumentException("Vertex is already occupied.");
-        }
-        if (vertex.hasAdjacentSettlementViolatingDistanceRule()) {
+        if (vertex.hasAdjacentSettlementViolatingDistanceRule())
             throw new IllegalArgumentException("Settlement violates the distance rule.");
-        }
+
+        // add settlement to player's settlements list
         settlements.add(new Settlement());
     }
 }
