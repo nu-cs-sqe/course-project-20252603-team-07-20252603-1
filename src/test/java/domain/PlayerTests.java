@@ -100,4 +100,20 @@ public class PlayerTests {
         EasyMock.verify(vertex);
     }
 
+    @Test // test case 5
+    public void PlaceSettlement_OnOccupiedVertexZeroSettlements_ExpectError() {
+        // mock vertex that is already occupied
+        Vertex vertex = EasyMock.createMock(Vertex.class);
+        EasyMock.expect(vertex.isOccupied()).andReturn(true);
+        EasyMock.replay(vertex);
+
+        // create new player
+        Player player = new Player();
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            player.placeSettlement(vertex);
+        });
+        assertEquals("Vertex is already occupied.", exception.getMessage());
+        EasyMock.verify(vertex);
+    }
 }
