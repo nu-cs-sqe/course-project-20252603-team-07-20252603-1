@@ -24,4 +24,10 @@ class GameSetupModelTest {
         model.addPlayer("Alice", "Red");
         assertFalse(model.isNameAvailable("Alice"));
     }
+
+    @Test
+    void testIsNameAvailableIsCaseSensitive() {
+        model.addPlayer("Alice", "Red");
+        assertTrue(model.isNameAvailable("alice"));
+    }
 }
