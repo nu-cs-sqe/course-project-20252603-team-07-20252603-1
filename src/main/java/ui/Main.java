@@ -10,11 +10,12 @@ import ui.view.HomeScreenView;
 import ui.view.PlayerConfigView;
 import ui.view.PlayerCountView;
 import ui.view.SetupNavigator;
+import ui.view.SetupSummaryView;
 
 public class Main extends Application {
 
-    private static final int WINDOW_WIDTH = 600;
-    private static final int WINDOW_HEIGHT = 400;
+    private static final int WINDOW_WIDTH = 700;
+    private static final int WINDOW_HEIGHT = 700;
     private static final String STYLESHEET = "/styles.css";
 
     private GameSetupModel setupModel;
@@ -43,6 +44,11 @@ public class Main extends Application {
             public void goToPlayerConfig(int count) {
                 setupModel = new GameSetupModel();
                 scene.setRoot(new PlayerConfigView(this, setupController, setupModel, count).getRoot());
+            }
+
+            @Override
+            public void goToSetupSummary() {
+                scene.setRoot(new SetupSummaryView(this, setupController, setupModel).getRoot());
             }
         };
 

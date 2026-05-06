@@ -41,6 +41,59 @@
     -fx-text-fill: red;
 }
 
-.success {
-    -fx-text-fill: green;
+.summary-section {
+    -fx-spacing: 8;
+    -fx-alignment: center;
 }
+
+.section-heading {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.turn-order-list {
+    -fx-spacing: 6;
+    -fx-alignment: center;
+}
+
+.player-line {
+    -fx-spacing: 8;
+    -fx-alignment: center-left;
+}
+
+.color-swatch {
+    -fx-min-width: 16;
+    -fx-min-height: 16;
+    -fx-pref-width: 16;
+    -fx-pref-height: 16;
+}
+
+.swatch-red    { -fx-background-color: #d04040; }
+.swatch-blue   { -fx-background-color: #4070d0; }
+.swatch-white  { -fx-background-color: #ffffff; -fx-border-color: #888888; -fx-border-width: 1; }
+.swatch-orange { -fx-background-color: #e08020; }
+
+.hex-grid {
+    -fx-spacing: 4;
+    -fx-alignment: center;
+}
+
+.hex-row {
+    -fx-spacing: 4;
+    -fx-alignment: center;
+}
+
+.hex {
+    -fx-min-width: 56;
+    -fx-min-height: 32;
+    -fx-alignment: center;
+    -fx-padding: 4;
+    -fx-font-size: 11px;
+}
+
+.hex-wheat  { -fx-background-color: #f5d76e; }
+.hex-sheep  { -fx-background-color: #aedb6b; }
+.hex-wood   { -fx-background-color: #6da854; -fx-text-fill: white; }
+.hex-brick  { -fx-background-color: #b9603d; -fx-text-fill: white; }
+.hex-ore    { -fx-background-color: #888888; -fx-text-fill: white; }
+.hex-desert { -fx-background-color: #e0c89d; }

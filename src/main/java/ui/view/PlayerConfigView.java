@@ -26,7 +26,6 @@ public class PlayerConfigView {
     private final List<TextField> nameFields = new ArrayList<>();
     private final List<ComboBox<String>> colorBoxes = new ArrayList<>();
     private final Label statusLabel;
-    private final Button startButton;
     private boolean refreshingColors = false;
 
     public PlayerConfigView(SetupNavigator navigator,
@@ -62,8 +61,8 @@ public class PlayerConfigView {
         Button back = new Button("Back");
         back.setOnAction(e -> navigator.goToPlayerCount());
 
-        startButton = new Button("Start Game");
-        startButton.setOnAction(e -> handleStart(controller, model));
+        Button startButton = new Button("Start Game");
+        startButton.setOnAction(e -> handleStart(navigator, controller, model));
 
         HBox buttons = new HBox(back, startButton);
         buttons.getStyleClass().add("button-bar");
@@ -100,7 +99,7 @@ public class PlayerConfigView {
         }
     }
 
-    private void handleStart(GameSetupController controller, GameSetupModel model) {
+    private void handleStart(SetupNavigator navigator, GameSetupController controller, GameSetupModel model) {
         controller.clearPlayers(model);
         int playerCount = nameFields.size();
 
@@ -130,17 +129,11 @@ public class PlayerConfigView {
         controller.initializeDevelopmentCardDeck(model);
         controller.determineTurnOrder(model);
 
-        showSuccess("Game ready. " + playerCount + " players configured.");
-        startButton.setDisable(true);
+        navigator.goToSetupSummary();
     }
 
     private void showError(String message) {
         statusLabel.getStyleClass().setAll("status", "error");
-        statusLabel.setText(message);
-    }
-
-    private void showSuccess(String message) {
-        statusLabel.getStyleClass().setAll("status", "success");
         statusLabel.setText(message);
     }
 }
