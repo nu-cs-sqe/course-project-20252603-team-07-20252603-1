@@ -335,4 +335,22 @@ public class BoardGraphTests {
         assertEquals("Node already claimed", exception.getMessage());
         EasyMock.verify(nodeMock);
     }
+
+    @Test
+    void playerClaimStoredNode_test04_NodeExists_NodeUnclaimed_ExpectTrue(){
+        BoardGraph b = new BoardGraph();
+        GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
+        GraphNode nodeMock2 = EasyMock.createMock(GraphNode.class);
+
+        EasyMock.expect(nodeMock.getNodeID()).andReturn(0);
+        EasyMock.expect(nodeMock2.getNodeID()).andReturn(53);
+        EasyMock.expect(nodeMock2.playerClaimNode(PlayerColor.WHITE)).andReturn(true);
+        EasyMock.replay(nodeMock, nodeMock2);
+
+        b.addGraphNodeObject(nodeMock);
+        b.addGraphNodeObject(nodeMock2);
+
+        assertTrue(b.playerClaimStoredNode(PlayerColor.WHITE, 53));
+        EasyMock.verify(nodeMock, nodeMock2);
+    }
 }

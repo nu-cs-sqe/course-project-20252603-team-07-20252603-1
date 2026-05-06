@@ -100,4 +100,4 @@
 | Test Case 1 | Red Claims ID 0, node exists, is not claimed    | True                         | :white_check_mark: |
 | Test Case 2 | Blue Claims ID 0, node does not exist           | Error "Node does not exist"  | :white_check_mark: |
 | Test Case 3 | Orange Claims ID 53, node exists, is claimed    | Error "Node already claimed" | :white_check_mark: |
-| Test Case 4 | White Claims ID 53, node exists, is not claimed | True                         | :x:                |
+| Test Case 4 | White Claims ID 53, node exists, is not claimed | True                         | :white_check_mark: |

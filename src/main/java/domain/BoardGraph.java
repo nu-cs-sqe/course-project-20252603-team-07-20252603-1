@@ -61,6 +61,7 @@ public class BoardGraph {
 
     boolean playerClaimStoredNode(PlayerColor color, int nodeID){
         GraphNode nodeToClaim = getGraphNodeByID(nodeID);
+        // playerClaimNode(color) will propagate an error up if the node is already claimed
         nodeToClaim.playerClaimNode(color);
         return true;
     }
