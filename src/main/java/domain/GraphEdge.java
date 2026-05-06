@@ -1,16 +1,17 @@
 package domain;
 
+// TODO - ensure startingNodeID < endingNodeID; need to do additional BVA
 public class GraphEdge {
     // unique Edge_id
-    private int nodeID1;
-    private int nodeID2;
+    private int startingNodeID;
+    private int endingNodeID;
     // keep track of the
     private boolean roadBuilt;
     private PlayerColor owningPlayerColor;
 
-    GraphEdge(int nodeID1, int nodeID2) {
-        this.nodeID1 = nodeID1;
-        this.nodeID2 = nodeID2;
+    GraphEdge(int startingNodeID, int endingNodeID) {
+        this.startingNodeID = startingNodeID;
+        this.endingNodeID = endingNodeID;
         this.roadBuilt = false;
         this.owningPlayerColor = PlayerColor.SETUP;
     }
@@ -35,11 +36,11 @@ public class GraphEdge {
         return this.owningPlayerColor;
     }
 
-    int getNodeID1(){
-        return this.nodeID1;
+    int getStartingNodeID(){
+        return this.startingNodeID;
     }
-    int getNodeID2() {
-        return this.nodeID2;
+    int getEndingNodeID() {
+        return this.endingNodeID;
     }
 
 }
