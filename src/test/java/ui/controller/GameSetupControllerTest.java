@@ -736,4 +736,14 @@ class GameSetupControllerTest {
         assertEquals(PlayerAddResult.SUCCESS, result);
         verify(mockModel);
     }
+
+    @Test
+    void testFullValidationNameCheckedBeforeColor() {
+        replay(mockModel);
+
+        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, "", null);
+
+        assertEquals(PlayerAddResult.NAME_EMPTY, result);
+        verify(mockModel);
+    }
 }
