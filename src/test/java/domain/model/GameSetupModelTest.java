@@ -42,4 +42,18 @@ class GameSetupModelTest {
         assertFalse(model.isNameAvailable("Alice"));
         assertTrue(model.isNameAvailable("Bob"));
     }
+
+    @Test
+    void testClearPlayersResetsAllSetupPlayerState() {
+        model.addPlayer("Alice", "Red");
+        model.addPlayer("Bob", "Blue");
+        model.determineTurnOrder();
+
+        model.clearPlayers();
+
+        assertEquals(0, model.getPlayerCount());
+        assertTrue(model.isNameAvailable("Alice"));
+        assertTrue(model.isColorAvailable("Red"));
+        assertTrue(model.getTurnOrder().isEmpty());
+    }
 }
