@@ -11,7 +11,7 @@ public class HomeScreenView {
 
     private final VBox root;
 
-    public HomeScreenView(SceneNavigator navigator) {
+    public HomeScreenView(SetupNavigator navigator) {
         Label title = new Label("Welcome to Catan");
         title.setStyle("-fx-font-size: 28px; -fx-font-weight: bold;");
 
@@ -19,7 +19,7 @@ public class HomeScreenView {
         subtitle.setStyle("-fx-font-size: 14px;");
 
         Button startButton = new Button("Start Game");
-        startButton.setOnAction(e -> {});
+        startButton.setOnAction(e -> navigator.goToPlayerCount());
 
         root = new VBox(20, title, subtitle, startButton);
         root.setAlignment(Pos.CENTER);
