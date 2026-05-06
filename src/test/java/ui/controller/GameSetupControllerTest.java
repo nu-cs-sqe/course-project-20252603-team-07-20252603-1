@@ -688,4 +688,15 @@ class GameSetupControllerTest {
         assertEquals(PlayerAddResult.SUCCESS, result);
         verify(mockModel);
     }
+
+    @Test
+    void testFullValidationDuplicateNameReturnsNameTaken() {
+        expect(mockModel.isNameAvailable("Alice")).andReturn(false);
+        replay(mockModel);
+
+        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, "Alice", "Red");
+
+        assertEquals(PlayerAddResult.NAME_TAKEN, result);
+        verify(mockModel);
+    }
 }
