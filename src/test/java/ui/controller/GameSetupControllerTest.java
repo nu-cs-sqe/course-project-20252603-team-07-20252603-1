@@ -757,4 +757,15 @@ class GameSetupControllerTest {
         assertEquals(PlayerAddResult.NAME_TAKEN, result);
         verify(mockModel);
     }
+
+    @Test
+    void testClearPlayersDelegatesToModel() {
+        mockModel.clearPlayers();
+        expectLastCall();
+        replay(mockModel);
+
+        controller.clearPlayers(mockModel);
+
+        verify(mockModel);
+    }
 }
