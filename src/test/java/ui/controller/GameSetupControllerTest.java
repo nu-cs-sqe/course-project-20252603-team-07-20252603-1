@@ -618,4 +618,16 @@ class GameSetupControllerTest {
         assertEquals(4, count);
         verify(mockModel);
     }
+
+    // ========== Full Validation BVA Tests ==========
+
+    @Test
+    void testFullValidationNullNameReturnsNameEmpty() {
+        replay(mockModel);
+
+        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, null, "Red");
+
+        assertEquals(PlayerAddResult.NAME_EMPTY, result);
+        verify(mockModel);
+    }
 }
