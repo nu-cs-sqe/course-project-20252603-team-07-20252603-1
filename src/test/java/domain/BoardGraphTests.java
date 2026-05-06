@@ -303,4 +303,14 @@ public class BoardGraphTests {
         b.addGraphNodeObject(nodeMock);
         assertTrue(b.playerClaimStoredNode(PlayerColor.RED, 0));
     }
+
+    @Test
+    void playerClaimStoredNode_test02_NodeDoesNotExist_ExpectError() {
+        BoardGraph b = new BoardGraph();
+
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> b.playerClaimStoredNode(PlayerColor.BLUE, 0));
+
+        assertEquals("Node does not exist", exception.getMessage());
+    }
 }
