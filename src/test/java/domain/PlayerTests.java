@@ -116,4 +116,22 @@ public class PlayerTests {
         assertEquals("Vertex is already occupied.", exception.getMessage());
         EasyMock.verify(vertex);
     }
+
+    @Test // test case 6
+    public void PlaceSettlement_OnVertexAdjacentToExistingAndZeroSettlements_ExpectError() {
+        // mock vertex that is already occupied
+        Vertex vertex = EasyMock.createMock(Vertex.class);
+        EasyMock.expect(vertex.isOccupied()).andReturn(false);
+        EasyMock.expect(vertex.hasAdjacentSettlementViolatingDistanceRule()).andReturn(true);
+        EasyMock.replay(vertex);
+
+        // create new player
+        Player player = new Player();
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            player.placeSettlement(vertex);
+        });
+        assertEquals("Settlement violates the distance rule.", exception.getMessage());
+        EasyMock.verify(vertex);
+    }
 }
