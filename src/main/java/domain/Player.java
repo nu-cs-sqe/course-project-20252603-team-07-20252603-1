@@ -68,6 +68,11 @@ public class Player {
 
         // merge resources into player's resources map (adds quantities if keys match, otherwise adds new key-value pair)
         for (Map.Entry<ResourceType, Integer> entry : resources.entrySet()) {
+            // validate data entry
+            if (entry.getValue() < 1)
+                throw new IllegalArgumentException("Resource quantity must be at least 1.");
+
+            // merge new resources
             this.resources.merge(entry.getKey(), entry.getValue(), Integer::sum);
         }
     }

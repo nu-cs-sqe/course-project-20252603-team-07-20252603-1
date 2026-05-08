@@ -320,4 +320,20 @@ public class PlayerTests {
                 "expected: player's BRICK count increases by 19");
     }
 
+    @Test // test case 17
+    public void ReceiveResources_SheepZeroBelowLowerBoundary_ExpectError() {
+        // initialize test data
+        Map<ResourceType, Integer> resources = new HashMap<>();
+        resources.put(ResourceType.SHEEP, 0);
+
+        // initialize player
+        Player player = new Player();
+
+        // assert data validation
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+                player.receiveResources(resources)
+        );
+        assertEquals("Resource quantity must be at least 1.", exception.getMessage());
+    }
+
 }
