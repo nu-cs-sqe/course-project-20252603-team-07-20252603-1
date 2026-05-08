@@ -3,6 +3,7 @@ package domain;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class Player {
     private final List<Settlement> settlements;
@@ -51,5 +52,10 @@ public class Player {
 
         // add edge to list of roads
         roads.add(edge);
+    }
+
+    public void receiveResources(Map<ResourceType, Integer> resources) {
+        if (resources == null)
+            throw new IllegalArgumentException("Resources cannot be null.");
     }
 }

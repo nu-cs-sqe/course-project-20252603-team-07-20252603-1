@@ -260,4 +260,14 @@ public class PlayerTests {
         EasyMock.verify(edge);
     }
 
+    @Test // test case 13
+    public void ReceiveResources_NullResources_ExpectError() {
+        Player player = new Player();
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+                player.receiveResources(null)
+        );
+        assertEquals("Resources cannot be null.", exception.getMessage());
+    }
+
 }
