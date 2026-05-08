@@ -357,4 +357,19 @@ public class PlayerTests {
                 "expected: player's BRICK count increases by 3");
     }
 
+    @Test // test case 19
+    public void ReceiveResources_DesertOneInvalidResourceType_ExpectError() {
+        Map<ResourceType, Integer> resources = new HashMap<>();
+        resources.put(ResourceType.DESERT, 1);
+
+        // instantiate player
+        Player player = new Player();
+
+        // validate that desert cannot be received as a resource
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+            player.receiveResources(resources)
+        );
+        assertEquals("Cannot receive DESERT as a resource.", exception.getMessage());
+    }
+
 }

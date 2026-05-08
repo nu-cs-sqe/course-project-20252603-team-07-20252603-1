@@ -68,7 +68,9 @@ public class Player {
 
         // merge resources into player's resources map (adds quantities if keys match, otherwise adds new key-value pair)
         for (Map.Entry<ResourceType, Integer> entry : resources.entrySet()) {
-            // validate data entry
+            // validate data entries
+            if (entry.getKey() == ResourceType.DESERT)
+                throw new IllegalArgumentException("Cannot receive DESERT as a resource.");
             if (entry.getValue() < 1)
                 throw new IllegalArgumentException("Resource quantity must be at least 1.");
 
