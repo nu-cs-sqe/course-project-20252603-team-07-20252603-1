@@ -286,4 +286,21 @@ public class PlayerTests {
         assertEquals(0, player.getResources().size(), "expected: player's resources map unchanged");
     }
 
+    @Test // test case 15
+    public void ReceiveResources_WoodOneAtLowerBoundary_ExpectWoodCountIncreasedByOne() {
+        final int expectedWoodCount = 1;
+
+        // create test resource
+        Map<ResourceType, Integer> resources = new HashMap<>();
+        resources.put(ResourceType.WOOD, 1);
+
+        // instantiate player to test receiving resource
+        Player player = new Player();
+        player.receiveResources(resources);
+
+        // assert correct value received
+        assertEquals(expectedWoodCount, player.getResources().get(ResourceType.WOOD),
+                "expected: player's WOOD count increases by 1");
+    }
+
 }

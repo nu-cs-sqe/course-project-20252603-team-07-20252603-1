@@ -109,13 +109,13 @@ Step 3:
 
 
 |              | System under test                                     | Expected output                                                   | Implemented? |
-| ------------ | ----------------------------------------------------- | ----------------------------------------------------------------- | ------------ |
-| Test Case 13 | resources = null                                      | IllegalArgumentException: "Resources cannot be null."             | :white_check_mark:          |
-| Test Case 14 | resources = {} (empty map)                            | player's resources map unchanged                                  | :white_check_mark:          |
-| Test Case 15 | resources = {WOOD: 1} (quantity at lower boundary)    | player's WOOD count increases by 1                                | :x:          |
-| Test Case 16 | resources = {BRICK: 19} (quantity at upper boundary)  | player's BRICK count increases by 19                              | :x:          |
-| Test Case 17 | resources = {SHEEP: 0} (just below lower boundary)    | IllegalArgumentException: "Resource quantity must be at least 1." | :x:          |
-| Test Case 18 | resources = {WOOD: 5, BRICK: 3} (more than one entry) | player's WOOD count increases by 5 and BRICK count increases by 3 | :x:          |
-| Test Case 19 | resources = {DESERT: 1} (invalid resource type)       | IllegalArgumentException: "Cannot receive DESERT as a resource."  | :x:          |
+| ------------ | ----------------------------------------------------- | ----------------------------------------------------------------- | ----------- |
+| Test Case 13 | resources = null                                      | IllegalArgumentException: "Resources cannot be null."             | :white_check_mark:         |
+| Test Case 14 | resources = {} (empty map)                            | player's resources map unchanged                                  | :white_check_mark:         |
+| Test Case 15 | resources = {WOOD: 1} (quantity at lower boundary)    | player's WOOD count increases by 1                                | :white_check_mark:          |
+| Test Case 16 | resources = {BRICK: 19} (quantity at upper boundary)  | player's BRICK count increases by 19                              | :x:         |
+| Test Case 17 | resources = {SHEEP: 0} (just below lower boundary)    | IllegalArgumentException: "Resource quantity must be at least 1." | :x:         |
+| Test Case 18 | resources = {WOOD: 5, BRICK: 3} (more than one entry) | player's WOOD count increases by 5 and BRICK count increases by 3 | :x:         |
+| Test Case 19 | resources = {DESERT: 1} (invalid resource type)       | IllegalArgumentException: "Cannot receive DESERT as a resource."  | :x:         |
 
 

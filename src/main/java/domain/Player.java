@@ -62,7 +62,13 @@ public class Player {
     }
 
     public void receiveResources(Map<ResourceType, Integer> resources) {
+        // validate resources before merging
         if (resources == null)
             throw new IllegalArgumentException("Resources cannot be null.");
+
+        // merge resources into player's resources map (adds quantities if keys match, otherwise adds new key-value pair)
+        for (Map.Entry<ResourceType, Integer> entry : resources.entrySet()) {
+            this.resources.merge(entry.getKey(), entry.getValue(), Integer::sum);
+        }
     }
 }
