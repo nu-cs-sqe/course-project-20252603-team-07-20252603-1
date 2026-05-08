@@ -110,8 +110,8 @@ Step 3:
 
 |              | System under test                                     | Expected output                                                   | Implemented? |
 | ------------ | ----------------------------------------------------- | ----------------------------------------------------------------- | ------------ |
-| Test Case 13 | resources = null                                      | IllegalArgumentException: "Resources cannot be null."             | :x:          |
-| Test Case 14 | resources = {} (empty map)                            | player's resources map unchanged                                  | :x:          |
+| Test Case 13 | resources = null                                      | IllegalArgumentException: "Resources cannot be null."             | :white_check_mark:          |
+| Test Case 14 | resources = {} (empty map)                            | player's resources map unchanged                                  | :white_check_mark:          |
 | Test Case 15 | resources = {WOOD: 1} (quantity at lower boundary)    | player's WOOD count increases by 1                                | :x:          |
 | Test Case 16 | resources = {BRICK: 19} (quantity at upper boundary)  | player's BRICK count increases by 19                              | :x:          |
 | Test Case 17 | resources = {SHEEP: 0} (just below lower boundary)    | IllegalArgumentException: "Resource quantity must be at least 1." | :x:          |
