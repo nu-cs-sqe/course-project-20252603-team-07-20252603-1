@@ -46,7 +46,8 @@ public class Player {
             throw new IllegalStateException("No roads remaining.");
         if (edge.isOccupied())
             throw new IllegalArgumentException("Edge is already occupied.");
-        edge.isConnectedToPlayerNetwork();
+        if (!edge.isConnectedToPlayerNetwork())
+            throw new IllegalArgumentException("Road must connect to player's existing network.");
 
         // add edge to list of roads
         roads.add(edge);

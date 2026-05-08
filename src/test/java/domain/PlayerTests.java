@@ -153,7 +153,7 @@ public class PlayerTests {
         // mock edge
         Edge edge = EasyMock.createMock(Edge.class);
         EasyMock.expect(edge.isOccupied()).andReturn(false);
-        EasyMock.expect(edge.isConnectedToPlayerNetwork()).andReturn(false);
+        EasyMock.expect(edge.isConnectedToPlayerNetwork()).andReturn(true);
         EasyMock.replay(edge);
 
         // create player
@@ -171,13 +171,13 @@ public class PlayerTests {
         // mock 14 setup edges to reach state of 14 existing roads
         Edge setupEdge = EasyMock.createMock(Edge.class);
         EasyMock.expect(setupEdge.isOccupied()).andReturn(false).times(14);
-        EasyMock.expect(setupEdge.isConnectedToPlayerNetwork()).andReturn(false).times(14);
+        EasyMock.expect(setupEdge.isConnectedToPlayerNetwork()).andReturn(true).times(14);
         EasyMock.replay(setupEdge);
 
         // mock the edge under test
         Edge edge = EasyMock.createMock(Edge.class);
         EasyMock.expect(edge.isOccupied()).andReturn(false);
-        EasyMock.expect(edge.isConnectedToPlayerNetwork()).andReturn(false);
+        EasyMock.expect(edge.isConnectedToPlayerNetwork()).andReturn(true);
         EasyMock.replay(edge);
 
         // initialize player and add edges
@@ -203,7 +203,7 @@ public class PlayerTests {
         // mock 15 setup edges to reach state of 15 existing roads
         Edge setupEdge = EasyMock.createMock(Edge.class);
         EasyMock.expect(setupEdge.isOccupied()).andReturn(false).times(15);
-        EasyMock.expect(setupEdge.isConnectedToPlayerNetwork()).andReturn(false).times(15);
+        EasyMock.expect(setupEdge.isConnectedToPlayerNetwork()).andReturn(true).times(15);
         EasyMock.replay(setupEdge);
 
         // mock the edge under test
@@ -239,6 +239,24 @@ public class PlayerTests {
             player.placeRoad(edge)
         );
         assertEquals("Edge is already occupied.", exception.getMessage());
+        EasyMock.verify(edge);
+    }
+
+    @Test // test case 12
+    public void PlaceRoad_OnUnoccupiedEdgeNotConnectedToNetworkZeroRoads_ExpectError() {
+        // mock edge that is unoccupied but not connected to the player's network
+        Edge edge = EasyMock.createMock(Edge.class);
+        EasyMock.expect(edge.isOccupied()).andReturn(false);
+        EasyMock.expect(edge.isConnectedToPlayerNetwork()).andReturn(false);
+        EasyMock.replay(edge);
+
+        // create player
+        Player player = new Player();
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+                player.placeRoad(edge)
+        );
+        assertEquals("Road must connect to player's existing network.", exception.getMessage());
         EasyMock.verify(edge);
     }
 

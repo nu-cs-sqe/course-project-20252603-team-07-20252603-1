@@ -76,7 +76,7 @@ Step 3:
 | Test Case 9  | edge valid (unoccupied, connected to player's network), roads = 14 | road appended to player's roads list                                        | :white_check_mark:          |
 | Test Case 10 | edge valid (unoccupied, connected to player's network), roads = 15 | IllegalStateException: "No roads remaining."                                | :white_check_mark:          |
 | Test Case 11 | edge already occupied, roads = 0                                   | IllegalArgumentException: "Edge is already occupied."                       | :white_check_mark: |
-| Test Case 12 | edge unoccupied but not connected to player's network, roads = 0   | IllegalArgumentException: "Road must connect to player's existing network." | :x:          |
+| Test Case 12 | edge unoccupied but not connected to player's network, roads = 0   | IllegalArgumentException: "Road must connect to player's existing network." | :white_check_mark:          |
 
 
 ---
