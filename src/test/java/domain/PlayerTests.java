@@ -3,6 +3,9 @@ package domain;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -268,6 +271,19 @@ public class PlayerTests {
                 player.receiveResources(null)
         );
         assertEquals("Resources cannot be null.", exception.getMessage());
+    }
+
+    @Test // test case 14
+    public void ReceiveResources_EmptyMap_ExpectResourcesUnchanged() {
+        // create data
+        Map<ResourceType, Integer> emptyResources = new HashMap<>();
+
+        // create player and receive resources
+        Player player = new Player();
+        player.receiveResources(emptyResources);
+
+        // assert data
+        assertEquals(0, player.getResources().size(), "expected: player's resources map unchanged");
     }
 
 }

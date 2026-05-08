@@ -2,16 +2,23 @@ package domain;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Player {
     private final List<Settlement> settlements;
     private final List<Edge> roads;
+    private final Map<ResourceType, Integer> resources;
 
     public Player() {
         this.settlements = new ArrayList<>();
         this.roads = new ArrayList<>();
+        this.resources = new HashMap<>();
+    }
+
+    public Map<ResourceType, Integer> getResources() {
+        return Collections.unmodifiableMap(resources);
     }
 
     public List<Settlement> getSettlements() {
