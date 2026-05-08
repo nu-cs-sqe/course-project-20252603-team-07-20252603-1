@@ -34,12 +34,12 @@ Step 3:
 
 |             | System under test                                                                   | Expected output                                                    | Implemented? |
 | ----------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------ | ------------ |
-| Test Case 1 | vertex = null, settlements = 0                                                      | IllegalArgumentException: "Vertex cannot be null."                 | :x:          |
-| Test Case 2 | vertex valid (unoccupied, no adjacent settlements), settlements = 0                 | settlement appended to player's settlements list                   | :x:          |
-| Test Case 3 | vertex valid (unoccupied, no adjacent settlements), settlements = 4                 | settlement appended to player's settlements list                   | :x:          |
-| Test Case 4 | vertex valid (unoccupied, no adjacent settlements), settlements = 5                 | IllegalStateException: "No settlements remaining."                 | :x:          |
-| Test Case 5 | vertex already occupied, settlements = 0                                            | IllegalArgumentException: "Vertex is already occupied."            | :x:          |
-| Test Case 6 | vertex adjacent to an existing settlement (distance rule violated), settlements = 0 | IllegalArgumentException: "Settlement violates the distance rule." | :x:          |
+| Test Case 1 | vertex = null, settlements = 0                                                      | IllegalArgumentException: "Vertex cannot be null."                 | :white_check_mark:          |
+| Test Case 2 | vertex valid (unoccupied, no adjacent settlements), settlements = 0                 | settlement appended to player's settlements list                   | :white_check_mark:          |
+| Test Case 3 | vertex valid (unoccupied, no adjacent settlements), settlements = 4                 | settlement appended to player's settlements list                   | :white_check_mark:          |
+| Test Case 4 | vertex valid (unoccupied, no adjacent settlements), settlements = 5                 | IllegalStateException: "No settlements remaining."                 | :white_check_mark:          |
+| Test Case 5 | vertex already occupied, settlements = 0                                            | IllegalArgumentException: "Vertex is already occupied."            | :white_check_mark:          |
+| Test Case 6 | vertex adjacent to an existing settlement (distance rule violated), settlements = 0 | IllegalArgumentException: "Settlement violates the distance rule." | :white_check_mark:          |
 
 
 ---
@@ -71,11 +71,11 @@ Step 3:
 
 |              | System under test                                                  | Expected output                                                             | Implemented? |
 | ------------ | ------------------------------------------------------------------ | --------------------------------------------------------------------------- | ------------ |
-| Test Case 7  | edge = null, roads = 0                                             | IllegalArgumentException: "Edge cannot be null."                            | :x:          |
-| Test Case 8  | edge valid (unoccupied, connected to player's network), roads = 0  | road appended to player's roads list                                        | :x:          |
-| Test Case 9  | edge valid (unoccupied, connected to player's network), roads = 14 | road appended to player's roads list                                        | :x:          |
-| Test Case 10 | edge valid (unoccupied, connected to player's network), roads = 15 | IllegalStateException: "No roads remaining."                                | :x:          |
-| Test Case 11 | edge already occupied, roads = 0                                   | IllegalArgumentException: "Edge is already occupied."                       | :x:          |
+| Test Case 7  | edge = null, roads = 0                                             | IllegalArgumentException: "Edge cannot be null."                            | :white_check_mark:          |
+| Test Case 8  | edge valid (unoccupied, connected to player's network), roads = 0  | road appended to player's roads list                                        | :white_check_mark:          |
+| Test Case 9  | edge valid (unoccupied, connected to player's network), roads = 14 | road appended to player's roads list                                        | :white_check_mark:          |
+| Test Case 10 | edge valid (unoccupied, connected to player's network), roads = 15 | IllegalStateException: "No roads remaining."                                | :white_check_mark:          |
+| Test Case 11 | edge already occupied, roads = 0                                   | IllegalArgumentException: "Edge is already occupied."                       | :white_check_mark: |
 | Test Case 12 | edge unoccupied but not connected to player's network, roads = 0   | IllegalArgumentException: "Road must connect to player's existing network." | :x:          |
 
 
