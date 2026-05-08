@@ -336,4 +336,25 @@ public class PlayerTests {
         assertEquals("Resource quantity must be at least 1.", exception.getMessage());
     }
 
+    @Test // test case 18
+    public void ReceiveResources_WoodFiveAndBrickThreeMoreThanOneEntry_ExpectBothCountsIncreased() {
+        final int expectedWoodCount = 5;
+        final int expectedBrickCount = 3;
+
+        // create multi-entry resource map
+        Map<ResourceType, Integer> resources = new HashMap<>();
+        resources.put(ResourceType.WOOD, expectedWoodCount);
+        resources.put(ResourceType.BRICK, expectedBrickCount);
+
+        // instantiate player and receive resources
+        Player player = new Player();
+        player.receiveResources(resources);
+
+        // assert both resource counts were merged correctly
+        assertEquals(expectedWoodCount, player.getResources().get(ResourceType.WOOD),
+                "expected: player's WOOD count increases by 5");
+        assertEquals(expectedBrickCount, player.getResources().get(ResourceType.BRICK),
+                "expected: player's BRICK count increases by 3");
+    }
+
 }
