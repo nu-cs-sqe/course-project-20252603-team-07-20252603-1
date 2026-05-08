@@ -303,4 +303,21 @@ public class PlayerTests {
                 "expected: player's WOOD count increases by 1");
     }
 
+    @Test // test case 16
+    public void ReceiveResources_BrickNineteenAtUpperBoundary_ExpectBrickCountIncreasedByNineteen() {
+        final int expectedBrickCount = 19;
+
+        // create test resource
+        Map<ResourceType, Integer> resources = new HashMap<>();
+        resources.put(ResourceType.BRICK, 19);
+
+        // instantiate player to test receiving resource
+        Player player = new Player();
+        player.receiveResources(resources);
+
+        // assert correct value received
+        assertEquals(expectedBrickCount, player.getResources().get(ResourceType.BRICK),
+                "expected: player's BRICK count increases by 19");
+    }
+
 }
