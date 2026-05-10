@@ -146,12 +146,12 @@
 - Error "Edge does not exist"
 
 
-|             | State of the System                       | Expected output | Implemented? |
-|-------------|-------------------------------------------|-----------------|--------------|
-| Test Case 1 | Set Empty                                 | Error           | :x:          |
-| Test Case 2 | One element Set, edge exists              | Correct Object  | :x:          |
-| Test Case 3 | Multiple element set, edge exists         | Correct Object  | :x:          |
-| Test Case 4 | Multiple element set, edge does not exist | Error           | :x:          |
+|             | State of the System                       | Expected output | Implemented?       |
+|-------------|-------------------------------------------|-----------------|--------------------|
+| Test Case 1 | Set Empty                                 | Error           | :white_check_mark: |
+| Test Case 2 | One element Set, edge exists              | Correct Object  | :x:                |
+| Test Case 3 | Multiple element set, edge exists         | Correct Object  | :x:                |
+| Test Case 4 | Multiple element set, edge does not exist | Error           | :x:                |
 
 ## Methods TODO (Defined during TDD of other functions)
 - getCorrectEdgeFromSet()
