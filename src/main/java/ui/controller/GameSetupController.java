@@ -170,26 +170,4 @@ public class GameSetupController {
     public List<Player> getTurnOrder(GameSetupModel model) {
         return model.getTurnOrder();
     }
-
-    public PlayerAddResult addPlayerWithFullValidation(GameSetupModel model, String name, String color) {
-        String trimmed = (name == null) ? "" : name.trim();
-        if (trimmed.isEmpty()) {
-            return PlayerAddResult.NAME_EMPTY;
-        }
-        if (!model.isNameAvailable(trimmed)) {
-            return PlayerAddResult.NAME_TAKEN;
-        }
-        if (color == null) {
-            return PlayerAddResult.COLOR_EMPTY;
-        }
-        if (!model.isColorAvailable(color)) {
-            return PlayerAddResult.COLOR_TAKEN;
-        }
-        model.addPlayer(trimmed, color);
-        return PlayerAddResult.SUCCESS;
-    }
-
-    public void clearPlayers(GameSetupModel model) {
-        model.clearPlayers();
-    }
 }
