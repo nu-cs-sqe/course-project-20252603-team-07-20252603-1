@@ -17,7 +17,6 @@ public class GameSetupModel {
 
     private final List<Player> players;
     private final Set<String> usedColors;
-    private final Set<String> usedNames;
     private Board board;
     private ResourceDeck resourceDeck;
     private DevelopmentCardDeck developmentCardDeck;
@@ -29,7 +28,6 @@ public class GameSetupModel {
     public GameSetupModel() {
         this.players = new ArrayList<>();
         this.usedColors = new HashSet<>();
-        this.usedNames = new HashSet<>();
         this.turnOrder = new ArrayList<>();
     }
 
@@ -52,18 +50,6 @@ public class GameSetupModel {
         Player player = new Player(name, color);
         players.add(player);
         usedColors.add(color);
-        usedNames.add(name);
-    }
-
-    public boolean isNameAvailable(String name) {
-        return !usedNames.contains(name);
-    }
-
-    public void clearPlayers() {
-        players.clear();
-        usedColors.clear();
-        usedNames.clear();
-        turnOrder.clear();
     }
 
     /**
