@@ -110,11 +110,11 @@ public class BoardGraph {
         throw new IllegalArgumentException("Edge does not exist");
     }
 
-    boolean checkPlayerOwnsNeighboringEdge(PlayerColor color, int startingNodeID, int endingNodeID) {
+    protected boolean checkPlayerOwnsNeighboringEdge(PlayerColor color, int startingNodeID, int endingNodeID) {
         return false;
     }
 
-    boolean checkPlayerOwnsNeighboringNode(PlayerColor color, int startingNodeID, int endingNodeID) {
+    protected boolean checkPlayerOwnsNeighboringNode(PlayerColor color, int startingNodeID, int endingNodeID) {
         return true;
     }
 
