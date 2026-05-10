@@ -3,6 +3,8 @@ package domain;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
+import java.util.Set;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BoardGraphTests {
@@ -449,5 +451,20 @@ public class BoardGraphTests {
 
         assertTrue(b.playerClaimStoredEdge(PlayerColor.RED, 0, 1));
         EasyMock.verify(edgeMock0to1);
+    }
+
+    @Test
+    void getCorrectEdgeFromSet_test01_EmptySet_ExpectError(){
+        BoardGraph b = new BoardGraph();
+        GraphNode nodeStub = EasyMock.createNiceMock((GraphNode.class));
+        EasyMock.expect(nodeStub.getNodeID()).andStubReturn(0);
+        EasyMock.replay(nodeStub);
+
+        b.addGraphNodeObject(nodeStub);
+        Set<GraphEdge> node0EdgeSet = b.getConnectingEdgesByID(0);
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> b.getCorrectEdgeFromSet(node0EdgeSet, 0, 1));
+
+        assertEquals("Edge does not exist", exception.getMessage());
     }
 }

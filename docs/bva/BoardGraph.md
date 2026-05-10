@@ -134,6 +134,25 @@
 | Test Case 5 | Red Claims edge52to53, owns no adjacencies              | Error 3         | :x:                |
 | Test Case 6 | Red Claims edge0to1, owns adjacent edge, edge unclaimed | True            | :x:                |
 
+### Method under test: `getCorrectEdgeFromSet(Set<GraphEdge> connectingEdges, int startingNodeID, int endingNodeID)`
+
+#### Inputs:
+- set of Graph Edges -> collection -> empty, one element, multiple elements
+- startingNodeID + endingNodeID -> both are integers, but technically they collectively serve as an "ID" of the node
+  - Cases -> Edge with "ID" exist, edge without "ID" exists
+
+#### Outputs:
+- GraphEdge Object (if it exists)
+- Error "Edge does not exist"
+
+
+|             | State of the System                       | Expected output | Implemented? |
+|-------------|-------------------------------------------|-----------------|--------------|
+| Test Case 1 | Set Empty                                 | Error           | :x:          |
+| Test Case 2 | One element Set, edge exists              | Correct Object  | :x:          |
+| Test Case 3 | Multiple element set, edge exists         | Correct Object  | :x:          |
+| Test Case 4 | Multiple element set, edge does not exist | Error           | :x:          |
+
 ## Methods TODO (Defined during TDD of other functions)
 - getCorrectEdgeFromSet()
 - checkPlayerOwnsNeighboringEdge()
