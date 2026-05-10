@@ -484,4 +484,25 @@ public class BoardGraphTests {
 
         assertEquals(edgeStub, b.getCorrectEdgeFromSet(node0EdgeSet, 0, 1));
     }
+
+    @Test
+    void getCorrectEdgeFromSet_test03_MultipleElementSet_ExpectEdge(){
+        BoardGraph b = new BoardGraph();
+        GraphNode nodeStub = EasyMock.createNiceMock(GraphNode.class);
+        GraphEdge edgeStub0 = EasyMock.createNiceMock(GraphEdge.class);
+        GraphEdge edgeStub1 = EasyMock.createNiceMock(GraphEdge.class);
+        EasyMock.expect(nodeStub.getNodeID()).andStubReturn(53);
+        EasyMock.expect(edgeStub0.getStartingNodeID()).andStubReturn(52);
+        EasyMock.expect(edgeStub0.getEndingNodeID()).andStubReturn(53);
+        EasyMock.expect(edgeStub1.getStartingNodeID()).andStubReturn(51);
+        EasyMock.expect(edgeStub1.getEndingNodeID()).andStubReturn(53);
+        EasyMock.replay(nodeStub, edgeStub0, edgeStub1);
+
+        b.addGraphNodeObject(nodeStub);
+        b.addGraphNodeConnection(53, edgeStub0);
+        b.addGraphNodeConnection(53, edgeStub1);
+        Set<GraphEdge> node0EdgeSet = b.getConnectingEdgesByID(53);
+
+        assertEquals(edgeStub1, b.getCorrectEdgeFromSet(node0EdgeSet, 51, 53));
+    }
 }
