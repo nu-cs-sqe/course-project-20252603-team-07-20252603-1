@@ -25,6 +25,6 @@ public class GameModel {
     }
 
     public void advanceToNextPlayer() {
-        currentPlayerIndex++;
+        currentPlayerIndex = (currentPlayerIndex + 1) % turnOrder.size();
     }
 }
