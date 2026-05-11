@@ -798,8 +798,4 @@ public class HexTests {
         String actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
     }
-
-
-
 }
-
