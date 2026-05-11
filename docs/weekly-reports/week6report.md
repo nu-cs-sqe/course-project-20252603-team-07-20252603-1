@@ -7,7 +7,9 @@ Still making progress on game setup, with views and models being created to have
 1. [done] Ben: Hex Class https://github.com/nu-cs-sqe/course-project-20252603-team-07-20252603-1/pull/23
 - Reviewed Connor's and Kevin's PRs, gave feedback for both
 - Updated Hex class based off of professor feedback
-2. [??% done] Spencer: 
+2. [90% done] Spencer: Continued work on graph class https://github.com/nu-cs-sqe/course-project-20252603-team-07-20252603-1/pull/24
+- Worked on claiming nodes and edges
+- Allow building of actual graph based on board layout
 3. [done] Connor: Completed Player BVA based on PlantUML diagram + implemented associated tests.
 - Added spotbug + checkstyle to project
 4. [??% done] Kevin: 
@@ -22,7 +24,7 @@ Still making progress on game setup, with views and models being created to have
 
 ## Goals
 1. Ben: Begin work on dice, settlement, city, and road classes
-2. Spencer: 
+2. Spencer: Finish graph model, work on controller and view for the graph
 3. Connor: 
 4. Kevin: 
 5. Theo: Connect turn mechanics to board state (hex production, settlements) 
