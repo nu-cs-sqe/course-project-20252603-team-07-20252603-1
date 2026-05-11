@@ -35,4 +35,19 @@ class GameModelTest {
         // Verify starts with first player (index 0)
         assertEquals(0, gameModel.getCurrentPlayerIndex());
     }
+
+    @Test
+    void testGetCurrentPlayerReturnsFirstPlayer() {
+        // Create players
+        Player player1 = new Player("Alice", "RED");
+        Player player2 = new Player("Bob", "BLUE");
+        Player player3 = new Player("Charlie", "WHITE");
+        List<Player> players = List.of(player1, player2, player3);
+
+        // Create GameModel
+        GameModel gameModel = new GameModel(players);
+
+        // Verify getCurrentPlayer returns first player
+        assertEquals(player1, gameModel.getCurrentPlayer());
+    }
 }
