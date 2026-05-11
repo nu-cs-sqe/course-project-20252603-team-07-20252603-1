@@ -131,7 +131,9 @@ public class BoardGraph {
     }
 
     protected boolean checkPlayerOwnsNeighboringNode(PlayerColor color, int startingNodeID, int endingNodeID) {
-        return true;
+        GraphNode startingNode = getGraphNodeByID(startingNodeID);
+        GraphNode endingNode = getGraphNodeByID(endingNodeID);
+        return startingNode.checkColor() == color || endingNode.checkColor() == color;
     }
 
 
