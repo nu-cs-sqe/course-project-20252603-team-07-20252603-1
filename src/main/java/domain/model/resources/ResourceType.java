@@ -1,11 +1,11 @@
 package domain.model.resources;
 
-enum ResourceType {
+public enum ResourceType {
 
     WOOD, // LUMBER
     ROCK, // ORE
     SHEEP, // ???
     CLAY, // BRICK
     WHEAT;
-    
+
 }
