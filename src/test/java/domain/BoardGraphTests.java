@@ -507,6 +507,39 @@ public class BoardGraphTests {
         assertEquals("Edge does not exist", exception.getMessage());
     }
 
+    @Test
+    void playerClaimsStoredEdge_test04_EdgeAlreadyClaimed_ExpectError(){
+        BoardGraph b = EasyMock.partialMockBuilder(BoardGraph.class)
+                .withConstructor()
+                .addMockedMethod("checkPlayerOwnsNeighboringEdge")
+                .addMockedMethod("checkPlayerOwnsNeighboringNode")
+                .createMock();
+        GraphNode nodeStub = EasyMock.createNiceMock(GraphNode.class);
+        GraphEdge edgeMock = EasyMock.createMock(GraphEdge.class);
+
+        EasyMock.expect(b.checkPlayerOwnsNeighboringEdge(PlayerColor.WHITE, 52, 53))
+                .andStubReturn(false);
+        EasyMock.expect(b.checkPlayerOwnsNeighboringNode(PlayerColor.WHITE, 52, 53))
+                .andStubReturn(true);
+
+        EasyMock.expect(nodeStub.getNodeID()).andStubReturn(52);
+        EasyMock.expect(edgeMock.getStartingNodeID()).andReturn(52);
+        EasyMock.expect(edgeMock.getEndingNodeID()).andReturn(53);
+        EasyMock.expect(edgeMock.claimGraphEdge(PlayerColor.WHITE)).andThrow(new IllegalArgumentException("Edge already claimed"));
+
+        EasyMock.replay(nodeStub, edgeMock, b);
+
+        b.addGraphNodeObject(nodeStub);
+        b.addGraphNodeConnection(52, edgeMock);
+
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> b.playerClaimStoredEdge(PlayerColor.WHITE, 52, 53));
+
+        assertEquals("Edge already claimed", exception.getMessage());
+
+        EasyMock.verify(edgeMock);
+    }
+
     // getCorrectEdgeFromSet() tests
     @Test
     void getCorrectEdgeFromSet_test01_EmptySet_ExpectError(){
