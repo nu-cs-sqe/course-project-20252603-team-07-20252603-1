@@ -1,5 +1,7 @@
 package domain.model;
 
+import domain.model.resources.ResourceDeck;
+import domain.model.resources.ResourceType;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
@@ -87,5 +89,29 @@ class GameModelTest {
 
         // Verify wrapped back to first player
         assertEquals(player1, gameModel.getCurrentPlayer());
+    }
+
+    @Test
+    void testPerformTurnRollsDiceAndDistributesResource() {
+        // Create players
+        Player player1 = new Player("Alice", "RED");
+        Player player2 = new Player("Bob", "BLUE");
+        List<Player> players = List.of(player1, player2);
+
+        // Create GameModel with player states
+        GameModel gameModel = new GameModel(players);
+
+        // Create fixed dice roller and resource deck
+        DiceRoller diceRoller = new FixedDiceRoller(7);
+        ResourceDeck resourceDeck = new ResourceDeck(ResourceType.WOOD);
+
+        // Perform turn
+        gameModel.performTurn(diceRoller, resourceDeck);
+
+        // Verify first player received one WOOD resource
+        assertEquals(1, gameModel.getPlayerState(0).getResourceCount(ResourceType.WOOD));
+
+        // Verify second player has no resources
+        assertEquals(0, gameModel.getPlayerState(1).getResourceCount(ResourceType.WOOD));
     }
 }
