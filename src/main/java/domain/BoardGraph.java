@@ -113,7 +113,21 @@ public class BoardGraph {
     }
 
     protected boolean checkPlayerOwnsNeighboringEdge(PlayerColor color, int startingNodeID, int endingNodeID) {
-        return true;
+        Set<GraphEdge> connectingStartingNodeEdges = getConnectingEdgesByID(startingNodeID);
+        Set<GraphEdge> connectingEndingNodeEdges = getConnectingEdgesByID(endingNodeID);
+        // check starting Node Edges
+        for (GraphEdge edge : connectingStartingNodeEdges) {
+            if(edge.checkOwningColor() == color) {
+                return true;
+            }
+        }
+        // check ending Node Edges
+        for (GraphEdge edge : connectingEndingNodeEdges) {
+            if(edge.checkOwningColor() == color) {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected boolean checkPlayerOwnsNeighboringNode(PlayerColor color, int startingNodeID, int endingNodeID) {
