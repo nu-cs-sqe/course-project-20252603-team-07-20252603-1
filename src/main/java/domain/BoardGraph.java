@@ -113,7 +113,7 @@ public class BoardGraph {
     }
 
     protected boolean checkPlayerOwnsNeighboringEdge(PlayerColor color, int startingNodeID, int endingNodeID) {
-        return false;
+        return true;
     }
 
     protected boolean checkPlayerOwnsNeighboringNode(PlayerColor color, int startingNodeID, int endingNodeID) {
