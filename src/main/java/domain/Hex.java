@@ -3,7 +3,7 @@ package domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Hex {
+public final class Hex {
     public final int hexId;
     public final Resource resource;
     public final int hexRollNum;
