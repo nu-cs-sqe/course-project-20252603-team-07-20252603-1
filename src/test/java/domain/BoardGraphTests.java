@@ -836,9 +836,6 @@ public class BoardGraphTests {
 
         GraphNode nodeStub0 = EasyMock.createNiceMock(GraphNode.class);
         GraphNode nodeStub1 = EasyMock.createNiceMock(GraphNode.class);
-        GraphEdge edge0to1 = EasyMock.createNiceMock(GraphEdge.class);
-        // edge which red owns
-        GraphEdge edge0to2 = EasyMock.createNiceMock(GraphEdge.class);
 
         EasyMock.expect(nodeStub0.getNodeID()).andStubReturn(0);
         EasyMock.expect(nodeStub0.checkColor()).andStubReturn(PlayerColor.RED);
@@ -851,5 +848,25 @@ public class BoardGraphTests {
         b.addGraphNodeObject(nodeStub1);
 
         assertTrue(b.checkPlayerOwnsNeighboringNode(PlayerColor.RED, 0, 1));
+    }
+
+    @Test
+    void checkPlayerOwnsNeighboringNodes_test02_WhiteOwnsEndingNode_ExpectTrue() {
+        BoardGraph b = new BoardGraph();
+
+        GraphNode nodeStub0 = EasyMock.createNiceMock(GraphNode.class);
+        GraphNode nodeStub1 = EasyMock.createNiceMock(GraphNode.class);
+
+        EasyMock.expect(nodeStub0.getNodeID()).andStubReturn(0);
+        EasyMock.expect(nodeStub0.checkColor()).andStubReturn(PlayerColor.RED);
+        EasyMock.expect(nodeStub1.getNodeID()).andStubReturn(1);
+        EasyMock.expect(nodeStub1.checkColor()).andStubReturn(PlayerColor.WHITE);
+
+        EasyMock.replay(nodeStub0, nodeStub1);
+
+        b.addGraphNodeObject(nodeStub0);
+        b.addGraphNodeObject(nodeStub1);
+
+        assertTrue(b.checkPlayerOwnsNeighboringNode(PlayerColor.WHITE, 0, 1));
     }
 }
