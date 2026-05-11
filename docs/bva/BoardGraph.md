@@ -195,6 +195,29 @@
 | Test Case 3 | Blue, checking edge [52, 53], does not own any connecting nodes | False           | :white_check_mark: |
 | Test Case 4 | Orange, checking edge [52, 53], owns both nodes                 | True            | :white_check_mark: |
 
+### Method under test: `checkAdjacentClaimedNodes(int nodeID)`
+
+#### Inputs:
+- nodeID -> interval [0, 53]
+- state of system -> cases
+  - No adjacent nodes are claimed
+  - One adjacent node is claimed
+    - With Whitebox analysis
+      - One adjacent node is claimed, and is the "endingNode" in the edge connected with nodeID
+      - One adjacent node is claimed, and is the "startingNode" in the edge connected with nodeID
+
+#### Outputs:
+- True
+- Error -> "Can not claim node adjacent to node already claimed"
+
+|             | State of the System                                           | Expected output | Implemented?       |
+|-------------|---------------------------------------------------------------|-----------------|--------------------|
+| Test Case 1 | Node 0, no adjacent nodes are claimed                         | True            | :white_check_mark: |
+| Test Case 2 | Node 0, adjacent node 3 is claimed ("endingNode" of edge)     | Error           | :x:                |
+| Test Case 3 | Node 53, adjacent node 50 is claimed ("startingNode" of edge) | Error           | :x:                |
+| Test Case 4 | Node 49, adjacnet nodes 45 and 53 are claimed                 | Error           | :x:                |
+
+
 ### Method under test: `buildGameGraph()`
 
 #### Inputs:
