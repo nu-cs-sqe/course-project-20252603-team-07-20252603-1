@@ -12,13 +12,12 @@ public class Hex {
     private static final int DESERT_ROLL_NUMBER = 7;
 
     private static final int MAX_BUILDINGS_ON_HEX = 3;
-
     private static final int SETTLEMENT_RESOURCE_AMOUNT = 1;
     private static final int CITY_RESOURCE_AMOUNT = 2;
 
-    public final int hexId;
-    public final Resource resource;
-    public final int hexRollNum;
+    private final int hexId;
+    private final Resource resource;
+    private final int hexRollNum;
     private List<Player> playerSettlements;
     private List<Player> playerCities;
     private int totalBuildingsOnHex;
@@ -112,6 +111,18 @@ public class Hex {
 
     public int getCityCount(){
         return playerCities.size();
+    }
+
+    int getHexId(){
+        return this.hexId;
+    }
+
+    Resource getHexResource(){
+        return this.resource;
+    }
+
+    int getHexRollNum(){
+        return this.hexRollNum;
     }
 
     public boolean isPlayerSettlementOnHex(Player player){
