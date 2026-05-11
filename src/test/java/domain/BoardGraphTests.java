@@ -978,6 +978,41 @@ public class BoardGraphTests {
         assertEquals("Can not claim node adjacent to node already claimed", exception.getMessage());
     }
 
+    @Test
+    void checkAdjacentClaimedNodes_test03_StartingAdjacentNodesClaimed_ExpectError(){
+        BoardGraph b = new BoardGraph();
+        GraphNode nodeStub49 = EasyMock.createNiceMock(GraphNode.class);
+        GraphNode nodeStub50 = EasyMock.createNiceMock(GraphNode.class);
+        GraphNode nodeStub53 = EasyMock.createNiceMock(GraphNode.class);
+
+        GraphEdge edge49to53 = EasyMock.createNiceMock(GraphEdge.class);
+        GraphEdge edge50to53 = EasyMock.createNiceMock(GraphEdge.class);
+
+        EasyMock.expect(nodeStub49.getNodeID()).andStubReturn(49);
+        EasyMock.expect(nodeStub50.getNodeID()).andStubReturn(50);
+        EasyMock.expect(nodeStub50.checkOccupied()).andStubReturn(true);
+        EasyMock.expect(nodeStub53.getNodeID()).andStubReturn(53);
+
+        EasyMock.expect(edge49to53.getStartingNodeID()).andStubReturn(49);
+        EasyMock.expect(edge49to53.getEndingNodeID()).andStubReturn(53);
+        EasyMock.expect(edge49to53.checkOwningColor()).andStubReturn(PlayerColor.SETUP);
+        EasyMock.expect(edge50to53.getStartingNodeID()).andStubReturn(50);
+        EasyMock.expect(edge50to53.getEndingNodeID()).andStubReturn(53);
+        EasyMock.expect(edge50to53.checkOwningColor()).andStubReturn(PlayerColor.SETUP);
+
+        EasyMock.replay(nodeStub49, nodeStub50, nodeStub53, edge49to53, edge50to53);
+        b.addGraphNodeObject(nodeStub49);
+        b.addGraphNodeObject(nodeStub50);
+        b.addGraphNodeObject(nodeStub53);
+        b.addGraphNodeConnection(53, edge49to53);
+        b.addGraphNodeConnection(53, edge50to53);
+
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> b.checkAdjacentClaimedNodes(53));
+
+        assertEquals("Can not claim node adjacent to node already claimed", exception.getMessage());
+    }
+
 
     // buildBoard() test
     @Test
