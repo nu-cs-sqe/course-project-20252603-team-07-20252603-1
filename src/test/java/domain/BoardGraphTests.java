@@ -540,6 +540,27 @@ public class BoardGraphTests {
         EasyMock.verify(edgeMock);
     }
 
+    @Test
+    void playerClaimsStoredEdge_test05_PlayerOwnsNoAdjacency_ExpectError(){
+        BoardGraph b = EasyMock.partialMockBuilder(BoardGraph.class)
+                .withConstructor()
+                .addMockedMethod("checkPlayerOwnsNeighboringEdge")
+                .addMockedMethod("checkPlayerOwnsNeighboringNode")
+                .createMock();
+
+        EasyMock.expect(b.checkPlayerOwnsNeighboringEdge(PlayerColor.RED, 52, 53))
+                .andStubReturn(false);
+        EasyMock.expect(b.checkPlayerOwnsNeighboringNode(PlayerColor.RED, 52, 53))
+                .andStubReturn(false);
+
+        EasyMock.replay(b);
+
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> b.playerClaimStoredEdge(PlayerColor.RED, 52, 53));
+
+        assertEquals("To claim an edge, player must own an adjacent node or edge", exception.getMessage());
+    }
+
     // getCorrectEdgeFromSet() tests
     @Test
     void getCorrectEdgeFromSet_test01_EmptySet_ExpectError(){

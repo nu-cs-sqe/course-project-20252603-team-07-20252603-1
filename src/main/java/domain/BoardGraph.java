@@ -98,7 +98,9 @@ public class BoardGraph {
             edgeToClaim.claimGraphEdge(color);
             return true;
         }
-        return false;
+        else {
+            throw new IllegalArgumentException("To claim an edge, player must own an adjacent node or edge");
+        }
     }
 
     GraphEdge getCorrectEdgeFromSet(Set<GraphEdge> connectingEdges, int startingNodeID, int endingNodeID){
