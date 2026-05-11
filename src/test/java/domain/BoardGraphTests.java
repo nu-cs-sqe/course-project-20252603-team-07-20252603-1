@@ -874,19 +874,39 @@ public class BoardGraphTests {
     void checkPlayerOwnsNeighboringNodes_test03_BlueOwnsNoNode_ExpectFalse() {
         BoardGraph b = new BoardGraph();
 
-        GraphNode nodeStub0 = EasyMock.createNiceMock(GraphNode.class);
-        GraphNode nodeStub1 = EasyMock.createNiceMock(GraphNode.class);
+        GraphNode nodeStub52 = EasyMock.createNiceMock(GraphNode.class);
+        GraphNode nodeStub53 = EasyMock.createNiceMock(GraphNode.class);
 
-        EasyMock.expect(nodeStub0.getNodeID()).andStubReturn(0);
-        EasyMock.expect(nodeStub0.checkColor()).andStubReturn(PlayerColor.RED);
-        EasyMock.expect(nodeStub1.getNodeID()).andStubReturn(1);
-        EasyMock.expect(nodeStub1.checkColor()).andStubReturn(PlayerColor.WHITE);
+        EasyMock.expect(nodeStub52.getNodeID()).andStubReturn(52);
+        EasyMock.expect(nodeStub52.checkColor()).andStubReturn(PlayerColor.RED);
+        EasyMock.expect(nodeStub53.getNodeID()).andStubReturn(53);
+        EasyMock.expect(nodeStub53.checkColor()).andStubReturn(PlayerColor.WHITE);
 
-        EasyMock.replay(nodeStub0, nodeStub1);
+        EasyMock.replay(nodeStub52, nodeStub53);
 
-        b.addGraphNodeObject(nodeStub0);
-        b.addGraphNodeObject(nodeStub1);
+        b.addGraphNodeObject(nodeStub52);
+        b.addGraphNodeObject(nodeStub53);
 
-        assertFalse(b.checkPlayerOwnsNeighboringNode(PlayerColor.BLUE, 0, 1));
+        assertFalse(b.checkPlayerOwnsNeighboringNode(PlayerColor.BLUE, 52, 53));
+    }
+
+    @Test
+    void checkPlayerOwnsNeighboringNodes_test04_OrangeOwnsBothNodes_ExpectTrue() {
+        BoardGraph b = new BoardGraph();
+
+        GraphNode nodeStub52 = EasyMock.createNiceMock(GraphNode.class);
+        GraphNode nodeStub53 = EasyMock.createNiceMock(GraphNode.class);
+
+        EasyMock.expect(nodeStub52.getNodeID()).andStubReturn(52);
+        EasyMock.expect(nodeStub52.checkColor()).andStubReturn(PlayerColor.ORANGE);
+        EasyMock.expect(nodeStub53.getNodeID()).andStubReturn(53);
+        EasyMock.expect(nodeStub53.checkColor()).andStubReturn(PlayerColor.ORANGE);
+
+        EasyMock.replay(nodeStub52, nodeStub53);
+
+        b.addGraphNodeObject(nodeStub52);
+        b.addGraphNodeObject(nodeStub53);
+
+        assertTrue(b.checkPlayerOwnsNeighboringNode(PlayerColor.ORANGE, 52, 53));
     }
 }
