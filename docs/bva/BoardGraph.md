@@ -129,7 +129,7 @@
 |-------------|---------------------------------------------------------|-----------------|--------------------|
 | Test Case 1 | Red Claims edge0to1, owns node 0, edge unclaimed        | True            | :white_check_mark: |
 | Test Case 2 | Blue Claims edge0to1, owns node 1, edge unclaimed       | True            | :white_check_mark: |
-| Test Case 3 | Orange Claims edge52to53, edge does not exist           | Error 1         | :x:                |
+| Test Case 3 | Orange Claims edge52to53, edge does not exist           | Error 1         | :white_check_mark: |
 | Test Case 4 | White Claims edge52to53, edge already claimed           | Error 2         | :x:                |
 | Test Case 5 | Red Claims edge52to53, owns no adjacencies              | Error 3         | :x:                |
 | Test Case 6 | Red Claims edge0to1, owns adjacent edge, edge unclaimed | True            | :x:                |

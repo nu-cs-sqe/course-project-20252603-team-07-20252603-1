@@ -482,6 +482,31 @@ public class BoardGraphTests {
         EasyMock.verify(edgeMock0to1);
     }
 
+    @Test
+    void playerClaimsStoredEdge_test03_EdgeDoesNotExist_ExpectError(){
+        BoardGraph b = EasyMock.partialMockBuilder(BoardGraph.class)
+                .withConstructor()
+                .addMockedMethod("checkPlayerOwnsNeighboringEdge")
+                .addMockedMethod("checkPlayerOwnsNeighboringNode")
+                .createMock();
+        GraphNode nodeStub = EasyMock.createNiceMock(GraphNode.class);
+
+        EasyMock.expect(b.checkPlayerOwnsNeighboringEdge(PlayerColor.ORANGE, 52, 53))
+                .andStubReturn(false);
+        EasyMock.expect(b.checkPlayerOwnsNeighboringNode(PlayerColor.ORANGE, 52, 53))
+                .andStubReturn(true);
+        EasyMock.expect(nodeStub.getNodeID()).andStubReturn(52);
+
+        EasyMock.replay(nodeStub, b);
+
+        b.addGraphNodeObject(nodeStub);
+
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> b.playerClaimStoredEdge(PlayerColor.ORANGE, 52, 53));
+
+        assertEquals("Edge does not exist", exception.getMessage());
+    }
+
     // getCorrectEdgeFromSet() tests
     @Test
     void getCorrectEdgeFromSet_test01_EmptySet_ExpectError(){
