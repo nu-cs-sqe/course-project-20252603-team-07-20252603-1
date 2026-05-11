@@ -194,3 +194,15 @@
 | Test Case 2 | White, checking edge [0, 1], White owns node 1                  | True            | :white_check_mark: |
 | Test Case 3 | Blue, checking edge [52, 53], does not own any connecting nodes | False           | :white_check_mark: |
 | Test Case 4 | Orange, checking edge [52, 53], owns both nodes                 | True            | :white_check_mark: |
+
+### Method under test: `buildGameGraph()`
+
+#### Inputs:
+- None -> this function builds the graph for our specified rule Set
+
+#### Outputs:
+- Updated Maps -> store all nodes and graph edges
+
+|             | State of the System | Expected output   | Implemented?       |
+|-------------|---------------------|-------------------|--------------------|
+| Test Case 1 | Empty Maps          | Setup Board Graph | :white_check_mark: |

@@ -136,6 +136,101 @@ public class BoardGraph {
         return startingNode.checkColor() == color || endingNode.checkColor() == color;
     }
 
+    void buildBoard() {
+        // add all the graphNodes
+        for (int i = 0; i < 54; i++) {
+            GraphNode newNode = new GraphNode(i);
+            addGraphNodeObject(newNode);
+        }
+
+        addGraphEdge(0, 1);
+        addGraphEdge(0, 3);
+        addGraphEdge(1, 4);
+        addGraphEdge(1, 5);
+        addGraphEdge(2, 5);
+        addGraphEdge(2, 6);
+        addGraphEdge(3, 7);
+        addGraphEdge(4, 8);
+        addGraphEdge(5, 9);
+        addGraphEdge(6, 10);
+        addGraphEdge(7, 11);
+        addGraphEdge(7, 12);
+        addGraphEdge(8, 12);
+        addGraphEdge(8, 13);
+        addGraphEdge(9, 13);
+        addGraphEdge(9, 14);
+        addGraphEdge(10, 14);
+        addGraphEdge(10, 15);
+        addGraphEdge(11, 16);
+        addGraphEdge(12, 17);
+        addGraphEdge(13, 18);
+        addGraphEdge(14, 19);
+        addGraphEdge(15, 20);
+        addGraphEdge(16, 21);
+        addGraphEdge(16, 22);
+        addGraphEdge(17, 22);
+        addGraphEdge(17, 23);
+        addGraphEdge(18, 23);
+        addGraphEdge(18, 24);
+        addGraphEdge(19, 24);
+        addGraphEdge(19, 25);
+        addGraphEdge(20, 25);
+        addGraphEdge(20, 26);
+        addGraphEdge(21, 27);
+        addGraphEdge(22, 28);
+        addGraphEdge(24, 29);
+        addGraphEdge(25, 30);
+        addGraphEdge(25, 31);
+        addGraphEdge(22, 28);
+        addGraphEdge(26, 32);
+        addGraphEdge(27, 33);
+        addGraphEdge(28, 33);
+        addGraphEdge(28, 34);
+        addGraphEdge(29, 34);
+        addGraphEdge(29, 35);
+        addGraphEdge(30, 35);
+        addGraphEdge(30, 36);
+        addGraphEdge(31, 36);
+        addGraphEdge(31, 37);
+        addGraphEdge(32, 37);
+        addGraphEdge(33, 38);
+        addGraphEdge(34, 39);
+        addGraphEdge(35, 40);
+        addGraphEdge(36, 41);
+        addGraphEdge(37, 42);
+        addGraphEdge(38, 43);
+        addGraphEdge(39, 43);
+        addGraphEdge(39, 44);
+        addGraphEdge(40, 44);
+        addGraphEdge(40, 45);
+        addGraphEdge(41, 45);
+        addGraphEdge(41, 46);
+        addGraphEdge(42, 46);
+        addGraphEdge(43, 47);
+        addGraphEdge(44, 48);
+        addGraphEdge(45, 49);
+        addGraphEdge(46, 50);
+        addGraphEdge(47, 51);
+        addGraphEdge(48, 51);
+        addGraphEdge(48, 52);
+        addGraphEdge(49, 52);
+        addGraphEdge(49, 53);
+        addGraphEdge(50, 53);
+    }
+
+    void addGraphEdge(int startingNodeID, int endingNodeID) {
+        GraphEdge newEdge = new GraphEdge(startingNodeID, endingNodeID);
+        addGraphNodeConnection(startingNodeID, newEdge);
+        addGraphNodeConnection(endingNodeID, newEdge);
+    }
+
+    protected int checkAmountOfNodesForTesting() {
+        return this.nodeIDToNodeObject.size();
+    }
+
+    protected int checkAmountOfNodesInEdgeMapForTesting() {
+        return this.nodeIDToConectingEdges.size();
+    }
 
 
 }

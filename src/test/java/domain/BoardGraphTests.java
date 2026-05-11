@@ -909,4 +909,14 @@ public class BoardGraphTests {
 
         assertTrue(b.checkPlayerOwnsNeighboringNode(PlayerColor.ORANGE, 52, 53));
     }
+
+    // buildBoard() test
+    @Test
+    void buildBoard_test01_ExpectCompletedBoard() {
+        BoardGraph b = new BoardGraph();
+        b.buildBoard();
+        assertEquals(54, b.checkAmountOfNodesForTesting());
+        assertEquals(54, b.checkAmountOfNodesInEdgeMapForTesting());
+    }
+
 }
