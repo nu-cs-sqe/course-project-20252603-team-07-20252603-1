@@ -215,7 +215,7 @@
 | Test Case 1 | Node 0, no adjacent nodes are claimed                         | True            | :white_check_mark: |
 | Test Case 2 | Node 0, adjacent node 3 is claimed ("endingNode" of edge)     | Error           | :white_check_mark: |
 | Test Case 3 | Node 53, adjacent node 50 is claimed ("startingNode" of edge) | Error           | :white_check_mark: |
-| Test Case 4 | Node 49, adjacnet nodes 45 and 53 are claimed                 | Error           | :x:                |
+| Test Case 4 | Node 49, adjacemt nodes 45 and 53 are claimed                 | Error           | :white_check_mark: |
 
 
 ### Method under test: `buildGameGraph()`

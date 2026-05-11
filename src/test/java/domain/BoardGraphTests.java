@@ -1013,6 +1013,50 @@ public class BoardGraphTests {
         assertEquals("Can not claim node adjacent to node already claimed", exception.getMessage());
     }
 
+    @Test
+    void checkAdjacentClaimedNodes_test04_BothStartingAndEndingNodesClaimed_ExpectError(){
+        BoardGraph b = new BoardGraph();
+        GraphNode nodeStub45 = EasyMock.createNiceMock(GraphNode.class);
+        GraphNode nodeStub49 = EasyMock.createNiceMock(GraphNode.class);
+        GraphNode nodeStub52 = EasyMock.createNiceMock(GraphNode.class);
+        GraphNode nodeStub53 = EasyMock.createNiceMock(GraphNode.class);
+
+        GraphEdge edge45to49 = EasyMock.createNiceMock(GraphEdge.class);
+        GraphEdge edge49to52 = EasyMock.createNiceMock(GraphEdge.class);
+        GraphEdge edge49to53 = EasyMock.createNiceMock(GraphEdge.class);
+
+        EasyMock.expect(nodeStub45.getNodeID()).andStubReturn(45);
+        EasyMock.expect(nodeStub49.checkOccupied()).andStubReturn(true);
+        EasyMock.expect(nodeStub49.getNodeID()).andStubReturn(49);
+        EasyMock.expect(nodeStub52.getNodeID()).andStubReturn(52);
+        EasyMock.expect(nodeStub52.checkOccupied()).andStubReturn(true);
+        EasyMock.expect(nodeStub53.getNodeID()).andStubReturn(53);
+
+        EasyMock.expect(edge45to49.getStartingNodeID()).andStubReturn(45);
+        EasyMock.expect(edge45to49.getEndingNodeID()).andStubReturn(49);
+        EasyMock.expect(edge45to49.checkOwningColor()).andStubReturn(PlayerColor.SETUP);
+        EasyMock.expect(edge49to52.getStartingNodeID()).andStubReturn(49);
+        EasyMock.expect(edge49to52.getEndingNodeID()).andStubReturn(52);
+        EasyMock.expect(edge49to52.checkOwningColor()).andStubReturn(PlayerColor.SETUP);
+        EasyMock.expect(edge49to53.getStartingNodeID()).andStubReturn(49);
+        EasyMock.expect(edge49to53.getEndingNodeID()).andStubReturn(53);
+        EasyMock.expect(edge49to53.checkOwningColor()).andStubReturn(PlayerColor.SETUP);
+
+        EasyMock.replay(nodeStub45, nodeStub49, nodeStub52, edge45to49, edge49to52, edge49to53);
+        b.addGraphNodeObject(nodeStub45);
+        b.addGraphNodeObject(nodeStub49);
+        b.addGraphNodeObject(nodeStub52);
+        b.addGraphNodeObject(nodeStub53);
+        b.addGraphNodeConnection(49, edge45to49);
+        b.addGraphNodeConnection(49, edge49to52);
+        b.addGraphNodeConnection(49, edge49to53);
+
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> b.checkAdjacentClaimedNodes(49));
+
+        assertEquals("Can not claim node adjacent to node already claimed", exception.getMessage());
+    }
+
 
     // buildBoard() test
     @Test
