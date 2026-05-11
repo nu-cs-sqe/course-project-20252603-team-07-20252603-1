@@ -19,4 +19,8 @@ public class GameModel {
     public int getCurrentPlayerIndex() {
         return currentPlayerIndex;
     }
+
+    public Player getCurrentPlayer() {
+        return turnOrder.get(currentPlayerIndex);
+    }
 }
