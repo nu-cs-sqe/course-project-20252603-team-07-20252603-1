@@ -174,5 +174,23 @@
 | Test Case 4 | Orange, checking edge [52, 53], owns edges connecting to both 52 and 53 | True            | :white_check_mark: |
 
 
-## Methods TODO (Defined during TDD of other functions)
-- checkPlayerOwnsNeighboringNode()
+### Method under test: `checkPlayerOwnsNeighboringNode(PlayerColor color, int startingNodeID, int endingNodeID)`
+
+#### Inputs:
+- PlayerColor -> RED, WHITE, BLUE, ORANGE
+- starting node, ending node -> interval [0, 52] for startingNode, [1, 53] for ending node
+- System State -> Cases
+  - Player owns startingNode
+  - Player owns endingNode
+  - Player owns both
+  - Player owns neither
+
+#### Outputs:
+- Boolean
+
+|             | State of the System                                             | Expected output | Implemented?       |
+|-------------|-----------------------------------------------------------------|-----------------|--------------------|
+| Test Case 1 | Red, checking edge [0, 1], Red owns node 0                      | True            | :white_check_mark: |
+| Test Case 2 | White, checking edge [0, 1], White owns node 1                  | True            | :x:                |
+| Test Case 3 | Blue, checking edge [52, 53], does not own any connecting nodes | False           | :x:                |
+| Test Case 4 | Orange, checking edge [52, 53], owns both nodes                 | True            | :x:                |
