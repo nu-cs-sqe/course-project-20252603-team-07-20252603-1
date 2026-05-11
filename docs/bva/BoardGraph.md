@@ -132,7 +132,7 @@
 | Test Case 3 | Orange Claims edge52to53, edge does not exist           | Error 1         | :white_check_mark: |
 | Test Case 4 | White Claims edge52to53, edge already claimed           | Error 2         | :white_check_mark: |
 | Test Case 5 | Red Claims edge52to53, owns no adjacencies              | Error 3         | :white_check_mark: |
-| Test Case 6 | Red Claims edge0to1, owns adjacent edge, edge unclaimed | True            | :x:                |
+| Test Case 6 | Red Claims edge0to1, owns adjacent edge, edge unclaimed | True            | :white_check_mark: |
 
 ### Method under test: `getCorrectEdgeFromSet(Set<GraphEdge> connectingEdges, int startingNodeID, int endingNodeID)`
 

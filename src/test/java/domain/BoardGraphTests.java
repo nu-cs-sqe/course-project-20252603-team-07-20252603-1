@@ -561,6 +561,35 @@ public class BoardGraphTests {
         assertEquals("To claim an edge, player must own an adjacent node or edge", exception.getMessage());
     }
 
+    @Test
+    void playerClaimsStoredEdge_test06_PlayerOwnsAdjacentEdge_ExpectTrue(){
+        BoardGraph b = EasyMock.partialMockBuilder(BoardGraph.class)
+                .withConstructor()
+                .addMockedMethod("checkPlayerOwnsNeighboringEdge")
+                .addMockedMethod("checkPlayerOwnsNeighboringNode")
+                .createMock();
+
+        GraphNode nodeStub0 = EasyMock.createNiceMock(GraphNode.class);
+        GraphEdge edgeMock0to1 = EasyMock.createMock(GraphEdge.class);
+
+        EasyMock.expect(b.checkPlayerOwnsNeighboringEdge(PlayerColor.RED, 0, 1))
+                .andStubReturn(true);
+        EasyMock.expect(b.checkPlayerOwnsNeighboringNode(PlayerColor.RED, 0, 1))
+                .andStubReturn(false);
+        EasyMock.expect(nodeStub0.getNodeID()).andStubReturn(0);
+        EasyMock.expect(edgeMock0to1.getStartingNodeID()).andReturn(0);
+        EasyMock.expect(edgeMock0to1.getEndingNodeID()).andReturn(1);
+        EasyMock.expect(edgeMock0to1.claimGraphEdge(PlayerColor.RED)).andReturn(true);
+        EasyMock.replay(nodeStub0, edgeMock0to1, b);
+
+        b.addGraphNodeObject(nodeStub0);
+        b.addGraphNodeConnection(0, edgeMock0to1);
+
+        assertTrue(b.playerClaimStoredEdge(PlayerColor.RED, 0, 1));
+        EasyMock.verify(edgeMock0to1);
+
+    }
+
     // getCorrectEdgeFromSet() tests
     @Test
     void getCorrectEdgeFromSet_test01_EmptySet_ExpectError(){
