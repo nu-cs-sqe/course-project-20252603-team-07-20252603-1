@@ -59,14 +59,12 @@ public class BoardGraph {
         }
     }
 
-    boolean playerClaimStoredNode(PlayerColor color, int nodeID){
-        GraphNode nodeToClaim = getGraphNodeByID(nodeID);
-        checkAdjacentClaimedNodes(nodeID);
-        nodeToClaim.playerClaimNode(color);
+    boolean claimGraphNodeObject(PlayerColor color, int nodeID){
         return true;
-    }
+    };
 
-    boolean checkAdjacentClaimedNodes(int nodeID) {
+
+    boolean checkIfAdjacentNodesNotClaimed(int nodeID) {
         Set<GraphEdge> connectingEdges = getConnectingEdgesByID(nodeID);
         for (GraphEdge edge: connectingEdges) {
             int edgeStartingNodeID = edge.getStartingNodeID();
@@ -81,26 +79,11 @@ public class BoardGraph {
             }
 
             if (nodeToCheck.checkOccupied()) {
-                throw new IllegalArgumentException("Can not claim node adjacent to node already claimed");
+                return false;
             }
         }
         // we have checked all the neighboring nodes, none of them are occupied
         return true;
-    }
-
-    boolean playerClaimStoredEdge(PlayerColor color, int startingNodeID, int endingNodeID){
-        boolean playerOwnsNeighboringNode = checkPlayerOwnsNeighboringNode(color, startingNodeID, endingNodeID);
-        boolean playerOwnsNeighboringEdge = checkPlayerOwnsNeighboringEdge(color, startingNodeID, endingNodeID);
-        if(playerOwnsNeighboringNode || playerOwnsNeighboringEdge) {
-            Set<GraphEdge> connectingEdges = getConnectingEdgesByID(startingNodeID);
-            // Our Edge of interest is guaranteed to be in this set IF it exists
-            GraphEdge edgeToClaim = getCorrectEdgeFromSet(connectingEdges, startingNodeID, endingNodeID);
-            edgeToClaim.claimGraphEdge(color);
-            return true;
-        }
-        else {
-            throw new IllegalArgumentException("To claim an edge, player must own an adjacent node or edge");
-        }
     }
 
     GraphEdge getCorrectEdgeFromSet(Set<GraphEdge> connectingEdges, int startingNodeID, int endingNodeID){
