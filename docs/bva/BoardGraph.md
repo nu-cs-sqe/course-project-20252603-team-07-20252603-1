@@ -171,7 +171,7 @@
 | Test Case 1 | Red, checking edge [0, 1], Red owns edge connecting to node 0           | True            | :white_check_mark: |
 | Test Case 2 | White, checking edge [0, 1], White owns edge conencting to node 1       | True            | :white_check_mark: |
 | Test Case 3 | Blue, checking edge [52, 53], does not own any connecting edges         | False           | :white_check_mark: |
-| Test Case 4 | Orange, checking edge [52, 53], owns edges connecting to both 52 and 53 | True            | :x:                |
+| Test Case 4 | Orange, checking edge [52, 53], owns edges connecting to both 52 and 53 | True            | :white_check_mark: |
 
 
 ## Methods TODO (Defined during TDD of other functions)
