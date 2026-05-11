@@ -11,7 +11,7 @@ public class BoardGraphTests {
 
     // addGraphNodeObj() Tests
     @Test
-    void addNodeToGraph_EmptyGraph_ExpectTrue(){
+    void addNodeToGraph_test01_EmptyGraph_ExpectTrue(){
         BoardGraph b = new BoardGraph();
         GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
         EasyMock.expect(nodeMock.getNodeID()).andReturn(0);
@@ -25,7 +25,7 @@ public class BoardGraphTests {
     }
 
     @Test
-    void addNodeToGraph_OneElementGraph_ExpectTrue(){
+    void addNodeToGraph_test02_OneElementGraph_ExpectTrue(){
         BoardGraph b = new BoardGraph();
 
         GraphNode nodeMock1 = EasyMock.createMock(GraphNode.class);
@@ -43,7 +43,7 @@ public class BoardGraphTests {
     }
 
     @Test
-    void addNodeToGraph_MultipleElementGraph_ExpectTrue(){
+    void addNodeToGraph_test03_MultipleElementGraph_ExpectTrue(){
         BoardGraph b = new BoardGraph();
 
         GraphNode nodeMock1 = EasyMock.createMock(GraphNode.class);
@@ -68,7 +68,7 @@ public class BoardGraphTests {
     }
 
     @Test
-    void addDuplicateNodeToGraph_ExpectError() {
+    void addDuplicateNodeToGraph_test04_ExpectError() {
         BoardGraph b = new BoardGraph();
 
         GraphNode nodeMock1 = EasyMock.createMock(GraphNode.class);
@@ -98,7 +98,7 @@ public class BoardGraphTests {
 
     // getGraphNodeByID() Tests
     @Test
-    void getNodeID0_EmptyMap_ExpectError(){
+    void getNodeID0_test01_EmptyMap_ExpectError(){
         BoardGraph b = new BoardGraph();
 
         Exception exception = assertThrows(IllegalArgumentException.class,
@@ -109,7 +109,7 @@ public class BoardGraphTests {
     }
 
     @Test
-    void getNodeID0_OneElementMap_ID0Exists_ExpectGraphNode(){
+    void getNodeID0_test02_OneElementMap_ID0Exists_ExpectGraphNode(){
         BoardGraph b = new BoardGraph();
 
         GraphNode nodeStub = EasyMock.createMock(GraphNode.class);
@@ -125,7 +125,7 @@ public class BoardGraphTests {
     }
 
     @Test
-    void getNodeID53_MultipleElementMap_ID53DoesNotExists_ExpectError(){
+    void getNodeID53_test03_MultipleElementMap_ID53DoesNotExists_ExpectError(){
         BoardGraph b = new BoardGraph();
 
         GraphNode nodeStub0 = EasyMock.createMock(GraphNode.class);
@@ -147,7 +147,7 @@ public class BoardGraphTests {
 
     // addGraphNodeConnection() Tests
     @Test
-    void test01_addNewEdge_NotDuplicate_NodeExistsInMap_ExpectTrue() {
+    void addNewEdge_test01_NotDuplicate_NodeExistsInMap_ExpectTrue() {
         BoardGraph b = new BoardGraph();
 
         GraphNode nodeStub = EasyMock.createMock(GraphNode.class);
@@ -164,7 +164,7 @@ public class BoardGraphTests {
     }
 
     @Test
-    void test02_addNewEdge_Duplicate_NodeExistsInMap_ExpectError() {
+    void ddNewEdge_test02_Duplicate_NodeExistsInMap_ExpectError() {
         BoardGraph b = new BoardGraph();
 
         GraphNode nodeStub = EasyMock.createMock(GraphNode.class);
@@ -186,7 +186,7 @@ public class BoardGraphTests {
     }
 
     @Test
-    void test03_addNewEdge_Duplicate_SeparateExistingNode_ExpectTrue() {
+    void addNewEdge_test03_Duplicate_SeparateExistingNode_ExpectTrue() {
         BoardGraph b = new BoardGraph();
 
         GraphNode nodeStub0 = EasyMock.createMock(GraphNode.class);
@@ -209,7 +209,7 @@ public class BoardGraphTests {
     }
 
     @Test
-    void test04_addNewEdge_NodeDoesNotExist_ExpectError() {
+    void addNewEdge_test04_NodeDoesNotExist_ExpectError() {
         BoardGraph b = new BoardGraph();
         GraphEdge edgeStub = EasyMock.createMock(GraphEdge.class);
 
@@ -224,7 +224,7 @@ public class BoardGraphTests {
 
     // getConnectingEdgesByID Tests
     @Test
-    void test01_getEdgeSet_NodeDoesNotExist_ExpectError() {
+    void getEdgeSet_test01_NodeDoesNotExist_ExpectError() {
         BoardGraph b = new BoardGraph();
 
         Exception exception = assertThrows(IllegalArgumentException.class,
@@ -234,7 +234,7 @@ public class BoardGraphTests {
     }
 
     @Test
-    void test02_getEdgeSet_OneNodeExists_ExpectEmptySet() {
+    void getEdgeSet_test02_OneNodeExists_ExpectEmptySet() {
         BoardGraph b = new BoardGraph();
         GraphNode nodeStub = EasyMock.createMock(GraphNode.class);
 
@@ -249,7 +249,7 @@ public class BoardGraphTests {
     }
 
     @Test
-    void test03_getEdgeSet_MultipleNodesExist_ExpectOneEdgeSet() {
+    void getEdgeSet_test03_MultipleNodesExist_ExpectOneEdgeSet() {
         BoardGraph b = new BoardGraph();
         GraphNode nodeStub0 = EasyMock.createMock(GraphNode.class);
         GraphNode nodeStub53 = EasyMock.createMock(GraphNode.class);
@@ -270,7 +270,7 @@ public class BoardGraphTests {
     }
 
     @Test
-    void test04_getEdgeSet_MultipleNodesExist_ExpectMultipleEdgeSet() {
+    void getEdgeSet_test04_MultipleNodesExist_ExpectMultipleEdgeSet() {
         BoardGraph b = new BoardGraph();
         GraphNode nodeStub0 = EasyMock.createMock(GraphNode.class);
         GraphNode nodeStub53 = EasyMock.createMock(GraphNode.class);
