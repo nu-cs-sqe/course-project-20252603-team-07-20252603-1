@@ -23,4 +23,8 @@ public class GameModel {
     public Player getCurrentPlayer() {
         return turnOrder.get(currentPlayerIndex);
     }
+
+    public void advanceToNextPlayer() {
+        currentPlayerIndex++;
+    }
 }
