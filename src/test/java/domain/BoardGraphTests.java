@@ -180,6 +180,16 @@ public class BoardGraphTests {
         assertTrue(b.claimGraphNodeObject(PlayerColor.ORANGE, 0));
         EasyMock.verify(nodeMock);
     }
+
+    @Test
+    void claimGraphNodeObject_test03_NodeDoesNotExist_ExceptError(){
+        BoardGraph b = new BoardGraph();
+
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> b.claimGraphNodeObject(PlayerColor.BLUE, 53));
+
+        assertEquals("Node does not exist", exception.getMessage());
+    }
     // addGraphNodeConnection() Tests
     @Test
     void addNewEdge_test01_NotDuplicate_NodeExistsInMap_ExpectTrue() {
