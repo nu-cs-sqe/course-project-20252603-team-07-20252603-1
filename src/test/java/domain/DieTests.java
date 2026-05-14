@@ -27,4 +27,20 @@ public class DieTests {
 
     }
 
+    @Test // Test Case 2
+    public void InitDie_RandomFive_ExpectSix(){
+        Random randomMock = EasyMock.mock(Random.class);
+
+        EasyMock.expect(randomMock.nextInt((6))).andReturn(5);
+
+        EasyMock.replay(randomMock);
+
+        Die testDie = new Die(randomMock);
+        int expected = 6;
+        int actual = testDie.rollOneDie();
+
+        EasyMock.verify(randomMock);
+
+        assertEquals(expected, actual);
+    }
 }
