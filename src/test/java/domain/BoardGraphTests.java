@@ -146,7 +146,7 @@ public class BoardGraphTests {
     }
 
     @Test
-    void claimGraphNodeObject_test01_NodeExists_Unclaimed(){
+    void claimGraphNodeObject_test01_NodeExists_Unclaimed_ExpectTrue(){
         BoardGraph b = new BoardGraph();
 
         GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
@@ -157,6 +157,27 @@ public class BoardGraphTests {
         b.addGraphNodeObject(nodeMock);
 
         assertTrue(b.claimGraphNodeObject(PlayerColor.RED, 0));
+        EasyMock.verify(nodeMock);
+    }
+
+    @Test
+    void claimGraphNodeObject_test02_MultipleNodeExists_NodeUnclaimed_ExpectTrue(){
+        BoardGraph b = new BoardGraph();
+
+        GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
+        GraphNode nodeStub2 = EasyMock.createMock(GraphNode.class);
+        GraphNode nodeStub3 = EasyMock.createMock(GraphNode.class);
+        EasyMock.expect(nodeMock.getNodeID()).andReturn(0);
+        EasyMock.expect(nodeMock.playerClaimNode(PlayerColor.ORANGE)).andReturn(true);
+        EasyMock.expect(nodeStub2.getNodeID()).andStubReturn(2);
+        EasyMock.expect(nodeStub3.getNodeID()).andStubReturn(3);
+        EasyMock.replay(nodeMock, nodeStub2, nodeStub3);
+
+        b.addGraphNodeObject(nodeMock);
+        b.addGraphNodeObject(nodeStub2);
+        b.addGraphNodeObject(nodeStub3);
+
+        assertTrue(b.claimGraphNodeObject(PlayerColor.ORANGE, 0));
         EasyMock.verify(nodeMock);
     }
     // addGraphNodeConnection() Tests

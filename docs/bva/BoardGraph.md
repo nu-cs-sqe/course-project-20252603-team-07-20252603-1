@@ -58,7 +58,7 @@
 |             | State of the System                                     | Expected output | Implemented?       |
 |-------------|---------------------------------------------------------|-----------------|--------------------|
 | Test Case 1 | Red claims ID 0, it exists, node updated                | True            | :white_check_mark: |
-| Test Case 2 | Orange claims ID 0, multiple elements, ID 0 exists      | True            | :x:                |
+| Test Case 2 | Orange claims ID 0, multiple elements, ID 0 exists      | True            | :white_check_mark: |
 | Test Case 3 | Blue claims 53, multiple elements, ID 53 does not exist | Error 1         | :x:                |
 | Test Case 4 | White claims 53, it is already claimed                  | Error 2         | :x:                |
 
