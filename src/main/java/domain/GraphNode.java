@@ -17,7 +17,7 @@ public class GraphNode {
     }
 
     boolean playerClaimNode(PlayerColor color){
-        if (this.occupied) {
+        if (checkOccupied()) {
             throw new IllegalArgumentException("Node Already Claimed");
         }
         else {
