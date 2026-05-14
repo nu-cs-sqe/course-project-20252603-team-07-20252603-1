@@ -3,12 +3,13 @@ package domain;
 import java.util.Random;
 
 class Die {
-    Die(int maxRoll, int minRoll) {
-        return;
+    private final Random randomizer;
+
+    Die(Random randomizer) {
+        this.randomizer = randomizer;
     }
 
-    Integer rollOneDie(Random randomizer){
-        return 0;
+    int rollOneDie(){
+        return randomizer.nextInt(6) + 1;
     }
-
 }

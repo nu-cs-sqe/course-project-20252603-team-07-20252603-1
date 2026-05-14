@@ -15,10 +15,10 @@ Step 2:
 
 Step 3:
 - Input: Java's random number generator is a trusted library, no variation/validation needed
-- Output: 1, 6, 0 (not feasilbe), 7 (not feasible)
+- Output: 1, 6, 0 (not feasible), 7 (not feasible)
 
 
-|             | System under test                    | Expected output | Implemented? |
-|-------------|--------------------------------------|-----------------|--------------|
-| Test Case 1 | Initialize new die, random returns 0 | Die roll is 1   | x            |
-| Test Case 2 | Initialize new die, random returns 5 | Die roll is 6   | x            |
+|             | System under test                    | Expected output | Implemented?       |
+|-------------|--------------------------------------|-----------------|--------------------|
+| Test Case 1 | Initialize new die, random returns 0 | Die roll is 1   | :white_check_mark: |
+| Test Case 2 | Initialize new die, random returns 5 | Die roll is 6   | x                  |
