@@ -182,13 +182,32 @@ public class BoardGraphTests {
     }
 
     @Test
-    void claimGraphNodeObject_test03_NodeDoesNotExist_ExceptError(){
+    void claimGraphNodeObject_test03_NodeDoesNotExist_ExpectError(){
         BoardGraph b = new BoardGraph();
 
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> b.claimGraphNodeObject(PlayerColor.BLUE, 53));
 
         assertEquals("Node does not exist", exception.getMessage());
+    }
+
+    @Test
+    void claimGraphNodeObject_test04_NodeDoesExists_AlreadyClaimed_ExpectError(){
+        BoardGraph b = new BoardGraph();
+
+        GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
+        EasyMock.expect(nodeMock.getNodeID()).andReturn(53);
+        EasyMock.expect(nodeMock.playerClaimNode(PlayerColor.WHITE)).andThrow(new IllegalArgumentException("Node already claimed"));
+        EasyMock.replay(nodeMock);
+
+        b.addGraphNodeObject(nodeMock);
+
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> b.claimGraphNodeObject(PlayerColor.WHITE, 53));
+
+        assertEquals("Node already claimed", exception.getMessage());
+
+        EasyMock.verify(nodeMock);
     }
     // addGraphNodeConnection() Tests
     @Test
