@@ -41,4 +41,9 @@ public class ResourceQuantityTests {
     public void Construct_Lumber_ExpectValid() {
         assertDoesNotThrow(() -> new ResourceQuantity(Resource.LUMBER, 1));
     }
+
+    @Test // Test Case 6
+    public void Construct_Ore_ExpectValid() {
+        assertDoesNotThrow(() -> new ResourceQuantity(Resource.ORE, 1));
+    }
 }
