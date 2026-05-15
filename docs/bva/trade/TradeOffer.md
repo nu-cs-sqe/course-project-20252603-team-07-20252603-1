@@ -45,4 +45,4 @@ resource as giving, different quantity)
 | Test Case 2 | BLUE, (2 ORE), (1 GRAIN)    | valid object                                                          | :white_check_mark: |
 | Test Case 3 | RED, (1 LUMBER), (1 LUMBER) | IllegalArgumentException: "Cannot trade a resource for itself."       | :white_check_mark: |
 | Test Case 4 | WHITE, (2 WOOL), (3 WOOL)   | IllegalArgumentException: "Cannot trade a resource for itself."       | :white_check_mark: |
-| Test Case 5 | ORANGE, (1 GRAIN), (1 BRICK)| valid object                                                          | :x:                |
+| Test Case 5 | ORANGE, (1 GRAIN), (1 BRICK)| valid object                                                          | :white_check_mark: |
