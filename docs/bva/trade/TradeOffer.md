@@ -41,7 +41,7 @@ resource as giving, different quantity)
 
 |             | System under test           | Expected output                                                       | Implemented? |
 |-------------|-----------------------------|-----------------------------------------------------------------------|--------------|
-| Test Case 1 | RED, (1 BRICK), (1 WOOL)    | valid object                                                          | :x:          |
-| Test Case 2 | BLUE, (2 ORE), (1 GRAIN)    | valid object                                                          | :x:          |
-| Test Case 3 | RED, (1 LUMBER), (1 LUMBER) | IllegalArgumentException: "Cannot trade a resource for itself."       | :x:          |
-| Test Case 4 | WHITE, (2 WOOL), (3 WOOL)   | IllegalArgumentException: "Cannot trade a resource for itself."       | :x:          |
+| Test Case 1 | RED, (1 BRICK), (1 WOOL)    | valid object                                                          | :white_check_mark: |
+| Test Case 2 | BLUE, (2 ORE), (1 GRAIN)    | valid object                                                          | :white_check_mark: |
+| Test Case 3 | RED, (1 LUMBER), (1 LUMBER) | IllegalArgumentException: "Cannot trade a resource for itself."       | :white_check_mark: |
+| Test Case 4 | WHITE, (2 WOOL), (3 WOOL)   | IllegalArgumentException: "Cannot trade a resource for itself."       | :white_check_mark: |

@@ -38,9 +38,9 @@ element, duplicate elements
 
 |             | System under test                                                              | Expected output                | Implemented? |
 |-------------|--------------------------------------------------------------------------------|--------------------------------|--------------|
-| Test Case 1 | RED's offer of (1 BRICK) for (1 WOOL) into empty list                          | list with size 1               | :x:          |
-| Test Case 2 | BLUE's offer of (2 ORE) for (1 GRAIN) into list of size 1                      | list with size 2               | :x:          |
-| Test Case 3 | RED posts the same offer twice (duplicate offering player and quantities)      | list with size 2, duplicate ok | :x:          |
+| Test Case 1 | RED's offer of (1 BRICK) for (1 WOOL) into empty list                          | list with size 1               | :white_check_mark: |
+| Test Case 2 | BLUE's offer of (2 ORE) for (1 GRAIN) into list of size 1                      | list with size 2               | :white_check_mark: |
+| Test Case 3 | RED posts the same offer twice (duplicate offering player and quantities)      | list with size 2, duplicate ok | :white_check_mark: |
 
 ---
 
@@ -60,10 +60,10 @@ element, duplicate elements
 
 |             | System under test                                       | Expected output | Implemented? |
 |-------------|---------------------------------------------------------|-----------------|--------------|
-| Test Case 4 | clear an empty list                                     | empty list      | :x:          |
-| Test Case 5 | clear a list with one offer                             | empty list      | :x:          |
-| Test Case 6 | clear a list with three offers from different players   | empty list      | :x:          |
-| Test Case 7 | clear a list containing duplicate offers                | empty list      | :x:          |
+| Test Case 4 | clear an empty list                                     | empty list      | :white_check_mark: |
+| Test Case 5 | clear a list with one offer                             | empty list      | :white_check_mark: |
+| Test Case 6 | clear a list with three offers from different players   | empty list      | :white_check_mark: |
+| Test Case 7 | clear a list containing duplicate offers                | empty list      | :white_check_mark: |
 
 ---
 
@@ -86,10 +86,10 @@ contains more than one element, duplicate elements
 
 |              | System under test                                | Expected output                                                       | Implemented? |
 |--------------|--------------------------------------------------|-----------------------------------------------------------------------|--------------|
-| Test Case 8  | list trades from empty TradeManager              | empty list returned; trade list unchanged                             | :x:          |
-| Test Case 9  | list trades after one offer                      | list with size 1, contains that offer; trade list unchanged           | :x:          |
-| Test Case 10 | list trades after three offers                   | list with size 3, in insertion order; trade list unchanged            | :x:          |
-| Test Case 11 | list trades when two duplicate offers were made  | list with size 2, contains duplicates; trade list unchanged           | :x:          |
+| Test Case 8  | list trades from empty TradeManager              | empty list returned; trade list unchanged                             | :white_check_mark: |
+| Test Case 9  | list trades after one offer                      | list with size 1, contains that offer; trade list unchanged           | :white_check_mark: |
+| Test Case 10 | list trades after three offers                   | list with size 3, in insertion order; trade list unchanged            | :white_check_mark: |
+| Test Case 11 | list trades when two duplicate offers were made  | list with size 2, contains duplicates; trade list unchanged           | :white_check_mark: |
 
 ---
 
@@ -132,10 +132,10 @@ insufficient resources."
 
 |              | System under test                                                                                                       | Expected output                                                                                                            | Implemented? |
 |--------------|-------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|--------------|
-| Test Case 12 | BLUE accepts RED's offer of (1 BRICK) for (1 WOOL); both have resources; list has only this offer                       | list with size 0; RED -1 BRICK +1 WOOL; BLUE +1 BRICK -1 WOOL                                                              | :x:          |
-| Test Case 13 | WHITE accepts ORANGE's offer of (2 ORE) for (1 GRAIN); both have resources; list has three offers                       | list with size 2; ORANGE -2 ORE +1 GRAIN; WHITE +2 ORE -1 GRAIN; only this offer removed                                   | :x:          |
-| Test Case 14 | BLUE accepts one of two duplicate offers from RED; both have resources                                                  | list with size 1; only one duplicate removed; resources updated once                                                       | :x:          |
-| Test Case 15 | RED accepts RED's own offer                                                                                             | IllegalArgumentException: "A player cannot accept their own trade."; list unchanged; no resource updates                   | :x:          |
-| Test Case 16 | BLUE accepts a TradeOffer reference that is not in the list (already accepted earlier)                                  | IllegalArgumentException: "Trade not found."; list unchanged                                                               | :x:          |
-| Test Case 17 | BLUE accepts RED's offer of (5 BRICK) for (1 WOOL) but RED has 0 BRICK                                                  | IllegalStateException: "Offering player has insufficient resources."; list unchanged; no resource updates                  | :x:          |
-| Test Case 18 | BLUE accepts RED's offer of (1 BRICK) for (5 WOOL) but BLUE has 0 WOOL                                                  | IllegalStateException: "Accepting player has insufficient resources."; list unchanged; no resource updates                 | :x:          |
+| Test Case 12 | BLUE accepts RED's offer of (1 BRICK) for (1 WOOL); both have resources; list has only this offer                       | list with size 0; RED -1 BRICK +1 WOOL; BLUE +1 BRICK -1 WOOL                                                              | :white_check_mark: |
+| Test Case 13 | WHITE accepts ORANGE's offer of (2 ORE) for (1 GRAIN); both have resources; list has three offers                       | list with size 2; ORANGE -2 ORE +1 GRAIN; WHITE +2 ORE -1 GRAIN; only this offer removed                                   | :white_check_mark: |
+| Test Case 14 | BLUE accepts one of two duplicate offers from RED; both have resources                                                  | list with size 1; only one duplicate removed; resources updated once                                                       | :white_check_mark: |
+| Test Case 15 | RED accepts RED's own offer                                                                                             | IllegalArgumentException: "A player cannot accept their own trade."; list unchanged; no resource updates                   | :white_check_mark: |
+| Test Case 16 | BLUE accepts a TradeOffer reference that is not in the list (already accepted earlier)                                  | IllegalArgumentException: "Trade not found."; list unchanged                                                               | :white_check_mark: |
+| Test Case 17 | BLUE accepts RED's offer of (5 BRICK) for (1 WOOL) but RED has 0 BRICK                                                  | IllegalStateException: "Offering player has insufficient resources."; list unchanged; no resource updates                  | :white_check_mark: |
+| Test Case 18 | BLUE accepts RED's offer of (1 BRICK) for (5 WOOL) but BLUE has 0 WOOL                                                  | IllegalStateException: "Accepting player has insufficient resources."; list unchanged; no resource updates                 | :white_check_mark: |

@@ -31,7 +31,7 @@ lower boundary (0). Upper-boundary-exceeded is not representable in `int`.
 
 |             | System under test       | Expected output                                              | Implemented? |
 |-------------|-------------------------|--------------------------------------------------------------|--------------|
-| Test Case 1 | BRICK, 1                | valid object                                                 | :x:          |
-| Test Case 2 | WOOL, Integer.MAX_VALUE | valid object                                                 | :x:          |
-| Test Case 3 | GRAIN, 0                | IllegalArgumentException: "Quantity must be at least 1."     | :x:          |
-| Test Case 4 | DESERT, 1               | IllegalArgumentException: "Resource must be tradeable."      | :x:          |
+| Test Case 1 | BRICK, 1                | valid object                                                 | :white_check_mark: |
+| Test Case 2 | WOOL, Integer.MAX_VALUE | valid object                                                 | :white_check_mark: |
+| Test Case 3 | GRAIN, 0                | IllegalArgumentException: "Quantity must be at least 1."     | :white_check_mark: |
+| Test Case 4 | DESERT, 1               | IllegalArgumentException: "Resource must be tradeable."      | :white_check_mark: |
