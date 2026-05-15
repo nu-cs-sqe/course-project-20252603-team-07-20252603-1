@@ -3,7 +3,7 @@ package domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Hex {
+public final class Hex {
     private static final int MIN_HEX_ID = 0;
     private static final int MAX_HEX_ID = 18;
 
