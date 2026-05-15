@@ -35,3 +35,5 @@ lower boundary (0). Upper-boundary-exceeded is not representable in `int`.
 | Test Case 2 | WOOL, Integer.MAX_VALUE | valid object                                                 | :white_check_mark: |
 | Test Case 3 | GRAIN, 0                | IllegalArgumentException: "Quantity must be at least 1."     | :white_check_mark: |
 | Test Case 4 | DESERT, 1               | IllegalArgumentException: "Resource must be tradeable."      | :white_check_mark: |
+| Test Case 5 | LUMBER, 1               | valid object                                                 | :x:                |
+| Test Case 6 | ORE, 1                  | valid object                                                 | :x:                |
