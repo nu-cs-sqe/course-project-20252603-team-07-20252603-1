@@ -30,18 +30,24 @@ public class TradeManager {
         ResourceQuantity giving = offer.getGiving();
         ResourceQuantity receiving = offer.getReceiving();
 
-        if (offerer.getResourceCount(giving.getResource()) < giving.getQuantity()) {
+        Resource givingResource = giving.getResource();
+        int givingQuantity = giving.getQuantity();
+
+        Resource receivingResource = receiving.getResource();
+        int receivingQuantity = receiving.getQuantity();
+
+        if (offerer.getResourceCount(givingResource) < givingQuantity) {
             throw new IllegalStateException("Offering player has insufficient resources.");
         }
-        if (acceptingPlayer.getResourceCount(receiving.getResource()) < receiving.getQuantity()) {
+        if (acceptingPlayer.getResourceCount(receivingResource) < receivingQuantity) {
             throw new IllegalStateException("Accepting player has insufficient resources.");
         }
 
-        offers.remove(offer);
+        offerer.updateResources(givingResource, -givingQuantity);
+        offerer.updateResources(receivingResource, receivingQuantity);
+        acceptingPlayer.updateResources(receivingResource, -receivingQuantity);
+        acceptingPlayer.updateResources(givingResource, givingQuantity);
 
-        offerer.updateResources(giving.getResource(), -giving.getQuantity());
-        offerer.updateResources(receiving.getResource(), receiving.getQuantity());
-        acceptingPlayer.updateResources(receiving.getResource(), -receiving.getQuantity());
-        acceptingPlayer.updateResources(giving.getResource(), giving.getQuantity());
+        offers.remove(offer);
     }
 }
