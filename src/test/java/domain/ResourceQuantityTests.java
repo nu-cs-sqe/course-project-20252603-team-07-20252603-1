@@ -36,4 +36,9 @@ public class ResourceQuantityTests {
         String actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
     }
+
+    @Test // Test Case 5
+    public void Construct_Lumber_ExpectValid() {
+        assertDoesNotThrow(() -> new ResourceQuantity(Resource.LUMBER, 1));
+    }
 }
