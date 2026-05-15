@@ -398,7 +398,7 @@ public class HexTests {
 
         h.addPlayerSettlementToHex(mockRedPlayer);
 
-        mockRedPlayer.updateResources(h.resource, 1);
+        mockRedPlayer.updateResources(h.getHexResource(), 1);
         EasyMock.expectLastCall();
 
         EasyMock.replay(mockRedPlayer);
@@ -418,10 +418,10 @@ public class HexTests {
         h.addPlayerSettlementToHex(mockOrangePlayer);
         h.addPlayerSettlementToHex(mockWhitePlayer);
 
-        mockOrangePlayer.updateResources(h.resource, 1);
+        mockOrangePlayer.updateResources(h.getHexResource(), 1);
         EasyMock.expectLastCall();
 
-        mockWhitePlayer.updateResources(h.resource, 1);
+        mockWhitePlayer.updateResources(h.getHexResource(), 1);
         EasyMock.expectLastCall();
 
         EasyMock.replay(mockOrangePlayer, mockWhitePlayer);
@@ -442,13 +442,13 @@ public class HexTests {
         h.addPlayerSettlementToHex(mockBluePlayer);
         h.addPlayerSettlementToHex(mockWhitePlayer);
 
-        mockBluePlayer.updateResources(h.resource, 1);
+        mockBluePlayer.updateResources(h.getHexResource(), 1);
         EasyMock.expectLastCall();
 
-        mockBluePlayer.updateResources(h.resource, 1);
+        mockBluePlayer.updateResources(h.getHexResource(), 1);
         EasyMock.expectLastCall();
 
-        mockWhitePlayer.updateResources(h.resource, 1);
+        mockWhitePlayer.updateResources(h.getHexResource(), 1);
         EasyMock.expectLastCall();
 
         EasyMock.replay(mockBluePlayer, mockWhitePlayer);
@@ -468,13 +468,13 @@ public class HexTests {
         h.addPlayerSettlementToHex(mockRedPlayer);
         h.addPlayerSettlementToHex(mockRedPlayer);
 
-        mockRedPlayer.updateResources(h.resource, 1);
+        mockRedPlayer.updateResources(h.getHexResource(), 1);
         EasyMock.expectLastCall();
 
-        mockRedPlayer.updateResources(h.resource, 1);
+        mockRedPlayer.updateResources(h.getHexResource(), 1);
         EasyMock.expectLastCall();
 
-        mockRedPlayer.updateResources(h.resource, 1);
+        mockRedPlayer.updateResources(h.getHexResource(), 1);
         EasyMock.expectLastCall();
 
         EasyMock.replay(mockRedPlayer);
@@ -496,13 +496,13 @@ public class HexTests {
         h.addPlayerSettlementToHex(mockWhitePlayer);
         h.addPlayerSettlementToHex(mockBluePlayer);
 
-        mockRedPlayer.updateResources(h.resource, 1);
+        mockRedPlayer.updateResources(h.getHexResource(), 1);
         EasyMock.expectLastCall();
 
-        mockWhitePlayer.updateResources(h.resource, 1);
+        mockWhitePlayer.updateResources(h.getHexResource(), 1);
         EasyMock.expectLastCall();
 
-        mockBluePlayer.updateResources(h.resource, 1);
+        mockBluePlayer.updateResources(h.getHexResource(), 1);
         EasyMock.expectLastCall();
 
         EasyMock.replay(mockRedPlayer, mockWhitePlayer, mockBluePlayer);
@@ -550,7 +550,7 @@ public class HexTests {
 
         h.addPlayerCityToHex(mockRedPlayer);
 
-        mockRedPlayer.updateResources(h.resource, 2);
+        mockRedPlayer.updateResources(h.getHexResource(), 2);
         EasyMock.expectLastCall();
 
         EasyMock.replay(mockRedPlayer);
@@ -570,10 +570,10 @@ public class HexTests {
         h.addPlayerCityToHex(mockOrangePlayer);
         h.addPlayerCityToHex(mockWhitePlayer);
 
-        mockOrangePlayer.updateResources(h.resource, 2);
+        mockOrangePlayer.updateResources(h.getHexResource(), 2);
         EasyMock.expectLastCall();
 
-        mockWhitePlayer.updateResources(h.resource, 2);
+        mockWhitePlayer.updateResources(h.getHexResource(), 2);
         EasyMock.expectLastCall();
 
         EasyMock.replay(mockOrangePlayer, mockWhitePlayer);
@@ -594,13 +594,13 @@ public class HexTests {
         h.addPlayerCityToHex(mockBluePlayer);
         h.addPlayerCityToHex(mockWhitePlayer);
 
-        mockBluePlayer.updateResources(h.resource, 2);
+        mockBluePlayer.updateResources(h.getHexResource(), 2);
         EasyMock.expectLastCall();
 
-        mockBluePlayer.updateResources(h.resource, 2);
+        mockBluePlayer.updateResources(h.getHexResource(), 2);
         EasyMock.expectLastCall();
 
-        mockWhitePlayer.updateResources(h.resource, 2);
+        mockWhitePlayer.updateResources(h.getHexResource(), 2);
         EasyMock.expectLastCall();
 
         EasyMock.replay(mockBluePlayer, mockWhitePlayer);
@@ -620,13 +620,13 @@ public class HexTests {
         h.addPlayerCityToHex(mockRedPlayer);
         h.addPlayerCityToHex(mockRedPlayer);
 
-        mockRedPlayer.updateResources(h.resource, 2);
+        mockRedPlayer.updateResources(h.getHexResource(), 2);
         EasyMock.expectLastCall();
 
-        mockRedPlayer.updateResources(h.resource, 2);
+        mockRedPlayer.updateResources(h.getHexResource(), 2);
         EasyMock.expectLastCall();
 
-        mockRedPlayer.updateResources(h.resource, 2);
+        mockRedPlayer.updateResources(h.getHexResource(), 2);
         EasyMock.expectLastCall();
 
         EasyMock.replay(mockRedPlayer);
@@ -648,13 +648,13 @@ public class HexTests {
         h.addPlayerCityToHex(mockWhitePlayer);
         h.addPlayerCityToHex(mockBluePlayer);
 
-        mockRedPlayer.updateResources(h.resource, 2);
+        mockRedPlayer.updateResources(h.getHexResource(), 2);
         EasyMock.expectLastCall();
 
-        mockWhitePlayer.updateResources(h.resource, 2);
+        mockWhitePlayer.updateResources(h.getHexResource(), 2);
         EasyMock.expectLastCall();
 
-        mockBluePlayer.updateResources(h.resource, 2);
+        mockBluePlayer.updateResources(h.getHexResource(), 2);
         EasyMock.expectLastCall();
 
         EasyMock.replay(mockRedPlayer, mockWhitePlayer, mockBluePlayer);
@@ -687,15 +687,15 @@ public class HexTests {
         Hex h = new Hex(0, Resource.BRICK, 2);
 
         int expectedRoll = 2;
-        int actualRoll = h.hexRollNum;
+        int actualRoll = h.getHexRollNum();
         assertEquals(expectedRoll, actualRoll);
 
         int expectedId = 0;
-        int actualId = h.hexId;
+        int actualId = h.getHexId();
         assertEquals(expectedId, actualId);
 
         Resource expectedResource = Resource.BRICK;
-        Resource actualResource = h.resource;
+        Resource actualResource = h.getHexResource();
         assertEquals(expectedResource, actualResource);
     }
 
@@ -704,15 +704,15 @@ public class HexTests {
         Hex h = new Hex(18, Resource.GRAIN, 12);
 
         int expectedRoll = 12;
-        int actualRoll = h.hexRollNum;
+        int actualRoll = h.getHexRollNum();
         assertEquals(expectedRoll, actualRoll);
 
         int expectedId = 18;
-        int actualId = h.hexId;
+        int actualId = h.getHexId();
         assertEquals(expectedId, actualId);
 
         Resource expectedResource = Resource.GRAIN;
-        Resource actualResource = h.resource;
+        Resource actualResource = h.getHexResource();
         assertEquals(expectedResource, actualResource);
     }
 
@@ -765,15 +765,15 @@ public class HexTests {
         Hex h = new Hex(0, Resource.DESERT, 7);
 
         int expectedRoll = 7;
-        int actualRoll = h.hexRollNum;
+        int actualRoll = h.getHexRollNum();
         assertEquals(expectedRoll, actualRoll);
 
         int expectedId = 0;
-        int actualId = h.hexId;
+        int actualId = h.getHexId();
         assertEquals(expectedId, actualId);
 
         Resource expectedResource = Resource.DESERT;
-        Resource actualResource = h.resource;
+        Resource actualResource = h.getHexResource();
         assertEquals(expectedResource, actualResource);
     }
 
@@ -798,8 +798,4 @@ public class HexTests {
         String actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
     }
-
-
-
 }
-
