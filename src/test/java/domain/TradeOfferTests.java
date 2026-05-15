@@ -54,4 +54,13 @@ public class TradeOfferTests {
         String actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
     }
+
+    @Test // Test Case 5
+    public void Construct_OrangeGrainForBrick_ExpectValid() {
+        Player mockOrange = EasyMock.createMock(Player.class);
+        ResourceQuantity giving = new ResourceQuantity(Resource.GRAIN, 1);
+        ResourceQuantity receiving = new ResourceQuantity(Resource.BRICK, 1);
+
+        assertDoesNotThrow(() -> new TradeOffer(mockOrange, giving, receiving));
+    }
 }
