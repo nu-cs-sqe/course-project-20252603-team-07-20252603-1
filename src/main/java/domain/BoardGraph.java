@@ -96,7 +96,7 @@ public class BoardGraph {
         throw new IllegalArgumentException("Edge does not exist");
     }
 
-    protected boolean checkPlayerOwnsNeighboringEdge(PlayerColor color, int startingNodeID, int endingNodeID) {
+    protected boolean edgeCheckPlayerOwnsNeighboringEdge(PlayerColor color, int startingNodeID, int endingNodeID) {
         Set<GraphEdge> connectingStartingNodeEdges = getConnectingEdgesByID(startingNodeID);
         Set<GraphEdge> connectingEndingNodeEdges = getConnectingEdgesByID(endingNodeID);
         // check starting Node Edges
@@ -114,7 +114,7 @@ public class BoardGraph {
         return false;
     }
 
-    protected boolean checkPlayerOwnsNeighboringNode(PlayerColor color, int startingNodeID, int endingNodeID) {
+    protected boolean edgeCheckPlayerOwnsNeighboringNode(PlayerColor color, int startingNodeID, int endingNodeID) {
         GraphNode startingNode = getGraphNodeByID(startingNodeID);
         GraphNode endingNode = getGraphNodeByID(endingNodeID);
         return startingNode.checkColor() == color || endingNode.checkColor() == color;
