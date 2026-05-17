@@ -69,6 +69,17 @@ public class BoardGraphControllerTests {
         assertEquals("Can not claim node adjacent to node already claimed", exception.getMessage());
     }
 
+    @Test
+    void playerClaimStoredEdgeSetup_test01_JustClaimedNeighboringNode_EdgeUnclaimed_ExpectTrue(){
+        BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
+        BoardGraphController boardControl = new BoardGraphController(boardMock);
+        EasyMock.expect(boardMock.claimGraphEdgeObject(PlayerColor.RED, 0, 3)).andReturn(true);
+        EasyMock.replay(boardMock);
+        assertTrue(boardControl.playerClaimStoredEdgeSetupPhase(PlayerColor.RED, 0, 0, 3));
+        EasyMock.verify(boardMock);
+    }
+
+
     /*
     // TODO platerClaimStoredEdge() tests
     @Test

@@ -20,11 +20,13 @@ public class BoardGraphController {
     }
 
     boolean playerClaimStoredEdgeSetupPhase(PlayerColor color, int nodeID, int startingNodeID, int endingNodeID) {
-        return false;
+        boardGraph.claimGraphEdgeObject(color, startingNodeID, endingNodeID);
+        return true;
     }
 
 /*
 // TODO refactored from original BoardGraph class, need to change for new Controller class
+
     boolean playerClaimStoredEdge(PlayerColor color, int startingNodeID, int endingNodeID){
         boolean playerOwnsNeighboringNode = boardGraph.edgeCheckPlayerOwnsNeighboringNode(color, startingNodeID, endingNodeID);
         boolean playerOwnsNeighboringEdge = boardGraph.edgeCheckPlayerOwnsNeighboringEdge(color, startingNodeID, endingNodeID);
@@ -41,6 +43,7 @@ public class BoardGraphController {
     }
 
 // TODO for the non-setup phase
+
     boolean playerClaimStoredNode(PlayerColor color, int nodeID) {
         //Node must be next to a built road, and not adjacent to any other claimed nodes
         return false;

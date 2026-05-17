@@ -27,9 +27,6 @@ public class BoardGraph {
         }
     }
 
-    boolean claimGraphNodeObject(PlayerColor color, int nodeID){
-        return getGraphNodeByID(nodeID).playerClaimNode(color);
-    };
 
     // Add a connecting edge to the set of edges within the map <GraphID, set of Edges>
     boolean addGraphNodeConnection(int nodeID, GraphEdge connectingEdge){
@@ -63,6 +60,13 @@ public class BoardGraph {
         }
     }
 
+    boolean claimGraphNodeObject(PlayerColor color, int nodeID){
+        return getGraphNodeByID(nodeID).playerClaimNode(color);
+    };
+
+    boolean claimGraphEdgeObject(PlayerColor color, int startingNodeID, int endingNodeID){
+        return true;
+    }
 
 
     boolean checkIfAdjacentNodesNotClaimed(int nodeID) {
