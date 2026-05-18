@@ -3,6 +3,8 @@ package domain;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -71,11 +73,29 @@ public class BoardGraphControllerTests {
 
     @Test
     void playerClaimStoredEdgeSetup_test01_JustClaimedNeighboringNode_EdgeUnclaimed_ExpectTrue(){
-        BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
+        BoardGraph boardMock = EasyMock.createNiceMock(BoardGraph.class);
         BoardGraphController boardControl = new BoardGraphController(boardMock);
         EasyMock.expect(boardMock.claimGraphEdgeObject(PlayerColor.RED, 0, 3)).andReturn(true);
         EasyMock.replay(boardMock);
         assertTrue(boardControl.playerClaimStoredEdgeSetupPhase(PlayerColor.RED, 0, 0, 3));
+        EasyMock.verify(boardMock);
+    }
+
+    @Test
+    void playerClaimStoredEdgeSetup_test02_JustClaimedNotNeighboringNode_EdgeUnclaimed_ExpectError(){
+        BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
+        BoardGraphController boardControl = new BoardGraphController(boardMock);
+        EasyMock.expect(boardMock.getConnectingEdgesByID(2)).andReturn(new HashSet<>());
+        EasyMock.expect(boardMock.getCorrectEdgeFromSet(new HashSet<>(), 0, 3))
+                .andThrow(new IllegalArgumentException("Edge does not exist"));
+        EasyMock.replay(boardMock);
+
+        Exception exception = assertThrows(IllegalEdgeClaim.class,
+                () -> boardControl.playerClaimStoredEdgeSetupPhase(PlayerColor.BLUE, 2, 0, 3));
+
+        assertEquals("Edge must be adjacent to just placed settlement",
+                exception.getMessage());
+
         EasyMock.verify(boardMock);
     }
 
