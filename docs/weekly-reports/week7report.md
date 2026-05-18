@@ -9,7 +9,9 @@ Still making progress on the game setup, held an in-person meeting to discuss bo
 - Decided against a dieHandler class
 - Updated Hex class based off of instructor feedback
 - Hoping to spend more time on project in upcoming week
-2. [??% done] Spencer:
+2. [100% done] Spencer:
+- Worked on BoardGraph and BoardGraph Controller
+- I believe both are done, and they are ready to review
 3. [??done] Connor: 
 4. [??done] Kevin: 
 5. [??done] Theo: 
@@ -17,7 +19,7 @@ Still making progress on the game setup, held an in-person meeting to discuss bo
 
 ## Goals
 1. Ben: Work on settlement, city, and road classes (potentially robber)
-2. Spencer:
+2. Spencer: Work on whichever settlement/city/road Ben is not working on, wire up buttons to Graph in view
 3. Connor: 
 4. Kevin:
 5. Theo:
