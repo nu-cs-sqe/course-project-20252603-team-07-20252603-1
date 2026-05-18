@@ -99,6 +99,25 @@ public class BoardGraphControllerTests {
         EasyMock.verify(boardMock);
     }
 
+    @Test
+    void playerClaimStoredEdgeSetup_test03_JustClaimedNeighboringNode_EdgeClaimed_ExpectError(){
+        BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
+        BoardGraphController boardControl = new BoardGraphController(boardMock);
+        EasyMock.expect(boardMock.getConnectingEdgesByID(50)).andReturn(new HashSet<>());
+        EasyMock.expect(boardMock.getCorrectEdgeFromSet(new HashSet<>(), 50, 53)).andReturn(new GraphEdge(50, 53));
+        EasyMock.expect(boardMock.claimGraphEdgeObject(PlayerColor.ORANGE, 50, 53))
+                        .andThrow(new EdgeAlreadyClaimedException("Edge already claimed"));
+        EasyMock.replay(boardMock);
+
+        Exception exception = assertThrows(EdgeAlreadyClaimedException.class,
+                () -> boardControl.playerClaimStoredEdgeSetupPhase(PlayerColor.ORANGE, 50, 50, 53));
+
+        assertEquals("Edge already claimed",
+                exception.getMessage());
+
+        EasyMock.verify(boardMock);
+    }
+
 
     /*
     // TODO platerClaimStoredEdge() tests

@@ -39,12 +39,12 @@
 - Error -> "Edge already claimed"
 
 
-|             | State of the System                                              | Expected output                                         | Implemented? |
-|-------------|------------------------------------------------------------------|---------------------------------------------------------|--------------|
-| Test Case 1 | Red Claims edge0to3, just claimed Node 0, edge unclaimed         | True                                                    | :x:          |
-| Test Case 2 | Blue Claims edge0to3, just claimed Node 2, edge unclaimed        | Error "Edge must be adjacent to just placed settlement" | :x:          |
-| Test Case 3 | Orange Claims edge50to53, just claimed node 50, edge claimed     | Error "Edge already claimed"                            | :x:          |
-| Test Case 4 | White Claims ID edge50to53, just claimed node 53, edge unclaimed | True                                                    | :x:          |
+|             | State of the System                                              | Expected output                                         | Implemented?       |
+|-------------|------------------------------------------------------------------|---------------------------------------------------------|--------------------|
+| Test Case 1 | Red Claims edge0to3, just claimed Node 0, edge unclaimed         | True                                                    | :white_check_mark: |
+| Test Case 2 | Blue Claims edge0to3, just claimed Node 2, edge unclaimed        | Error "Edge must be adjacent to just placed settlement" | :white_check_mark: |
+| Test Case 3 | Orange Claims edge50to53, just claimed node 50, edge claimed     | Error "Edge already claimed"                            | :white_check_mark: |
+| Test Case 4 | White Claims ID edge50to53, just claimed node 53, edge unclaimed | True                                                    | :x:                |
 
 
 ## Still a WIP From Refactoring:
