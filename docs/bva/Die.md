@@ -1,9 +1,11 @@
-### Method under test: `rollOneDie(Randomizer random)`
+### BVA for Die Class
 
 'Die' is the class responsible for generating a random number
-from a range of values, imitating the use of a die. 
+from a range of values, imitating the use of a die.
 
 Note: Catan always uses two dice numbered from 1 through 6, so for our purposes we will hardcode those values. We know that these requirements will not change.
+
+### Method under test: `rollOneDie()`
 
 Step 1:
 - Input: randomizer
