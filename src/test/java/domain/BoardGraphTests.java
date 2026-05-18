@@ -266,6 +266,41 @@ public class BoardGraphTests {
         assertEquals("Edge does not exist", exception.getMessage());
     }
 
+    @Test
+    void playerClaimEdgeObject_test04_EdgeAlreadyClaimed_MultipleItemCollection_ExpectError(){
+        BoardGraph b = new BoardGraph();
+        GraphNode nodeStub = EasyMock.createMock(GraphNode.class);
+        GraphEdge edge50to53 = EasyMock.createMock(GraphEdge.class);
+        GraphEdge edge50to52 = EasyMock.createNiceMock(GraphEdge.class);
+        GraphEdge edge50to51 = EasyMock.createNiceMock(GraphEdge.class);
+
+        EasyMock.expect(nodeStub.getNodeID()).andReturn(50);
+
+        EasyMock.expect(edge50to53.getStartingNodeID()).andReturn(50);
+        EasyMock.expect(edge50to53.getEndingNodeID()).andReturn(53);
+
+        EasyMock.expect(edge50to52.getStartingNodeID()).andReturn(50);
+        EasyMock.expect(edge50to52.getEndingNodeID()).andReturn(52);
+
+        EasyMock.expect(edge50to51.getStartingNodeID()).andReturn(50);
+        EasyMock.expect(edge50to51.getEndingNodeID()).andReturn(51);
+
+        EasyMock.expect(edge50to53.claimGraphEdge(PlayerColor.WHITE))
+                .andThrow(new EdgeAlreadyClaimedException("Edge already claimed"));
+        EasyMock.replay(nodeStub, edge50to53, edge50to51, edge50to52);
+        b.addGraphNodeObject(nodeStub);
+        b.addGraphNodeConnection(50, edge50to53);
+        b.addGraphNodeConnection(50, edge50to52);
+        b.addGraphNodeConnection(50, edge50to51);
+
+        Exception exception = assertThrows(EdgeAlreadyClaimedException.class,
+                () -> b.claimGraphEdgeObject(PlayerColor.WHITE, 50, 53));
+
+        assertEquals("Edge already claimed", exception.getMessage());
+
+        EasyMock.verify(edge50to53);
+    }
+
     // addGraphNodeConnection() Tests
     @Test
     void addNewEdge_test01_NotDuplicate_NodeExistsInMap_ExpectTrue() {
