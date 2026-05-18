@@ -240,14 +240,30 @@ public class BoardGraphTests {
         EasyMock.expect(edge0to2.getEndingNodeID()).andReturn(2);
         EasyMock.expect(edge0to1.getStartingNodeID()).andReturn(0);
         EasyMock.expect(edge0to1.getEndingNodeID()).andReturn(1);
-        EasyMock.expect(edge0to1.claimGraphEdge(PlayerColor.RED)).andReturn(true);
-        EasyMock.replay(nodeStub, edge0to1);
+        EasyMock.expect(edge0to1.claimGraphEdge(PlayerColor.BLUE)).andReturn(true);
+        EasyMock.replay(nodeStub, edge0to1, edge0to2);
         b.addGraphNodeObject(nodeStub);
         b.addGraphNodeConnection(0, edge0to1);
         b.addGraphNodeConnection(0, edge0to2);
 
-        assertTrue(b.claimGraphEdgeObject(PlayerColor.RED, 0, 1));
+        assertTrue(b.claimGraphEdgeObject(PlayerColor.BLUE, 0, 1));
         EasyMock.verify(edge0to1);
+    }
+
+    @Test
+    void playerClaimEdgeObject_test03_EdgeDoesNotExist_EmptyCollection_ExpectError(){
+        BoardGraph b = new BoardGraph();
+        GraphNode nodeStub = EasyMock.createNiceMock(GraphNode.class);
+
+        EasyMock.expect(nodeStub.getNodeID()).andReturn(52);
+        EasyMock.replay(nodeStub);
+
+        b.addGraphNodeObject(nodeStub);
+
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> b.claimGraphEdgeObject(PlayerColor.ORANGE, 52, 53));
+
+        assertEquals("Edge does not exist", exception.getMessage());
     }
 
     // addGraphNodeConnection() Tests
