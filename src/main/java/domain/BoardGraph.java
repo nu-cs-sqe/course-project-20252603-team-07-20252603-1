@@ -210,7 +210,7 @@ public class BoardGraph {
         addGraphEdge(50, 53);
     }
 
-    void addGraphEdge(int startingNodeID, int endingNodeID) {
+    private void addGraphEdge(int startingNodeID, int endingNodeID) {
         GraphEdge newEdge = new GraphEdge(startingNodeID, endingNodeID);
         addGraphNodeConnection(startingNodeID, newEdge);
         addGraphNodeConnection(endingNodeID, newEdge);
