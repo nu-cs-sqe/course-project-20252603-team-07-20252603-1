@@ -65,6 +65,10 @@ public class BoardGraph {
     };
 
     boolean claimGraphEdgeObject(PlayerColor color, int startingNodeID, int endingNodeID){
+        Set<GraphEdge> setWithRelevantEdge = getConnectingEdgesByID(startingNodeID);;
+        // Our Edge of interest is guaranteed to be in this set IF it exists
+        GraphEdge edgeToClaim = getCorrectEdgeFromSet(setWithRelevantEdge, startingNodeID, endingNodeID);
+        edgeToClaim.claimGraphEdge(color);
         return true;
     }
 

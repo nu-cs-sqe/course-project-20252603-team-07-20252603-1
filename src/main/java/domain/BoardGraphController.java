@@ -32,23 +32,6 @@ public class BoardGraphController {
     }
 
 /*
-// TODO refactored from original BoardGraph class, need to change for new Controller class
-
-    boolean playerClaimStoredEdge(PlayerColor color, int startingNodeID, int endingNodeID){
-        boolean playerOwnsNeighboringNode = boardGraph.edgeCheckPlayerOwnsNeighboringNode(color, startingNodeID, endingNodeID);
-        boolean playerOwnsNeighboringEdge = boardGraph.edgeCheckPlayerOwnsNeighboringEdge(color, startingNodeID, endingNodeID);
-        if(playerOwnsNeighboringNode || playerOwnsNeighboringEdge) {
-            Set<GraphEdge> connectingEdges = boardGraph.getConnectingEdgesByID(startingNodeID);
-            // Our Edge of interest is guaranteed to be in this set IF it exists
-            GraphEdge edgeToClaim = boardGraph.getCorrectEdgeFromSet(connectingEdges, startingNodeID, endingNodeID);
-            edgeToClaim.claimGraphEdge(color);
-            return true;
-        }
-        else {
-            throw new IllegalArgumentException("To claim an edge, player must own an adjacent node or edge");
-        }
-    }
-
 // TODO for the non-setup phase
 
     boolean playerClaimStoredNode(PlayerColor color, int nodeID) {

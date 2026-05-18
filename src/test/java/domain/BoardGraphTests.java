@@ -209,6 +209,25 @@ public class BoardGraphTests {
 
         EasyMock.verify(nodeMock);
     }
+    // TODO playerClaimStoredEdge() tests
+
+    @Test
+    void playerClaimEdgeObject_EdgeUnclaimed_SingleItemCollection_ExpectTrue(){
+        BoardGraph b = new BoardGraph();
+        GraphNode nodeStub = EasyMock.createMock(GraphNode.class);
+        GraphEdge edge0to1 = EasyMock.createMock(GraphEdge.class);
+        EasyMock.expect(nodeStub.getNodeID()).andReturn(0);
+        EasyMock.expect(edge0to1.getStartingNodeID()).andReturn(0);
+        EasyMock.expect(edge0to1.getEndingNodeID()).andReturn(1);
+        EasyMock.expect(edge0to1.claimGraphEdge(PlayerColor.RED)).andReturn(true);
+        EasyMock.replay(nodeStub, edge0to1);
+        b.addGraphNodeObject(nodeStub);
+        b.addGraphNodeConnection(0, edge0to1);
+
+        assertTrue(b.claimGraphEdgeObject(PlayerColor.RED, 0, 1));
+        EasyMock.verify(edge0to1);
+    }
+
     // addGraphNodeConnection() Tests
     @Test
     void addNewEdge_test01_NotDuplicate_NodeExistsInMap_ExpectTrue() {

@@ -62,6 +62,29 @@
 | Test Case 3 | Blue claims 53, multiple elements, ID 53 does not exist | Error 1         | :white_check_mark: |
 | Test Case 4 | White claims 53, it is already claimed                  | Error 2         | :white_check_mark: |
 
+### Method under test: `claimGraphEdgeObject(PlayerColor color, int startingNodeID, int endingNodeID)`
+
+#### Inputs:
+- Node IDs -> interval [0, 53]
+- Player color -> Red, Blue, White, Orange
+- States of Graph -> Edge exists, edge does not exist, edge is unclaimed/claimed
+  - WhiteBox: edge will be in set -> collection -> empty, one item, multiple
+
+#### Outputs:
+- Bool -> success or not
+- Edge Color is changed -> need to Mock to make sure call is made on Edge
+- Error 1 -> "Edge does not exist"
+- Error 2 -> "Edge already claimed"
+
+
+|             | State of the System                                                  | Expected output | Implemented?       |
+|-------------|----------------------------------------------------------------------|-----------------|--------------------|
+| Test Case 1 | Red Claims edge0to1, owns node 0, edge unclaimed, single item set    | True            | :white_check_mark: |
+| Test Case 2 | Blue Claims edge0to1, owns node 1, edge unclaimed, multiple item set | True            | :x:                |
+| Test Case 3 | Orange Claims edge52to53, edge does not exist, empty set             | Error 1         | :x:                |
+| Test Case 4 | White Claims edge52to53, edge already claimed, multiple item set     | Error 2         | :x:                |
+
+
 ### Method under test: `addGraphNodeConnection(int nodeID, GraphEdge connectingEdge)`
 
 #### inputs:
