@@ -9,10 +9,10 @@ public class BoardGraph {
     // map that connects Nodes to the edges connected
 
     // map that connects nodes edges; edges themselves contain info on
-    private Map<Integer, Set<GraphEdge>> nodeIDToConectingEdges = new HashMap<>();
+    private final Map<Integer, Set<GraphEdge>> nodeIDToConectingEdges = new HashMap<>();
 
     // map that connects NodeID to the actual node object
-    private Map<Integer, GraphNode> nodeIDToNodeObject = new HashMap<>();
+    private final Map<Integer, GraphNode> nodeIDToNodeObject = new HashMap<>();
 
     // Add a new GraphNode to the Map
     boolean addGraphNodeObject(GraphNode graphNode) {
