@@ -77,12 +77,12 @@
 - Error 2 -> "Edge already claimed"
 
 
-|             | State of the System                                                  | Expected output | Implemented?       |
-|-------------|----------------------------------------------------------------------|-----------------|--------------------|
-| Test Case 1 | Red Claims edge0to1, owns node 0, edge unclaimed, single item set    | True            | :white_check_mark: |
-| Test Case 2 | Blue Claims edge0to1, owns node 1, edge unclaimed, multiple item set | True            | :x:                |
-| Test Case 3 | Orange Claims edge52to53, edge does not exist, empty set             | Error 1         | :x:                |
-| Test Case 4 | White Claims edge52to53, edge already claimed, multiple item set     | Error 2         | :x:                |
+|             | State of the System                                              | Expected output | Implemented?       |
+|-------------|------------------------------------------------------------------|-----------------|--------------------|
+| Test Case 1 | Red Claims edge0to1, edge unclaimed, single item set             | True            | :white_check_mark: |
+| Test Case 2 | Blue Claims edge0to1, edge unclaimed, multiple item set          | True            | :white_check_mark: |
+| Test Case 3 | Orange Claims edge52to53, edge does not exist, empty set         | Error 1         | :x:                |
+| Test Case 4 | White Claims edge52to53, edge already claimed, multiple item set | Error 2         | :x:                |
 
 
 ### Method under test: `addGraphNodeConnection(int nodeID, GraphEdge connectingEdge)`
