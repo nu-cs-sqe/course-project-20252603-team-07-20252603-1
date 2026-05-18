@@ -20,7 +20,7 @@ public class GraphEdge {
     boolean claimGraphEdge(PlayerColor color) {
         if (this.roadBuilt) {
             // Edge already occupied
-            throw new IllegalArgumentException("Edge already claimed");
+            throw new EdgeAlreadyClaimedException("Edge already claimed");
         }
         else {
             this.roadBuilt = true;

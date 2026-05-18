@@ -22,7 +22,7 @@ public class GraphEdgeTests {
         GraphEdge e1 = new GraphEdge(52, 53);
         e1.claimGraphEdge((PlayerColor.BLUE));
 
-        Exception exception = assertThrows(IllegalArgumentException.class,
+        Exception exception = assertThrows(EdgeAlreadyClaimedException.class,
                 () -> e1.claimGraphEdge(PlayerColor.RED));
 
         assertEquals("Edge already claimed", exception.getMessage());
