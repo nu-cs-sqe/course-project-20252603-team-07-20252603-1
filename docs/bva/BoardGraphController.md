@@ -44,7 +44,7 @@
 | Test Case 1 | Red Claims edge0to3, just claimed Node 0, edge unclaimed         | True                                                    | :white_check_mark: |
 | Test Case 2 | Blue Claims edge0to3, just claimed Node 2, edge unclaimed        | Error "Edge must be adjacent to just placed settlement" | :white_check_mark: |
 | Test Case 3 | Orange Claims edge50to53, just claimed node 50, edge claimed     | Error "Edge already claimed"                            | :white_check_mark: |
-| Test Case 4 | White Claims ID edge50to53, just claimed node 53, edge unclaimed | True                                                    | :x:                |
+| Test Case 4 | White Claims ID edge50to53, just claimed node 53, edge unclaimed | True                                                    | :white_check_mark: |
 
 
 ## Still a WIP From Refactoring:

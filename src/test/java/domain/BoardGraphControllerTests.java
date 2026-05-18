@@ -118,6 +118,18 @@ public class BoardGraphControllerTests {
         EasyMock.verify(boardMock);
     }
 
+    @Test
+    void playerClaimStoredEdgeSetup_test04_JustClaimedNeighboringNode_EdgeUnclaimed_ExpectError(){
+        BoardGraph boardMock = EasyMock.createNiceMock(BoardGraph.class);
+        BoardGraphController boardControl = new BoardGraphController(boardMock);
+        EasyMock.expect(boardMock.claimGraphEdgeObject(PlayerColor.WHITE, 50, 53)).andReturn(true);
+        EasyMock.replay(boardMock);
+
+        assertTrue(boardControl.playerClaimStoredEdgeSetupPhase(PlayerColor.WHITE, 53, 50, 53));
+
+        EasyMock.verify(boardMock);
+    }
+
 
     /*
     // TODO platerClaimStoredEdge() tests
