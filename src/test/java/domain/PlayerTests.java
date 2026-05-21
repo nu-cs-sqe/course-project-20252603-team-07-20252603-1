@@ -276,7 +276,7 @@ public class PlayerTests {
     @Test // test case 14
     public void ReceiveResources_EmptyMap_ExpectResourcesUnchanged() {
         // create data
-        Map<ResourceType, Integer> emptyResources = new HashMap<>();
+        Map<Resource, Integer> emptyResources = new HashMap<>();
 
         // create player and receive resources
         Player player = new Player();
@@ -291,16 +291,16 @@ public class PlayerTests {
         final int expectedWoodCount = 1;
 
         // create test resource
-        Map<ResourceType, Integer> resources = new HashMap<>();
-        resources.put(ResourceType.WOOD, 1);
+        Map<Resource, Integer> resources = new HashMap<>();
+        resources.put(Resource.LUMBER, 1);
 
         // instantiate player to test receiving resource
         Player player = new Player();
         player.receiveResources(resources);
 
         // assert correct value received
-        assertEquals(expectedWoodCount, player.getResources().get(ResourceType.WOOD),
-                "expected: player's WOOD count increases by 1");
+        assertEquals(expectedWoodCount, player.getResources().get(Resource.LUMBER),
+                "expected: player's LUMBER count increases by 1");
     }
 
     @Test // test case 16
@@ -308,23 +308,23 @@ public class PlayerTests {
         final int expectedBrickCount = 19;
 
         // create test resource
-        Map<ResourceType, Integer> resources = new HashMap<>();
-        resources.put(ResourceType.BRICK, 19);
+        Map<Resource, Integer> resources = new HashMap<>();
+        resources.put(Resource.BRICK, 19);
 
         // instantiate player to test receiving resource
         Player player = new Player();
         player.receiveResources(resources);
 
         // assert correct value received
-        assertEquals(expectedBrickCount, player.getResources().get(ResourceType.BRICK),
+        assertEquals(expectedBrickCount, player.getResources().get(Resource.BRICK),
                 "expected: player's BRICK count increases by 19");
     }
 
     @Test // test case 17
     public void ReceiveResources_SheepZeroBelowLowerBoundary_ExpectError() {
         // initialize test data
-        Map<ResourceType, Integer> resources = new HashMap<>();
-        resources.put(ResourceType.SHEEP, 0);
+        Map<Resource, Integer> resources = new HashMap<>();
+        resources.put(Resource.WOOL, 0);
 
         // initialize player
         Player player = new Player();
@@ -342,25 +342,25 @@ public class PlayerTests {
         final int expectedBrickCount = 3;
 
         // create multi-entry resource map
-        Map<ResourceType, Integer> resources = new HashMap<>();
-        resources.put(ResourceType.WOOD, expectedWoodCount);
-        resources.put(ResourceType.BRICK, expectedBrickCount);
+        Map<Resource, Integer> resources = new HashMap<>();
+        resources.put(Resource.LUMBER, expectedWoodCount);
+        resources.put(Resource.BRICK, expectedBrickCount);
 
         // instantiate player and receive resources
         Player player = new Player();
         player.receiveResources(resources);
 
         // assert both resource counts were merged correctly
-        assertEquals(expectedWoodCount, player.getResources().get(ResourceType.WOOD),
-                "expected: player's WOOD count increases by 5");
-        assertEquals(expectedBrickCount, player.getResources().get(ResourceType.BRICK),
+        assertEquals(expectedWoodCount, player.getResources().get(Resource.LUMBER),
+                "expected: player's LUMBER count increases by 5");
+        assertEquals(expectedBrickCount, player.getResources().get(Resource.BRICK),
                 "expected: player's BRICK count increases by 3");
     }
 
     @Test // test case 19
     public void ReceiveResources_DesertOneInvalidResourceType_ExpectError() {
-        Map<ResourceType, Integer> resources = new HashMap<>();
-        resources.put(ResourceType.DESERT, 1);
+        Map<Resource, Integer> resources = new HashMap<>();
+        resources.put(Resource.DESERT, 1);
 
         // instantiate player
         Player player = new Player();

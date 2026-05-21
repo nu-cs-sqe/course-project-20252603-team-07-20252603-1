@@ -9,7 +9,7 @@ import java.util.Map;
 public class Player {
     private final List<Settlement> settlements;
     private final List<Edge> roads;
-    private final Map<ResourceType, Integer> resources;
+    private final Map<Resource, Integer> resources;
 
     public Player() {
         this.settlements = new ArrayList<>();
@@ -17,7 +17,7 @@ public class Player {
         this.resources = new HashMap<>();
     }
 
-    public Map<ResourceType, Integer> getResources() {
+    public Map<Resource, Integer> getResources() {
         return Collections.unmodifiableMap(resources);
     }
 
@@ -61,15 +61,15 @@ public class Player {
         roads.add(edge);
     }
 
-    public void receiveResources(Map<ResourceType, Integer> resources) {
+    public void receiveResources(Map<Resource, Integer> resources) {
         // validate resources before merging
         if (resources == null)
             throw new IllegalArgumentException("Resources cannot be null.");
 
         // merge resources into player's resources map (adds quantities if keys match, otherwise adds new key-value pair)
-        for (Map.Entry<ResourceType, Integer> entry : resources.entrySet()) {
+        for (Map.Entry<Resource, Integer> entry : resources.entrySet()) {
             // validate data entries
-            if (entry.getKey() == ResourceType.DESERT)
+            if (entry.getKey() == Resource.DESERT)
                 throw new IllegalArgumentException("Cannot receive DESERT as a resource.");
             if (entry.getValue() < 1)
                 throw new IllegalArgumentException("Resource quantity must be at least 1.");
@@ -77,5 +77,10 @@ public class Player {
             // merge new resources
             this.resources.merge(entry.getKey(), entry.getValue(), Integer::sum);
         }
+    }
+
+    // TODO: BVA analysis and implementation
+    void updateResources(Resource resource, int amount){
+
     }
 }
