@@ -9,7 +9,7 @@ public class BoardGraph {
     // map that connects Nodes to the edges connected
 
     // map that connects nodes edges; edges themselves contain info on
-    private final Map<Integer, Set<GraphEdge>> nodeIDToConectingEdges = new HashMap<>();
+    private final Map<Integer, Set<GraphEdge>> nodeIDToConnectingEdges = new HashMap<>();
 
     // map that connects NodeID to the actual node object
     private final Map<Integer, GraphNode> nodeIDToNodeObject = new HashMap<>();
@@ -22,7 +22,7 @@ public class BoardGraph {
         }
         else {
             this.nodeIDToNodeObject.put(nodeID, graphNode);
-            this.nodeIDToConectingEdges.put(nodeID, new HashSet<>());
+            this.nodeIDToConnectingEdges.put(nodeID, new HashSet<>());
             return true;
         }
     }
@@ -31,11 +31,11 @@ public class BoardGraph {
     // Add a connecting edge to the set of edges within the map <GraphID, set of Edges>
     boolean addGraphNodeConnection(int nodeID, GraphEdge connectingEdge){
         getGraphNodeByID(nodeID); // This call works as a check that the node Exists, throwing the proper error if it does not
-        if (this.nodeIDToConectingEdges.get(nodeID).contains(connectingEdge)) {
+        if (this.nodeIDToConnectingEdges.get(nodeID).contains(connectingEdge)) {
             throw new IllegalArgumentException("Node already has specified edge");
         }
         else {
-            this.nodeIDToConectingEdges.get(nodeID).add(connectingEdge);
+            this.nodeIDToConnectingEdges.get(nodeID).add(connectingEdge);
             return true;
         }
     }
@@ -52,11 +52,11 @@ public class BoardGraph {
 
     // Getter function to get the set of edges from the map
     Set<GraphEdge> getConnectingEdgesByID(int nodeID) {
-        if (!nodeIDToConectingEdges.containsKey(nodeID)) {
+        if (!nodeIDToConnectingEdges.containsKey(nodeID)) {
             throw new IllegalArgumentException("Node does not exist");
         }
         else {
-            return this.nodeIDToConectingEdges.get(nodeID);
+            return this.nodeIDToConnectingEdges.get(nodeID);
         }
     }
 
@@ -221,7 +221,7 @@ public class BoardGraph {
     }
 
     protected int checkAmountOfNodesInEdgeMapForTesting() {
-        return this.nodeIDToConectingEdges.size();
+        return this.nodeIDToConnectingEdges.size();
     }
 
 
