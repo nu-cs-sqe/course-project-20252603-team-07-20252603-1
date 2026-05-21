@@ -35,4 +35,10 @@ public class GraphNodeTests {
         GraphNode g1 = new GraphNode(0);
         assertNotNull(g1);
     }
+
+    @Test
+    void assertValidNodeID_test02_ID53_ExpectTrue() {
+        GraphNode g1 = new GraphNode(53);
+        assertNotNull(g1);
+    }
 }
