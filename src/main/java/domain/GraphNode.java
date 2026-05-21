@@ -14,14 +14,19 @@ public class GraphNode {
     private static final int MIN_NODE_ID = 0;
 
     GraphNode(int nodeID) {
-        assertValidNodeID();
+        assertValidNodeID(nodeID);
         this.nodeID = nodeID;
         this.occupied = false;
         this.owningPlayerColor = PlayerColor.SETUP;
     }
 
-    private boolean assertValidNodeID() {
-        return true;
+    private boolean assertValidNodeID(int nodeID) {
+        if (nodeID < MIN_NODE_ID) {
+            throw new IllegalNodeIDException("Requested nodeID number illegal");
+        }
+        else {
+            return true;
+        }
     }
 
     boolean playerClaimNode(PlayerColor color){

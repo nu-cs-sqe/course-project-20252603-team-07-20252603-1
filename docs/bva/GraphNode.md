@@ -14,11 +14,11 @@
 - NodeID -> Integer -> Interval [0, 53]
 #### Outputs:
 - True
-- IllegalNodeIDException
+- IllegalNodeIDException -> "Requested nodeID number illegal"
 
 |             | State of the System | Expected output      | Implemented?       |
 |-------------|---------------------|----------------------|--------------------|
 | Test Case 1 | 0                   | True, object created | :white_check_mark: |
 | Test Case 2 | 53                  | True, object created | :white_check_mark: |
-| Test Case 3 | -1                  | Error                | :x:                |
+| Test Case 3 | -1                  | Error                | :white_check_mark: |
 | Test Case 4 | 54                  | Error                | :x:                |

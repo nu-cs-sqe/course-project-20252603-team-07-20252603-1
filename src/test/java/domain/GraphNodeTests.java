@@ -41,4 +41,11 @@ public class GraphNodeTests {
         GraphNode g1 = new GraphNode(53);
         assertNotNull(g1);
     }
+
+    @Test
+    void assertValidNodeID_test03_IDNegative1_ExpectError() {
+        Exception exception = assertThrows(IllegalNodeIDException.class,
+                () -> new GraphNode(-1));
+        assertEquals("Requested nodeID number illegal", exception.getMessage());
+    }
 }
