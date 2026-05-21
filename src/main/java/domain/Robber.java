@@ -13,8 +13,11 @@ public class Robber {
         return currentHexId;
     }
 
-    void moveRobber(int HexId){
-        currentHexId = HexId;
+    void moveRobber(int hexId){
+        if (hexId < 0){
+            throw new IllegalArgumentException("Cannot move Robber to invalid HexId");
+        }
+        currentHexId = hexId;
     }
 
 }
