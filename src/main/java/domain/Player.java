@@ -1,13 +1,13 @@
 package domain;
 
 public class Player {
-    public final PlayerColor color;
+  public final PlayerColor color;
 
-    public Player(PlayerColor color){
-        this.color = color;
-    }
+  public Player(PlayerColor color) {
+    this.color = color;
+  }
 
-    void updateResources(Resource resource, int amount){
+  void updateResources(Resource resource, int amount) {
 
-    }
+  }
 }
