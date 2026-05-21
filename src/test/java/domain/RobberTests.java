@@ -53,6 +53,15 @@ public class RobberTests {
         String actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
     }
+
+    @Test // Test Case 5
+    public void validateInitialRobberState() {
+        Robber robber = new Robber();
+
+        int expected = 9;
+        int actual = robber.getRobberLocation();
+        assertEquals(expected, actual);
+    }
 }
 
 

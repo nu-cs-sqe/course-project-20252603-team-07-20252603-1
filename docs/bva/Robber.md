@@ -40,9 +40,9 @@ Step 3:
 
 |             | System under test     | Expected output | Implemented?               |
 |-------------|-----------------------|-----------------|----------------------------|
-| Test Case 5 | Robber is on hex 0    | 0               | Implemented in Test Case 1 |
-| Test Case 6 | Robber is on hex 18   | 18              | Implemented in Test Case 2 |
-| Test Case 7 | Robber is initialized | 9               | x                          |
+| Test Case 5 | Robber is initialized | 9               | :white_check_mark:         |
+| Test Case 6 | Robber is on hex 0    | 0               | Implemented in Test Case 1 |
+| Test Case 7 | Robber is on hex 18   | 18              | Implemented in Test Case 2 |
 
 
 
