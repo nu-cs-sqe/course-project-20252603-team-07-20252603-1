@@ -40,6 +40,19 @@ public class RobberTests {
         String actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
     }
+
+    @Test // Test Case 4
+    public void moveRobberToOutOfUpperBoundHex() {
+        Robber robber = new Robber();
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            robber.moveRobber(19);
+        });
+
+        String expectedMessage = "Cannot move Robber to invalid HexId";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
 }
 
 

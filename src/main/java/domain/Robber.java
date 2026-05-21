@@ -14,7 +14,7 @@ public class Robber {
     }
 
     void moveRobber(int hexId){
-        if (hexId < 0){
+        if (hexId < 0 || hexId > 18){
             throw new IllegalArgumentException("Cannot move Robber to invalid HexId");
         }
         currentHexId = hexId;

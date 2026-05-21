@@ -25,7 +25,7 @@ Step 3:
 | Test Case 1 | Move robber to hex 0  | Robber location is at 0               | :white_check_mark: |
 | Test Case 2 | Move robber to hex 18 | Robber location is at 18              | :white_check_mark: |
 | Test Case 3 | Move robber to hex -1 | "Cannot move Robber to invalid HexId" | :white_check_mark: |
-| Test Case 4 | Move robber to hex 19 | "Cannot move Robber to invalid HexId" | x                  |
+| Test Case 4 | Move robber to hex 19 | "Cannot move Robber to invalid HexId" | :white_check_mark: |
 
 ### Method under test: `getRobberLocation()`
 
