@@ -6,14 +6,22 @@ public class GraphNode {
     // Keep track of:
     // NodeID -> unique ID to identify Node in Graph -> int
     // Occupied -> is this Node occupied?
-    private int nodeID;
+    final private int nodeID;
     private boolean occupied;
     private PlayerColor owningPlayerColor;
 
+    private static final int MAX_NODE_ID = 53;
+    private static final int MIN_NODE_ID = 0;
+
     GraphNode(int nodeID) {
+        assertValidNodeID();
         this.nodeID = nodeID;
         this.occupied = false;
         this.owningPlayerColor = PlayerColor.SETUP;
+    }
+
+    private boolean assertValidNodeID() {
+        return true;
     }
 
     boolean playerClaimNode(PlayerColor color){

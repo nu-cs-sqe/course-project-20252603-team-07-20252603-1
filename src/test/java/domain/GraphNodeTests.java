@@ -29,4 +29,10 @@ public class GraphNodeTests {
         assertTrue(g1.checkOccupied());
         assertEquals(PlayerColor.BLUE, g1.checkColor());
     }
+
+    @Test
+    void assertValidNodeID_test01_ID0_ExpectTrue() {
+        GraphNode g1 = new GraphNode(0);
+        assertNotNull(g1);
+    }
 }
