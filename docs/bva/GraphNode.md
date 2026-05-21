@@ -21,4 +21,4 @@
 | Test Case 1 | 0                   | True, object created | :white_check_mark: |
 | Test Case 2 | 53                  | True, object created | :white_check_mark: |
 | Test Case 3 | -1                  | Error                | :white_check_mark: |
-| Test Case 4 | 54                  | Error                | :x:                |
+| Test Case 4 | 54                  | Error                | :white_check_mark: |

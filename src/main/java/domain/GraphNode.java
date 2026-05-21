@@ -21,7 +21,7 @@ public class GraphNode {
     }
 
     private boolean assertValidNodeID(int nodeID) {
-        if (nodeID < MIN_NODE_ID) {
+        if (nodeID < MIN_NODE_ID || nodeID > MAX_NODE_ID) {
             throw new IllegalNodeIDException("Requested nodeID number illegal");
         }
         else {
