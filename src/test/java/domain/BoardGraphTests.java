@@ -168,15 +168,28 @@ public class BoardGraphTests {
 
         b.addGraphNodeObject(nodeMock);
 
-        assertFalse(b.checkPlayerOwnsGraphNodeObject(PlayerColor.RED, 0));
+        assertFalse(b.checkPlayerOwnsGraphNodeObject(PlayerColor.ORANGE, 0));
     }
 
     @Test
     void checkPlayerOwnsGraphNodeObject_test03_NodeDoesNotExist_ExpectError(){
         BoardGraph b = new BoardGraph();
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> b.checkPlayerOwnsGraphNodeObject(PlayerColor.RED, 0));
+                () -> b.checkPlayerOwnsGraphNodeObject(PlayerColor.BLUE, 0));
         assertEquals("Node does not exist", exception.getMessage());
+    }
+
+    @Test
+    void checkPlayerOwnsGraphNodeObject_test04_NodeExists_DifferentColor_ExpectFalse(){
+        BoardGraph b = new BoardGraph();
+        GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
+        EasyMock.expect(nodeMock.getNodeID()).andReturn(0);
+        EasyMock.expect(nodeMock.checkColor()).andReturn(PlayerColor.BLUE);
+        EasyMock.replay(nodeMock);
+
+        b.addGraphNodeObject(nodeMock);
+
+        assertFalse(b.checkPlayerOwnsGraphNodeObject(PlayerColor.WHITE, 0));
     }
 
     @Test
