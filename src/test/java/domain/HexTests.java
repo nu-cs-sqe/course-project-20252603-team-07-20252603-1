@@ -18,6 +18,9 @@ public class HexTests {
         int expected = 1;
         int actual = h.getSettlementCount();
         assertEquals(expected, actual);
+
+        boolean isPlayerOnSettlement = h.isPlayerSettlementOnHex(mockRedPlayer);
+        assertTrue(isPlayerOnSettlement);
     }
 
     @Test // Test Case 2
@@ -33,6 +36,13 @@ public class HexTests {
         int expected = 2;
         int actual = h.getSettlementCount();
         assertEquals(expected, actual);
+
+        boolean isBlueOnSettlement = h.isPlayerSettlementOnHex(mockBluePlayer);
+        assertTrue(isBlueOnSettlement);
+
+        boolean isOrangeOnSettlement = h.isPlayerSettlementOnHex(mockOrangePlayer);
+        assertTrue(isOrangeOnSettlement);
+
     }
 
     @Test // Test Case 3
@@ -49,6 +59,13 @@ public class HexTests {
         int expected = 3;
         int actual = h.getSettlementCount();
         assertEquals(expected, actual);
+
+        boolean isOrangeOnSettlement = h.isPlayerSettlementOnHex(mockOrangePlayer);
+        assertTrue(isOrangeOnSettlement);
+
+        boolean isWhiteOnSettlement = h.isPlayerSettlementOnHex(mockWhitePlayer);
+        assertTrue(isWhiteOnSettlement);
+
     }
 
     @Test // Test Case 4
@@ -66,7 +83,7 @@ public class HexTests {
             h.addPlayerSettlementToHex(mockWhitePlayer);
         });
 
-        String expectedMessage = "Already three settlements on hex.";
+        String expectedMessage = "Already three buildings on hex.";
         String actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
     }
@@ -85,6 +102,25 @@ public class HexTests {
     }
 
     @Test // Test Case 6
+    public void AddThreeCities_AddSettlement_ExpectError() {
+        Hex h = new Hex(1, Resource.LUMBER, 2);
+
+        Player mockWhitePlayer = EasyMock.createMock(Player.class);
+
+        h.addPlayerSettlementToHex(mockWhitePlayer);
+        h.addPlayerSettlementToHex(mockWhitePlayer);
+        h.addPlayerSettlementToHex(mockWhitePlayer);
+
+        Exception exception = assertThrows(IllegalStateException.class, () -> {
+            h.addPlayerSettlementToHex(mockWhitePlayer);
+        });
+
+        String expectedMessage = "Already three buildings on hex.";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test // Test Case 7
     public void RemoveFromEmptyList_ExpectError() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
@@ -94,12 +130,12 @@ public class HexTests {
             h.removePlayerSettlementFromHex(mockWhitePlayer);
         });
 
-        String expectedMessage = "Player does not have a building on hex.";
+        String expectedMessage = "Player does not have a settlement on hex.";
         String actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
     }
 
-    @Test // Test Case 7
+    @Test // Test Case 8
     public void RemoveFromList_WithOneElement_ExpectLenZero() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
@@ -112,9 +148,12 @@ public class HexTests {
         int expected = 0;
         int actual = h.getSettlementCount();
         assertEquals(expected, actual);
+
+        boolean isBlueOnSettlement = h.isPlayerSettlementOnHex(mockBluePlayer);
+        assertFalse(isBlueOnSettlement);
     }
 
-    @Test // Test Case 8
+    @Test // Test Case 9
     public void RemoveFromList_WithTwoDuplicates_ExpectLenOne() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
@@ -129,9 +168,12 @@ public class HexTests {
         int actual = h.getSettlementCount();
         assertEquals(expected, actual);
 
+        boolean isRedOnSettlement = h.isPlayerSettlementOnHex(mockRedPlayer);
+        assertTrue(isRedOnSettlement);
+
     }
 
-    @Test // Test Case 9
+    @Test // Test Case 10
     public void RemoveFromList_WithThreeElements_ExpectLenTwo() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
@@ -148,10 +190,19 @@ public class HexTests {
         int expected = 2;
         int actual = h.getSettlementCount();
         assertEquals(expected, actual);
+
+        boolean isOrangeOnSettlement = h.isPlayerSettlementOnHex(mockOrangePlayer);
+        assertFalse(isOrangeOnSettlement);
+
+        boolean isRedOnSettlement = h.isPlayerSettlementOnHex(mockRedPlayer);
+        assertTrue(isRedOnSettlement);
+
+        boolean isWhiteOnSettlement = h.isPlayerSettlementOnHex(mockWhitePlayer);
+        assertTrue(isWhiteOnSettlement);
     }
 
 
-    @Test // Test Case 10
+    @Test // Test Case 11
     public void RemoveFromList_WithThreeDuplicates_ExpectLenTwo() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
@@ -166,8 +217,12 @@ public class HexTests {
         int expected = 2;
         int actual = h.getSettlementCount();
         assertEquals(expected, actual);
+
+        boolean isWhiteOnSettlement = h.isPlayerSettlementOnHex(mockWhitePlayer);
+        assertTrue(isWhiteOnSettlement);
+
     }
-    @Test // Test Case 11
+    @Test // Test Case 12
     public void RemoveNull_FromList_ExpectError() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
@@ -179,12 +234,32 @@ public class HexTests {
             h.removePlayerSettlementFromHex(null);
         });
 
-        String expectedMessage = "Player does not have a building on hex.";
+        String expectedMessage = "Player does not have a settlement on hex.";
         String actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
     }
 
-    @Test // Test Case 12
+    @Test // Test Case 13
+    public void RemoveSettlement_FromHexWithThreeCities_ExpectError() {
+        Hex h = new Hex(1, Resource.LUMBER, 12);
+
+        Player mockWhitePlayer = EasyMock.createMock(Player.class);
+        Player mockBluePlayer = EasyMock.createMock(Player.class);
+
+        h.addPlayerCityToHex(mockWhitePlayer);
+        h.addPlayerCityToHex(mockBluePlayer);
+        h.addPlayerCityToHex(mockWhitePlayer);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            h.removePlayerSettlementFromHex(mockWhitePlayer);
+        });
+
+        String expectedMessage = "Player does not have a settlement on hex.";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test // Test Case 14
     public void AddOneCity_ExpectLenOne() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
@@ -195,9 +270,12 @@ public class HexTests {
         int expected = 1;
         int actual = h.getCityCount();
         assertEquals(expected, actual);
+
+        boolean isRedOnCity = h.isPlayerCityOnHex(mockRedPlayer);
+        assertTrue(isRedOnCity);
     }
 
-    @Test // Test Case 13
+    @Test // Test Case 15
     public void AddTwoCities_ExpectLenTwo() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
@@ -210,26 +288,38 @@ public class HexTests {
         int expected = 2;
         int actual = h.getCityCount();
         assertEquals(expected, actual);
+
+        boolean isBlueOnCity = h.isPlayerCityOnHex(mockBluePlayer);
+        assertTrue(isBlueOnCity);
+
+        boolean isOrangeOnCity = h.isPlayerCityOnHex(mockOrangePlayer);
+        assertTrue(isOrangeOnCity);
     }
 
-    @Test // Test Case 14
+    @Test // Test Case 16
     public void AddToTwoDuplicateCities_ExpectLenThree() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
         Player mockOrangePlayer = EasyMock.createMock(Player.class);
-        Player mockBluePlayer = EasyMock.createMock(Player.class);
+        Player mockWhitePlayer = EasyMock.createMock(Player.class);
 
         h.addPlayerCityToHex(mockOrangePlayer);
         h.addPlayerCityToHex(mockOrangePlayer);
 
-        h.addPlayerCityToHex(mockBluePlayer);
+        h.addPlayerCityToHex(mockWhitePlayer);
 
         int expected = 3;
         int actual = h.getCityCount();
         assertEquals(expected, actual);
+
+        boolean isWhiteOnCity = h.isPlayerCityOnHex(mockWhitePlayer);
+        assertTrue(isWhiteOnCity);
+
+        boolean isOrangeOnCity = h.isPlayerCityOnHex(mockOrangePlayer);
+        assertTrue(isOrangeOnCity);
     }
 
-    @Test // Test Case 15
+    @Test // Test Case 17
     public void AddFourCities_ExpectError() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
@@ -249,7 +339,7 @@ public class HexTests {
         assertEquals(expectedMessage, actualMessage);
     }
 
-    @Test // Test Case 16
+    @Test // Test Case 18
     public void AddNullCity_ExpectError() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
@@ -262,7 +352,31 @@ public class HexTests {
         assertEquals(expectedMessage, actualMessage);
     }
 
-    @Test // Test Case 17
+    @Test // Test Case 19
+    public void AddThreeSettlements_RemoveSettlement_AddTwoCities_ExpectError() {
+        Hex h = new Hex(1, Resource.LUMBER, 2);
+
+        Player mockWhitePlayer = EasyMock.createMock(Player.class);
+        Player mockOrangePlayer = EasyMock.createMock(Player.class);
+
+        h.addPlayerSettlementToHex(mockWhitePlayer);
+        h.addPlayerSettlementToHex(mockOrangePlayer);
+        h.addPlayerSettlementToHex(mockOrangePlayer);
+
+        h.removePlayerSettlementFromHex(mockOrangePlayer);
+
+        h.addPlayerCityToHex(mockOrangePlayer);
+
+        Exception exception = assertThrows(IllegalStateException.class, () -> {
+            h.addPlayerCityToHex(mockOrangePlayer);
+        });
+
+        String expectedMessage = "Already three buildings on hex.";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test // Test Case 20
     public void AwardResourcesToNoSettlements_ExpectNoUpdate() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
@@ -276,7 +390,7 @@ public class HexTests {
         EasyMock.verify(mockPlayer);
     }
 
-    @Test // Test Case 18
+    @Test // Test Case 21
     public void AwardResourcesToRedSettlement_ExpectOneUpdateCall() {
         Hex h = new Hex(1, Resource.BRICK, 9);
 
@@ -284,83 +398,7 @@ public class HexTests {
 
         h.addPlayerSettlementToHex(mockRedPlayer);
 
-        mockRedPlayer.updateResources(h.resource, 1);
-        EasyMock.expectLastCall();
-
-        EasyMock.replay(mockRedPlayer);
-
-        h.awardSettlementResources();
-
-        EasyMock.verify(mockRedPlayer);
-    }
-
-    @Test // Test Case 19
-    public void AwardResourcesToTwoDifferentSettlements_ExpectTwoCalls() {
-        Hex h = new Hex(1, Resource.GRAIN, 1);
-
-        Player mockOrangePlayer = EasyMock.createMock(Player.class);
-        Player mockWhitePlayer = EasyMock.createMock(Player.class);
-
-        h.addPlayerSettlementToHex(mockOrangePlayer);
-        h.addPlayerSettlementToHex(mockWhitePlayer);
-
-        mockOrangePlayer.updateResources(h.resource, 1);
-        EasyMock.expectLastCall();
-
-        mockWhitePlayer.updateResources(h.resource, 1);
-        EasyMock.expectLastCall();
-
-        EasyMock.replay(mockOrangePlayer, mockWhitePlayer);
-
-        h.awardSettlementResources();
-
-        EasyMock.verify(mockOrangePlayer, mockWhitePlayer);
-    }
-
-    @Test // Test Case 20
-    public void AwardResourcesToTwoSameSettlements_OneDifferent_ExpectThreeCalls() {
-        Hex h = new Hex(1, Resource.LUMBER, 1);
-
-        Player mockBluePlayer = EasyMock.createMock(Player.class);
-        Player mockWhitePlayer = EasyMock.createMock(Player.class);
-
-        h.addPlayerSettlementToHex(mockBluePlayer);
-        h.addPlayerSettlementToHex(mockBluePlayer);
-        h.addPlayerSettlementToHex(mockWhitePlayer);
-
-        mockBluePlayer.updateResources(h.resource, 1);
-        EasyMock.expectLastCall();
-
-        mockBluePlayer.updateResources(h.resource, 1);
-        EasyMock.expectLastCall();
-
-        mockWhitePlayer.updateResources(h.resource, 1);
-        EasyMock.expectLastCall();
-
-        EasyMock.replay(mockBluePlayer, mockWhitePlayer);
-
-        h.awardSettlementResources();
-
-        EasyMock.verify(mockBluePlayer, mockWhitePlayer);
-    }
-
-    @Test // Test Case 21
-    public void AwardResourcesToThreeRedSettlements_ExpectThreeCalls() {
-        Hex h = new Hex(1, Resource.ORE, 1);
-
-        Player mockRedPlayer = EasyMock.createMock(Player.class);
-
-        h.addPlayerSettlementToHex(mockRedPlayer);
-        h.addPlayerSettlementToHex(mockRedPlayer);
-        h.addPlayerSettlementToHex(mockRedPlayer);
-
-        mockRedPlayer.updateResources(h.resource, 1);
-        EasyMock.expectLastCall();
-
-        mockRedPlayer.updateResources(h.resource, 1);
-        EasyMock.expectLastCall();
-
-        mockRedPlayer.updateResources(h.resource, 1);
+        mockRedPlayer.updateResources(h.getHexResource(), 1);
         EasyMock.expectLastCall();
 
         EasyMock.replay(mockRedPlayer);
@@ -371,8 +409,84 @@ public class HexTests {
     }
 
     @Test // Test Case 22
+    public void AwardResourcesToTwoDifferentSettlements_ExpectTwoCalls() {
+        Hex h = new Hex(1, Resource.GRAIN, 2);
+
+        Player mockOrangePlayer = EasyMock.createMock(Player.class);
+        Player mockWhitePlayer = EasyMock.createMock(Player.class);
+
+        h.addPlayerSettlementToHex(mockOrangePlayer);
+        h.addPlayerSettlementToHex(mockWhitePlayer);
+
+        mockOrangePlayer.updateResources(h.getHexResource(), 1);
+        EasyMock.expectLastCall();
+
+        mockWhitePlayer.updateResources(h.getHexResource(), 1);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(mockOrangePlayer, mockWhitePlayer);
+
+        h.awardSettlementResources();
+
+        EasyMock.verify(mockOrangePlayer, mockWhitePlayer);
+    }
+
+    @Test // Test Case 23
+    public void AwardResourcesToTwoSameSettlements_OneDifferent_ExpectThreeCalls() {
+        Hex h = new Hex(1, Resource.LUMBER, 2);
+
+        Player mockBluePlayer = EasyMock.createMock(Player.class);
+        Player mockWhitePlayer = EasyMock.createMock(Player.class);
+
+        h.addPlayerSettlementToHex(mockBluePlayer);
+        h.addPlayerSettlementToHex(mockBluePlayer);
+        h.addPlayerSettlementToHex(mockWhitePlayer);
+
+        mockBluePlayer.updateResources(h.getHexResource(), 1);
+        EasyMock.expectLastCall();
+
+        mockBluePlayer.updateResources(h.getHexResource(), 1);
+        EasyMock.expectLastCall();
+
+        mockWhitePlayer.updateResources(h.getHexResource(), 1);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(mockBluePlayer, mockWhitePlayer);
+
+        h.awardSettlementResources();
+
+        EasyMock.verify(mockBluePlayer, mockWhitePlayer);
+    }
+
+    @Test // Test Case 24
+    public void AwardResourcesToThreeRedSettlements_ExpectThreeCalls() {
+        Hex h = new Hex(1, Resource.ORE, 2);
+
+        Player mockRedPlayer = EasyMock.createMock(Player.class);
+
+        h.addPlayerSettlementToHex(mockRedPlayer);
+        h.addPlayerSettlementToHex(mockRedPlayer);
+        h.addPlayerSettlementToHex(mockRedPlayer);
+
+        mockRedPlayer.updateResources(h.getHexResource(), 1);
+        EasyMock.expectLastCall();
+
+        mockRedPlayer.updateResources(h.getHexResource(), 1);
+        EasyMock.expectLastCall();
+
+        mockRedPlayer.updateResources(h.getHexResource(), 1);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(mockRedPlayer);
+
+        h.awardSettlementResources();
+
+        EasyMock.verify(mockRedPlayer);
+    }
+
+    @Test // Test Case 25
     public void AwardWool_ThreeDifferentSettlements_ExpectThreeCalls() {
-        Hex h = new Hex(1, Resource.WOOL, 1);
+        Hex h = new Hex(1, Resource.WOOL, 2);
 
         Player mockRedPlayer = EasyMock.createMock(Player.class);
         Player mockWhitePlayer = EasyMock.createMock(Player.class);
@@ -382,13 +496,13 @@ public class HexTests {
         h.addPlayerSettlementToHex(mockWhitePlayer);
         h.addPlayerSettlementToHex(mockBluePlayer);
 
-        mockRedPlayer.updateResources(h.resource, 1);
+        mockRedPlayer.updateResources(h.getHexResource(), 1);
         EasyMock.expectLastCall();
 
-        mockWhitePlayer.updateResources(h.resource, 1);
+        mockWhitePlayer.updateResources(h.getHexResource(), 1);
         EasyMock.expectLastCall();
 
-        mockBluePlayer.updateResources(h.resource, 1);
+        mockBluePlayer.updateResources(h.getHexResource(), 1);
         EasyMock.expectLastCall();
 
         EasyMock.replay(mockRedPlayer, mockWhitePlayer, mockBluePlayer);
@@ -398,9 +512,9 @@ public class HexTests {
         EasyMock.verify(mockRedPlayer, mockWhitePlayer, mockBluePlayer);
     }
 
-    @Test // Test Case 23
+    @Test // Test Case 26
     public void AwardSettlementResources_WithOnePlayer_OnDesert_ExpectNoUpdate() {
-        Hex h = new Hex(1, Resource.DESERT, 9);
+        Hex h = new Hex(1, Resource.DESERT, 7);
 
         Player mockOrangePlayer = EasyMock.createMock(Player.class);
 
@@ -414,7 +528,7 @@ public class HexTests {
         EasyMock.verify(mockOrangePlayer);
     }
 
-    @Test // Test Case 24
+    @Test // Test Case 27
     public void AwardResourcesToNoCities_ExpectNoUpdate() {
         Hex h = new Hex(1, Resource.LUMBER, 9);
 
@@ -428,91 +542,15 @@ public class HexTests {
         EasyMock.verify(mockPlayer);
     }
 
-    @Test // Test Case 25
-    public void AwardResourcesToRedCity_ExpectOneUpdateCall() {
-        Hex h = new Hex(29, Resource.BRICK, 3);
-
-        Player mockRedPlayer = EasyMock.createMock(Player.class);
-
-        h.addPlayerCityToHex(mockRedPlayer);
-
-        mockRedPlayer.updateResources(h.resource, 2);
-        EasyMock.expectLastCall();
-
-        EasyMock.replay(mockRedPlayer);
-
-        h.awardCityResources();
-
-        EasyMock.verify(mockRedPlayer);
-    }
-
-    @Test // Test Case 26
-    public void AwardResourcesToTwoDifferentCities_ExpectTwoCalls() {
-        Hex h = new Hex(1, Resource.GRAIN, 1);
-
-        Player mockOrangePlayer = EasyMock.createMock(Player.class);
-        Player mockWhitePlayer = EasyMock.createMock(Player.class);
-
-        h.addPlayerCityToHex(mockOrangePlayer);
-        h.addPlayerCityToHex(mockWhitePlayer);
-
-        mockOrangePlayer.updateResources(h.resource, 2);
-        EasyMock.expectLastCall();
-
-        mockWhitePlayer.updateResources(h.resource, 2);
-        EasyMock.expectLastCall();
-
-        EasyMock.replay(mockOrangePlayer, mockWhitePlayer);
-
-        h.awardCityResources();
-
-        EasyMock.verify(mockOrangePlayer, mockWhitePlayer);
-    }
-
-    @Test // Test Case 27
-    public void AwardResourcesToTwoSameCities_OneDifferent_ExpectThreeCalls() {
-        Hex h = new Hex(1, Resource.LUMBER, 1);
-
-        Player mockBluePlayer = EasyMock.createMock(Player.class);
-        Player mockWhitePlayer = EasyMock.createMock(Player.class);
-
-        h.addPlayerCityToHex(mockBluePlayer);
-        h.addPlayerCityToHex(mockBluePlayer);
-        h.addPlayerCityToHex(mockWhitePlayer);
-
-        mockBluePlayer.updateResources(h.resource, 2);
-        EasyMock.expectLastCall();
-
-        mockBluePlayer.updateResources(h.resource, 2);
-        EasyMock.expectLastCall();
-
-        mockWhitePlayer.updateResources(h.resource, 2);
-        EasyMock.expectLastCall();
-
-        EasyMock.replay(mockBluePlayer, mockWhitePlayer);
-
-        h.awardCityResources();
-
-        EasyMock.verify(mockBluePlayer, mockWhitePlayer);
-    }
-
     @Test // Test Case 28
-    public void AwardResourcesToThreeRedCities_ExpectThreeCalls() {
-        Hex h = new Hex(1, Resource.ORE, 1);
+    public void AwardResourcesToRedCity_ExpectOneUpdateCall() {
+        Hex h = new Hex(12, Resource.BRICK, 3);
 
         Player mockRedPlayer = EasyMock.createMock(Player.class);
 
         h.addPlayerCityToHex(mockRedPlayer);
-        h.addPlayerCityToHex(mockRedPlayer);
-        h.addPlayerCityToHex(mockRedPlayer);
 
-        mockRedPlayer.updateResources(h.resource, 2);
-        EasyMock.expectLastCall();
-
-        mockRedPlayer.updateResources(h.resource, 2);
-        EasyMock.expectLastCall();
-
-        mockRedPlayer.updateResources(h.resource, 2);
+        mockRedPlayer.updateResources(h.getHexResource(), 2);
         EasyMock.expectLastCall();
 
         EasyMock.replay(mockRedPlayer);
@@ -523,8 +561,84 @@ public class HexTests {
     }
 
     @Test // Test Case 29
+    public void AwardResourcesToTwoDifferentCities_ExpectTwoCalls() {
+        Hex h = new Hex(1, Resource.GRAIN, 2);
+
+        Player mockOrangePlayer = EasyMock.createMock(Player.class);
+        Player mockWhitePlayer = EasyMock.createMock(Player.class);
+
+        h.addPlayerCityToHex(mockOrangePlayer);
+        h.addPlayerCityToHex(mockWhitePlayer);
+
+        mockOrangePlayer.updateResources(h.getHexResource(), 2);
+        EasyMock.expectLastCall();
+
+        mockWhitePlayer.updateResources(h.getHexResource(), 2);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(mockOrangePlayer, mockWhitePlayer);
+
+        h.awardCityResources();
+
+        EasyMock.verify(mockOrangePlayer, mockWhitePlayer);
+    }
+
+    @Test // Test Case 30
+    public void AwardResourcesToTwoSameCities_OneDifferent_ExpectThreeCalls() {
+        Hex h = new Hex(1, Resource.LUMBER, 2);
+
+        Player mockBluePlayer = EasyMock.createMock(Player.class);
+        Player mockWhitePlayer = EasyMock.createMock(Player.class);
+
+        h.addPlayerCityToHex(mockBluePlayer);
+        h.addPlayerCityToHex(mockBluePlayer);
+        h.addPlayerCityToHex(mockWhitePlayer);
+
+        mockBluePlayer.updateResources(h.getHexResource(), 2);
+        EasyMock.expectLastCall();
+
+        mockBluePlayer.updateResources(h.getHexResource(), 2);
+        EasyMock.expectLastCall();
+
+        mockWhitePlayer.updateResources(h.getHexResource(), 2);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(mockBluePlayer, mockWhitePlayer);
+
+        h.awardCityResources();
+
+        EasyMock.verify(mockBluePlayer, mockWhitePlayer);
+    }
+
+    @Test // Test Case 31
+    public void AwardResourcesToThreeRedCities_ExpectThreeCalls() {
+        Hex h = new Hex(1, Resource.ORE, 2);
+
+        Player mockRedPlayer = EasyMock.createMock(Player.class);
+
+        h.addPlayerCityToHex(mockRedPlayer);
+        h.addPlayerCityToHex(mockRedPlayer);
+        h.addPlayerCityToHex(mockRedPlayer);
+
+        mockRedPlayer.updateResources(h.getHexResource(), 2);
+        EasyMock.expectLastCall();
+
+        mockRedPlayer.updateResources(h.getHexResource(), 2);
+        EasyMock.expectLastCall();
+
+        mockRedPlayer.updateResources(h.getHexResource(), 2);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(mockRedPlayer);
+
+        h.awardCityResources();
+
+        EasyMock.verify(mockRedPlayer);
+    }
+
+    @Test // Test Case 32
     public void AwardWool_ThreeDifferentCities_ExpectThreeCalls() {
-        Hex h = new Hex(1, Resource.WOOL, 1);
+        Hex h = new Hex(1, Resource.WOOL, 2);
 
         Player mockRedPlayer = EasyMock.createMock(Player.class);
         Player mockWhitePlayer = EasyMock.createMock(Player.class);
@@ -534,13 +648,13 @@ public class HexTests {
         h.addPlayerCityToHex(mockWhitePlayer);
         h.addPlayerCityToHex(mockBluePlayer);
 
-        mockRedPlayer.updateResources(h.resource, 2);
+        mockRedPlayer.updateResources(h.getHexResource(), 2);
         EasyMock.expectLastCall();
 
-        mockWhitePlayer.updateResources(h.resource, 2);
+        mockWhitePlayer.updateResources(h.getHexResource(), 2);
         EasyMock.expectLastCall();
 
-        mockBluePlayer.updateResources(h.resource, 2);
+        mockBluePlayer.updateResources(h.getHexResource(), 2);
         EasyMock.expectLastCall();
 
         EasyMock.replay(mockRedPlayer, mockWhitePlayer, mockBluePlayer);
@@ -550,9 +664,9 @@ public class HexTests {
         EasyMock.verify(mockRedPlayer, mockWhitePlayer, mockBluePlayer);
     }
 
-    @Test // Test Case 30
+    @Test // Test Case 33
     public void AwardCityResources_WithTwoPlayers_OnDesert_ExpectNoUpdate() {
-        Hex h = new Hex(1, Resource.DESERT, 9);
+        Hex h = new Hex(1, Resource.DESERT, 7);
 
         Player mockOrangePlayer = EasyMock.createMock(Player.class);
         Player mockBluePlayer = EasyMock.createMock(Player.class);
@@ -568,7 +682,120 @@ public class HexTests {
         EasyMock.verify(mockOrangePlayer, mockBluePlayer);
     }
 
+    @Test // Test Case 34
+    public void CreateBrickHex_WithId0_RollNum2_ExpectUpdatedFields() {
+        Hex h = new Hex(0, Resource.BRICK, 2);
 
+        int expectedRoll = 2;
+        int actualRoll = h.getHexRollNum();
+        assertEquals(expectedRoll, actualRoll);
 
+        int expectedId = 0;
+        int actualId = h.getHexId();
+        assertEquals(expectedId, actualId);
+
+        Resource expectedResource = Resource.BRICK;
+        Resource actualResource = h.getHexResource();
+        assertEquals(expectedResource, actualResource);
+    }
+
+    @Test // Test Case 35
+    public void CreateGrainHex_WithId18_RollNum12_ExpectUpdatedFields() {
+        Hex h = new Hex(18, Resource.GRAIN, 12);
+
+        int expectedRoll = 12;
+        int actualRoll = h.getHexRollNum();
+        assertEquals(expectedRoll, actualRoll);
+
+        int expectedId = 18;
+        int actualId = h.getHexId();
+        assertEquals(expectedId, actualId);
+
+        Resource expectedResource = Resource.GRAIN;
+        Resource actualResource = h.getHexResource();
+        assertEquals(expectedResource, actualResource);
+    }
+
+    @Test // Test Case 36
+    public void CreateLumberHex_WithId0_RollNum1_ExpectError() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Hex(0, Resource.LUMBER, 1);
+        });
+
+        String expectedMessage = "Invalid Hex - rollNumber must be within [2, 12].";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test // Test Case 37
+    public void CreateOreHex_WithId0_RollNum13_ExpectError() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Hex(0, Resource.ORE, 13);
+        });
+
+        String expectedMessage = "Invalid Hex - rollNumber must be within [2, 12].";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test // Test Case 38
+    public void CreateWoolHex_WithIdNegative1_RollNum5_ExpectError() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Hex(-1, Resource.WOOL, 5);
+        });
+
+        String expectedMessage = "Invalid Hex - hexId must be within [0, 18].";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test // Test Case 39
+    public void CreateWoolHex_WithId19_RollNum5_ExpectError() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Hex(19, Resource.WOOL, 5);
+        });
+
+        String expectedMessage = "Invalid Hex - hexId must be within [0, 18].";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test // Test Case 40
+    public void CreateDesertHex_WithId0_RollNum7_ExpectUpdatedFields() {
+        Hex h = new Hex(0, Resource.DESERT, 7);
+
+        int expectedRoll = 7;
+        int actualRoll = h.getHexRollNum();
+        assertEquals(expectedRoll, actualRoll);
+
+        int expectedId = 0;
+        int actualId = h.getHexId();
+        assertEquals(expectedId, actualId);
+
+        Resource expectedResource = Resource.DESERT;
+        Resource actualResource = h.getHexResource();
+        assertEquals(expectedResource, actualResource);
+    }
+
+    @Test // Test Case 41
+    public void CreateLumberHex_WithId0_RollNum7_ExpectError() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Hex(0, Resource.LUMBER, 7);
+        });
+
+        String expectedMessage = "Invalid Hex - Only Desert Hex can have rollNumber 7";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test // Test Case 42
+    public void CreateDesertHex_WithId0_RollNum8_ExpectError() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Hex(0, Resource.DESERT, 8);
+        });
+
+        String expectedMessage = "Invalid Hex - Desert Hex must have rollNumber 7.";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
 }
-
