@@ -24,7 +24,7 @@ Outputs: Boolean (success), state of the edge (boolean, Cases), or error (on not
 |             | State of the System | Expected output                         | Implemented?       |
 |-------------|---------------------|-----------------------------------------|--------------------|
 | Test Case 1 | 0, 3                | True, object created                    | :white_check_mark: |
-| Test Case 2 | 50, 53              | True, object created                    | :x:                |
+| Test Case 2 | 50, 53              | True, object created                    | :white_check_mark: |
 | Test Case 3 | -1, 1               | IllegalNodeIDException                  | :x:                |
 | Test Case 4 | 52, 54              | IllegalNodeIDException                  | :x:                |
 | Test Case 5 | 0, 0                | IllegalNodeOrderingInEdgeException      | :x:                |

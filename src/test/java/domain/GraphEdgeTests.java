@@ -36,4 +36,10 @@ public class GraphEdgeTests {
         GraphEdge e1 = new GraphEdge(0, 3);
         assertNotNull(e1);
     }
+
+    @Test
+    void assertValidNodeIDsOrdering_test02_ValidInput_ExpectSuccess() {
+        GraphEdge e1 = new GraphEdge(50, 53);
+        assertNotNull(e1);
+    }
 }
