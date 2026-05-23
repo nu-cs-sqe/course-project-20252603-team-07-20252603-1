@@ -1,6 +1,7 @@
 package domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class TradeManager {
@@ -15,7 +16,7 @@ public class TradeManager {
     }
 
     public List<TradeOffer> listTrades() {
-        return offers;
+        return Collections.unmodifiableList(offers);
     }
 
     public void acceptTrade(TradeOffer offer, Player acceptingPlayer) {

@@ -144,8 +144,8 @@ public class TradeManagerTests {
         Player mockRed = EasyMock.createMock(Player.class);
         Player mockBlue = EasyMock.createMock(Player.class);
 
-        ResourceQuantity giving = new ResourceQuantity(Resource.BRICK, 1);
-        ResourceQuantity receiving = new ResourceQuantity(Resource.WOOL, 1);
+        ResourceQuantity giving = ResourceQuantity.create(Resource.BRICK, 1);
+        ResourceQuantity receiving = ResourceQuantity.create(Resource.WOOL, 1);
 
         TradeOffer mockOffer = EasyMock.createMock(TradeOffer.class);
         EasyMock.expect(mockOffer.getOfferingPlayer()).andStubReturn(mockRed);
@@ -175,8 +175,8 @@ public class TradeManagerTests {
         Player mockOrange = EasyMock.createMock(Player.class);
         Player mockWhite = EasyMock.createMock(Player.class);
 
-        ResourceQuantity giving = new ResourceQuantity(Resource.ORE, 2);
-        ResourceQuantity receiving = new ResourceQuantity(Resource.GRAIN, 1);
+        ResourceQuantity giving = ResourceQuantity.create(Resource.ORE, 2);
+        ResourceQuantity receiving = ResourceQuantity.create(Resource.GRAIN, 1);
 
         TradeOffer mockOfferA = EasyMock.createMock(TradeOffer.class);
         TradeOffer mockOfferB = EasyMock.createMock(TradeOffer.class);
@@ -215,8 +215,8 @@ public class TradeManagerTests {
         Player mockRed = EasyMock.createMock(Player.class);
         Player mockBlue = EasyMock.createMock(Player.class);
 
-        ResourceQuantity giving = new ResourceQuantity(Resource.BRICK, 1);
-        ResourceQuantity receiving = new ResourceQuantity(Resource.WOOL, 1);
+        ResourceQuantity giving = ResourceQuantity.create(Resource.BRICK, 1);
+        ResourceQuantity receiving = ResourceQuantity.create(Resource.WOOL, 1);
 
         TradeOffer mockOffer = EasyMock.createMock(TradeOffer.class);
         EasyMock.expect(mockOffer.getOfferingPlayer()).andStubReturn(mockRed);
@@ -246,8 +246,8 @@ public class TradeManagerTests {
     public void AcceptTrade_SelfAccept_ExpectError() {
         Player mockRed = EasyMock.createMock(Player.class);
 
-        ResourceQuantity giving = new ResourceQuantity(Resource.BRICK, 1);
-        ResourceQuantity receiving = new ResourceQuantity(Resource.WOOL, 1);
+        ResourceQuantity giving = ResourceQuantity.create(Resource.BRICK, 1);
+        ResourceQuantity receiving = ResourceQuantity.create(Resource.WOOL, 1);
 
         TradeOffer mockOffer = EasyMock.createMock(TradeOffer.class);
         EasyMock.expect(mockOffer.getOfferingPlayer()).andStubReturn(mockRed);
@@ -275,8 +275,8 @@ public class TradeManagerTests {
         Player mockRed = EasyMock.createMock(Player.class);
         Player mockBlue = EasyMock.createMock(Player.class);
 
-        ResourceQuantity giving = new ResourceQuantity(Resource.BRICK, 1);
-        ResourceQuantity receiving = new ResourceQuantity(Resource.WOOL, 1);
+        ResourceQuantity giving = ResourceQuantity.create(Resource.BRICK, 1);
+        ResourceQuantity receiving = ResourceQuantity.create(Resource.WOOL, 1);
 
         TradeOffer mockOffer = EasyMock.createMock(TradeOffer.class);
         EasyMock.expect(mockOffer.getOfferingPlayer()).andStubReturn(mockRed);
@@ -303,8 +303,8 @@ public class TradeManagerTests {
         Player mockRed = EasyMock.createMock(Player.class);
         Player mockBlue = EasyMock.createMock(Player.class);
 
-        ResourceQuantity giving = new ResourceQuantity(Resource.BRICK, 1);
-        ResourceQuantity receiving = new ResourceQuantity(Resource.WOOL, 5);
+        ResourceQuantity giving = ResourceQuantity.create(Resource.BRICK, 1);
+        ResourceQuantity receiving = ResourceQuantity.create(Resource.WOOL, 5);
 
         TradeOffer mockOffer = EasyMock.createMock(TradeOffer.class);
         EasyMock.expect(mockOffer.getOfferingPlayer()).andStubReturn(mockRed);
@@ -335,8 +335,8 @@ public class TradeManagerTests {
         Player mockRed = EasyMock.createMock(Player.class);
         Player mockBlue = EasyMock.createMock(Player.class);
 
-        ResourceQuantity giving = new ResourceQuantity(Resource.BRICK, 5);
-        ResourceQuantity receiving = new ResourceQuantity(Resource.WOOL, 1);
+        ResourceQuantity giving = ResourceQuantity.create(Resource.BRICK, 5);
+        ResourceQuantity receiving = ResourceQuantity.create(Resource.WOOL, 1);
 
         TradeOffer mockOffer = EasyMock.createMock(TradeOffer.class);
         EasyMock.expect(mockOffer.getOfferingPlayer()).andStubReturn(mockRed);
