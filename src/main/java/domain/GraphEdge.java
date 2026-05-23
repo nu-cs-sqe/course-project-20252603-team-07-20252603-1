@@ -18,7 +18,7 @@ public class GraphEdge {
     }
 
     private boolean assertValidNodeIDsOrdering(int startingNodeID, int endingNodeID) {
-        if (startingNodeID == endingNodeID){
+        if (!(startingNodeID < endingNodeID)){
             throw new IllegalNodeOrderingInEdgeException("Starting nodeID must be lower than ending nodeID");
         }
         else {

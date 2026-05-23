@@ -24,5 +24,5 @@ Outputs: Boolean (success), state of the edge (boolean, Cases), or error (on not
 |-------------|---------------------|-----------------------------------------|--------------------|
 | Test Case 1 | 0, 3                | True, object created                    | :white_check_mark: |
 | Test Case 2 | 50, 53              | True, object created                    | :white_check_mark: |
-| Test Case 5 | 0, 0                | IllegalNodeOrderingInEdgeException      | :white_check_mark: |
-| Test Case 6 | 53, 52              | IllegalNodeOrderingInEdgeException      | :x:                |
+| Test Case 3 | 0, 0                | IllegalNodeOrderingInEdgeException      | :white_check_mark: |
+| Test Case 4 | 53, 52              | IllegalNodeOrderingInEdgeException      | :white_check_mark: |

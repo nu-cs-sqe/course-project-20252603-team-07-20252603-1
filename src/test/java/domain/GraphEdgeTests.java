@@ -51,4 +51,13 @@ public class GraphEdgeTests {
         assertEquals("Starting nodeID must be lower than ending nodeID",
                 exception.getMessage());
     }
+
+    @Test
+    void assertValidNodeIDsOrdering_test04_startingNodeID_GreaterThan_endingNodeID_ExpectError() {
+        Exception exception = assertThrows(IllegalNodeOrderingInEdgeException.class,
+                () -> new GraphEdge(53, 52));
+
+        assertEquals("Starting nodeID must be lower than ending nodeID",
+                exception.getMessage());
+    }
 }
