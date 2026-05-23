@@ -3,7 +3,7 @@
 
 #### Inputs:
 
-- NodeID -> Integer -> Interval [0, 53] -> -1 and 54 don't make sense, there is a set amount of nodes
+- NodeID -> Integer -> Interval [0, 53] -> (checking ID is responsibility of separate GraphNode class)
 - Internal Map of NodeIDs to Object -> Collection
   - Duplicates impossible, NodeIDs are unique
 
@@ -24,7 +24,6 @@
 ### Method under test: `getGraphNodeByID(int NodeID)`
 
 #### Inputs:
-- NodeID -> Integer -> Interval [0, 53]
 - State of map -> NodeID exists or not
 - Collection, one element, multiple elements, empty collection
 
@@ -43,7 +42,6 @@
 
 #### Inputs:
 - Player color -> RED, ORANGE, WHITE, BLUE
-- NodeID -> Integer -> Interval [0, 53]
 - State of map 
   - NodeID exists or not
   - NodeIS claimed
@@ -65,7 +63,6 @@
 ### Method under test: `claimGraphEdgeObject(PlayerColor color, int startingNodeID, int endingNodeID)`
 
 #### Inputs:
-- Node IDs -> interval [0, 53]
 - Player color -> Red, Blue, White, Orange
 - States of Graph -> Edge exists, edge does not exist, edge is unclaimed/claimed
   - WhiteBox: edge will be in set -> collection -> empty, one item, multiple
@@ -107,7 +104,6 @@
 ### Method under test: `getConnectingEdgesByID(int NodeID)`
 
 #### Inputs:
-- NodeID -> Integer -> Interval [0, 53]
 - State of map -> NodeID exists or not
   - Collection, one element, multiple elements, empty collection
 - State of respective set (i.e the set of Edges for NodeID 0)
@@ -149,7 +145,6 @@
 
 #### Inputs:
 - PlayerColor -> RED, WHITE, BLUE, ORANGE
-- starting node, ending node -> interval [0, 52] for startingNode, [1, 53] for ending node
 - System State -> Cases
   - Player owns no adjacent edges
   - Player owns edge connecting to starting Node
@@ -170,7 +165,6 @@
 
 #### Inputs:
 - PlayerColor -> RED, WHITE, BLUE, ORANGE
-- starting node, ending node -> interval [0, 52] for startingNode, [1, 53] for ending node
 - System State -> Cases
   - Player owns startingNode
   - Player owns endingNode
@@ -190,7 +184,6 @@
 ### Method under test: `checkIfAdjacentNodesNotClaimed(int nodeID)`
 
 #### Inputs:
-- nodeID -> interval [0, 53]
 - state of system -> cases
   - No adjacent nodes are claimed
   - One adjacent node is claimed
