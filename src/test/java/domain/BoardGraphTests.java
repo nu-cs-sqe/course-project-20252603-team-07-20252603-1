@@ -172,6 +172,14 @@ public class BoardGraphTests {
     }
 
     @Test
+    void checkPlayerOwnsGraphNodeObject_test03_NodeDoesNotExist_ExpectError(){
+        BoardGraph b = new BoardGraph();
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> b.checkPlayerOwnsGraphNodeObject(PlayerColor.RED, 0));
+        assertEquals("Node does not exist", exception.getMessage());
+    }
+
+    @Test
     void claimGraphNodeObject_test01_NodeExists_Unclaimed_ExpectTrue(){
         BoardGraph b = new BoardGraph();
 
