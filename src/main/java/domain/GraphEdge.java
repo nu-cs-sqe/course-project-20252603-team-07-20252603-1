@@ -18,7 +18,12 @@ public class GraphEdge {
     }
 
     private boolean assertValidNodeIDsOrdering(int startingNodeID, int endingNodeID) {
-        return true;
+        if (startingNodeID == endingNodeID){
+            throw new IllegalNodeOrderingInEdgeException("Starting nodeID must be lower than ending nodeID");
+        }
+        else {
+            return true;
+        }
     }
 
     // need to be able to claim an edge
