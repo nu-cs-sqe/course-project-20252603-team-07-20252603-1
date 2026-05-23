@@ -146,6 +146,19 @@ public class BoardGraphTests {
     }
 
     @Test
+    void checkPlayerOwnsGraphNodeObject_test01_NodeExists_PlayerOwnsIt_ExpectTrue(){
+        BoardGraph b = new BoardGraph();
+        GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
+        EasyMock.expect(nodeMock.getNodeID()).andReturn(0);
+        EasyMock.expect(nodeMock.checkColor()).andReturn(PlayerColor.RED);
+        EasyMock.replay(nodeMock);
+
+        b.addGraphNodeObject(nodeMock);
+
+        assertTrue(b.checkPlayerOwnsGraphNodeObject(PlayerColor.RED, 0));
+    }
+
+    @Test
     void claimGraphNodeObject_test01_NodeExists_Unclaimed_ExpectTrue(){
         BoardGraph b = new BoardGraph();
 
@@ -449,9 +462,9 @@ public class BoardGraphTests {
         assertTrue(b.getConnectingEdgesByID(53).contains(edgeStub1));
     }
 
-    // getCorrectEdgeFromSet() tests
+    // getMatchingEdgeFromSet() tests
     @Test
-    void getCorrectEdgeFromSet_test01_EmptySet_ExpectError(){
+    void getMatchingEdgeFromSet_test01_EmptySet_ExpectError(){
         BoardGraph b = new BoardGraph();
         GraphNode nodeStub = EasyMock.createNiceMock((GraphNode.class));
         EasyMock.expect(nodeStub.getNodeID()).andStubReturn(0);
@@ -460,13 +473,13 @@ public class BoardGraphTests {
         b.addGraphNodeObject(nodeStub);
         Set<GraphEdge> node0EdgeSet = b.getConnectingEdgesByID(0);
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> b.getCorrectEdgeFromSet(node0EdgeSet, 0, 1));
+                () -> b.getMatchingEdgeFromSet(node0EdgeSet, 0, 1));
 
         assertEquals("Edge does not exist", exception.getMessage());
     }
 
     @Test
-    void getCorrectEdgeFromSet_test02_OneElementSet_ExpectEdge(){
+    void getMatchingEdgeFromSet_test02_OneElementSet_ExpectEdge(){
         BoardGraph b = new BoardGraph();
         GraphNode nodeStub = EasyMock.createNiceMock(GraphNode.class);
         GraphEdge edgeStub = EasyMock.createNiceMock(GraphEdge.class);
@@ -479,11 +492,11 @@ public class BoardGraphTests {
         b.addGraphNodeConnection(0, edgeStub);
         Set<GraphEdge> node0EdgeSet = b.getConnectingEdgesByID(0);
 
-        assertEquals(edgeStub, b.getCorrectEdgeFromSet(node0EdgeSet, 0, 1));
+        assertEquals(edgeStub, b.getMatchingEdgeFromSet(node0EdgeSet, 0, 1));
     }
 
     @Test
-    void getCorrectEdgeFromSet_test03_MultipleElementSet_ExpectEdge(){
+    void getMatchingEdgeFromSet_test03_MultipleElementSet_ExpectEdge(){
         BoardGraph b = new BoardGraph();
         GraphNode nodeStub = EasyMock.createNiceMock(GraphNode.class);
         GraphEdge edgeStub0 = EasyMock.createNiceMock(GraphEdge.class);
@@ -500,11 +513,11 @@ public class BoardGraphTests {
         b.addGraphNodeConnection(53, edgeStub1);
         Set<GraphEdge> node0EdgeSet = b.getConnectingEdgesByID(53);
 
-        assertEquals(edgeStub1, b.getCorrectEdgeFromSet(node0EdgeSet, 51, 53));
+        assertEquals(edgeStub1, b.getMatchingEdgeFromSet(node0EdgeSet, 51, 53));
     }
 
     @Test
-    void getCorrectEdgeFromSet_test04_MultipleElementSet_EdgeDoesNotExist_ExpectError(){
+    void getMatchingEdgeFromSet_test04_MultipleElementSet_EdgeDoesNotExist_ExpectError(){
         BoardGraph b = new BoardGraph();
         GraphNode nodeStub = EasyMock.createNiceMock(GraphNode.class);
         GraphEdge edgeStub0 = EasyMock.createNiceMock(GraphEdge.class);
@@ -530,7 +543,7 @@ public class BoardGraphTests {
         Set<GraphEdge> node0EdgeSet = b.getConnectingEdgesByID(53);
 
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> b.getCorrectEdgeFromSet(node0EdgeSet, 49, 53));
+                () -> b.getMatchingEdgeFromSet(node0EdgeSet, 49, 53));
 
         assertEquals("Edge does not exist", exception.getMessage());
 

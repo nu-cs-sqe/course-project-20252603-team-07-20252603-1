@@ -31,11 +31,12 @@ public class BoardGraph {
     // Add a connecting edge to the set of edges within the map <GraphID, set of Edges>
     boolean addGraphNodeConnection(int nodeID, GraphEdge connectingEdge){
         getGraphNodeByID(nodeID); // This call works as a check that the node Exists, throwing the proper error if it does not
-        if (this.nodeIDToConnectingEdges.get(nodeID).contains(connectingEdge)) {
+        Set<GraphEdge> setOfConnectingEdges = this.nodeIDToConnectingEdges.get(nodeID);
+        if (setOfConnectingEdges.contains(connectingEdge)) {
             throw new IllegalArgumentException("Node already has specified edge");
         }
         else {
-            this.nodeIDToConnectingEdges.get(nodeID).add(connectingEdge);
+            setOfConnectingEdges.add(connectingEdge);
             return true;
         }
     }
@@ -52,12 +53,23 @@ public class BoardGraph {
 
     // Getter function to get the set of edges from the map
     Set<GraphEdge> getConnectingEdgesByID(int nodeID) {
+        Set<GraphEdge> result = new HashSet<>();
         if (!nodeIDToConnectingEdges.containsKey(nodeID)) {
             throw new IllegalArgumentException("Node does not exist");
         }
         else {
-            return this.nodeIDToConnectingEdges.get(nodeID);
+            Set<GraphEdge> connectingEdges = nodeIDToConnectingEdges.get(nodeID);
+            for (GraphEdge edge : connectingEdges){
+                result.add(edge);
+            }
+            return result;
         }
+    }
+
+    boolean checkPlayerOwnsGraphNodeObject(PlayerColor color, int nodeID) {
+        GraphNode nodeOfInterest = getGraphNodeByID(nodeID);
+        PlayerColor nodeColor = nodeOfInterest.checkColor();
+        return true;
     }
 
     boolean claimGraphNodeObject(PlayerColor color, int nodeID){
@@ -65,9 +77,9 @@ public class BoardGraph {
     };
 
     boolean claimGraphEdgeObject(PlayerColor color, int startingNodeID, int endingNodeID){
-        Set<GraphEdge> setWithRelevantEdge = getConnectingEdgesByID(startingNodeID);;
+        Set<GraphEdge> setWithRelevantEdge = getConnectingEdgesByID(startingNodeID);
         // Our Edge of interest is guaranteed to be in this set IF it exists
-        GraphEdge edgeToClaim = getCorrectEdgeFromSet(setWithRelevantEdge, startingNodeID, endingNodeID);
+        GraphEdge edgeToClaim = getMatchingEdgeFromSet(setWithRelevantEdge, startingNodeID, endingNodeID);
         edgeToClaim.claimGraphEdge(color);
         return true;
     }
@@ -95,7 +107,7 @@ public class BoardGraph {
         return true;
     }
 
-    GraphEdge getCorrectEdgeFromSet(Set<GraphEdge> connectingEdges, int startingNodeID, int endingNodeID){
+    GraphEdge getMatchingEdgeFromSet(Set<GraphEdge> connectingEdges, int startingNodeID, int endingNodeID){
         for (GraphEdge edge : connectingEdges) {
             if (edge.getStartingNodeID() == startingNodeID && edge.getEndingNodeID() == endingNodeID) {
                 return edge;
@@ -170,10 +182,9 @@ public class BoardGraph {
         addGraphEdge(20, 26);
         addGraphEdge(21, 27);
         addGraphEdge(22, 28);
-        addGraphEdge(24, 29);
-        addGraphEdge(25, 30);
+        addGraphEdge(23, 29);
+        addGraphEdge(24, 30);
         addGraphEdge(25, 31);
-        addGraphEdge(22, 28);
         addGraphEdge(26, 32);
         addGraphEdge(27, 33);
         addGraphEdge(28, 33);

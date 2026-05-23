@@ -14,12 +14,12 @@
 - Boolean to represent success
   - Upon failure -> insertion of a duplicate, error with message "Node already exists"
 
-|             | State of the System                                        | Expected output            | Implemented?       |
-|-------------|------------------------------------------------------------|----------------------------|--------------------|
-| Test Case 1 | Empty collection, adding NodeID 0                          | Updated Map, True          | :white_check_mark: |
-| Test Case 2 | Collection with one element, adding NodeID 53              | Updated Map, True          | :white_check_mark: |
-| Test Case 3 | Collection with multiple elements, adding NodeID 53        | Updated Map, True          | :white_check_mark: |
-| Test Case 4 | Collection with multiple elements, adding duplicate node 0 | Map Stays the same, Error  | :white_check_mark: |
+|             | State of the System                                        | Expected output                                  | Implemented?       |
+|-------------|------------------------------------------------------------|--------------------------------------------------|--------------------|
+| Test Case 1 | Empty collection, adding NodeID 0                          | Updated Map, True                                | :white_check_mark: |
+| Test Case 2 | Collection with one element, adding NodeID 53              | Updated Map, True                                | :white_check_mark: |
+| Test Case 3 | Collection with multiple elements, adding NodeID 53        | Updated Map, True                                | :white_check_mark: |
+| Test Case 4 | Collection with multiple elements, adding duplicate node 0 | Map Stays the same, Error "Node already exists"  | :white_check_mark: |
 
 ### Method under test: `getGraphNodeByID(int NodeID)`
 
@@ -37,6 +37,26 @@
 | Test Case 1 | Get ID 0, empty collection                          | Error           | :white_check_mark: |
 | Test Case 2 | Get ID 0, one element, ID 0 exists                  | GraphNode Obj   | :white_check_mark: |
 | Test Case 3 | Get ID 53, multiple  elements, ID 53 does not exist | Error           | :white_check_mark: |
+
+### Method under test: `checkPlayerOwnsGraphNodeObject(PlayerColor color, int NodeID)`
+
+#### Inputs:
+- Player color -> RED, ORANGE, WHITE, BLUE
+- State of map
+  - NodeID exists or not
+  - Player color owns it, or not
+
+#### Outputs:
+- Boolean
+- Error -> "Node does not exist"
+
+
+|             | State of the System                           | Expected output             | Implemented?       |
+|-------------|-----------------------------------------------|-----------------------------|--------------------|
+| Test Case 1 | Red checks ID 0, it exists, Red owns it       | True                        | :white_check_mark: |
+| Test Case 2 | Orange checks ID 53, it exists, White Owns it | False                       | :x:                |
+| Test Case 3 | Blue checks 53, it does not exist             | Error "Node does not exist" | :x:                |
+| Test Case 4 | White checks 0, it exists, Blue owns it       | False                       | :x:                |
 
 ### Method under test: `claimGraphNodeObject(PlayerColor color, int NodeID)`
 
