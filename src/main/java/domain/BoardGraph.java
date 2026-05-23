@@ -69,7 +69,7 @@ public class BoardGraph {
     boolean checkPlayerOwnsGraphNodeObject(PlayerColor color, int nodeID) {
         GraphNode nodeOfInterest = getGraphNodeByID(nodeID);
         PlayerColor nodeColor = nodeOfInterest.checkColor();
-        return true;
+        return nodeColor == color;
     }
 
     boolean claimGraphNodeObject(PlayerColor color, int nodeID){

@@ -54,7 +54,7 @@
 |             | State of the System                           | Expected output             | Implemented?       |
 |-------------|-----------------------------------------------|-----------------------------|--------------------|
 | Test Case 1 | Red checks ID 0, it exists, Red owns it       | True                        | :white_check_mark: |
-| Test Case 2 | Orange checks ID 53, it exists, White Owns it | False                       | :x:                |
+| Test Case 2 | Orange checks ID 53, it exists, White Owns it | False                       | :white_check_mark: |
 | Test Case 3 | Blue checks 53, it does not exist             | Error "Node does not exist" | :x:                |
 | Test Case 4 | White checks 0, it exists, Blue owns it       | False                       | :x:                |
 

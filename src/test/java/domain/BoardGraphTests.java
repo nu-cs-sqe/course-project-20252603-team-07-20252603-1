@@ -159,6 +159,19 @@ public class BoardGraphTests {
     }
 
     @Test
+    void checkPlayerOwnsGraphNodeObject_test02_NodeExists_PlayerDoesNotOwnsIt_ExpectFalse(){
+        BoardGraph b = new BoardGraph();
+        GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
+        EasyMock.expect(nodeMock.getNodeID()).andReturn(0);
+        EasyMock.expect(nodeMock.checkColor()).andReturn(PlayerColor.WHITE);
+        EasyMock.replay(nodeMock);
+
+        b.addGraphNodeObject(nodeMock);
+
+        assertFalse(b.checkPlayerOwnsGraphNodeObject(PlayerColor.RED, 0));
+    }
+
+    @Test
     void claimGraphNodeObject_test01_NodeExists_Unclaimed_ExpectTrue(){
         BoardGraph b = new BoardGraph();
 
