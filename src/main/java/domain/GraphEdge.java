@@ -3,17 +3,22 @@ package domain;
 // TODO - ensure startingNodeID < endingNodeID; need to do additional BVA
 public class GraphEdge {
     // unique Edge_id
-    private int startingNodeID;
-    private int endingNodeID;
+    final private int startingNodeID;
+    final private int endingNodeID;
     // keep track of the
     private boolean roadBuilt;
     private PlayerColor owningPlayerColor;
 
     GraphEdge(int startingNodeID, int endingNodeID) {
+        assertValidNodeIDsOrdering(startingNodeID, endingNodeID);
         this.startingNodeID = startingNodeID;
         this.endingNodeID = endingNodeID;
         this.roadBuilt = false;
         this.owningPlayerColor = PlayerColor.SETUP;
+    }
+
+    private boolean assertValidNodeIDsOrdering(int startingNodeID, int endingNodeID) {
+        return true;
     }
 
     // need to be able to claim an edge

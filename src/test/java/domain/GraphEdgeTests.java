@@ -30,4 +30,10 @@ public class GraphEdgeTests {
         assertEquals(PlayerColor.BLUE, e1.checkOwningColor());
 
     }
+
+    @Test
+    void assertValidNodeIDsOrdering_test01_ValidInput_ExpectSuccess() {
+        GraphEdge e1 = new GraphEdge(0, 3);
+        assertNotNull(e1);
+    }
 }

@@ -11,4 +11,21 @@ Outputs: Boolean (success), state of the edge (boolean, Cases), or error (on not
   - **State of the system**: Player attempts to claim an occupied Edge
   - **Expected output**: Error "Edge already claimed", edge remains in previous state
 
+### Method under test: `assertValidEdgeIDsOrdering(); in constructor`
 
+#### Inputs:
+- startingNodeID interval [0, 53]
+- EndingNodeID interval [0, 53]
+#### Outputs:
+- True
+- IllegalNodeOrderingInEdgeException -> "Starting nodeID must be lower than ending nodeID"
+- IllegalNodeIDException -> Invalid nodeID
+
+|             | State of the System | Expected output                         | Implemented?       |
+|-------------|---------------------|-----------------------------------------|--------------------|
+| Test Case 1 | 0, 3                | True, object created                    | :white_check_mark: |
+| Test Case 2 | 50, 53              | True, object created                    | :x:                |
+| Test Case 3 | -1, 1               | IllegalNodeIDException                  | :x:                |
+| Test Case 4 | 52, 54              | IllegalNodeIDException                  | :x:                |
+| Test Case 5 | 0, 0                | IllegalNodeOrderingInEdgeException      | :x:                |
+| Test Case 6 | 53, 52              | IllegalNodeOrderingInEdgeException      | :x:                |
