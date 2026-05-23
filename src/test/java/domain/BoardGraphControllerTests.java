@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -75,6 +74,7 @@ public class BoardGraphControllerTests {
     void playerClaimStoredEdgeSetup_test01_JustClaimedNeighboringNode_EdgeUnclaimed_ExpectTrue(){
         BoardGraph boardMock = EasyMock.createNiceMock(BoardGraph.class);
         BoardGraphController boardControl = new BoardGraphController(boardMock);
+        EasyMock.expect(boardMock.checkPlayerOwnsGraphNodeObject(PlayerColor.RED, 0)).andReturn(true);
         EasyMock.expect(boardMock.claimGraphEdgeObject(PlayerColor.RED, 0, 3)).andReturn(true);
         EasyMock.replay(boardMock);
         assertTrue(boardControl.playerClaimStoredEdgeSetupPhase(PlayerColor.RED, 0, 0, 3));
@@ -85,8 +85,9 @@ public class BoardGraphControllerTests {
     void playerClaimStoredEdgeSetup_test02_JustClaimedNotNeighboringNode_EdgeUnclaimed_ExpectError(){
         BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
         BoardGraphController boardControl = new BoardGraphController(boardMock);
+        EasyMock.expect(boardMock.checkPlayerOwnsGraphNodeObject(PlayerColor.BLUE, 2)).andReturn(true);
         EasyMock.expect(boardMock.getConnectingEdgesByID(2)).andReturn(new HashSet<>());
-        EasyMock.expect(boardMock.getCorrectEdgeFromSet(new HashSet<>(), 0, 3))
+        EasyMock.expect(boardMock.getMatchingEdgeFromSet(new HashSet<>(), 0, 3))
                 .andThrow(new IllegalArgumentException("Edge does not exist"));
         EasyMock.replay(boardMock);
 
@@ -103,8 +104,9 @@ public class BoardGraphControllerTests {
     void playerClaimStoredEdgeSetup_test03_JustClaimedNeighboringNode_EdgeClaimed_ExpectError(){
         BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
         BoardGraphController boardControl = new BoardGraphController(boardMock);
+        EasyMock.expect(boardMock.checkPlayerOwnsGraphNodeObject(PlayerColor.ORANGE, 50)).andReturn(true);
         EasyMock.expect(boardMock.getConnectingEdgesByID(50)).andReturn(new HashSet<>());
-        EasyMock.expect(boardMock.getCorrectEdgeFromSet(new HashSet<>(), 50, 53)).andReturn(new GraphEdge(50, 53));
+        EasyMock.expect(boardMock.getMatchingEdgeFromSet(new HashSet<>(), 50, 53)).andReturn(new GraphEdge(50, 53));
         EasyMock.expect(boardMock.claimGraphEdgeObject(PlayerColor.ORANGE, 50, 53))
                         .andThrow(new EdgeAlreadyClaimedException("Edge already claimed"));
         EasyMock.replay(boardMock);
@@ -119,13 +121,30 @@ public class BoardGraphControllerTests {
     }
 
     @Test
-    void playerClaimStoredEdgeSetup_test04_JustClaimedNeighboringNode_EdgeUnclaimed_ExpectError(){
+    void playerClaimStoredEdgeSetup_test04_JustClaimedNeighboringNode_EdgeUnclaimed_ExpectTruer(){
         BoardGraph boardMock = EasyMock.createNiceMock(BoardGraph.class);
         BoardGraphController boardControl = new BoardGraphController(boardMock);
+        EasyMock.expect(boardMock.checkPlayerOwnsGraphNodeObject(PlayerColor.WHITE, 53)).andReturn(true);
         EasyMock.expect(boardMock.claimGraphEdgeObject(PlayerColor.WHITE, 50, 53)).andReturn(true);
         EasyMock.replay(boardMock);
 
         assertTrue(boardControl.playerClaimStoredEdgeSetupPhase(PlayerColor.WHITE, 53, 50, 53));
+
+        EasyMock.verify(boardMock);
+    }
+
+    @Test
+    void playerClaimStoredEdgeSetup_test05_PlayerDoesNotOwnNode_ExpectError(){
+        BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
+        BoardGraphController boardControl = new BoardGraphController(boardMock);
+        EasyMock.expect(boardMock.checkPlayerOwnsGraphNodeObject(PlayerColor.WHITE, 53)).andReturn(false);
+        EasyMock.replay(boardMock);
+
+        Exception exception = assertThrows(IllegalEdgeClaim.class,
+                () -> boardControl.playerClaimStoredEdgeSetupPhase(PlayerColor.WHITE, 53, 50, 53));
+
+        assertEquals("During setup phase, player must own node next to edge they want to claim",
+                exception.getMessage());
 
         EasyMock.verify(boardMock);
     }

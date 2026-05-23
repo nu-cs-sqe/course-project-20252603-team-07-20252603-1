@@ -2,7 +2,6 @@
 ### Method under test: `playerClaimStoredNodeSetupPhase(PlayerColor color, int NodeID)`
 
 #### Inputs:
-- NodeID -> Integer -> Interval [0, 53]
 - State of map -> NodeID exists or not
 - State of map -> Adjacent node is claimed or not
 - State of Node -> claimed or not
@@ -28,7 +27,8 @@
 
 #### Inputs:
 - PlayerColor -> RED, BLUE, ORANGE, WHITE
-- nodeID -> interval [0, 53], ID of node just claimed
+- State of nodeID -> does player actually own it?
+- nodeID -> ID of node just claimed
 - Edge -> neighbors nodeID or not; (as part of setup phase, player must place edge immediately next to just placed settlement)
 - Edge -> claimed or not;
 
@@ -37,14 +37,14 @@
   - Change of state of system -> edge claimed on by player
 - Error -> "Edge must be adjacent to just placed settlement"
 - Error -> "Edge already claimed"
+- Error -> "During setup phase, player must own node next to edge they want to claim"
 
 
-|             | State of the System                                              | Expected output                                         | Implemented?       |
-|-------------|------------------------------------------------------------------|---------------------------------------------------------|--------------------|
-| Test Case 1 | Red Claims edge0to3, just claimed Node 0, edge unclaimed         | True                                                    | :white_check_mark: |
-| Test Case 2 | Blue Claims edge0to3, just claimed Node 2, edge unclaimed        | Error "Edge must be adjacent to just placed settlement" | :white_check_mark: |
-| Test Case 3 | Orange Claims edge50to53, just claimed node 50, edge claimed     | Error "Edge already claimed"                            | :white_check_mark: |
-| Test Case 4 | White Claims ID edge50to53, just claimed node 53, edge unclaimed | True                                                    | :white_check_mark: |
+|             | State of the System                                              | Expected output                                                                   | Implemented?       |
+|-------------|------------------------------------------------------------------|-----------------------------------------------------------------------------------|--------------------|
+| Test Case 1 | Red Claims edge0to3, just claimed Node 0, edge unclaimed         | True                                                                              | :white_check_mark: |
+| Test Case 2 | Blue Claims edge0to3, just claimed Node 2, edge unclaimed        | Error "Edge must be adjacent to just placed settlement"                           | :white_check_mark: |
+| Test Case 3 | Orange Claims edge50to53, just claimed node 50, edge claimed     | Error "Edge already claimed"                                                      | :white_check_mark: |
+| Test Case 4 | White Claims ID edge50to53, just claimed node 53, edge unclaimed | True                                                                              | :white_check_mark: |
+| Test Case 5 | White Claims edge adjacent to node 0, which they do not own      | Error "During setup phase, player must own node next to edge they want to claim"  | :white_check_mark: |
 
-
-## Still a WIP From Refactoring:

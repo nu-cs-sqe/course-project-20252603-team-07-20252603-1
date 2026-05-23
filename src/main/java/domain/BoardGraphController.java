@@ -20,15 +20,22 @@ public class BoardGraphController {
     }
 
     boolean playerClaimStoredEdgeSetupPhase(PlayerColor color, int nodeID, int startingNodeID, int endingNodeID) {
+        checkPlayerOwnsNode(color, nodeID);
         Set<GraphEdge> validEdgesToClaim = boardGraph.getConnectingEdgesByID(nodeID);
         try {
             // will check to make sure edge neighbors nodeID
-            boardGraph.getCorrectEdgeFromSet(validEdgesToClaim, startingNodeID, endingNodeID);
+            boardGraph.getMatchingEdgeFromSet(validEdgesToClaim, startingNodeID, endingNodeID);
         } catch (IllegalArgumentException e) {
             throw new IllegalEdgeClaim("Edge must be adjacent to just placed settlement");
         }
         boardGraph.claimGraphEdgeObject(color, startingNodeID, endingNodeID);
         return true;
+    }
+
+    private void checkPlayerOwnsNode(PlayerColor color, int nodeID) {
+        if(!boardGraph.checkPlayerOwnsGraphNodeObject(color, nodeID)) {
+            throw new IllegalEdgeClaim("During setup phase, player must own node next to edge they want to claim");
+        }
     }
 
 /*
