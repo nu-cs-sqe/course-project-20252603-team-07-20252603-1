@@ -97,3 +97,45 @@
 .hex-brick  { -fx-background-color: #b9603d; -fx-text-fill: white; }
 .hex-ore    { -fx-background-color: #888888; -fx-text-fill: white; }
 .hex-desert { -fx-background-color: #e0c89d; }
+
+.game-root {
+    -fx-padding: 12;
+    -fx-background-color: #f8f5ec;
+}
+
+.current-player-banner {
+    -fx-padding: 12;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 0 0 1 0;
+}
+
+.dice-readout {
+    -fx-font-size: 14px;
+    -fx-padding: 4 12 4 12;
+}
+
+.resources-panel {
+    -fx-hgap: 8;
+    -fx-vgap: 4;
+    -fx-padding: 8;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1;
+}
+
+.resources-cell {
+    -fx-padding: 2 6 2 6;
+    -fx-font-size: 13px;
+}
+
+.resources-header {
+    -fx-font-weight: bold;
+    -fx-text-fill: #555555;
+}
+
+.current-player-row {
+    -fx-background-color: #fff4c2;
+}

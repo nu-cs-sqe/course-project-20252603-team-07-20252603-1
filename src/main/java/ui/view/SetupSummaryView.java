@@ -31,7 +31,11 @@ public class SetupSummaryView {
         Button homeButton = new Button("Back to Home");
         homeButton.setOnAction(e -> navigator.goToHome());
 
-        HBox buttons = new HBox(homeButton);
+        Button startGameButton = new Button("Start Game");
+        startGameButton.setDisable(controller.getTurnOrder(model).isEmpty());
+        startGameButton.setOnAction(e -> navigator.startGame());
+
+        HBox buttons = new HBox(homeButton, startGameButton);
         buttons.getStyleClass().add("button-bar");
 
         VBox content = new VBox(header, turnOrder, board, decks, buttons);
