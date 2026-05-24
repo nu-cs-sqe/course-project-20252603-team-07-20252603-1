@@ -1,47 +1,26 @@
-### BVA for Die Class
+### BVA for DiceHandler Class
 
-'Die' is the class responsible for generating a random number
-from a range of values, imitating the use of a die.
-
-Note: Catan always uses two dice numbered from 1 through 6, so for our purposes we will hardcode those values. We know that these requirements will not change.
-
-### Method under test: `rollOneDie()`
-
-Step 1:
-- Input: randomizer
-- Output: number 1-6
-
-Step 2:
-- Randomizer - Java's random number generator
-- Roll - interval
-
-Step 3:
-- Input: Java's random number generator is a trusted library, no variation/validation needed
-- Output: 1, 6, 0 (not feasible), 7 (not feasible)
-
-
-|             | System under test                    | Expected output | Implemented?       |
-|-------------|--------------------------------------|-----------------|--------------------|
-| Test Case 1 | Initialize new die, random returns 0 | Die roll is 1   | :white_check_mark: |
-| Test Case 2 | Initialize new die, random returns 5 | Die roll is 6   | :white_check_mark: |
-
+'DiceHandler' is responsible for rolling two dice, and returning a value [2-12].
 
 ### Method under test: `rollTwoDice()`
 
 Step 1:
-- Input: Randomizer
+- Input: Dice rolls
 - Output: number 2-12
 
 Step 2:
-- Randomizer - Java's random number generator
+- Die - implemented class
 - Roll - interval
 
 Step 3:
-- Input: Java's random number generator is a trusted library, no variation/validation needed
-- Output: 2, 12,  (not feasible), 7 (not feasible)
+- Input: Die class, already unit tested, can assume works as intended
+- Input: Die roll of 1, 6, 0 (not feasible), 7 (not feasible)
+- Output: 2, 12, 1 (not feasible), 13 (not feasible)
 
 
-|             | System under test                    | Expected output | Implemented?       |
-|-------------|--------------------------------------|-----------------|--------------------|
-| Test Case 1 | Initialize new die, random returns 0 | Die roll is 1   | :white_check_mark: |
-| Test Case 2 | Initialize new die, random returns 5 | Die roll is 6   | :white_check_mark: |
+|             | System under test                                            | Expected output | Implemented? |
+|-------------|--------------------------------------------------------------|-----------------|--------------|
+| Test Case 1 | Initialize new DiceHandler, Die each return 1                | Die roll is 2   | x            |
+| Test Case 2 | Initialize new DiceHandler, Die each return 6                | Die roll is 12  | x            |
+| Test Case 3 | Initialize new DiceHandler, Die 1 returns 1, Die 2 returns 6 | Die roll is 7   | x            |
+| Test Case 4 | Initialize new DiceHandler, Die 1 returns 6, Die 2 returns 1 | Die roll is 7   | x            |
