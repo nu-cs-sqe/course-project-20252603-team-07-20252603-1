@@ -1,0 +1,31 @@
+package domain;
+
+import org.easymock.EasyMock;
+import org.junit.jupiter.api.Test;
+
+import java.util.Random;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class DiceHandlerTests {
+
+    @Test // Test Case 1
+    public void InitDiceHandler_BothRollOne_ExpectTwo(){
+        Die dieOneMock = EasyMock.mock(Die.class);
+        Die dieTwoMock = EasyMock.mock(Die.class);
+
+        EasyMock.expect(dieOneMock.rollOneDie()).andReturn(1);
+        EasyMock.expect(dieTwoMock.rollOneDie()).andReturn(1);
+
+        EasyMock.replay(dieOneMock, dieTwoMock);
+
+        DiceHandler testDiceHandler = new DiceHandler(dieOneMock, dieTwoMock);
+        int expected = 2;
+        int actual = testDiceHandler.rollTwoDice();
+
+        EasyMock.verify(dieOneMock, dieTwoMock);
+
+        assertEquals(expected, actual);
+
+    }
+}
