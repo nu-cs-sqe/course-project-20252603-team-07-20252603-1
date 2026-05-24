@@ -26,6 +26,24 @@ public class DiceHandlerTests {
         EasyMock.verify(dieOneMock, dieTwoMock);
 
         assertEquals(expected, actual);
+    }
 
+    @Test // Test Case 2
+    public void InitDiceHandler_BothRollSix_ExpectTwelve(){
+        Die dieOneMock = EasyMock.mock(Die.class);
+        Die dieTwoMock = EasyMock.mock(Die.class);
+
+        EasyMock.expect(dieOneMock.rollOneDie()).andReturn(6);
+        EasyMock.expect(dieTwoMock.rollOneDie()).andReturn(6);
+
+        EasyMock.replay(dieOneMock, dieTwoMock);
+
+        DiceHandler testDiceHandler = new DiceHandler(dieOneMock, dieTwoMock);
+        int expected = 12;
+        int actual = testDiceHandler.rollTwoDice();
+
+        EasyMock.verify(dieOneMock, dieTwoMock);
+
+        assertEquals(expected, actual);
     }
 }
