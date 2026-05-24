@@ -5,6 +5,7 @@
 ### Method under test: `rollTwoDice()`
 
 Step 1:
+- Input: Die
 - Input: Dice rolls
 - Output: number 2-12
 
@@ -23,4 +24,4 @@ Step 3:
 | Test Case 1 | Initialize new DiceHandler, Die each return 1                | Die roll is 2   | :white_check_mark: |
 | Test Case 2 | Initialize new DiceHandler, Die each return 6                | Die roll is 12  | :white_check_mark: |
 | Test Case 3 | Initialize new DiceHandler, Die 1 returns 1, Die 2 returns 6 | Die roll is 7   | :white_check_mark: |
-| Test Case 4 | Initialize new DiceHandler, Die 1 returns 6, Die 2 returns 1 | Die roll is 7   | x                  |
+| Test Case 4 | Initialize new DiceHandler, Die 1 returns 6, Die 2 returns 1 | Die roll is 7   | :white_check_mark: |

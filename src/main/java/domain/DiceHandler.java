@@ -1,7 +1,5 @@
 package domain;
 
-import java.util.Random;
-
 class DiceHandler {
     private final Die dieOne;
     private final Die dieTwo;
