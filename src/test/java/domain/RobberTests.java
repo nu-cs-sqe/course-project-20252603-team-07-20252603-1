@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class RobberTests {
     @Test // Test Case 1
     public void moveRobberToHexZero() {
-        Robber robber = new Robber();
+        Robber robber = new Robber(9);
 
         robber.moveRobber(0);
 
@@ -19,7 +19,7 @@ public class RobberTests {
 
     @Test // Test Case 2
     public void moveRobberToLastHex() {
-        Robber robber = new Robber();
+        Robber robber = new Robber(9);
 
         robber.moveRobber(18);
 
@@ -30,7 +30,7 @@ public class RobberTests {
 
     @Test // Test Case 3
     public void moveRobberToNegativeHex() {
-        Robber robber = new Robber();
+        Robber robber = new Robber(9);
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             robber.moveRobber(-1);
@@ -43,7 +43,7 @@ public class RobberTests {
 
     @Test // Test Case 4
     public void moveRobberToOutOfUpperBoundHex() {
-        Robber robber = new Robber();
+        Robber robber = new Robber(9);
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             robber.moveRobber(19);
@@ -56,7 +56,7 @@ public class RobberTests {
 
     @Test // Test Case 5
     public void validateInitialRobberState() {
-        Robber robber = new Robber();
+        Robber robber = new Robber(9);
 
         int expected = 9;
         int actual = robber.getRobberLocation();

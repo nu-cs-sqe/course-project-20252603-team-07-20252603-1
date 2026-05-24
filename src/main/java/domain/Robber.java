@@ -1,12 +1,13 @@
 package domain;
 
 public class Robber {
-    private static final int DESERT_HEX_ID = 9;
+    private static final int MIN_HEX_ID = 0;
+    private static final int MAX_HEX_ID = 18;
 
     private int currentHexId;
 
-    public Robber(){
-        currentHexId = DESERT_HEX_ID;
+    public Robber(int initialId){
+        currentHexId = initialId;
     }
 
     int getRobberLocation(){
@@ -14,7 +15,7 @@ public class Robber {
     }
 
     void moveRobber(int hexId){
-        if (hexId < 0 || hexId > 18){
+        if (hexId < MIN_HEX_ID || hexId > MAX_HEX_ID){
             throw new IllegalArgumentException("Cannot move Robber to invalid HexId");
         }
         currentHexId = hexId;
