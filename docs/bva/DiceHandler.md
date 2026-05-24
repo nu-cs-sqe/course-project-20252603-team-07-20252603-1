@@ -24,3 +24,24 @@ Step 3:
 |-------------|--------------------------------------|-----------------|--------------------|
 | Test Case 1 | Initialize new die, random returns 0 | Die roll is 1   | :white_check_mark: |
 | Test Case 2 | Initialize new die, random returns 5 | Die roll is 6   | :white_check_mark: |
+
+
+### Method under test: `rollTwoDice()`
+
+Step 1:
+- Input: Randomizer
+- Output: number 2-12
+
+Step 2:
+- Randomizer - Java's random number generator
+- Roll - interval
+
+Step 3:
+- Input: Java's random number generator is a trusted library, no variation/validation needed
+- Output: 2, 12,  (not feasible), 7 (not feasible)
+
+
+|             | System under test                    | Expected output | Implemented?       |
+|-------------|--------------------------------------|-----------------|--------------------|
+| Test Case 1 | Initialize new die, random returns 0 | Die roll is 1   | :white_check_mark: |
+| Test Case 2 | Initialize new die, random returns 5 | Die roll is 6   | :white_check_mark: |
