@@ -13,7 +13,7 @@ Still making progress on the game setup, held an in-person meeting to discuss bo
 - Worked on BoardGraph and BoardGraph Controller
 - I believe both are done, and they are ready to review
 3. [??done] Connor: 
-4. [??done] Kevin: 
+4. [100% done] Kevin:  Reviewed Spencer's PR with BoardGraph and its controller
 5. [??done] Theo: 
 
 
