@@ -39,6 +39,12 @@ public class GraphEdge {
         }
     }
 
+    @Override
+    protected final void finalize() {
+        // intentionally empty — blocks finalizer attacks
+    }
+
+
     boolean checkRoadExists() {
         return this.roadBuilt;
     }

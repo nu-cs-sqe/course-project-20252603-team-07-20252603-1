@@ -51,4 +51,9 @@ public class GraphNode {
     int getNodeID(){
         return this.nodeID;
     }
+
+    @Override
+    protected final void finalize() {
+        // intentionally empty — blocks finalizer attacks
+    }
 }
