@@ -7,11 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 
-/**
- * Top-of-screen banner showing whose turn it is: a color swatch plus the
- * player's name. Call {@link #update(Player)} to switch to a new player; the
- * swatch CSS class is swapped so the color reflects the player.
- */
+
 public class CurrentPlayerBanner {
 
     private static final int SPACING_PX = 10;

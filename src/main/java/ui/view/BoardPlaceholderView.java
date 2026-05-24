@@ -8,11 +8,6 @@ import javafx.scene.layout.VBox;
 
 import java.util.List;
 
-/**
- * Static board placeholder: renders the 19 hex tiles from a Board in the
- * standard 3-4-5-4-3 row layout. No interactivity. Settlements, roads, and
- * the robber will land here once graph-wip merges.
- */
 public class BoardPlaceholderView {
 
     private static final int[] HEX_ROW_SIZES = {3, 4, 5, 4, 3};
@@ -27,6 +22,7 @@ public class BoardPlaceholderView {
         return root;
     }
 
+    //TODO: make with actual hexes instead of rectangles
     private static VBox buildGrid(List<String> hexes) {
         HBox[] rows = new HBox[HEX_ROW_SIZES.length];
         int idx = 0;

@@ -13,15 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import ui.controller.GameLoopController;
 
-/**
- * In-game round screen. Composes the banner, board, resources panel, and
- * controls into a BorderPane. The dice roll automatically at the start of
- * each turn (construction + after End Turn). The model is read-only here;
- * all mutations route through GameLoopController.
- *
- * Note: GameModel.performTurn does not branch on the dice value yet, so a
- * roll of 7 does NOT trigger the robber. Tracked separately.
- */
+
 public class GameRoundView {
 
     private static final int SECTION_PADDING_PX = 10;
