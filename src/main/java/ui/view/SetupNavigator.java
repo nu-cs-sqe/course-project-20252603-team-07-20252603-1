@@ -5,4 +5,5 @@ public interface SetupNavigator {
     void goToPlayerCount();
     void goToPlayerConfig(int count);
     void goToSetupSummary();
+    void startGame();
 }
