@@ -1,0 +1,23 @@
+# Week 8 Report (05/18/2026 - 5/24/2026)
+
+## Planning
+Almost prepared for game setup, and then game turns should not be far off based on current implementation. 
+
+## Work
+1. [5% done] Ben: BoardHandler Class https://github.com/nu-cs-sqe/course-project-20252603-team-07-20252603-1/pull/50
+- Completed Robber class, was reviewed and merged into main
+- Updated Die class based off of feedback
+- Created DiceHandler class, and then merged Die and DiceHandler into main
+- Planned for BoardHandler class, began rudimentary implementation
+2. [?% done] Spencer:
+3. [??done] Connor: 
+4. [??% done] Kevin:
+5. [??done] Theo: 
+
+
+## Goals
+1. Ben: Work on BoardHandler class in preparation for actual game setup and game turns
+2. Spencer: 
+3. Connor: 
+4. Kevin:
+5. Theo:
