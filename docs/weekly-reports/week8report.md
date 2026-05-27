@@ -10,7 +10,9 @@ Almost prepared for game setup, and then game turns should not be far off based 
 - Created DiceHandler class, and then merged Die and DiceHandler into main
 - Planned for BoardHandler class, began rudimentary implementation
 2. [?% done] Spencer:
-3. [??done] Connor: 
+3. [Player (done), ready] Connor: Merged in Player class to main, resolving conflicts and missing files
+- fixed checkstyle issues; will merge later this week
+- I was a bit busy with other classes the past week; ready to pick up new task this week!
 4. [??% done] Kevin:
 5. [??done] Theo: 
 
