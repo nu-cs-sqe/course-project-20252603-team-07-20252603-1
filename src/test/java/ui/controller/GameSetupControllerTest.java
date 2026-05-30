@@ -311,10 +311,10 @@ class GameSetupControllerTest {
     void testHexOrderContainsNineteenElements() {
         // Arrange
         List<String> mockHexOrder = List.of(
-            "WHEAT", "SHEEP", "WOOD", "BRICK", "ORE",
-            "WHEAT", "SHEEP", "WOOD", "BRICK", "ORE",
-            "WHEAT", "SHEEP", "WOOD", "BRICK", "ORE",
-            "WHEAT", "SHEEP", "WOOD", "DESERT"
+                "WHEAT", "SHEEP", "WOOD", "BRICK", "ORE",
+                "WHEAT", "SHEEP", "WOOD", "BRICK", "ORE",
+                "WHEAT", "SHEEP", "WOOD", "BRICK", "ORE",
+                "WHEAT", "SHEEP", "WOOD", "DESERT"
         );
         expect(mockBoard.getHexOrder()).andReturn(mockHexOrder);
         replay(mockBoard);
@@ -445,9 +445,9 @@ class GameSetupControllerTest {
     void testTurnOrderIsDetermined() {
         // Arrange
         List<Player> mockPlayers = List.of(
-            createMock(Player.class),
-            createMock(Player.class),
-            createMock(Player.class)
+                createMock(Player.class),
+                createMock(Player.class),
+                createMock(Player.class)
         );
         expect(mockModel.getTurnOrder()).andReturn(mockPlayers);
         replay(mockModel);
@@ -486,10 +486,10 @@ class GameSetupControllerTest {
     void testTurnOrderIsNotEmpty() {
         // Arrange
         List<Player> mockPlayers = List.of(
-            createMock(Player.class),
-            createMock(Player.class),
-            createMock(Player.class),
-            createMock(Player.class)
+                createMock(Player.class),
+                createMock(Player.class),
+                createMock(Player.class),
+                createMock(Player.class)
         );
         expect(mockModel.getTurnOrder()).andReturn(mockPlayers);
         replay(mockModel);
@@ -556,9 +556,9 @@ class GameSetupControllerTest {
         ResourceDeck mockResourceDeck = createMock(ResourceDeck.class);
         DevelopmentCardDeck mockDevDeck = createMock(DevelopmentCardDeck.class);
         List<Player> mockPlayers = List.of(
-            createMock(Player.class),
-            createMock(Player.class),
-            createMock(Player.class)
+                createMock(Player.class),
+                createMock(Player.class),
+                createMock(Player.class)
         );
 
         expect(mockModel.getPlayerCount()).andReturn(3);
@@ -616,6 +616,156 @@ class GameSetupControllerTest {
 
         // Assert
         assertEquals(4, count);
+        verify(mockModel);
+    }
+
+    // ========== Full Validation BVA Tests ==========
+
+    @Test
+    void testFullValidationNullNameReturnsNameEmpty() {
+        replay(mockModel);
+
+        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, null, "Red");
+
+        assertEquals(PlayerAddResult.NAME_EMPTY, result);
+        verify(mockModel);
+    }
+
+    @Test
+    void testFullValidationEmptyStringNameReturnsNameEmpty() {
+        replay(mockModel);
+
+        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, "", "Red");
+
+        assertEquals(PlayerAddResult.NAME_EMPTY, result);
+        verify(mockModel);
+    }
+
+    @Test
+    void testFullValidationSingleSpaceNameReturnsNameEmpty() {
+        replay(mockModel);
+
+        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, " ", "Red");
+
+        assertEquals(PlayerAddResult.NAME_EMPTY, result);
+        verify(mockModel);
+    }
+
+    @Test
+    void testFullValidationMixedWhitespaceNameReturnsNameEmpty() {
+        replay(mockModel);
+
+        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, " \t\n ", "Red");
+
+        assertEquals(PlayerAddResult.NAME_EMPTY, result);
+        verify(mockModel);
+    }
+
+    @Test
+    void testFullValidationSingleCharNameSucceeds() {
+        expect(mockModel.isNameAvailable("A")).andReturn(true);
+        expect(mockModel.isColorAvailable("Red")).andReturn(true);
+        mockModel.addPlayer("A", "Red");
+        expectLastCall();
+        replay(mockModel);
+
+        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, "A", "Red");
+
+        assertEquals(PlayerAddResult.SUCCESS, result);
+        verify(mockModel);
+    }
+
+    @Test
+    void testFullValidationTrimsLeadingAndTrailingWhitespace() {
+        expect(mockModel.isNameAvailable("Alice")).andReturn(true);
+        expect(mockModel.isColorAvailable("Red")).andReturn(true);
+        mockModel.addPlayer("Alice", "Red");
+        expectLastCall();
+        replay(mockModel);
+
+        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, "  Alice  ", "Red");
+
+        assertEquals(PlayerAddResult.SUCCESS, result);
+        verify(mockModel);
+    }
+
+    @Test
+    void testFullValidationDuplicateNameReturnsNameTaken() {
+        expect(mockModel.isNameAvailable("Alice")).andReturn(false);
+        replay(mockModel);
+
+        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, "Alice", "Red");
+
+        assertEquals(PlayerAddResult.NAME_TAKEN, result);
+        verify(mockModel);
+    }
+
+    @Test
+    void testFullValidationNullColorReturnsColorEmpty() {
+        expect(mockModel.isNameAvailable("Alice")).andReturn(true);
+        replay(mockModel);
+
+        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, "Alice", null);
+
+        assertEquals(PlayerAddResult.COLOR_EMPTY, result);
+        verify(mockModel);
+    }
+
+    @Test
+    void testFullValidationDuplicateColorReturnsColorTaken() {
+        expect(mockModel.isNameAvailable("Alice")).andReturn(true);
+        expect(mockModel.isColorAvailable("Red")).andReturn(false);
+        replay(mockModel);
+
+        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, "Alice", "Red");
+
+        assertEquals(PlayerAddResult.COLOR_TAKEN, result);
+        verify(mockModel);
+    }
+
+    @Test
+    void testFullValidationAllValidReturnsSuccess() {
+        expect(mockModel.isNameAvailable("Alice")).andReturn(true);
+        expect(mockModel.isColorAvailable("Red")).andReturn(true);
+        mockModel.addPlayer("Alice", "Red");
+        expectLastCall();
+        replay(mockModel);
+
+        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, "Alice", "Red");
+
+        assertEquals(PlayerAddResult.SUCCESS, result);
+        verify(mockModel);
+    }
+
+    @Test
+    void testFullValidationNameCheckedBeforeColor() {
+        replay(mockModel);
+
+        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, "", null);
+
+        assertEquals(PlayerAddResult.NAME_EMPTY, result);
+        verify(mockModel);
+    }
+
+    @Test
+    void testFullValidationDuplicateNameShortCircuitsColorCheck() {
+        expect(mockModel.isNameAvailable("Alice")).andReturn(false);
+        replay(mockModel);
+
+        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, "Alice", "Red");
+
+        assertEquals(PlayerAddResult.NAME_TAKEN, result);
+        verify(mockModel);
+    }
+
+    @Test
+    void testClearPlayersDelegatesToModel() {
+        mockModel.clearPlayers();
+        expectLastCall();
+        replay(mockModel);
+
+        controller.clearPlayers(mockModel);
+
         verify(mockModel);
     }
 }
