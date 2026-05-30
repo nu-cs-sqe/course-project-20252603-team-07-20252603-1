@@ -1,0 +1,131 @@
+@startuml Catan MVP Class Diagram (MVC)
+
+package "Controller" {
+  class GameController {
+    - game: Game
+    - view: GameView
+    + initializeGame(playerNames)
+    + conductTurnOrderRoll()
+    + startInitialPlacements()
+  }
+
+  class PlacementController {
+    - game: Game
+    - view: GameView
+    + handleSettlementPlacement(player, vertex)
+    + handleRoadPlacement(player, edge)
+  }
+}
+
+package "Model" {
+  class Game {
+    - players: List<Player>
+    - board: Board
+    - developmentDeck: DevelopmentCardDeck
+    - turnOrder: List<Player>
+    + addPlayer(player)
+    + determineTurnOrder(rolls)
+    + getCurrentPlayer(): Player
+  }
+
+  class Player {
+    - name: String
+    - victoryPoints: int
+    - settlements: List<Settlement>
+    - roads: List<Road>
+    - resources: Map<ResourceType, int>
+    + placeSettlement(vertex)
+    + placeRoad(edge)
+    + receiveResources(resources)
+  }
+
+  class Board {
+    - tiles: List<Tile>
+    - vertices: List<Vertex>
+    - edges: List<Edge>
+    + setupBoard()
+    + isValidSettlementPlacement(vertex): boolean
+    + isValidRoadPlacement(edge): boolean
+  }
+
+  class Tile {
+    - resourceType: ResourceType
+    - numberToken: int
+    - position: int
+  }
+
+  enum ResourceType {
+    WOOD
+    BRICK
+    SHEEP
+    WHEAT
+    ORE
+    DESERT
+  }
+
+  class Vertex {
+    - position: int
+    - adjacentTiles: List<Tile>
+    - settlement: Settlement
+  }
+
+  class Edge {
+    - position: int
+    - road: Road
+  }
+
+  class Settlement {
+    - owner: Player
+    - location: Vertex
+  }
+
+  class Road {
+    - owner: Player
+    - location: Edge
+  }
+
+  class DevelopmentCardDeck {
+    - cards: List<DevelopmentCard>
+    + shuffle()
+  }
+
+  class DevelopmentCard {
+    - cardType: String
+  }
+
+  class Dice {
+    + roll(): int
+  }
+}
+
+package "View" {
+  class GameView {
+    + displayBoard(board)
+    + displayPlayers(players)
+    + displayTurnOrder(turnOrder)
+    + promptForSettlementPlacement(player)
+    + promptForRoadPlacement(player)
+    + displayRollResult(player, roll)
+  }
+}
+
+GameController --> Game
+GameController --> GameView
+PlacementController --> Game
+PlacementController --> GameView
+
+Game "1" *-- "3..4" Player
+Game "1" *-- "1" Board
+Game "1" *-- "1" DevelopmentCardDeck
+Game "1" -- "1" Dice
+Board "1" *-- "19" Tile
+Board "1" *-- "*" Vertex
+Board "1" *-- "*" Edge
+Tile -- ResourceType
+Player "1" *-- "*" Settlement
+Player "1" *-- "*" Road
+Settlement "1" -- "1" Vertex
+Road "1" -- "1" Edge
+DevelopmentCardDeck "1" *-- "*" DevelopmentCard
+
+@enduml

@@ -1,8 +1,9 @@
 package domain;
 
 public enum PlayerColor {
-  RED,
-  BLUE,
-  ORANGE,
-  WHITE;
+    SETUP,
+    RED,
+    BLUE,
+    ORANGE,
+    WHITE
 }
