@@ -17,8 +17,10 @@ public class GameSetupModel {
 
     private final List<Player> players;
     private final Set<String> usedColors;
+    // private final Set<PlayerColor> usedColors;
     private final Set<String> usedNames;
     private Board board;
+    // private BoardHandler board;
     private ResourceDeck resourceDeck;
     private DevelopmentCardDeck developmentCardDeck;
     private List<Player> turnOrder;

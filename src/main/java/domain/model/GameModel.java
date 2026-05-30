@@ -54,4 +54,20 @@ public class GameModel {
             // Gracefully handle empty deck - no resource distributed
         }
     }
+
+    // Functionalities to be added
+    public void attemptBuildSettlement(){};
+
+    public void attemptBuildCity(){};
+
+    public void attemptBuildRoad(){};
+
+    public void attemptTrade(){};
+
+    public void playDevCard(){};
+
+    public void buyDevCard(){};
+
+    public void moveRobberAndSteal(){};
+
 }
