@@ -14,12 +14,12 @@ Still making progress on the game setup, held an in-person meeting to discuss bo
 - I believe both are done, and they are ready to review
 3. [100% done] Connor: Reviewed Theo's PR for Feature/Game Round
 4. [100% done] Kevin:  Reviewed Spencer's PR with BoardGraph and its controller
-5. [??done] Theo: 
+5. [100% done] Theo:  Focused on strategy for converging branches and overarching flow between models 
 
 
 ## Goals
 1. Ben: Work on settlement, city, and road classes (potentially robber)
 2. Spencer: Work on whichever settlement/city/road Ben is not working on, wire up buttons to Graph in view
 3. Connor: Continue working on Player, adding checkstyle + fixing formatting.
-4. Kevin:
-5. Theo:
+4. Kevin: 
+5. Theo: Finalize player turn functionality for both setup and game turns
