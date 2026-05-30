@@ -14,7 +14,7 @@ Almost prepared for game setup, and then game turns should not be far off based 
 - fixed checkstyle issues; will merge later this week
 - I was a bit busy with other classes the past week; ready to pick up new task this week!
 4. [100% done] Kevin: Raised game round views PRs, reviewed two PRs
-5. [??done] Theo: 
+5. [60% done] Theo: iterated on player turns and fixed some non-mocked tests, all local.
 
 
 ## Goals
@@ -22,4 +22,4 @@ Almost prepared for game setup, and then game turns should not be far off based 
 2. Spencer: 
 3. Connor: 
 4. Kevin: 
-5. Theo:
+5. Theo: get to a state of functional playability (at least in theory, the views probably won't be finished, so just code existing and tested up besides all else)
