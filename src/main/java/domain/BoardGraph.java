@@ -6,15 +6,12 @@ import java.util.Map;
 import java.util.Set;
 
 public class BoardGraph {
-    // map that connects Nodes to the edges connected
-
     // map that connects nodes edges; edges themselves contain info on
     private final Map<Integer, Set<GraphEdge>> nodeIDToConnectingEdges = new HashMap<>();
 
     // map that connects NodeID to the actual node object
     private final Map<Integer, GraphNode> nodeIDToNodeObject = new HashMap<>();
 
-    // Add a new GraphNode to the Map
     boolean addGraphNodeObject(GraphNode graphNode) {
         int nodeID = graphNode.getNodeID();
         if (nodeIDToNodeObject.containsKey(nodeID)) {
