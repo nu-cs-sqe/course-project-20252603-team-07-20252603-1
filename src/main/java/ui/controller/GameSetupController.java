@@ -1,9 +1,9 @@
 package ui.controller;
 
-import domain.model.Board;
 import domain.model.GameSetupModel;
 import domain.model.Player;
 import domain.model.development_cards.DevelopmentCardDeck;
+import domain.model.player.Player;
 import domain.model.resources.ResourceDeck;
 
 import java.util.List;

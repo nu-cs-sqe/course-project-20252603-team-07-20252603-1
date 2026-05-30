@@ -1,4 +1,4 @@
-package domain;
+package domain.model.board;
 
 import java.util.HashMap;
 import java.util.HashSet;

@@ -3,6 +3,14 @@ package domain;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
+import domain.model.board.BoardGraph;
+import domain.model.board.BoardGraphController;
+import domain.model.board.GraphEdge;
+import domain.model.exceptions.AdjacentNodeAlreadyClaimed;
+import domain.model.exceptions.EdgeAlreadyClaimedException;
+import domain.model.exceptions.IllegalEdgeClaim;
+import domain.model.player.PlayerColor;
+
 import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

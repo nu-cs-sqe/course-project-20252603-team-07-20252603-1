@@ -2,8 +2,8 @@ how package ui.controller;
 
 import domain.model.DiceRoller;
 import domain.model.GameModel;
-import domain.model.Player;
-import domain.model.PlayerState;
+import domain.model.player.Player;
+import domain.model.player.PlayerState;
 import domain.model.resources.ResourceDeck;
 import domain.model.resources.ResourceType;
 import org.easymock.Capture;

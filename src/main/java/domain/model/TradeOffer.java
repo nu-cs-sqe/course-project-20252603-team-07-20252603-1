@@ -1,4 +1,7 @@
-package domain;
+package domain.model;
+
+import domain.model.player.Player;
+import domain.model.resources.ResourceQuantity;
 
 public class TradeOffer {
     private final Player offeringPlayer;

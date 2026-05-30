@@ -2,7 +2,7 @@ package domain.model.development_cards;
 import java.util.Collections;
 import java.util.Stack;
 
-import domain.model.EmptyDeckException;
+import domain.model.exceptions.EmptyDeckException;
 
 
 public class DevelopmentCardDeck {

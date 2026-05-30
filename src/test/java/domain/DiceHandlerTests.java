@@ -3,6 +3,9 @@ package domain;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
+import domain.model.DiceHandler;
+import domain.model.Die;
+
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

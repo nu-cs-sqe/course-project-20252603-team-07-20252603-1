@@ -1,18 +1,35 @@
 package domain.model;
 
 import domain.model.resources.ResourceDeck;
-import domain.model.resources.ResourceCard;
+import domain.model.player.Player;
+import domain.model.player.PlayerState;
+import domain.model.resources.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
+import java.util.Map;
 
 public class GameModel {
 
-    private final List<PlayerState> playerStates;
-    private final DiceHandler diceHandler = new DiceHandler();
-    private ResourceDeck resourceDeck = [];
+    private final List<PlayerState> playerStates; // figure out how to initialize proper
+    private final DiceHandler diceHandler = initializeDiceHandler();
+
     private int currentPlayerIndex;
+
+    private final ResourceDeck lumberDeck = new ResourceDeck(Resource.LUMBER);
+    private final ResourceDeck brickDeck = new ResourceDeck(Resource.BRICK);
+    private final ResourceDeck grainDeck = new ResourceDeck(Resource.GRAIN);
+    private final ResourceDeck oreDeck = new ResourceDeck(Resource.ORE);
+    private final ResourceDeck woolDeck = new ResourceDeck(Resource.WOOL);
+    private final Map<Resource, ResourceDeck> decks = Map.of(
+        Resource.LUMBER, lumberDeck,
+
+    )
+
+
+
     
 
     public GameModel(List<Player> players) {
@@ -21,6 +38,16 @@ public class GameModel {
             this.playerStates.add(new PlayerState(player));
         }
         this.currentPlayerIndex = 0;
+    }
+
+
+    private DiceHandler initializeDiceHandler() {
+        Random r = new Random();
+        Die d1 = new Die(r);
+        Die d2 = new Die(r);
+
+        return new DiceHandler(d1, d2);
+
     }
 
     public List<Player> getTurnOrder() {
@@ -47,16 +74,20 @@ public class GameModel {
 
     public void performTurn() {
         // Roll dice
-        int roll = diceRoller.roll();
+        int roll = diceHandler.rollTwoDice();
+
+        // interpret the rol result somehow
 
         // Give current player one resource (minimal stub - ignoring dice result for now)
         try {
-            ResourceCard card = resourceDeck.draw();
+            Resource card = resourceDeck.draw();
             playerStates.get(currentPlayerIndex).addResource(card);
         } catch (Exception e) {
             // Gracefully handle empty deck - no resource distributed
         }
     }
+
+    public 
 
     // Functionalities to be added
     public void attemptBuildSettlement(){};

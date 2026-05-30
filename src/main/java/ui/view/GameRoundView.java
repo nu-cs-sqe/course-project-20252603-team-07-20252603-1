@@ -1,8 +1,8 @@
 package ui.view;
 
-import domain.model.Board;
 import domain.model.DiceRoller;
 import domain.model.GameModel;
+import domain.model.board.Board;
 import domain.model.resources.ResourceDeck;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;

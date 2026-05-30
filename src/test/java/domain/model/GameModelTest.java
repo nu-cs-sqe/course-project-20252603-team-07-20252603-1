@@ -1,5 +1,6 @@
 package domain.model;
 
+import domain.model.player.Player;
 import domain.model.resources.ResourceDeck;
 import domain.model.resources.ResourceType;
 import org.junit.jupiter.api.Test;

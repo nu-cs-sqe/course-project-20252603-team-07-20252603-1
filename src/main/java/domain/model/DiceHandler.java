@@ -1,4 +1,4 @@
-package domain;
+package domain.model;
 
 class DiceHandler {
     private final Die dieOne;

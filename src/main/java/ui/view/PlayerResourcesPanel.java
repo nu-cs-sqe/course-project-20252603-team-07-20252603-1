@@ -1,7 +1,7 @@
 package ui.view;
 
 import domain.model.GameModel;
-import domain.model.Player;
+import domain.model.player.Player;
 import domain.model.resources.ResourceType;
 import javafx.geometry.Pos;
 import javafx.scene.Node;

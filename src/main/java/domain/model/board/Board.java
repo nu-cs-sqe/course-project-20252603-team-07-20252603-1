@@ -1,4 +1,4 @@
-package domain.model;
+package domain.model.board;
 
 import java.util.ArrayList;
 import java.util.Arrays;

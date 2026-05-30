@@ -1,7 +1,9 @@
 package domain.model.resources;
 
-import domain.model.EmptyDeckException;
 import org.junit.jupiter.api.Test;
+
+import domain.model.exceptions.EmptyDeckException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ResourceDeckTest {

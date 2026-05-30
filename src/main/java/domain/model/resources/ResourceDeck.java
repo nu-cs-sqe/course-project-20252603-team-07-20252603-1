@@ -1,15 +1,16 @@
 package domain.model.resources;
 
-import domain.model.EmptyDeckException;
+import domain.model.exceptions.EmptyDeckException;
+import domain.model.resources.Resource;
 
 public class ResourceDeck {
 
     private int count;
-    private ResourceType type;
+    private Resource type;
 
     /**
      * Default constructor for testing purposes.
-     * Creates a placeholder deck. Real implementation should use ResourceDeck(ResourceType).
+     * Creates a placeholder deck. Real implementation should use ResourceDeck(Resource).
      * TODO: Future work - implement proper multi-resource deck management.
      */
     public ResourceDeck() {
@@ -17,45 +18,48 @@ public class ResourceDeck {
         this.count = 95; // 5 types * 19 cards each
     }
 
-    public ResourceDeck(ResourceType type) {
+    public ResourceDeck(Resource type) {
         this.type = type;
         this.count = 19; // game standard
+
+        if (type == Resource.DESERT ) {
+            throw new IllegalArgumentException("Resource must be tradeable.");
+        }
     }
 
 
 
-    public ResourceType getType() {
+    public Resource getType() {
         return this.type;
     }
 
-    public ResourceCard draw() throws EmptyDeckException {
+    public Resource draw() throws EmptyDeckException {
         // just instantiate a brand new one, decrease count
         if (count > 0) {
 
             this.count--;
-            return new ResourceCard(this.type);
-
+            return this.type; // caller will index into store and ++
         } else {
             throw new EmptyDeckException(String.format("Cannot draw new %s card, no cards remain.", this.type.name()));
         }
     }
 
     // ASSUMPTION -- WE WIL STORE PLAYER DECK IN SOME SORT OF ARRAYLIST AND CAN USE list1.addAll(list2)
-    public ResourceCard[] drawMultiple(int numCards) {
+    public int drawMultiple(int numCards) {
         // here we'll assume that if there are 2 cards left and you want to draw 3, you get 2 and you deal with it.
         // i.e. it is not an error to return less than numCards if it finishes the deck
 
         int numCardsReturning = numCards <= this.count ? numCards : this.count;
 
-        ResourceCard[] cardsToReturn = new ResourceCard[numCardsReturning];
+        // Resource[] cardsToReturn = new Resource[numCardsReturning];
 
-        for (int i = 0; i < numCardsReturning; i++) {
-            cardsToReturn[i] = new ResourceCard(this.type);
-        }
+        // for (int i = 0; i < numCardsReturning; i++) {
+        //     cardsToReturn[i] = this.type;
+        // }
 
         this.count -= numCardsReturning;
 
-        return cardsToReturn;
+        return numCardsReturning;
 
     }
 

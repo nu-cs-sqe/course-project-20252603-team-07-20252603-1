@@ -1,10 +1,12 @@
-package domain;
+package domain.model.player;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import domain.model.resources.Resource;
 
 public class Player {
     private final List<Settlement> settlements;

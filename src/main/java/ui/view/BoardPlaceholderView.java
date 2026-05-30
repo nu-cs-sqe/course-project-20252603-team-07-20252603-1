@@ -1,12 +1,13 @@
 package ui.view;
 
-import domain.model.Board;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
+
+import domain.model.board.Board;
 
 public class BoardPlaceholderView {
 

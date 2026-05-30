@@ -1,5 +1,7 @@
 package domain.model;
 
+import domain.model.board.Board;
+import domain.model.player.Player;
 import domain.model.development_cards.DevelopmentCardDeck;
 import domain.model.resources.ResourceDeck;
 

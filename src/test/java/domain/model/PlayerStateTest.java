@@ -1,5 +1,7 @@
 package domain.model;
 
+import domain.model.player.Player;
+import domain.model.player.PlayerState;
 import domain.model.resources.ResourceCard;
 import domain.model.resources.ResourceType;
 import org.junit.jupiter.api.Test;

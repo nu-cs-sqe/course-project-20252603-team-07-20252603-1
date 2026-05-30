@@ -1,6 +1,6 @@
 package ui.view;
 
-import domain.model.Player;
+import domain.model.player.Player;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;

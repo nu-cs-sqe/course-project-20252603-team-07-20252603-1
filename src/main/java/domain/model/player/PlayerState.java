@@ -1,4 +1,4 @@
-package domain.model;
+package domain.model.player;
 
 import domain.model.resources.ResourceCard;
 import domain.model.resources.ResourceType;

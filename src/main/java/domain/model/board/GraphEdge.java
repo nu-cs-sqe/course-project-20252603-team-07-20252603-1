@@ -1,4 +1,7 @@
-package domain;
+package domain.model.board;
+
+import domain.model.exceptions.IllegalNodeOrderingInEdgeException;
+import domain.model.player.PlayerColor;
 
 // TODO - ensure startingNodeID < endingNodeID; need to do additional BVA
 public class GraphEdge {

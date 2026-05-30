@@ -1,8 +1,8 @@
 package ui.view;
 
-import domain.model.Board;
 import domain.model.GameSetupModel;
-import domain.model.Player;
+import domain.model.board.Board;
+import domain.model.player.Player;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;

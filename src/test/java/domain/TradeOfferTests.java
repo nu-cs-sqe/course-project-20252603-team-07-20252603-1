@@ -2,6 +2,11 @@ package domain;
 
 import org.junit.jupiter.api.Test;
 
+import domain.model.TradeOffer;
+import domain.model.player.Player;
+import domain.model.resources.Resource;
+import domain.model.resources.ResourceQuantity;
+
 import org.easymock.EasyMock;
 
 import static org.junit.jupiter.api.Assertions.*;

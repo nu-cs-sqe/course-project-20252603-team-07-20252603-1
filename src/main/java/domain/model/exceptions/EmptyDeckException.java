@@ -1,4 +1,4 @@
-package domain.model;
+package domain.model.exceptions;
 
 public class EmptyDeckException extends Exception {
     public EmptyDeckException(String message) {
