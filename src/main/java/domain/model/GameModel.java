@@ -10,7 +10,10 @@ import java.util.stream.Collectors;
 public class GameModel {
 
     private final List<PlayerState> playerStates;
+    private final DiceHandler diceHandler = new DiceHandler();
+    private ResourceDeck resourceDeck = [];
     private int currentPlayerIndex;
+    
 
     public GameModel(List<Player> players) {
         this.playerStates = new ArrayList<>();
@@ -42,7 +45,7 @@ public class GameModel {
         return playerStates.get(index);
     }
 
-    public void performTurn(DiceRoller diceRoller, ResourceDeck resourceDeck) {
+    public void performTurn() {
         // Roll dice
         int roll = diceRoller.roll();
 
