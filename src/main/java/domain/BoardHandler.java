@@ -13,6 +13,25 @@ public class BoardHandler {
 
     }
 
+    Boolean validateSettlementResources(Player player){
+        return false;
+    }
+
+    Boolean validateCityResources(Player player){
+        return false;
+    }
+
+    Boolean validateRoadResources(Player player){
+        return false;
+    }
+
+    void spendSettlementResources(Player player){
+    }
+
+    void spendCityResources(Player player){}
+
+    void spendRoadResources(Player player){}
+
     void awardResources(int rollNum){
 
     }
@@ -31,5 +50,10 @@ public class BoardHandler {
 
     void buildSetupRoad(int edgeId){
 
+    }
+
+    Player calculateLongestRoad(){
+        // TODO - after gamesetup phase
+        return new Player();
     }
 }
