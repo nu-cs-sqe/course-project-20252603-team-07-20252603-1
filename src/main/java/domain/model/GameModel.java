@@ -25,8 +25,11 @@ public class GameModel {
     private final ResourceDeck woolDeck = new ResourceDeck(Resource.WOOL);
     private final Map<Resource, ResourceDeck> decks = Map.of(
         Resource.LUMBER, lumberDeck,
-
-    )
+        Resource.BRICK, brickDeck,
+        Resource.GRAIN, grainDeck,
+        Resource.WOOL, woolDeck,
+        Resource.ORE, oreDeck
+    );
 
 
 
@@ -77,17 +80,22 @@ public class GameModel {
         int roll = diceHandler.rollTwoDice();
 
         // interpret the rol result somehow
+        Resource rslt = interpretRoll(roll);
 
         // Give current player one resource (minimal stub - ignoring dice result for now)
         try {
-            Resource card = resourceDeck.draw();
+            Resource card = decks[rslt].draw();
             playerStates.get(currentPlayerIndex).addResource(card);
         } catch (Exception e) {
             // Gracefully handle empty deck - no resource distributed
         }
     }
 
-    public 
+    public Resource interpretRoll(int roll) {
+        // just a fakey function to make performTurn not error
+        // really this would be closer to something like Map<Hex, (Player[], Resource)>
+        return Resource.WOOL;
+    }
 
     // Functionalities to be added
     public void attemptBuildSettlement(){};
