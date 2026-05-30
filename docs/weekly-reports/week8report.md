@@ -13,7 +13,7 @@ Almost prepared for game setup, and then game turns should not be far off based 
 3. [Player (done), ready] Connor: Merged in Player class to main, resolving conflicts and missing files
 - fixed checkstyle issues; will merge later this week
 - I was a bit busy with other classes the past week; ready to pick up new task this week!
-4. [??% done] Kevin:
+4. [100% done] Kevin: Raised game round views PRs, reviewed two PRs
 5. [??done] Theo: 
 
 
@@ -21,5 +21,5 @@ Almost prepared for game setup, and then game turns should not be far off based 
 1. Ben: Work on BoardHandler class in preparation for actual game setup and game turns
 2. Spencer: 
 3. Connor: 
-4. Kevin:
+4. Kevin: 
 5. Theo:
