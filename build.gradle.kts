@@ -7,6 +7,8 @@ plugins {
     id("com.github.spotbugs") version "6.0.25"
     jacoco
     id("info.solidsoft.pitest") version "1.15.0"
+    id("application")
+    id("org.openjfx.javafxplugin") version "0.1.0"
 }
 
 group = "nu.csse.sqe"
@@ -27,6 +29,15 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(11)
     }
+}
+
+javafx {
+    version = "17.0.10"
+    modules = listOf("javafx.controls", "javafx.fxml")
+}
+
+application {
+    mainClass.set("ui.Main")
 }
 
 tasks.compileJava {

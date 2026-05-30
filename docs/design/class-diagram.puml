@@ -1,6 +1,24 @@
 @startuml Catan MVP Class Diagram (MVC)
 
 package "Controller" {
+  class GameSetupController {
+    + validatePlayerCount(model): boolean
+    + addPlayer(model, name, color)
+    + addPlayerWithColorValidation(model, name, color): boolean
+    + getPlayerName(model, index): String
+    + getPlayerCount(model): int
+    + initializeBoard(model)
+    + getBoard(model): Board
+    + getBoardHexCount(board): int
+    + getHexOrder(board): List<String>
+    + initializeResourceDeck(model)
+    + getResourceDeck(model): ResourceDeck
+    + initializeDevelopmentCardDeck(model)
+    + getDevelopmentCardDeck(model): DevelopmentCardDeck
+    + determineTurnOrder(model)
+    + getTurnOrder(model): List<Player>
+  }
+
   class GameController {
     - game: Game
     - view: GameView
@@ -18,6 +36,26 @@ package "Controller" {
 }
 
 package "Model" {
+  class GameSetupModel {
+    - players: List<Player>
+    - usedColors: Set<String>
+    - board: Board
+    - resourceDeck: ResourceDeck
+    - developmentCardDeck: DevelopmentCardDeck
+    - turnOrder: List<Player>
+    + getPlayerCount(): int
+    + addPlayer(name, color)
+    + getPlayer(index): Player
+    + isColorAvailable(color): boolean
+    + getBoard(): Board
+    + getResourceDeck(): ResourceDeck
+    + setResourceDeck(deck)
+    + getDevelopmentCardDeck(): DevelopmentCardDeck
+    + setDevelopmentCardDeck(deck)
+    + determineTurnOrder()
+    + getTurnOrder(): List<Player>
+  }
+
   class Game {
     - players: List<Player>
     - board: Board
@@ -30,22 +68,47 @@ package "Model" {
 
   class Player {
     - name: String
+    - color: String
+    + getName(): String
+    + getColor(): String
+    .. Future Attributes ..
     - victoryPoints: int
     - settlements: List<Settlement>
     - roads: List<Road>
     - resources: Map<ResourceType, int>
+    .. Future Methods ..
     + placeSettlement(vertex)
     + placeRoad(edge)
     + receiveResources(resources)
   }
 
   class Board {
+    - {static} STANDARD_HEX_COUNT: int = 19
+    - hexOrder: List<String>
+    + getHexCount(): int
+    + getHexOrder(): List<String>
+    .. Future Attributes ..
     - tiles: List<Tile>
     - vertices: List<Vertex>
     - edges: List<Edge>
+    .. Future Methods ..
     + setupBoard()
     + isValidSettlementPlacement(vertex): boolean
     + isValidRoadPlacement(edge): boolean
+  }
+
+  class ResourceDeck {
+    - count: int
+    - type: ResourceType
+    + ResourceDeck()
+    + ResourceDeck(type)
+    + getType(): ResourceType
+    + getTotalCards(): int
+    + draw(): ResourceCard
+    + drawMultiple(numCards): ResourceCard[]
+    + replenish()
+    + replenish(numToReplenish)
+    + replenishAll()
   }
 
   class Tile {
@@ -84,13 +147,42 @@ package "Model" {
     - location: Edge
   }
 
+  class ResourceCard {
+    - type: ResourceType
+    + getType(): ResourceType
+  }
+
   class DevelopmentCardDeck {
-    - cards: List<DevelopmentCard>
+    - deck: Stack<DevelopmentCard>
+    - cardsLeft: int
+    - knightCount: int
+    - victoryPointCount: int
+    - roadBuilderCount: int
+    - yearOfPlentyCount: int
+    - monopolyCount: int
     + shuffle()
+    + drawCard(): DevelopmentCard
+    + countRemaining(): int
   }
 
   class DevelopmentCard {
-    - cardType: String
+    - type: DevelopmentCardType
+    - roundDrawnAt: int
+    + {static} createKnightDevelopmentCard(round): DevelopmentCard
+    + {static} createVictoryPointDevelopmentCard(round): DevelopmentCard
+    + {static} createRoadBuilderDevelopmentCard(round): DevelopmentCard
+    + {static} createYearOfPlentyDevelopmentCard(round): DevelopmentCard
+    + {static} createMonopolyDevelopmentCard(round): DevelopmentCard
+    + isPlayable(currentRound): boolean
+    + getType(): DevelopmentCardType
+  }
+
+  enum DevelopmentCardType {
+    KNIGHT
+    VICTORY_POINT
+    ROAD_BUILDER
+    YEAR_OF_PLENTY
+    MONOPOLY
   }
 
   class Dice {
@@ -109,23 +201,39 @@ package "View" {
   }
 }
 
+GameSetupController --> GameSetupModel
 GameController --> Game
 GameController --> GameView
 PlacementController --> Game
 PlacementController --> GameView
 
+GameSetupModel "1" *-- "3..4" Player
+GameSetupModel "1" *-- "1" Board
+GameSetupModel "1" *-- "1" ResourceDeck
+GameSetupModel "1" *-- "1" DevelopmentCardDeck
+GameSetupModel "1" o-- "3..4" Player : turnOrder
+
 Game "1" *-- "3..4" Player
 Game "1" *-- "1" Board
 Game "1" *-- "1" DevelopmentCardDeck
 Game "1" -- "1" Dice
+
 Board "1" *-- "19" Tile
 Board "1" *-- "*" Vertex
 Board "1" *-- "*" Edge
+
+ResourceDeck -- ResourceType
+ResourceDeck "1" ..> "*" ResourceCard : creates
+
+DevelopmentCardDeck "1" *-- "*" DevelopmentCard
+DevelopmentCard -- DevelopmentCardType
+
 Tile -- ResourceType
+
 Player "1" *-- "*" Settlement
 Player "1" *-- "*" Road
+
 Settlement "1" -- "1" Vertex
 Road "1" -- "1" Edge
-DevelopmentCardDeck "1" *-- "*" DevelopmentCard
 
 @enduml
