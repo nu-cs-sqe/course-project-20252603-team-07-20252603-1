@@ -9,7 +9,7 @@ Almost prepared for game setup, and then game turns should not be far off based 
 - Updated Die class based off of feedback
 - Created DiceHandler class, and then merged Die and DiceHandler into main
 - Planned for BoardHandler class, began rudimentary implementation
-2. [?% done] Spencer:
+2. [15% done] Spencer: Began working on fixing discrepancies between PRs, worked on functionality for Game Model
 3. [Player (done), ready] Connor: Merged in Player class to main, resolving conflicts and missing files
 - fixed checkstyle issues; will merge later this week
 - I was a bit busy with other classes the past week; ready to pick up new task this week!
@@ -19,7 +19,7 @@ Almost prepared for game setup, and then game turns should not be far off based 
 
 ## Goals
 1. Ben: Work on BoardHandler class in preparation for actual game setup and game turns
-2. Spencer: 
-3. Connor: 
+2. Spencer: Address issues with group, reconvene to address issues
+3. Connor: Resolve conflicting implementation
 4. Kevin: 
 5. Theo: get to a state of functional playability (at least in theory, the views probably won't be finished, so just code existing and tested up besides all else)
