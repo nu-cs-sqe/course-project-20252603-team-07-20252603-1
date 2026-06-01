@@ -1,5 +1,7 @@
 package domain.model.board;
 
+import domain.model.player.PlayerColor;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
