@@ -1,8 +1,8 @@
 package domain.model;
 
 import domain.model.player.Player;
-import domain.model.resources.ResourceDeck;
-import domain.model.resources.ResourceType;
+import domain.model.player.PlayerColor;
+import domain.model.resources.Resource;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,9 +12,9 @@ class GameModelTest {
     @Test
     void testGameModelInitializesWithTurnOrder() {
         // Create players
-        Player player1 = new Player("Alice", "RED");
-        Player player2 = new Player("Bob", "BLUE");
-        Player player3 = new Player("Charlie", "WHITE");
+        Player player1 = new Player("Alice", PlayerColor.RED);
+        Player player2 = new Player("Bob", PlayerColor.BLUE);
+        Player player3 = new Player("Charlie", PlayerColor.WHITE);
         List<Player> players = List.of(player1, player2, player3);
 
         // Create GameModel with turn order
@@ -27,9 +27,9 @@ class GameModelTest {
     @Test
     void testGameModelStartsWithFirstPlayer() {
         // Create players
-        Player player1 = new Player("Alice", "RED");
-        Player player2 = new Player("Bob", "BLUE");
-        Player player3 = new Player("Charlie", "WHITE");
+        Player player1 = new Player("Alice", PlayerColor.RED);
+        Player player2 = new Player("Bob", PlayerColor.BLUE);
+        Player player3 = new Player("Charlie", PlayerColor.WHITE);
         List<Player> players = List.of(player1, player2, player3);
 
         // Create GameModel
@@ -42,9 +42,9 @@ class GameModelTest {
     @Test
     void testGetCurrentPlayerReturnsFirstPlayer() {
         // Create players
-        Player player1 = new Player("Alice", "RED");
-        Player player2 = new Player("Bob", "BLUE");
-        Player player3 = new Player("Charlie", "WHITE");
+        Player player1 = new Player("Alice", PlayerColor.RED);
+        Player player2 = new Player("Bob", PlayerColor.BLUE);
+        Player player3 = new Player("Charlie", PlayerColor.WHITE);
         List<Player> players = List.of(player1, player2, player3);
 
         // Create GameModel
@@ -57,9 +57,9 @@ class GameModelTest {
     @Test
     void testAdvanceToNextPlayerMovesToSecondPlayer() {
         // Create players
-        Player player1 = new Player("Alice", "RED");
-        Player player2 = new Player("Bob", "BLUE");
-        Player player3 = new Player("Charlie", "WHITE");
+        Player player1 = new Player("Alice", PlayerColor.RED);
+        Player player2 = new Player("Bob", PlayerColor.BLUE);
+        Player player3 = new Player("Charlie", PlayerColor.WHITE);
         List<Player> players = List.of(player1, player2, player3);
 
         // Create GameModel
@@ -75,9 +75,9 @@ class GameModelTest {
     @Test
     void testAdvanceToNextPlayerWrapsAroundToFirstPlayer() {
         // Create players
-        Player player1 = new Player("Alice", "RED");
-        Player player2 = new Player("Bob", "BLUE");
-        Player player3 = new Player("Charlie", "WHITE");
+        Player player1 = new Player("Alice", PlayerColor.RED);
+        Player player2 = new Player("Bob", PlayerColor.BLUE);
+        Player player3 = new Player("Charlie", PlayerColor.WHITE);
         List<Player> players = List.of(player1, player2, player3);
 
         // Create GameModel
@@ -95,24 +95,20 @@ class GameModelTest {
     @Test
     void testPerformTurnRollsDiceAndDistributesResource() {
         // Create players
-        Player player1 = new Player("Alice", "RED");
-        Player player2 = new Player("Bob", "BLUE");
+        Player player1 = new Player("Alice", PlayerColor.RED);
+        Player player2 = new Player("Bob", PlayerColor.BLUE);
         List<Player> players = List.of(player1, player2);
 
         // Create GameModel with player states
         GameModel gameModel = new GameModel(players);
 
-        // Create fixed dice roller and resource deck
-        DiceRoller diceRoller = new FixedDiceRoller(7);
-        ResourceDeck resourceDeck = new ResourceDeck(ResourceType.WOOD);
-
         // Perform turn
-        gameModel.performTurn(diceRoller, resourceDeck);
+        gameModel.performTurn(7);
 
-        // Verify first player received one WOOD resource
-        assertEquals(1, gameModel.getPlayerState(0).getResourceCount(ResourceType.WOOD));
+        // Verify first player received one resource
+        assertEquals(1, gameModel.getPlayerState(0).getResourceCount(Resource.WOOL));
 
         // Verify second player has no resources
-        assertEquals(0, gameModel.getPlayerState(1).getResourceCount(ResourceType.WOOD));
+        assertEquals(0, gameModel.getPlayerState(1).getResourceCount(Resource.WOOL));
     }
 }

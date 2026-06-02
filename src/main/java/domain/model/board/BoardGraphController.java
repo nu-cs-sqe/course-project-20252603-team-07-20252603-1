@@ -9,11 +9,11 @@ import domain.model.player.PlayerColor;
 public class BoardGraphController {
     private BoardGraph boardGraph;
 
-    BoardGraphController(BoardGraph b){
+    public BoardGraphController(BoardGraph b){
         this.boardGraph = b;
     }
 
-    boolean playerClaimStoredNodeSetupPhase(PlayerColor color, int nodeID){
+    public boolean playerClaimStoredNodeSetupPhase(PlayerColor color, int nodeID){
         // In setup phase, node does not need to be adjacent to a claimed Edge;
         if (boardGraph.checkIfAdjacentNodesNotClaimed(nodeID)){
             return boardGraph.claimGraphNodeObject(color, nodeID);
@@ -23,7 +23,7 @@ public class BoardGraphController {
         }
     }
 
-    boolean playerClaimStoredEdgeSetupPhase(PlayerColor color, int nodeID, int startingNodeID, int endingNodeID) {
+    public boolean playerClaimStoredEdgeSetupPhase(PlayerColor color, int nodeID, int startingNodeID, int endingNodeID) {
         checkPlayerOwnsNode(color, nodeID);
         Set<GraphEdge> validEdgesToClaim = boardGraph.getConnectingEdgesByID(nodeID);
         try {

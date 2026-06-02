@@ -13,7 +13,7 @@ public class GraphEdge {
     private boolean roadBuilt;
     private PlayerColor owningPlayerColor;
 
-    GraphEdge(int startingNodeID, int endingNodeID) {
+    public GraphEdge(int startingNodeID, int endingNodeID) {
         assertValidNodeIDsOrdering(startingNodeID, endingNodeID);
         this.startingNodeID = startingNodeID;
         this.endingNodeID = endingNodeID;
@@ -31,7 +31,7 @@ public class GraphEdge {
     }
 
     // need to be able to claim an edge
-    boolean claimGraphEdge(PlayerColor color) {
+    public boolean claimGraphEdge(PlayerColor color) {
         if (this.roadBuilt) {
             // Edge already occupied
             throw new EdgeAlreadyClaimedException("Edge already claimed");
@@ -49,17 +49,17 @@ public class GraphEdge {
     }
 
 
-    boolean checkRoadExists() {
+    public boolean checkRoadExists() {
         return this.roadBuilt;
     }
-    PlayerColor checkOwningColor() {
+    public PlayerColor checkOwningColor() {
         return this.owningPlayerColor;
     }
 
-    int getStartingNodeID(){
+    public int getStartingNodeID(){
         return this.startingNodeID;
     }
-    int getEndingNodeID() {
+    public int getEndingNodeID() {
         return this.endingNodeID;
     }
 

@@ -4,6 +4,7 @@ import domain.model.GameSetupModel;
 import domain.model.board.Board;
 import domain.model.development_cards.DevelopmentCardDeck;
 import domain.model.player.Player;
+import domain.model.player.PlayerColor;
 import domain.model.resources.ResourceDeck;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.BeforeEach;
@@ -109,12 +110,12 @@ class GameSetupControllerTest {
     void testAddPlayerWithValidNameSucceeds() {
         // Arrange
         String playerName = "Alice";
-        mockModel.addPlayer(playerName, "RED");
+        mockModel.addPlayer(playerName, PlayerColor.RED);
         expectLastCall().once();
         replay(mockModel);
 
         // Act
-        controller.addPlayer(mockModel, playerName, "RED");
+        controller.addPlayer(mockModel, playerName, PlayerColor.RED);
 
         // Assert
         verify(mockModel);
@@ -123,18 +124,18 @@ class GameSetupControllerTest {
     @Test
     void testAddMultiplePlayersWithDifferentNames() {
         // Arrange
-        mockModel.addPlayer("Alice", "RED");
+        mockModel.addPlayer("Alice", PlayerColor.RED);
         expectLastCall().once();
-        mockModel.addPlayer("Bob", "BLUE");
+        mockModel.addPlayer("Bob", PlayerColor.BLUE);
         expectLastCall().once();
-        mockModel.addPlayer("Charlie", "WHITE");
+        mockModel.addPlayer("Charlie", PlayerColor.WHITE);
         expectLastCall().once();
         replay(mockModel);
 
         // Act
-        controller.addPlayer(mockModel, "Alice", "RED");
-        controller.addPlayer(mockModel, "Bob", "BLUE");
-        controller.addPlayer(mockModel, "Charlie", "WHITE");
+        controller.addPlayer(mockModel, "Alice", PlayerColor.RED);
+        controller.addPlayer(mockModel, "Bob", PlayerColor.BLUE);
+        controller.addPlayer(mockModel, "Charlie", PlayerColor.WHITE);
 
         // Assert
         verify(mockModel);
@@ -161,13 +162,13 @@ class GameSetupControllerTest {
     @Test
     void testAddPlayerWithUniqueColorSucceeds() {
         // Arrange
-        expect(mockModel.isColorAvailable("RED")).andReturn(true);
-        mockModel.addPlayer("Alice", "RED");
+        expect(mockModel.isColorAvailable(PlayerColor.RED)).andReturn(true);
+        mockModel.addPlayer("Alice", PlayerColor.RED);
         expectLastCall().once();
         replay(mockModel);
 
         // Act
-        boolean result = controller.addPlayerWithColorValidation(mockModel, "Alice", "RED");
+        boolean result = controller.addPlayerWithColorValidation(mockModel, "Alice", PlayerColor.RED);
 
         // Assert
         assertTrue(result);
@@ -177,11 +178,11 @@ class GameSetupControllerTest {
     @Test
     void testAddPlayerWithDuplicateColorFails() {
         // Arrange
-        expect(mockModel.isColorAvailable("RED")).andReturn(false);
+        expect(mockModel.isColorAvailable(PlayerColor.RED)).andReturn(false);
         replay(mockModel);
 
         // Act
-        boolean result = controller.addPlayerWithColorValidation(mockModel, "Bob", "RED");
+        boolean result = controller.addPlayerWithColorValidation(mockModel, "Bob", PlayerColor.RED);
 
         // Assert
         assertFalse(result);
@@ -191,21 +192,21 @@ class GameSetupControllerTest {
     @Test
     void testEachPlayerHasExclusiveColor() {
         // Arrange
-        expect(mockModel.isColorAvailable("RED")).andReturn(true);
-        mockModel.addPlayer("Alice", "RED");
+        expect(mockModel.isColorAvailable(PlayerColor.RED)).andReturn(true);
+        mockModel.addPlayer("Alice", PlayerColor.RED);
         expectLastCall().once();
 
-        expect(mockModel.isColorAvailable("BLUE")).andReturn(true);
-        mockModel.addPlayer("Bob", "BLUE");
+        expect(mockModel.isColorAvailable(PlayerColor.BLUE)).andReturn(true);
+        mockModel.addPlayer("Bob", PlayerColor.BLUE);
         expectLastCall().once();
 
-        expect(mockModel.isColorAvailable("RED")).andReturn(false);
+        expect(mockModel.isColorAvailable(PlayerColor.RED)).andReturn(false);
         replay(mockModel);
 
         // Act
-        boolean result1 = controller.addPlayerWithColorValidation(mockModel, "Alice", "RED");
-        boolean result2 = controller.addPlayerWithColorValidation(mockModel, "Bob", "BLUE");
-        boolean result3 = controller.addPlayerWithColorValidation(mockModel, "Charlie", "RED");
+        boolean result1 = controller.addPlayerWithColorValidation(mockModel, "Alice", PlayerColor.RED);
+        boolean result2 = controller.addPlayerWithColorValidation(mockModel, "Bob", PlayerColor.BLUE);
+        boolean result3 = controller.addPlayerWithColorValidation(mockModel, "Charlie", PlayerColor.RED);
 
         // Assert
         assertTrue(result1);
@@ -217,29 +218,29 @@ class GameSetupControllerTest {
     @Test
     void testAllFourColorsCanBeAssignedExclusively() {
         // Arrange
-        expect(mockModel.isColorAvailable("RED")).andReturn(true);
-        mockModel.addPlayer("Alice", "RED");
+        expect(mockModel.isColorAvailable(PlayerColor.RED)).andReturn(true);
+        mockModel.addPlayer("Alice", PlayerColor.RED);
         expectLastCall().once();
 
-        expect(mockModel.isColorAvailable("BLUE")).andReturn(true);
-        mockModel.addPlayer("Bob", "BLUE");
+        expect(mockModel.isColorAvailable(PlayerColor.BLUE)).andReturn(true);
+        mockModel.addPlayer("Bob", PlayerColor.BLUE);
         expectLastCall().once();
 
-        expect(mockModel.isColorAvailable("WHITE")).andReturn(true);
-        mockModel.addPlayer("Charlie", "WHITE");
+        expect(mockModel.isColorAvailable(PlayerColor.WHITE)).andReturn(true);
+        mockModel.addPlayer("Charlie", PlayerColor.WHITE);
         expectLastCall().once();
 
-        expect(mockModel.isColorAvailable("ORANGE")).andReturn(true);
-        mockModel.addPlayer("Diana", "ORANGE");
+        expect(mockModel.isColorAvailable(PlayerColor.ORANGE)).andReturn(true);
+        mockModel.addPlayer("Diana", PlayerColor.ORANGE);
         expectLastCall().once();
 
         replay(mockModel);
 
         // Act & Assert
-        assertTrue(controller.addPlayerWithColorValidation(mockModel, "Alice", "RED"));
-        assertTrue(controller.addPlayerWithColorValidation(mockModel, "Bob", "BLUE"));
-        assertTrue(controller.addPlayerWithColorValidation(mockModel, "Charlie", "WHITE"));
-        assertTrue(controller.addPlayerWithColorValidation(mockModel, "Diana", "ORANGE"));
+        assertTrue(controller.addPlayerWithColorValidation(mockModel, "Alice", PlayerColor.RED));
+        assertTrue(controller.addPlayerWithColorValidation(mockModel, "Bob", PlayerColor.BLUE));
+        assertTrue(controller.addPlayerWithColorValidation(mockModel, "Charlie", PlayerColor.WHITE));
+        assertTrue(controller.addPlayerWithColorValidation(mockModel, "Diana", PlayerColor.ORANGE));
         verify(mockModel);
     }
 
@@ -625,7 +626,7 @@ class GameSetupControllerTest {
     void testFullValidationNullNameReturnsNameEmpty() {
         replay(mockModel);
 
-        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, null, "Red");
+        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, null, PlayerColor.RED);
 
         assertEquals(PlayerAddResult.NAME_EMPTY, result);
         verify(mockModel);
@@ -635,7 +636,7 @@ class GameSetupControllerTest {
     void testFullValidationEmptyStringNameReturnsNameEmpty() {
         replay(mockModel);
 
-        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, "", "Red");
+        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, "", PlayerColor.RED);
 
         assertEquals(PlayerAddResult.NAME_EMPTY, result);
         verify(mockModel);
@@ -645,7 +646,7 @@ class GameSetupControllerTest {
     void testFullValidationSingleSpaceNameReturnsNameEmpty() {
         replay(mockModel);
 
-        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, " ", "Red");
+        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, " ", PlayerColor.RED);
 
         assertEquals(PlayerAddResult.NAME_EMPTY, result);
         verify(mockModel);
@@ -655,7 +656,7 @@ class GameSetupControllerTest {
     void testFullValidationMixedWhitespaceNameReturnsNameEmpty() {
         replay(mockModel);
 
-        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, " \t\n ", "Red");
+        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, " \t\n ", PlayerColor.RED);
 
         assertEquals(PlayerAddResult.NAME_EMPTY, result);
         verify(mockModel);
@@ -664,12 +665,12 @@ class GameSetupControllerTest {
     @Test
     void testFullValidationSingleCharNameSucceeds() {
         expect(mockModel.isNameAvailable("A")).andReturn(true);
-        expect(mockModel.isColorAvailable("Red")).andReturn(true);
-        mockModel.addPlayer("A", "Red");
+        expect(mockModel.isColorAvailable(PlayerColor.RED)).andReturn(true);
+        mockModel.addPlayer("A", PlayerColor.RED);
         expectLastCall();
         replay(mockModel);
 
-        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, "A", "Red");
+        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, "A", PlayerColor.RED);
 
         assertEquals(PlayerAddResult.SUCCESS, result);
         verify(mockModel);
@@ -678,12 +679,12 @@ class GameSetupControllerTest {
     @Test
     void testFullValidationTrimsLeadingAndTrailingWhitespace() {
         expect(mockModel.isNameAvailable("Alice")).andReturn(true);
-        expect(mockModel.isColorAvailable("Red")).andReturn(true);
-        mockModel.addPlayer("Alice", "Red");
+        expect(mockModel.isColorAvailable(PlayerColor.RED)).andReturn(true);
+        mockModel.addPlayer("Alice", PlayerColor.RED);
         expectLastCall();
         replay(mockModel);
 
-        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, "  Alice  ", "Red");
+        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, "  Alice  ", PlayerColor.RED);
 
         assertEquals(PlayerAddResult.SUCCESS, result);
         verify(mockModel);
@@ -694,7 +695,7 @@ class GameSetupControllerTest {
         expect(mockModel.isNameAvailable("Alice")).andReturn(false);
         replay(mockModel);
 
-        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, "Alice", "Red");
+        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, "Alice", PlayerColor.RED);
 
         assertEquals(PlayerAddResult.NAME_TAKEN, result);
         verify(mockModel);
@@ -714,10 +715,10 @@ class GameSetupControllerTest {
     @Test
     void testFullValidationDuplicateColorReturnsColorTaken() {
         expect(mockModel.isNameAvailable("Alice")).andReturn(true);
-        expect(mockModel.isColorAvailable("Red")).andReturn(false);
+        expect(mockModel.isColorAvailable(PlayerColor.RED)).andReturn(false);
         replay(mockModel);
 
-        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, "Alice", "Red");
+        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, "Alice", PlayerColor.RED);
 
         assertEquals(PlayerAddResult.COLOR_TAKEN, result);
         verify(mockModel);
@@ -726,12 +727,12 @@ class GameSetupControllerTest {
     @Test
     void testFullValidationAllValidReturnsSuccess() {
         expect(mockModel.isNameAvailable("Alice")).andReturn(true);
-        expect(mockModel.isColorAvailable("Red")).andReturn(true);
-        mockModel.addPlayer("Alice", "Red");
+        expect(mockModel.isColorAvailable(PlayerColor.RED)).andReturn(true);
+        mockModel.addPlayer("Alice", PlayerColor.RED);
         expectLastCall();
         replay(mockModel);
 
-        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, "Alice", "Red");
+        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, "Alice", PlayerColor.RED);
 
         assertEquals(PlayerAddResult.SUCCESS, result);
         verify(mockModel);
@@ -752,7 +753,7 @@ class GameSetupControllerTest {
         expect(mockModel.isNameAvailable("Alice")).andReturn(false);
         replay(mockModel);
 
-        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, "Alice", "Red");
+        PlayerAddResult result = controller.addPlayerWithFullValidation(mockModel, "Alice", PlayerColor.RED);
 
         assertEquals(PlayerAddResult.NAME_TAKEN, result);
         verify(mockModel);

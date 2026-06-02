@@ -3,8 +3,8 @@ package domain;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
-import domain.model.DiceHandler;
-import domain.model.Die;
+import domain.model.game_pieces.DiceHandler;
+import domain.model.game_pieces.Die;
 
 import java.util.Random;
 

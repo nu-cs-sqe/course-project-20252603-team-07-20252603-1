@@ -1,22 +1,17 @@
-how package ui.controller;
+package ui.controller;
 
-import domain.model.DiceRoller;
 import domain.model.GameModel;
+import domain.model.game_pieces.DiceHandler;
 import domain.model.player.Player;
+import domain.model.player.PlayerColor;
 import domain.model.player.PlayerState;
-import domain.model.resources.ResourceDeck;
-import domain.model.resources.ResourceType;
-import org.easymock.Capture;
+import domain.model.resources.Resource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.easymock.EasyMock.anyObject;
-import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.EasyMock.newCapture;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,7 +31,7 @@ class GameLoopControllerTest {
 
     @Test
     void testGetCurrentPlayerDelegatesToModel() {
-        Player expected = new Player("Alice", "RED");
+        Player expected = new Player("Alice", PlayerColor.RED);
         expect(mockModel.getCurrentPlayer()).andReturn(expected);
         replay(mockModel);
 
@@ -59,10 +54,10 @@ class GameLoopControllerTest {
     void testGetResourceCountDelegatesThroughPlayerState() {
         PlayerState mockPlayerState = createMock(PlayerState.class);
         expect(mockModel.getPlayerState(1)).andReturn(mockPlayerState);
-        expect(mockPlayerState.getResourceCount(ResourceType.WHEAT)).andReturn(3);
+        expect(mockPlayerState.getResourceCount(Resource.GRAIN)).andReturn(3);
         replay(mockModel, mockPlayerState);
 
-        assertEquals(3, controller.getResourceCount(mockModel, 1, ResourceType.WHEAT));
+        assertEquals(3, controller.getResourceCount(mockModel, 1, Resource.GRAIN));
 
         verify(mockModel, mockPlayerState);
     }
@@ -80,15 +75,14 @@ class GameLoopControllerTest {
 
     @Test
     void testRollDiceAndDistributeReturnsRollerValue() {
-        DiceRoller mockRoller = createMock(DiceRoller.class);
-        ResourceDeck mockDeck = createMock(ResourceDeck.class);
-        expect(mockRoller.roll()).andReturn(8);
-        mockModel.performTurn(anyObject(DiceRoller.class), eq(mockDeck));
+        DiceHandler mockRoller = createMock(DiceHandler.class);
+        expect(mockRoller.rollTwoDice()).andReturn(8);
+        mockModel.performTurn(8);
         expectLastCall();
-        replay(mockRoller, mockDeck, mockModel);
+        replay(mockRoller, mockModel);
 
-        assertEquals(8, controller.rollDiceAndDistribute(mockModel, mockRoller, mockDeck));
+        assertEquals(8, controller.rollDiceAndDistribute(mockModel, mockRoller));
 
-        verify(mockRoller, mockDeck, mockModel);
+        verify(mockRoller, mockModel);
     }
 }

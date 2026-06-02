@@ -112,15 +112,15 @@ public final class Hex {
     return playerCities.size();
   }
 
-  int getHexId() {
+  public int getHexId() {
     return this.hexId;
   }
 
-  Resource getHexResource() {
+  public Resource getHexResource() {
     return this.resource;
   }
 
-  int getHexRollNum() {
+  public int getHexRollNum() {
     return this.hexRollNum;
   }
 

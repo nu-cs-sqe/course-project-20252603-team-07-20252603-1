@@ -10,11 +10,11 @@ public class Robber {
         currentHexId = initialId;
     }
 
-    int getRobberLocation(){
+    public int getRobberLocation(){
         return currentHexId;
     }
 
-    void moveRobber(int hexId){
+    public void moveRobber(int hexId){ // maybe package-private? but we need to be able to test it?
         if (hexId < MIN_HEX_ID || hexId > MAX_HEX_ID){
             throw new IllegalArgumentException("Cannot move Robber to invalid HexId");
         }

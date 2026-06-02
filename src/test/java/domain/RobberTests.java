@@ -2,7 +2,7 @@ package domain;
 
 import org.junit.jupiter.api.Test;
 
-import domain.model.Robber;
+import domain.model.game_pieces.Robber;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
