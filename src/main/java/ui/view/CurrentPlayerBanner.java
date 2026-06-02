@@ -36,6 +36,6 @@ public class CurrentPlayerBanner {
     public void update(Player player) {
         nameLabel.setText(String.format("%s's turn", player.getName()));
         swatch.getStyleClass().removeIf(c -> c.startsWith(SWATCH_CLASS_PREFIX));
-        swatch.getStyleClass().add(String.format("%s%s", SWATCH_CLASS_PREFIX, player.getColor().toLowerCase()));
+        swatch.getStyleClass().add(String.format("%s%s", SWATCH_CLASS_PREFIX, player.getColor().toString().toLowerCase()));
     }
 }

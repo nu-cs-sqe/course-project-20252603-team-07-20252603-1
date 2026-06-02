@@ -2,7 +2,7 @@ package ui.view;
 
 import domain.model.GameModel;
 import domain.model.player.Player;
-import domain.model.resources.ResourceType;
+import domain.model.resources.Resource;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -16,7 +16,8 @@ import java.util.List;
 
 public class PlayerResourcesPanel {
 
-    private static final ResourceType[] RESOURCE_COLUMNS = ResourceType.values();
+    private static final Resource[] RESOURCE_COLUMNS = Resource.values();
+
 
     private static final int HEADER_ROW = 0;
     private static final int PLAYER_NAME_COLUMN = 0;
@@ -82,7 +83,7 @@ public class PlayerResourcesPanel {
     private static HBox buildNameCell(Player player, boolean isCurrentPlayer) {
         Region swatch = new Region();
         swatch.getStyleClass().addAll(SWATCH_CSS,
-                String.format("swatch-%s", player.getColor().toLowerCase()));
+                String.format("swatch-%s", player.getColor().toString().toLowerCase()));
 
         HBox cell = new HBox(swatch, new Label(player.getName()));
         cell.setAlignment(Pos.CENTER_LEFT);

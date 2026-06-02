@@ -1,13 +1,13 @@
-package domain.model;
+package domain.model.game_pieces;
 
 import java.util.Random;
 
-class Die {
+public class Die {
     private static final int DIE_SIDES_NUMBER = 6;
 
     private final Random randomizer;
 
-    Die(Random randomizer) {
+    public Die(Random randomizer) {
         this.randomizer = randomizer;
     }
 

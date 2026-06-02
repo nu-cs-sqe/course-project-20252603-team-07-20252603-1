@@ -1,4 +1,4 @@
-package domain.model;
+package domain.model.board;
 
 public class Vertex {
     public boolean isOccupied() {

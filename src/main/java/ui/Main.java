@@ -1,6 +1,8 @@
 package ui;
 
-import domain.model.DiceRoller;
+import java.util.Random;
+import domain.model.game_pieces.DiceHandler;
+import domain.model.game_pieces.Die;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -20,7 +22,10 @@ public class Main extends Application {
         scene.getStylesheets().add(getClass().getResource(STYLESHEET).toExternalForm());
 
         // TODO: Use dice class once implemented. For now, this allows us to test game flow without randomness.
-        DiceRoller diceRoller = () -> 8;
+        Random r = new Random();
+        Die die1 = new Die(r);
+        Die die2 = new Die(r);
+        DiceHandler diceRoller = new DiceHandler(die1, die2);
 
         Navigator navigator = new Navigator(
                 scene,

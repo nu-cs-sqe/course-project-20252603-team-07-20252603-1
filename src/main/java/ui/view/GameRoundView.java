@@ -1,8 +1,8 @@
 package ui.view;
 
-import domain.model.DiceRoller;
 import domain.model.GameModel;
 import domain.model.board.Board;
+import domain.model.game_pieces.DiceHandler;
 import domain.model.resources.ResourceDeck;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -24,7 +24,7 @@ public class GameRoundView {
 
     private final GameModel model;
     private final GameLoopController controller;
-    private final DiceRoller diceRoller;
+    private final DiceHandler diceRoller;
     private final ResourceDeck deck;
 
     private final CurrentPlayerBanner banner;
@@ -35,7 +35,7 @@ public class GameRoundView {
     public GameRoundView(RoundNavigator navigator,
                          GameLoopController controller,
                          GameModel model,
-                         DiceRoller diceRoller,
+                         DiceHandler diceRoller,
                          ResourceDeck deck,
                          Board board) {
         this.model = model;
@@ -92,7 +92,7 @@ public class GameRoundView {
     }
 
     private void beginTurn() {
-        int roll = controller.rollDiceAndDistribute(model, diceRoller, deck);
+        int roll = controller.rollDiceAndDistribute(model, diceRoller);
         lastRollLabel.setText(String.format("Rolled: %d", roll));
         banner.update(controller.getCurrentPlayer(model));
         resourcesPanel.refresh();

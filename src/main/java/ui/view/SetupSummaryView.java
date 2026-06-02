@@ -61,7 +61,7 @@ public class SetupSummaryView {
             Player p = order.get(i);
             Label position = new Label((i + 1) + ".");
             Region swatch = new Region();
-            swatch.getStyleClass().addAll("color-swatch", "swatch-" + p.getColor().toLowerCase());
+            swatch.getStyleClass().addAll("color-swatch", "swatch-" + p.getColor().toString().toLowerCase());
             Label name = new Label(p.getName());
 
             HBox line = new HBox(position, swatch, name);

@@ -1,7 +1,6 @@
 package domain.model.player;
 
-import domain.model.resources.ResourceCard;
-import domain.model.resources.ResourceType;
+import domain.model.resources.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.List;
 public class PlayerState {
 
     private final Player player;
-    private final List<ResourceCard> resources;
+    private final List<Resource> resources;
 
     public PlayerState(Player player) {
         this.player = player;
@@ -24,13 +23,13 @@ public class PlayerState {
         return player;
     }
 
-    public void addResource(ResourceCard card) {
+    public void addResource(Resource card) {
         resources.add(card);
     }
 
-    public int getResourceCount(ResourceType type) {
+    public int getResourceCount(Resource type) {
         return (int) resources.stream()
-                .filter(card -> card.getType() == type)
+                .filter(card -> card == type)
                 .count();
     }
 }

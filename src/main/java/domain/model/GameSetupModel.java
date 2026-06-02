@@ -2,6 +2,7 @@ package domain.model;
 
 import domain.model.board.Board;
 import domain.model.player.Player;
+import domain.model.player.PlayerColor;
 import domain.model.development_cards.DevelopmentCardDeck;
 import domain.model.resources.ResourceDeck;
 
@@ -18,7 +19,7 @@ import java.util.Set;
 public class GameSetupModel {
 
     private final List<Player> players;
-    private final Set<String> usedColors;
+    private final Set<PlayerColor> usedColors;
     // private final Set<PlayerColor> usedColors;
     private final Set<String> usedNames;
     private Board board;
@@ -52,7 +53,7 @@ public class GameSetupModel {
      * @param name the player's name
      * @param color the player's color
      */
-    public void addPlayer(String name, String color) {
+    public void addPlayer(String name, PlayerColor color) {
         Player player = new Player(name, color);
         players.add(player);
         usedColors.add(color);
@@ -86,7 +87,7 @@ public class GameSetupModel {
      * @param color the color to check
      * @return true if the color is available, false if already used
      */
-    public boolean isColorAvailable(String color) {
+    public boolean isColorAvailable(PlayerColor color) {
         return !usedColors.contains(color);
     }
 

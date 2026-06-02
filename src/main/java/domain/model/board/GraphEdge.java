@@ -1,5 +1,6 @@
 package domain.model.board;
 
+import domain.model.exceptions.EdgeAlreadyClaimedException;
 import domain.model.exceptions.IllegalNodeOrderingInEdgeException;
 import domain.model.player.PlayerColor;
 

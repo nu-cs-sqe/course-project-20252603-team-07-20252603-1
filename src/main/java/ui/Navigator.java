@@ -1,8 +1,9 @@
 package ui;
 
-import domain.model.DiceRoller;
+
 import domain.model.GameModel;
 import domain.model.GameSetupModel;
+import domain.model.game_pieces.DiceHandler;
 import javafx.scene.Scene;
 import ui.controller.GameLoopController;
 import ui.controller.GameSetupController;
@@ -18,7 +19,7 @@ public class Navigator implements SetupNavigator, RoundNavigator {
     private final Scene scene;
     private final GameSetupController setupController;
     private final GameLoopController loopController;
-    private final DiceRoller diceRoller;
+    private final DiceHandler diceRoller;
 
     private GameSetupModel setupModel;
     private GameModel gameModel;
@@ -26,7 +27,7 @@ public class Navigator implements SetupNavigator, RoundNavigator {
     public Navigator(Scene scene,
                      GameSetupController setupController,
                      GameLoopController loopController,
-                     DiceRoller diceRoller) {
+                     DiceHandler diceRoller) {
         this.scene = scene;
         this.setupController = setupController;
         this.loopController = loopController;

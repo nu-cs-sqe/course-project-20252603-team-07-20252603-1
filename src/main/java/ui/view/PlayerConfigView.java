@@ -1,6 +1,7 @@
 package ui.view;
 
 import domain.model.GameSetupModel;
+import domain.model.player.PlayerColor;
 import javafx.collections.FXCollections;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -13,6 +14,7 @@ import ui.controller.GameSetupController;
 import ui.controller.PlayerAddResult;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -24,7 +26,7 @@ public class PlayerConfigView {
 
     private final VBox root;
     private final List<TextField> nameFields = new ArrayList<>();
-    private final List<ComboBox<String>> colorBoxes = new ArrayList<>();
+    private final List<ComboBox<PlayerColor>> colorBoxes = new ArrayList<>();
     private final Label statusLabel;
     private boolean refreshingColors = false;
 
@@ -42,8 +44,8 @@ public class PlayerConfigView {
             Label rowLabel = new Label("Player " + (i + 1));
             TextField nameField = new TextField();
             nameField.setPromptText("Name");
-            ComboBox<String> colorBox = new ComboBox<>();
-            colorBox.setItems(FXCollections.observableArrayList(COLOR_PALETTE));
+            ComboBox<PlayerColor> colorBox = new ComboBox<>();
+            colorBox.setItems(FXCollections.observableArrayList(Arrays.asList(PlayerColor.values()))); // minimum fix, just turn the enum into an arraylist for this
             colorBox.setPromptText("Color");
             colorBox.valueProperty().addListener((obs, oldV, newV) -> refreshColorChoices());
 
@@ -79,14 +81,14 @@ public class PlayerConfigView {
         if (refreshingColors) return;
         refreshingColors = true;
         try {
-            for (ComboBox<String> box : colorBoxes) {
-                String current = box.getValue();
-                Set<String> takenByOthers = colorBoxes.stream()
+            for (ComboBox<PlayerColor> box : colorBoxes) {
+                PlayerColor current = box.getValue();
+                Set<PlayerColor> takenByOthers = colorBoxes.stream()
                         .filter(other -> other != box)
                         .map(ComboBox::getValue)
                         .filter(Objects::nonNull)
                         .collect(Collectors.toSet());
-                List<String> available = COLOR_PALETTE.stream()
+                List<PlayerColor> available = Arrays.asList(PlayerColor.values()).stream()
                         .filter(color -> !takenByOthers.contains(color))
                         .collect(Collectors.toList());
                 box.getItems().setAll(available);
@@ -105,7 +107,7 @@ public class PlayerConfigView {
 
         for (int i = 0; i < playerCount; i++) {
             String name = nameFields.get(i).getText();
-            String color = colorBoxes.get(i).getValue();
+            PlayerColor color = colorBoxes.get(i).getValue();
             PlayerAddResult result = controller.addPlayerWithFullValidation(model, name, color);
             switch (result) {
                 case SUCCESS:

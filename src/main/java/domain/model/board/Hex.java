@@ -3,6 +3,7 @@ package domain.model.board;
 import java.util.ArrayList;
 import java.util.List;
 
+import domain.model.player.Player;
 import domain.model.resources.Resource;
 
 public final class Hex {

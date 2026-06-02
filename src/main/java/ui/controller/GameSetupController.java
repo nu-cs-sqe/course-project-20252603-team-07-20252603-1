@@ -1,9 +1,10 @@
 package ui.controller;
 
 import domain.model.GameSetupModel;
-import domain.model.Player;
+import domain.model.board.Board;
 import domain.model.development_cards.DevelopmentCardDeck;
 import domain.model.player.Player;
+import domain.model.player.PlayerColor;
 import domain.model.resources.ResourceDeck;
 
 import java.util.List;
@@ -13,7 +14,6 @@ import java.util.List;
  * Delegates all business logic to GameSetupModel, maintaining separation of concerns.
  */
 public class GameSetupController {
-
     /**
      * Validates that the player count is within the valid range (3-4 players).
      *
@@ -32,7 +32,7 @@ public class GameSetupController {
      * @param name the player's name
      * @param color the player's color
      */
-    public void addPlayer(GameSetupModel model, String name, String color) {
+    public void addPlayer(GameSetupModel model, String name, PlayerColor color) {
         model.addPlayer(name, color);
     }
 
@@ -44,7 +44,7 @@ public class GameSetupController {
      * @param color the player's color
      * @return true if player was added successfully, false if color is unavailable
      */
-    public boolean addPlayerWithColorValidation(GameSetupModel model, String name, String color) {
+    public boolean addPlayerWithColorValidation(GameSetupModel model, String name, PlayerColor color) {
         if (!model.isColorAvailable(color)) {
             return false;
         }
@@ -171,7 +171,7 @@ public class GameSetupController {
         return model.getTurnOrder();
     }
 
-    public PlayerAddResult addPlayerWithFullValidation(GameSetupModel model, String name, String color) {
+    public PlayerAddResult addPlayerWithFullValidation(GameSetupModel model, String name, PlayerColor color) {
         String trimmed = (name == null) ? "" : name.trim();
         if (trimmed.isEmpty()) {
             return PlayerAddResult.NAME_EMPTY;

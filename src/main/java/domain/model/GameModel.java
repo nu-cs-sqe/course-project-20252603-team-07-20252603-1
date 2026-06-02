@@ -1,6 +1,8 @@
 package domain.model;
 
 import domain.model.resources.ResourceDeck;
+import domain.model.game_pieces.DiceHandler;
+import domain.model.game_pieces.Die;
 import domain.model.player.Player;
 import domain.model.player.PlayerState;
 import domain.model.resources.Resource;
@@ -14,7 +16,7 @@ import java.util.Map;
 public class GameModel {
 
     private final List<PlayerState> playerStates; // figure out how to initialize proper
-    private final DiceHandler diceHandler = initializeDiceHandler();
+    // private final DiceHandler diceHandler = initializeDiceHandler();
 
     private int currentPlayerIndex;
 
@@ -44,7 +46,7 @@ public class GameModel {
     }
 
 
-    private DiceHandler initializeDiceHandler() {
+    private DiceHandler initializeDiceHandler() { // shouldn't this be a method of DiceHandler?
         Random r = new Random();
         Die d1 = new Die(r);
         Die d2 = new Die(r);
@@ -75,17 +77,19 @@ public class GameModel {
         return playerStates.get(index);
     }
 
-    public void performTurn() {
+    public void performTurn(int roll) { // takes in the dice roll, doesn't perform it.
         // Roll dice
-        int roll = diceHandler.rollTwoDice();
+        // int roll = diceHandler.rollTwoDice();
 
         // interpret the rol result somehow
         Resource rslt = interpretRoll(roll);
 
         // Give current player one resource (minimal stub - ignoring dice result for now)
         try {
-            Resource card = decks[rslt].draw();
+
+            Resource card = decks.get(rslt).draw();
             playerStates.get(currentPlayerIndex).addResource(card);
+
         } catch (Exception e) {
             // Gracefully handle empty deck - no resource distributed
         }

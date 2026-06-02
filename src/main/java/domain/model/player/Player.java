@@ -6,17 +6,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import domain.model.board.Edge;
+import domain.model.board.Vertex;
+import domain.model.game_pieces.Settlement;
 import domain.model.resources.Resource;
 
 public class Player {
     private final List<Settlement> settlements;
     private final List<Edge> roads;
     private final Map<Resource, Integer> resources;
+    private PlayerColor color;
+    private String name;
 
-    public Player() {
+    public Player(String name, PlayerColor color) {
         this.settlements = new ArrayList<>();
         this.roads = new ArrayList<>();
         this.resources = new HashMap<>();
+        this.color = color;
+        this.name = name;
     }
 
     public Map<Resource, Integer> getResources() {
@@ -81,12 +88,22 @@ public class Player {
         }
     }
 
+    public String getName() {
+        return this.name;
+    }
+
+    public PlayerColor getColor() { // this might never be necessary
+        return this.color;
+    }
+
     // TODO: BVA analysis and implementation
-    void updateResources(Resource resource, int amount){
+    // these should maybe be package private
+        // if so, then we should put TradeManager at least into player sub-package
+    public void updateResources(Resource resource, int amount){
 
     }
 
-    int getResourceCount(Resource resource) {
+    public int getResourceCount(Resource resource) {
         return 0;
     }
 }
