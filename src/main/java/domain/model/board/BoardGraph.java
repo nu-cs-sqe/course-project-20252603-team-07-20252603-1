@@ -229,11 +229,11 @@ public class BoardGraph {
         addGraphNodeConnection(endingNodeID, newEdge);
     }
 
-    protected int checkAmountOfNodesForTesting() {
+    public int checkAmountOfNodesForTesting() {
         return this.nodeIDToNodeObject.size();
     }
 
-    protected int checkAmountOfNodesInEdgeMapForTesting() {
+    public int checkAmountOfNodesInEdgeMapForTesting() {
         return this.nodeIDToConnectingEdges.size();
     }
 

@@ -12,7 +12,7 @@ public class Die {
     }
 
     // Need to add 1 to result of nextInt, returns in range of [0, bound)
-    int rollOneDie(){
+    public int rollOneDie(){
         return randomizer.nextInt(DIE_SIDES_NUMBER) + 1;
     }
 }
