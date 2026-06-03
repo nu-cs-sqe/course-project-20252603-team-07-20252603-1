@@ -1,7 +1,6 @@
 package domain.model;
 
 import domain.model.board.BoardHandler;
-import domain.model.board.GraphEdge;
 import domain.model.exceptions.IllegalGamePhaseException;
 import domain.model.exceptions.IllegalSettlementPlacementException;
 import domain.model.player.PlayerColor;
@@ -11,7 +10,6 @@ import domain.model.game_pieces.Die;
 import domain.model.player.Player;
 import domain.model.player.PlayerState;
 import domain.model.resources.Resource;
-import domain.model.resources.Resources;
 
 import domain.model.exceptions.InsufficientResourcesException;
 import java.util.*;
@@ -172,6 +170,19 @@ public class GameModel {
         incrementNumSettlements(currentPlayerColor);
     }
 
+    public void attemptBuildRoad(int startingNodeID, int endingNodeID){
+        checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY);
+        for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER)) {
+            checkPlayerOwnsEnoughResources(currentPlayerColor, r, 1);
+        }
+        board.addRoad(currentPlayerColor, startingNodeID, endingNodeID);
+        for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER)) {
+            reducePlayerResources(currentPlayerColor, r, 1);
+            ResourceDeck deckToReplenish = decks.get(r);
+            deckToReplenish.replenish();
+        }
+    };
+
     void setCurrentGamePhase(GamePhase newGamePhase) {
         this.currentGamePhase = newGamePhase;
     }
@@ -210,8 +221,6 @@ public class GameModel {
 
     public void attemptBuildCity(){};
 
-
-    public void attemptBuildRoad(){};
 
     public void attemptTrade(){};
 

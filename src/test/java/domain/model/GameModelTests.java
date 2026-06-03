@@ -238,5 +238,36 @@ public class GameModelTests {
                 woolDeckMock);
     }
 
+    void attemptBuildSettlement_test01_BoardHandlerSucceeds_EnoughResources_ExpectSuccess(){
+        PlayerState redStateMock = EasyMock.createMock(PlayerState.class);
+        ColorToPlayerStateMock = Map.of(
+                PlayerColor.RED, redStateMock
+        );
+
+        for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER)) {
+            EasyMock.expect(redStateMock.getResourceCount(r)).andReturn(1);
+        }
+
+        boardMock.addRoad(PlayerColor.RED, 0, 1);
+        EasyMock.expectLastCall();
+
+        for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER)) {
+            EasyMock.expect(redStateMock.reduceResources(r, 1)).andReturn(true);
+            decks.get(r).replenish();
+            EasyMock.expectLastCall();
+        }
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
+
+        model.setCurrentPlayerColor(PlayerColor.BLUE);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        model.attemptBuildRoad(0, 1);
+
+        EasyMock.verify(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, boardMock);
+
+    }
+
 
 }

@@ -16,4 +16,7 @@ public class BoardHandler {
     public List<String> getHexOrder() {
         return null;
     }
+
+    public void addRoad(PlayerColor currentPlayerColor, int startingNodeID, int endingNodeID) {
+    }
 }
