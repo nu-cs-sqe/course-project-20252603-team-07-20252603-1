@@ -1,6 +1,7 @@
 package domain.model;
 
 import domain.model.board.BoardHandler;
+import domain.model.exceptions.IllegalSettlementPlacementException;
 import domain.model.player.PlayerColor;
 import domain.model.player.PlayerState;
 import domain.model.resources.Resource;
@@ -12,6 +13,9 @@ import org.junit.jupiter.api.Test;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class GameModelTests {
@@ -70,6 +74,32 @@ public class GameModelTests {
         model.attemptBuildSettlement(0);
 
         EasyMock.verify(redStateMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock,
+                woolDeckMock);
+    }
+
+    @Test
+    void attemptBuildSettlement_test02_BoardHandlerFails_EnoughResources_UnderMaxCount_ExpectError(){
+        PlayerState whiteStateMock = EasyMock.createMock(PlayerState.class);
+        ColorToPlayerStateMock = Map.of(
+                PlayerColor.WHITE, whiteStateMock
+        );
+
+        EasyMock.expect(boardMock.buildSettlement(PlayerColor.WHITE, 0))
+                .andThrow(new IllegalSettlementPlacementException("Can not place a settlement at this node"));
+
+        EasyMock.replay(whiteStateMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock,
+                woolDeckMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
+
+        model.setCurrentPlayerColor(PlayerColor.WHITE);
+        Exception exception = assertThrows(IllegalSettlementPlacementException.class,
+                () -> model.attemptBuildSettlement(0));
+
+        assertEquals("Can not place a settlement at this node", exception.getMessage());
+
+        EasyMock.verify(whiteStateMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock,
                 woolDeckMock);
     }
 

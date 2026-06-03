@@ -20,7 +20,7 @@
 |             | State of the System                                                     | Expected output                                             | Implemented?       |
 |-------------|-------------------------------------------------------------------------|-------------------------------------------------------------|--------------------|
 | Test Case 1 | Red claimes node, BoardHandler succeeds, has enough resources           | Success                                                     | :white_check_mark: |
-| Test Case 2 | White claims node, Boardhandler fails, has enough resources             | IllegalSettlementPlacementException , resources not reduced | :x:                |
+| Test Case 2 | White claims node, Boardhandler fails, has enough resources             | IllegalSettlementPlacementException , resources not reduced | :white_check_mark: |
 | Test Case 3 | Orange claims node, BoardHandler succeeds, not enough resources         | InsufficientResourcesException, board not updated           | :x:                |
 | Test Case 4 | Red claims node, BoardHandler succeeds, enough resources, 5 settlements | MaximumAmountOfSettlementsException, no updates             | :x:                |
 | Test Case 5 | Blue claims node, BoardHandler succeeds, enough resurces, 4 settlements | Success                                                     | :x:                |
