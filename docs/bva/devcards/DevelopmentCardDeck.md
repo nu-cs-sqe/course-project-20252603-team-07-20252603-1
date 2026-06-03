@@ -26,13 +26,13 @@ Step 3:
 
 
 |             | System under test         | Expected output                              | Implemented? |
-| ----------- | ------------------------- | -------------------------------------------- | ------------ |
+| ----------- | ------------------------- | -------------------------------------------- | ---------- |
 | Test Case 1 | new DevelopmentCardDeck() | deck size is 25                              | :white_check_mark: |
-| Test Case 2 | new DevelopmentCardDeck() | deck contains exactly 14 Knight cards        | :x:          |
-| Test Case 3 | new DevelopmentCardDeck() | deck contains exactly 2 Road Building cards  | :x:          |
-| Test Case 4 | new DevelopmentCardDeck() | deck contains exactly 2 Year of Plenty cards | :x:          |
-| Test Case 5 | new DevelopmentCardDeck() | deck contains exactly 2 Monopoly cards       | :x:          |
-| Test Case 6 | new DevelopmentCardDeck() | deck contains exactly 5 Victory Point cards  | :x:          |
+| Test Case 2 | new DevelopmentCardDeck() | deck contains exactly 14 Knight cards        | :white_check_mark:         |
+| Test Case 3 | new DevelopmentCardDeck() | deck contains exactly 2 Road Building cards  | :white_check_mark:         |
+| Test Case 4 | new DevelopmentCardDeck() | deck contains exactly 2 Year of Plenty cards | :white_check_mark:        |
+| Test Case 5 | new DevelopmentCardDeck() | deck contains exactly 2 Monopoly cards       | :white_check_mark:        |
+| Test Case 6 | new DevelopmentCardDeck() | deck contains exactly 5 Victory Point cards  | :white_check_mark:        |
 
 
 ---
@@ -60,9 +60,9 @@ Step 3:
 
 |             | System under test                          | Expected output                                              | Implemented? |
 | ----------- | ------------------------------------------ | ------------------------------------------------------------ | ------------ |
-| Test Case 7 | drawCard() from full deck (size 25)        | card returned; deck size is 24                               | :x:          |
-| Test Case 8 | drawCard() from deck with 1 card remaining | card returned; deck size is 0                                | :x:          |
-| Test Case 9 | drawCard() from empty deck (size 0)        | IllegalStateException: "The development card deck is empty." | :x:          |
+| Test Case 7 | drawCard() from full deck (size 25)        | card returned; deck size is 24                               | :white_check_mark:          |
+| Test Case 8 | drawCard() from deck with 1 card remaining | card returned; deck size is 0                                | :white_check_mark:          |
+| Test Case 9 | drawCard() from empty deck (size 0)        | IllegalStateException: "The development card deck is empty." | :white_check_mark:          |
 
 
 ---
@@ -85,9 +85,9 @@ Step 3:
 
 |              | System under test             | Expected output                              | Implemented? |
 | ------------ | ----------------------------- | -------------------------------------------- | ------------ |
-| Test Case 10 | shuffle() on full deck (25)   | card order is randomized; deck size still 25 | :x:          |
-| Test Case 11 | shuffle() on deck with 1 card | deck unchanged; deck size still 1            | :x:          |
-| Test Case 12 | shuffle() on empty deck (0)   | deck remains empty; no error                 | :x:          |
+| Test Case 10 | shuffle() on full deck (25)   | card order is randomized; deck size still 25 | :white_check_mark:          |
+| Test Case 11 | shuffle() on deck with 1 card | deck unchanged; deck size still 1            | :white_check_mark:          |
+| Test Case 12 | shuffle() on empty deck (0)   | deck remains empty; no error                 | :white_check_mark:          |
 
 
 ---
@@ -111,9 +111,9 @@ Step 3:
 
 |              | System under test                         | Expected output | Implemented? |
 | ------------ | ----------------------------------------- | --------------- | ------------ |
-| Test Case 13 | isEmpty() on new deck (size 25)           | false           | :x:          |
-| Test Case 14 | isEmpty() after drawing all 25 cards      | true            | :x:          |
-| Test Case 15 | isEmpty() after drawing 24 cards (size 1) | false           | :x:          |
+| Test Case 13 | isEmpty() on new deck (size 25)           | false           | :white_check_mark:          |
+| Test Case 14 | isEmpty() after drawing all 25 cards      | true            | :white_check_mark:          |
+| Test Case 15 | isEmpty() after drawing 24 cards (size 1) | false           | :white_check_mark:          |
 
 
 ---
@@ -137,8 +137,8 @@ Step 3:
 
 |              | System under test                 | Expected output | Implemented? |
 | ------------ | --------------------------------- | --------------- | ------------ |
-| Test Case 16 | size() on new deck                | 25              | :x:          |
-| Test Case 17 | size() after drawing 1 card       | 24              | :x:          |
-| Test Case 18 | size() after drawing all 25 cards | 0               | :x:          |
+| Test Case 16 | size() on new deck                | 25              | :white_check_mark:          |
+| Test Case 17 | size() after drawing 1 card       | 24              | :white_check_mark:          |
+| Test Case 18 | size() after drawing all 25 cards | 0               | :white_check_mark:          |
 
 
