@@ -120,4 +120,18 @@ public class DevelopmentCardDeckTests {
     assertEquals(EXPECTED_NUM_CARDS, deck.size());
     assertNotEquals(before, deck.getCards());
   }
+
+  @Test // Test Case 11
+  public void Shuffle_OneCardDeck_ExpectDeckUnchangedAndSizeOne() {
+    DevelopmentCardDeck deck = new DevelopmentCardDeck();
+    for (int i = 0; i < EXPECTED_NUM_CARDS - 1; i++) {
+      deck.drawCard();
+    }
+    List<DevelopmentCard> before = deck.getCards();
+
+    deck.shuffle();
+
+    assertEquals(1, deck.size());
+    assertEquals(before, deck.getCards());
+  }
 }
