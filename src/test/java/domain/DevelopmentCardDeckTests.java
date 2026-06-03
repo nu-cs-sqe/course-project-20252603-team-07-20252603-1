@@ -79,4 +79,16 @@ public class DevelopmentCardDeckTests {
     assertNotNull(drawn);
     assertEquals(EXPECTED_NUM_CARDS - 1, deck.size());
   }
+
+  @Test // Test Case 8
+  public void DrawCard_OneCardRemaining_ExpectCardReturnedAndSizeZero() {
+    DevelopmentCardDeck deck = new DevelopmentCardDeck();
+    for (int i = 0; i < EXPECTED_NUM_CARDS - 1; i++) {
+      deck.drawCard();
+    }
+    DevelopmentCard drawn = deck.drawCard();
+
+    assertNotNull(drawn);
+    assertEquals(0, deck.size());
+  }
 }
