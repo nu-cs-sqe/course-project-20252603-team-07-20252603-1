@@ -24,21 +24,37 @@ public class GameModel {
     private int currentPlayerIndex;
     private List<PlayerColor> playerColors;
     private PlayerColor currentPlayerColor;
-    private final Map<PlayerColor, PlayerState> playerColorToPlayerState = new HashMap<>();
+    private Map<PlayerColor, PlayerState> playerColorToPlayerState = new HashMap<>();
 
 
-    private final ResourceDeck lumberDeck = new ResourceDeck(Resource.LUMBER);
-    private final ResourceDeck brickDeck = new ResourceDeck(Resource.BRICK);
-    private final ResourceDeck grainDeck = new ResourceDeck(Resource.GRAIN);
-    private final ResourceDeck oreDeck = new ResourceDeck(Resource.ORE);
-    private final ResourceDeck woolDeck = new ResourceDeck(Resource.WOOL);
-    private final Map<Resource, ResourceDeck> decks = Map.of(
-        Resource.LUMBER, lumberDeck,
-        Resource.BRICK, brickDeck,
-        Resource.GRAIN, grainDeck,
-        Resource.WOOL, woolDeck,
-        Resource.ORE, oreDeck
-    );
+    private final ResourceDeck lumberDeck;
+    private final ResourceDeck brickDeck;
+    private final ResourceDeck grainDeck;
+    private final ResourceDeck oreDeck;
+    private final ResourceDeck woolDeck;
+    private final Map<Resource, ResourceDeck> decks;
+
+    //constructor for injecting mocks/stubs
+    GameModel(ResourceDeck lumberDeck, ResourceDeck brickDeck,
+              ResourceDeck grainDeck, ResourceDeck oreDeck,
+              ResourceDeck woolDeck,
+              Map<PlayerColor, PlayerState> playerColorToPlayerState,
+              BoardHandler board) {
+        this.lumberDeck = lumberDeck;
+        this.brickDeck = brickDeck;
+        this.grainDeck = grainDeck;
+        this.oreDeck = oreDeck;
+        this.woolDeck = woolDeck;
+        decks = Map.of(
+                Resource.LUMBER, lumberDeck,
+                Resource.BRICK, brickDeck,
+                Resource.GRAIN, grainDeck,
+                Resource.WOOL, woolDeck,
+                Resource.ORE, oreDeck
+        );
+        this.playerColorToPlayerState = playerColorToPlayerState;
+        this.board = board;
+    }
 
 
 
@@ -46,6 +62,19 @@ public class GameModel {
 
     public GameModel(List<Player> players, BoardHandler board) {
         this.board = board;
+        this.lumberDeck = new ResourceDeck(Resource.LUMBER);
+        this.brickDeck = new ResourceDeck(Resource.BRICK);
+        this.grainDeck = new ResourceDeck(Resource.GRAIN);
+        this.oreDeck = new ResourceDeck(Resource.ORE);
+        this.woolDeck = new ResourceDeck(Resource.WOOL);
+        decks = Map.of(
+                Resource.LUMBER, lumberDeck,
+                Resource.BRICK, brickDeck,
+                Resource.GRAIN, grainDeck,
+                Resource.WOOL, woolDeck,
+                Resource.ORE, oreDeck
+        );
+
         playerColors = new ArrayList<>();
         for (Player player : players) {
             PlayerState newState = new PlayerState(player);
@@ -117,6 +146,7 @@ public class GameModel {
     public Resource interpretRoll(int roll) {
         // just a fakey function to make performTurn not error
         // really this would be closer to something like Map<Hex, (Player[], Resource)>
+        // Rewarding resources on is the responsibility of the tile, just cause lowkey
         return Resource.WOOL;
     }
 
@@ -128,6 +158,8 @@ public class GameModel {
         board.buildSettlement(currentPlayerColor, nodeID);
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER, Resource.WOOL, Resource.GRAIN)) {
             reducePlayerResources(currentPlayerColor, r, 1);
+            ResourceDeck deckToReplenish = decks.get(r);
+            deckToReplenish.replenish();
         }
     };
 
