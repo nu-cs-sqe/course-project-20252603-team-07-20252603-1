@@ -2,34 +2,25 @@ package domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class DevelopmentCardDeck {
-  //TODO: Make this a dictionary mapping from card type to number
-  private static final int NUM_KNIGHT_CARDS = 14;
-  private static final int NUM_ROAD_BUILDING_CARDS = 2;
-  private static final int NUM_YEAR_OF_PLENTY_CARDS = 2;
-  private static final int NUM_MONOPOLY_CARDS = 2;
-  private static final int NUM_VICTORY_POINT_CARDS = 5;
+  private static final Map<DevelopmentCardType, Integer> CARD_COUNTS = Map.of(
+      DevelopmentCardType.KNIGHT, 14,
+      DevelopmentCardType.ROAD_BUILDING, 2,
+      DevelopmentCardType.YEAR_OF_PLENTY, 2,
+      DevelopmentCardType.MONOPOLY, 2,
+      DevelopmentCardType.VICTORY_POINT, 5
+  );
 
   private final List<DevelopmentCard> cards;
 
   public DevelopmentCardDeck() {
     cards = new ArrayList<>();
-    //TODO: Make this add cards based on a constant dict mapping from card type to number
-    for (int i = 0; i < NUM_KNIGHT_CARDS; i++) {
-      cards.add(new KnightCard());
-    }
-    for (int i = 0; i < NUM_ROAD_BUILDING_CARDS; i++) {
-      cards.add(new RoadBuildingCard());
-    }
-    for (int i = 0; i < NUM_YEAR_OF_PLENTY_CARDS; i++) {
-      cards.add(new YearOfPlentyCard());
-    }
-    for (int i = 0; i < NUM_MONOPOLY_CARDS; i++) {
-      cards.add(new MonopolyCard());
-    }
-    for (int i = 0; i < NUM_VICTORY_POINT_CARDS; i++) {
-      cards.add(new VictoryPointCard());
+    for (Map.Entry<DevelopmentCardType, Integer> entry : CARD_COUNTS.entrySet()) {
+      for (int i = 0; i < entry.getValue(); i++) {
+        cards.add(entry.getKey().createCard());
+      }
     }
   }
 
