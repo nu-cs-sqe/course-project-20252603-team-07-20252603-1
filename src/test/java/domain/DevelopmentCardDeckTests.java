@@ -3,6 +3,7 @@ package domain;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class DevelopmentCardDeckTests {
   final int EXPECTED_NUM_CARDS = 25;
@@ -68,5 +69,14 @@ public class DevelopmentCardDeckTests {
         .count();
 
     assertEquals(EXPECTED_NUM_VICTORY_POINT, actual);
+  }
+
+  @Test // Test Case 7
+  public void DrawCard_FullDeck_ExpectCardReturnedAndSizeTwentyFour() {
+    DevelopmentCardDeck deck = new DevelopmentCardDeck();
+    DevelopmentCard drawn = deck.drawCard();
+
+    assertNotNull(drawn);
+    assertEquals(EXPECTED_NUM_CARDS - 1, deck.size());
   }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DevelopmentCardDeck {
+  private static final int INDEX_OF_FRONT = 0;
   private static final Map<DevelopmentCardType, Integer> CARD_COUNTS = Map.of(
       DevelopmentCardType.KNIGHT, 14,
       DevelopmentCardType.ROAD_BUILDING, 2,
@@ -26,6 +27,10 @@ public class DevelopmentCardDeck {
 
   public List<DevelopmentCard> getCards() {
     return List.copyOf(cards);
+  }
+
+  public DevelopmentCard drawCard() {
+    return cards.remove(INDEX_OF_FRONT);
   }
 
   public int size() {
