@@ -49,7 +49,7 @@
 |             | State of the System                                             | Expected output                | Implemented?       |
 |-------------|-----------------------------------------------------------------|--------------------------------|--------------------|
 | Test Case 1 | Red claimes edge, BoardHandler succeeds, has enough resources   | Success                        | :white_check_mark: |
-| Test Case 2 | White claims edge, Boardhandler fails, has enough resources     | IllegalRoadPlacementException  | :x:                |
+| Test Case 2 | White claims edge, Boardhandler fails, has enough resources     | IllegalRoadPlacementException  | :white_check_mark: |
 | Test Case 3 | Orange claims node, BoardHandler succeeds, not enough resources | InsufficientResourcesException | :x:                |
 | Test Case 4 | Blue claims node, BoardHandler succeeds, enough resources       | Success                        | :x:                |
 | Test Case 5 | Improper Game Phase                                             | IllegalGamePhaseException      | :x:                |
