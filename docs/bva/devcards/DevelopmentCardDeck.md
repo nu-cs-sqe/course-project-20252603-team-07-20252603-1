@@ -27,7 +27,7 @@ Step 3:
 
 |             | System under test         | Expected output                              | Implemented? |
 | ----------- | ------------------------- | -------------------------------------------- | ------------ |
-| Test Case 1 | new DevelopmentCardDeck() | deck size is 25                              | :x:          |
+| Test Case 1 | new DevelopmentCardDeck() | deck size is 25                              | :white_check_mark: |
 | Test Case 2 | new DevelopmentCardDeck() | deck contains exactly 14 Knight cards        | :x:          |
 | Test Case 3 | new DevelopmentCardDeck() | deck contains exactly 2 Road Building cards  | :x:          |
 | Test Case 4 | new DevelopmentCardDeck() | deck contains exactly 2 Year of Plenty cards | :x:          |
