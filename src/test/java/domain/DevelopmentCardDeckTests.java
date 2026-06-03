@@ -10,6 +10,7 @@ public class DevelopmentCardDeckTests {
   final int EXPECTED_NUM_ROAD_BUILDING = 2;
   final int EXPECTED_NUM_YEAR_OF_PLENTY = 2;
   final int EXPECTED_NUM_MONOPOLY = 2;
+  final int EXPECTED_NUM_VICTORY_POINT = 5;
 
   @Test // Test Case 1
   public void Constructor_Default_ExpectSizeTwentyFive() {
@@ -57,5 +58,15 @@ public class DevelopmentCardDeckTests {
         .count();
 
     assertEquals(EXPECTED_NUM_MONOPOLY, actual);
+  }
+
+  @Test // Test Case 6
+  public void Constructor_Default_ExpectFiveVictoryPointCards() {
+    DevelopmentCardDeck deck = new DevelopmentCardDeck();
+    long actual = deck.getCards().stream()
+        .filter(card -> card.getType() == DevelopmentCardType.VICTORY_POINT)
+        .count();
+
+    assertEquals(EXPECTED_NUM_VICTORY_POINT, actual);
   }
 }
