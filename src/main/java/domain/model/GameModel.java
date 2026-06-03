@@ -2,6 +2,7 @@ package domain.model;
 
 import domain.model.board.BoardHandler;
 import domain.model.board.GraphEdge;
+import domain.model.exceptions.IllegalGamePhaseException;
 import domain.model.exceptions.IllegalSettlementPlacementException;
 import domain.model.player.PlayerColor;
 import domain.model.resources.ResourceDeck;
@@ -23,6 +24,7 @@ public class GameModel {
     //private final List<PlayerState> playerStates; // figure out how to initialize proper
     // private final DiceHandler diceHandler = initializeDiceHandler();
 
+    private GamePhase currentGamePhase;
     private int currentPlayerIndex;
     private List<PlayerColor> playerColors;
     private PlayerColor currentPlayerColor;
@@ -129,6 +131,7 @@ public class GameModel {
     public void performTurn(int roll) { // takes in the dice roll, doesn't perform it.
         // Roll dice
         // int roll = diceHandler.rollTwoDice();
+        currentGamePhase = GamePhase.RESOURCE_PRODUCTION;
 
         // interpret the rol result somehow
         Resource rslt = interpretRoll(roll);
@@ -152,8 +155,10 @@ public class GameModel {
         return Resource.WOOL;
     }
 
-    // Functionalities to be added
+    // SPENCER METHODS
+
     public void attemptBuildSettlement(int nodeID){
+        checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY);
         checkIfPlayerAtMaxSettlements();
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER, Resource.WOOL, Resource.GRAIN)) {
             checkPlayerOwnsEnoughResources(currentPlayerColor, r, 1);
@@ -165,6 +170,16 @@ public class GameModel {
             deckToReplenish.replenish();
         }
         incrementNumSettlements(currentPlayerColor);
+    }
+
+    void setCurrentGamePhase(GamePhase newGamePhase) {
+        this.currentGamePhase = newGamePhase;
+    }
+
+    private void checkCurrentGamePhaseMatches(GamePhase expectedGamePhase) {
+        if(currentGamePhase != expectedGamePhase) {
+            throw new IllegalGamePhaseException("Not proper phase for that action");
+        }
     }
 
     private void incrementNumSettlements(PlayerColor currentPlayerColor) {
@@ -180,8 +195,6 @@ public class GameModel {
         }
     }
 
-    ;
-
     private void checkPlayerOwnsEnoughResources(PlayerColor currentPlayerColor, Resource type, int amount){
         PlayerState relevantPlayerState = getPlayerState(currentPlayerColor);
         int amountPlayerOwnsResource = relevantPlayerState.getResourceCount(type);
@@ -196,6 +209,7 @@ public class GameModel {
     }
 
     public void attemptBuildCity(){};
+
 
     public void attemptBuildRoad(){};
 

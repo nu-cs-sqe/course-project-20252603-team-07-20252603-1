@@ -1,6 +1,7 @@
 package domain.model;
 
 import domain.model.board.BoardHandler;
+import domain.model.exceptions.IllegalGamePhaseException;
 import domain.model.exceptions.IllegalSettlementPlacementException;
 import domain.model.exceptions.InsufficientResourcesException;
 import domain.model.player.PlayerColor;
@@ -81,6 +82,7 @@ public class GameModelTests {
         oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
 
         model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
         model.attemptBuildSettlement(0);
 
         EasyMock.verify(redStateMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock,
@@ -110,6 +112,7 @@ public class GameModelTests {
                 oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
 
         model.setCurrentPlayerColor(PlayerColor.WHITE);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
         Exception exception = assertThrows(IllegalSettlementPlacementException.class,
                 () -> model.attemptBuildSettlement(0));
 
@@ -137,6 +140,7 @@ public class GameModelTests {
                 oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
 
         model.setCurrentPlayerColor(PlayerColor.ORANGE);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
         Exception exception = assertThrows(InsufficientResourcesException.class,
                 () -> model.attemptBuildSettlement(0));
 
@@ -162,6 +166,7 @@ public class GameModelTests {
                 oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
 
         model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
         Exception exception = assertThrows(IllegalSettlementPlacementException.class,
                 () -> model.attemptBuildSettlement(0));
 
@@ -202,10 +207,36 @@ public class GameModelTests {
                 oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
 
         model.setCurrentPlayerColor(PlayerColor.BLUE);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
         model.attemptBuildSettlement(0);
 
         EasyMock.verify(blueStateMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock,
                 woolDeckMock);
     }
+
+    @Test
+    void attemptBuildSettlement_test06_IncorrectPhase_ExpectError(){
+        PlayerState redStateMock = EasyMock.createMock(PlayerState.class);
+        ColorToPlayerStateMock = Map.of(
+                PlayerColor.RED, redStateMock
+        );
+
+        EasyMock.replay(redStateMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock,
+                woolDeckMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
+
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.RESOURCE_PRODUCTION);
+        Exception exception = assertThrows(IllegalGamePhaseException.class,
+                () -> model.attemptBuildSettlement(0));
+
+        assertEquals("Not proper phase for that action", exception.getMessage());
+
+        EasyMock.verify(redStateMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock,
+                woolDeckMock);
+    }
+
 
 }

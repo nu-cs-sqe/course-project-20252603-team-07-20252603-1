@@ -9,6 +9,7 @@
     - BoardHandler check succeed -> (if node is adjacent to already built node, if player owns adjacent road)
     - Player has enough resources or not
     - Player has 5 or less settlements, or more
+    - Game is in proper phase or not
 
 #### Outputs:
 - Board Updated
@@ -16,7 +17,7 @@
 - Resource Deck Replenished
 - Settlement count increases on player
 - Victory Point awarded
-- Error -> InsufficientResourcesException, IllegalSettlementPlacementException, MaximumAmountOfSettlementsException
+- Error -> InsufficientResourcesException, IllegalSettlementPlacementException
 
 |             | State of the System                                                     | Expected output                                             | Implemented?       |
 |-------------|-------------------------------------------------------------------------|-------------------------------------------------------------|--------------------|
@@ -25,3 +26,30 @@
 | Test Case 3 | Orange claims node, BoardHandler succeeds, not enough resources         | InsufficientResourcesException, board not updated           | :white_check_mark: |
 | Test Case 4 | Red claims node, BoardHandler succeeds, enough resources, 5 settlements | IllegalSettlementPlacementException, no updates             | :white_check_mark: |
 | Test Case 5 | Blue claims node, BoardHandler succeeds, enough resurces, 4 settlements | Success                                                     | :white_check_mark: |
+| Test Case 6 | Incorrect Game Phase                                                    | IllegalGamePhaseException                                   | :white_check_mark: |
+
+
+// Methods Under Spencer's responsibility
+
+### Method under test: `attemptBuildRoad()`
+
+#### Inputs:
+- PlayerColor
+- Cases
+  - BoardHandler check succeed
+  - Player has enough resources or not
+
+#### Outputs:
+- Board Updated
+- PlayerState updated with less resources
+- Resource Deck Replenished
+- Victory Point awarded
+- Error -> InsufficientResourcesException, IllegalRoadPlacementException
+
+|             | State of the System                                             | Expected output                                 | Implemented? |
+|-------------|-----------------------------------------------------------------|-------------------------------------------------|--------------|
+| Test Case 1 | Red claimes edge, BoardHandler succeeds, has enough resources   | Success                                         | :x:          |
+| Test Case 2 | White claims edge, Boardhandler fails, has enough resources     | IllegalRoadPlacementException                   | :x:          |
+| Test Case 3 | Orange claims node, BoardHandler succeeds, not enough resources | InsufficientResourcesException                  | :x:          |
+| Test Case 4 | Blue claims node, BoardHandler succeeds, enough resources       | Success                                         | :x:          |
+
