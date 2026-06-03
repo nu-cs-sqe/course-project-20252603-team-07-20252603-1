@@ -154,4 +154,16 @@ public class DevelopmentCardDeckTests {
 
     assertEquals(false, actual);
   }
+
+  @Test // Test Case 14
+  public void IsEmpty_AllCardsDrawn_ExpectTrue() {
+    DevelopmentCardDeck deck = new DevelopmentCardDeck();
+    for (int i = 0; i < EXPECTED_NUM_CARDS; i++) {
+      deck.drawCard();
+    }
+    boolean actual = deck.isEmpty();
+    boolean expected = true;
+
+    assertEquals(expected, actual);
+  }
 }
