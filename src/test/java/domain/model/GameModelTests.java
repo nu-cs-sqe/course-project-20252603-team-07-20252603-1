@@ -2,6 +2,7 @@ package domain.model;
 
 import domain.model.board.BoardHandler;
 import domain.model.exceptions.IllegalSettlementPlacementException;
+import domain.model.exceptions.InsufficientResourcesException;
 import domain.model.player.PlayerColor;
 import domain.model.player.PlayerState;
 import domain.model.resources.Resource;
@@ -56,6 +57,10 @@ public class GameModelTests {
                 PlayerColor.RED, redStateMock
         );
 
+        for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER, Resource.WOOL, Resource.GRAIN)) {
+            EasyMock.expect(redStateMock.getResourceCount(r)).andReturn(1);
+        }
+
         EasyMock.expect(boardMock.buildSettlement(PlayerColor.RED, 0)).andReturn(true);
 
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER, Resource.WOOL, Resource.GRAIN)) {
@@ -84,6 +89,10 @@ public class GameModelTests {
                 PlayerColor.WHITE, whiteStateMock
         );
 
+        for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER, Resource.WOOL, Resource.GRAIN)) {
+            EasyMock.expect(whiteStateMock.getResourceCount(r)).andReturn(1);
+        }
+
         EasyMock.expect(boardMock.buildSettlement(PlayerColor.WHITE, 0))
                 .andThrow(new IllegalSettlementPlacementException("Can not place a settlement at this node"));
 
@@ -102,5 +111,32 @@ public class GameModelTests {
         EasyMock.verify(whiteStateMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock,
                 woolDeckMock);
     }
+
+    @Test
+    void attemptBuildSettlement_test03_BoardHandlerSucceeds_NotEnoughResources_UnderMaxCount_ExpectError(){
+        PlayerState orangeStateMock = EasyMock.createMock(PlayerState.class);
+        ColorToPlayerStateMock = Map.of(
+                PlayerColor.ORANGE, orangeStateMock
+        );
+
+        EasyMock.expect(orangeStateMock.getResourceCount(Resource.BRICK)).andReturn(0);
+
+        EasyMock.replay(orangeStateMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock,
+                woolDeckMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
+
+        model.setCurrentPlayerColor(PlayerColor.ORANGE);
+        Exception exception = assertThrows(InsufficientResourcesException.class,
+                () -> model.attemptBuildSettlement(0));
+
+        assertEquals("Insufficient resources", exception.getMessage());
+
+        EasyMock.verify(orangeStateMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock,
+                woolDeckMock);
+    }
+
+
 
 }

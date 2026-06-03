@@ -11,6 +11,7 @@ import domain.model.player.PlayerState;
 import domain.model.resources.Resource;
 import domain.model.resources.Resources;
 
+import domain.model.exceptions.InsufficientResourcesException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -164,6 +165,11 @@ public class GameModel {
     };
 
     private void checkPlayerOwnsEnoughResources(PlayerColor currentPlayerColor, Resource type, int amount){
+        PlayerState relevantPlayerState = getPlayerState(currentPlayerColor);
+        int amountPlayerOwnsResource = relevantPlayerState.getResourceCount(type);
+        if (amountPlayerOwnsResource < amount) {
+            throw new InsufficientResourcesException("Insufficient resources");
+        }
     }
 
     private void reducePlayerResources(PlayerColor currentPlayerColor, Resource r, int amount) {
