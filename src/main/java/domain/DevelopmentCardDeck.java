@@ -7,7 +7,8 @@ public class DevelopmentCardDeck {
   //TODO: Make this a dictionary mapping from card type to number
   private static final int NUM_KNIGHT_CARDS = 14;
   private static final int NUM_ROAD_BUILDING_CARDS = 2;
-  private static final int NUM_OTHER_CARDS = 9;
+  private static final int NUM_YEAR_OF_PLENTY_CARDS = 2;
+  private static final int NUM_OTHER_CARDS = 7;
 
   private final List<DevelopmentCard> cards;
 
@@ -19,6 +20,9 @@ public class DevelopmentCardDeck {
     }
     for (int i = 0; i < NUM_ROAD_BUILDING_CARDS; i++) {
       cards.add(new RoadBuildingCard());
+    }
+    for (int i = 0; i < NUM_YEAR_OF_PLENTY_CARDS; i++) {
+      cards.add(new YearOfPlentyCard());
     }
     for (int i = 0; i < NUM_OTHER_CARDS; i++) {
       cards.add(new DevelopmentCard(DevelopmentCardType.OTHER) {});

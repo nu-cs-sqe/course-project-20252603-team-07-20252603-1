@@ -8,6 +8,7 @@ public class DevelopmentCardDeckTests {
   final int EXPECTED_NUM_CARDS = 25;
   final int EXPECTED_NUM_KNIGHTS = 14;
   final int EXPECTED_NUM_ROAD_BUILDING = 2;
+  final int EXPECTED_NUM_YEAR_OF_PLENTY = 2;
 
   @Test // Test Case 1
   public void Constructor_Default_ExpectSizeTwentyFive() {
@@ -35,5 +36,15 @@ public class DevelopmentCardDeckTests {
         .count();
 
     assertEquals(EXPECTED_NUM_ROAD_BUILDING, actual);
+  }
+
+  @Test // Test Case 4
+  public void Constructor_Default_ExpectTwoYearOfPlentyCards() {
+    DevelopmentCardDeck deck = new DevelopmentCardDeck();
+    long actual = deck.getCards().stream()
+        .filter(card -> card.getType() == DevelopmentCardType.YEAR_OF_PLENTY)
+        .count();
+
+    assertEquals(EXPECTED_NUM_YEAR_OF_PLENTY, actual);
   }
 }
