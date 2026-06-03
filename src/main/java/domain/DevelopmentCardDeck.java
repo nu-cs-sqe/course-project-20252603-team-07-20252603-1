@@ -1,6 +1,7 @@
 package domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +35,10 @@ public class DevelopmentCardDeck {
       throw new IllegalStateException("The development card deck is empty.");
     }
     return cards.remove(INDEX_OF_FRONT);
+  }
+
+  public void shuffle() {
+    Collections.shuffle(cards);
   }
 
   public int size() {
