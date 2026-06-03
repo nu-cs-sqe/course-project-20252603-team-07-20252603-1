@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DevelopmentCardDeckTests {
   final int EXPECTED_NUM_CARDS = 25;
@@ -90,5 +91,19 @@ public class DevelopmentCardDeckTests {
 
     assertNotNull(drawn);
     assertEquals(0, deck.size());
+  }
+
+  @Test // Test Case 9
+  public void DrawCard_EmptyDeck_ExpectIllegalStateException() {
+    DevelopmentCardDeck deck = new DevelopmentCardDeck();
+    for (int i = 0; i < EXPECTED_NUM_CARDS; i++) {
+      deck.drawCard();
+    }
+
+    IllegalStateException exception = assertThrows(
+        IllegalStateException.class,
+        deck::drawCard
+    );
+    assertEquals("The development card deck is empty.", exception.getMessage());
   }
 }

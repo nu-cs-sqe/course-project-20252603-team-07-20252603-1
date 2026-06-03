@@ -30,6 +30,9 @@ public class DevelopmentCardDeck {
   }
 
   public DevelopmentCard drawCard() {
+    if (cards.isEmpty()) {
+      throw new IllegalStateException("The development card deck is empty.");
+    }
     return cards.remove(INDEX_OF_FRONT);
   }
 
