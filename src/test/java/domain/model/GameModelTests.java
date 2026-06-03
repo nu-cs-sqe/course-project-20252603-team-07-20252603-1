@@ -57,6 +57,8 @@ public class GameModelTests {
                 PlayerColor.RED, redStateMock
         );
 
+        EasyMock.expect(redStateMock.getSettlementCount()).andReturn(0);
+
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER, Resource.WOOL, Resource.GRAIN)) {
             EasyMock.expect(redStateMock.getResourceCount(r)).andReturn(1);
         }
@@ -68,6 +70,9 @@ public class GameModelTests {
             decks.get(r).replenish();
             EasyMock.expectLastCall();
         }
+
+        redStateMock.increaseSettlementCount();
+        EasyMock.expectLastCall();
 
         EasyMock.replay(redStateMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock,
                 woolDeckMock);
@@ -88,6 +93,8 @@ public class GameModelTests {
         ColorToPlayerStateMock = Map.of(
                 PlayerColor.WHITE, whiteStateMock
         );
+
+        EasyMock.expect(whiteStateMock.getSettlementCount()).andReturn(0);
 
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER, Resource.WOOL, Resource.GRAIN)) {
             EasyMock.expect(whiteStateMock.getResourceCount(r)).andReturn(1);
@@ -119,6 +126,8 @@ public class GameModelTests {
                 PlayerColor.ORANGE, orangeStateMock
         );
 
+        EasyMock.expect(orangeStateMock.getSettlementCount()).andReturn(0);
+
         EasyMock.expect(orangeStateMock.getResourceCount(Resource.BRICK)).andReturn(0);
 
         EasyMock.replay(orangeStateMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock,
@@ -134,6 +143,31 @@ public class GameModelTests {
         assertEquals("Insufficient resources", exception.getMessage());
 
         EasyMock.verify(orangeStateMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock,
+                woolDeckMock);
+    }
+
+    @Test
+    void attemptBuildSettlement_test04_BoardHandlerSucceeds_EnoughResources_AtMaxCount_ExpectError(){
+        PlayerState redStateMock = EasyMock.createMock(PlayerState.class);
+        ColorToPlayerStateMock = Map.of(
+                PlayerColor.RED, redStateMock
+        );
+
+        EasyMock.expect(redStateMock.getSettlementCount()).andReturn(5);
+
+        EasyMock.replay(redStateMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock,
+                woolDeckMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
+
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        Exception exception = assertThrows(IllegalSettlementPlacementException.class,
+                () -> model.attemptBuildSettlement(0));
+
+        assertEquals("Can not have more than 5 settlements", exception.getMessage());
+
+        EasyMock.verify(redStateMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock,
                 woolDeckMock);
     }
 

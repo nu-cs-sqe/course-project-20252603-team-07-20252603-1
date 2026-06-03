@@ -2,6 +2,7 @@ package domain.model;
 
 import domain.model.board.BoardHandler;
 import domain.model.board.GraphEdge;
+import domain.model.exceptions.IllegalSettlementPlacementException;
 import domain.model.player.PlayerColor;
 import domain.model.resources.ResourceDeck;
 import domain.model.game_pieces.DiceHandler;
@@ -153,6 +154,7 @@ public class GameModel {
 
     // Functionalities to be added
     public void attemptBuildSettlement(int nodeID){
+        checkIfPlayerAtMaxSettlements();
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER, Resource.WOOL, Resource.GRAIN)) {
             checkPlayerOwnsEnoughResources(currentPlayerColor, r, 1);
         }
@@ -162,7 +164,23 @@ public class GameModel {
             ResourceDeck deckToReplenish = decks.get(r);
             deckToReplenish.replenish();
         }
-    };
+        incrementNumSettlements(currentPlayerColor);
+    }
+
+    private void incrementNumSettlements(PlayerColor currentPlayerColor) {
+        PlayerState relevantPlayerState = getPlayerState(currentPlayerColor);
+        relevantPlayerState.increaseSettlementCount();
+    }
+
+    private void checkIfPlayerAtMaxSettlements() {
+        PlayerState relevantPlayerState = getPlayerState(currentPlayerColor);
+        int currentAmountSettlements = relevantPlayerState.getSettlementCount();
+        if (currentAmountSettlements >= 5) {
+            throw new IllegalSettlementPlacementException("Can not have more than 5 settlements");
+        }
+    }
+
+    ;
 
     private void checkPlayerOwnsEnoughResources(PlayerColor currentPlayerColor, Resource type, int amount){
         PlayerState relevantPlayerState = getPlayerState(currentPlayerColor);
