@@ -134,4 +134,16 @@ public class DevelopmentCardDeckTests {
     assertEquals(1, deck.size());
     assertEquals(before, deck.getCards());
   }
+
+  @Test // Test Case 12
+  public void Shuffle_EmptyDeck_ExpectDeckRemainsEmptyAndNoError() {
+    DevelopmentCardDeck deck = new DevelopmentCardDeck();
+    for (int i = 0; i < EXPECTED_NUM_CARDS; i++) {
+      deck.drawCard();
+    }
+
+    deck.shuffle();
+
+    assertEquals(0, deck.size());
+  }
 }
