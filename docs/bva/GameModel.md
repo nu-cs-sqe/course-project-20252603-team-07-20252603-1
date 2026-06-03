@@ -13,6 +13,7 @@
 #### Outputs:
 - Board Updated
 - PlayerState updated with less resources
+- Resource Deck Replenished
 - Victory Point awarded
 - Error -> InsufficientResourcesException, IllegalSettlementPlacementException, MaximumAmountOfSettlementsException
 
