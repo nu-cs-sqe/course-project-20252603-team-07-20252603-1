@@ -146,4 +146,12 @@ public class DevelopmentCardDeckTests {
 
     assertEquals(0, deck.size());
   }
+
+  @Test // Test Case 13
+  public void IsEmpty_NewDeck_ExpectFalse() {
+    DevelopmentCardDeck deck = new DevelopmentCardDeck();
+    boolean actual = deck.isEmpty();
+
+    assertEquals(false, actual);
+  }
 }
