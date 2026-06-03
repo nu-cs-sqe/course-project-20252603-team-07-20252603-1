@@ -154,6 +154,7 @@ public class GameSetupModel {
      * @return the list of players in turn order
      */
     public List<Player> getTurnOrder() {
-        return turnOrder;
+        // Spotbugs Check -> return a copy instead
+        return new ArrayList<>(turnOrder);
     }
 }

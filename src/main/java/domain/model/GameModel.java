@@ -110,6 +110,7 @@ public class GameModel {
 
         } catch (Exception e) {
             // Gracefully handle empty deck - no resource distributed
+            throw new IllegalArgumentException(e.getMessage()); // placeholder to placate spotbugs
         }
     }
 

@@ -11,7 +11,7 @@ import domain.model.exceptions.IllegalEdgeClaim;
 import domain.model.player.PlayerColor;
 
 public class BoardGraphController {
-    private BoardGraph boardGraph;
+    private final BoardGraph boardGraph;
 
     public BoardGraphController(BoardGraph b){
         this.boardGraph = b;

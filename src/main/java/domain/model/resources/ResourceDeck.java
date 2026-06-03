@@ -94,5 +94,10 @@ public class ResourceDeck {
         return count;
     }
 
+    @Override
+    protected final void finalize() {
+        // intentionally empty — blocks finalizer attacks
+    }
+
 
 }
