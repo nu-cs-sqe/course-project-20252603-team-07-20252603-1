@@ -2,6 +2,7 @@ package domain.model;
 
 import domain.model.board.BoardHandler;
 import domain.model.exceptions.IllegalGamePhaseException;
+import domain.model.exceptions.IllegalRoadPlacementException;
 import domain.model.exceptions.IllegalSettlementPlacementException;
 import domain.model.exceptions.InsufficientResourcesException;
 import domain.model.player.PlayerColor;
@@ -269,6 +270,41 @@ public class GameModelTests {
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
         model.attemptBuildRoad(0, 1);
+
+        EasyMock.verify(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, boardMock);
+
+    }
+
+    @Test
+    void attemptBuildRoad_test02_BoardHandlerFails_ExpectError(){
+        PlayerState whiteStateMock = EasyMock.createMock(PlayerState.class);
+        ColorToPlayerStateMock = Map.of(
+                PlayerColor.WHITE, whiteStateMock
+        );
+
+        for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER)) {
+            EasyMock.expect(whiteStateMock.getResourceCount(r)).andReturn(1);
+        }
+
+        boardMock.addRoad(PlayerColor.WHITE, 0, 1);
+        EasyMock.expectLastCall().andThrow(new IllegalRoadPlacementException("Can not place road at this edge"));
+
+
+        EasyMock.replay(whiteStateMock, lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, boardMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
+
+
+
+        model.setCurrentPlayerColor(PlayerColor.WHITE);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        Exception exception = assertThrows(IllegalRoadPlacementException.class,
+                () -> model.attemptBuildRoad(0, 1));
+
+        assertEquals("Can not place road at this edge", exception.getMessage());
 
         EasyMock.verify(lumberDeckMock, brickDeckMock, grainDeckMock,
                 oreDeckMock, woolDeckMock, boardMock);
