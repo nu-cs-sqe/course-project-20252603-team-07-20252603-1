@@ -171,6 +171,41 @@ public class GameModelTests {
                 woolDeckMock);
     }
 
+    @Test
+    void attemptBuildSettlement_test05_BoardHandlerSucceeds_EnoughResources_UnderMaxCount_ExpectSuccess(){
+        PlayerState blueStateMock = EasyMock.createMock(PlayerState.class);
+        ColorToPlayerStateMock = Map.of(
+                PlayerColor.BLUE, blueStateMock
+        );
 
+        EasyMock.expect(blueStateMock.getSettlementCount()).andReturn(4);
+
+        for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER, Resource.WOOL, Resource.GRAIN)) {
+            EasyMock.expect(blueStateMock.getResourceCount(r)).andReturn(1);
+        }
+
+        EasyMock.expect(boardMock.buildSettlement(PlayerColor.BLUE, 0)).andReturn(true);
+
+        for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER, Resource.WOOL, Resource.GRAIN)) {
+            EasyMock.expect(blueStateMock.reduceResources(r, 1)).andReturn(true);
+            decks.get(r).replenish();
+            EasyMock.expectLastCall();
+        }
+
+        blueStateMock.increaseSettlementCount();
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(blueStateMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock,
+                woolDeckMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
+
+        model.setCurrentPlayerColor(PlayerColor.BLUE);
+        model.attemptBuildSettlement(0);
+
+        EasyMock.verify(blueStateMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock,
+                woolDeckMock);
+    }
 
 }

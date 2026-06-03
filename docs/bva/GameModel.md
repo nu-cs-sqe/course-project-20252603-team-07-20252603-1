@@ -24,4 +24,4 @@
 | Test Case 2 | White claims node, Boardhandler fails, has enough resources             | IllegalSettlementPlacementException , resources not reduced | :white_check_mark: |
 | Test Case 3 | Orange claims node, BoardHandler succeeds, not enough resources         | InsufficientResourcesException, board not updated           | :white_check_mark: |
 | Test Case 4 | Red claims node, BoardHandler succeeds, enough resources, 5 settlements | IllegalSettlementPlacementException, no updates             | :white_check_mark: |
-| Test Case 5 | Blue claims node, BoardHandler succeeds, enough resurces, 4 settlements | Success                                                     | :x:                |
+| Test Case 5 | Blue claims node, BoardHandler succeeds, enough resurces, 4 settlements | Success                                                     | :white_check_mark: |
