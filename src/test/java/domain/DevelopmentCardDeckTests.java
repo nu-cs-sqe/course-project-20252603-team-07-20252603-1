@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DevelopmentCardDeckTests {
   final int EXPECTED_NUM_CARDS = 25;
+  final int EXPECTED_NUM_KNIGHTS = 14;
 
   @Test // Test Case 1
   public void Constructor_Default_ExpectSizeTwentyFive() {
@@ -13,5 +14,15 @@ public class DevelopmentCardDeckTests {
     int actual = deck.size();
 
     assertEquals(EXPECTED_NUM_CARDS, actual);
+  }
+
+  @Test // Test Case 2
+  public void Constructor_Default_ExpectFourteenKnightCards() {
+    DevelopmentCardDeck deck = new DevelopmentCardDeck();
+    long actual = deck.getCards().stream()
+        .filter(card -> card.getType() == DevelopmentCardType.KNIGHT)
+        .count();
+
+    assertEquals(EXPECTED_NUM_KNIGHTS, actual);
   }
 }
