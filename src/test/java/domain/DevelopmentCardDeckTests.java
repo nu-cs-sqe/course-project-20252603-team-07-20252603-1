@@ -178,4 +178,12 @@ public class DevelopmentCardDeckTests {
 
     assertEquals(expected, actual);
   }
+
+  @Test // Test Case 16
+  public void Size_NewDeck_ExpectTwentyFive() {
+    DevelopmentCardDeck deck = new DevelopmentCardDeck();
+    int actual = deck.size();
+
+    assertEquals(EXPECTED_NUM_CARDS, actual);
+  }
 }
