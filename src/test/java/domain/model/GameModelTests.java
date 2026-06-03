@@ -311,5 +311,30 @@ public class GameModelTests {
 
     }
 
+    @Test
+    void attemptBuildRoad_test03_BoardHandlerSucceeds_NotEnoughResources_ExpectError(){
+        PlayerState orangeStateMock = EasyMock.createMock(PlayerState.class);
+        ColorToPlayerStateMock = Map.of(
+                PlayerColor.ORANGE, orangeStateMock
+        );
 
+        EasyMock.expect(orangeStateMock.getResourceCount(Resource.BRICK)).andReturn(0);
+
+        EasyMock.replay(orangeStateMock, lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, boardMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
+
+        model.setCurrentPlayerColor(PlayerColor.ORANGE);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        Exception exception = assertThrows(InsufficientResourcesException.class,
+                () -> model.attemptBuildRoad(0, 1));
+
+        assertEquals("Insufficient resources", exception.getMessage());
+
+        EasyMock.verify(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, boardMock);
+
+    }
 }
