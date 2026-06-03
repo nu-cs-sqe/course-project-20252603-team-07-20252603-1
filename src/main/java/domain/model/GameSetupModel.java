@@ -1,6 +1,7 @@
 package domain.model;
 
 import domain.model.board.Board;
+import domain.model.board.BoardHandler;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 import domain.model.development_cards.DevelopmentCardDeck;
@@ -22,8 +23,7 @@ public class GameSetupModel {
     private final Set<PlayerColor> usedColors;
     // private final Set<PlayerColor> usedColors;
     private final Set<String> usedNames;
-    private Board board;
-    // private BoardHandler board;
+    private BoardHandler board;
     private ResourceDeck resourceDeck;
     private DevelopmentCardDeck developmentCardDeck;
     private List<Player> turnOrder;
@@ -96,9 +96,9 @@ public class GameSetupModel {
      *
      * @return the game board
      */
-    public Board getBoard() {
+    public BoardHandler getBoard() {
         if (board == null) {
-            board = new Board();
+            board = new BoardHandler();
         }
         return board;
     }

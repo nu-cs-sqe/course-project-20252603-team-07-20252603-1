@@ -12,10 +12,12 @@ import java.util.List;
 public class PlayerState {
 
     private final Player player;
+    private final PlayerColor color;
     private final List<Resource> resources;
 
     public PlayerState(Player player) {
         this.player = player;
+        this.color = player.getColor();
         this.resources = new ArrayList<>();
     }
 
@@ -23,6 +25,9 @@ public class PlayerState {
         return player;
     }
 
+    public PlayerColor getColor(){
+        return this.color;
+    }
     public void addResource(Resource card) {
         resources.add(card);
     }
@@ -31,5 +36,10 @@ public class PlayerState {
         return (int) resources.stream()
                 .filter(card -> card == type)
                 .count();
+    }
+
+    // Stub for GameModel
+    public boolean reduceResources(Resource r, int amount) {
+        return true;
     }
 }

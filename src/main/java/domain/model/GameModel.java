@@ -1,24 +1,31 @@
 package domain.model;
 
+import domain.model.board.BoardHandler;
+import domain.model.board.GraphEdge;
+import domain.model.player.PlayerColor;
 import domain.model.resources.ResourceDeck;
 import domain.model.game_pieces.DiceHandler;
 import domain.model.game_pieces.Die;
 import domain.model.player.Player;
 import domain.model.player.PlayerState;
 import domain.model.resources.Resource;
+import domain.model.resources.Resources;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.Map;
 
 public class GameModel {
 
-    private final List<PlayerState> playerStates; // figure out how to initialize proper
+    private BoardHandler board;
+
+    //private final List<PlayerState> playerStates; // figure out how to initialize proper
     // private final DiceHandler diceHandler = initializeDiceHandler();
 
     private int currentPlayerIndex;
+    private List<PlayerColor> playerColors;
+    private PlayerColor currentPlayerColor;
+    private final Map<PlayerColor, PlayerState> playerColorToPlayerState = new HashMap<>();
+
 
     private final ResourceDeck lumberDeck = new ResourceDeck(Resource.LUMBER);
     private final ResourceDeck brickDeck = new ResourceDeck(Resource.BRICK);
@@ -37,12 +44,17 @@ public class GameModel {
 
     
 
-    public GameModel(List<Player> players) {
-        this.playerStates = new ArrayList<>();
+    public GameModel(List<Player> players, BoardHandler board) {
+        this.board = board;
+        playerColors = new ArrayList<>();
         for (Player player : players) {
-            this.playerStates.add(new PlayerState(player));
+            PlayerState newState = new PlayerState(player);
+            PlayerColor currentColor = player.getColor();
+            this.playerColorToPlayerState.put(currentColor, newState);
+            playerColors.add(currentColor);
         }
         this.currentPlayerIndex = 0;
+        this.currentPlayerColor = playerColors.get(0);
     }
 
 
@@ -56,7 +68,8 @@ public class GameModel {
     }
 
     public List<Player> getTurnOrder() {
-        return playerStates.stream()
+        return playerColors.stream()
+                .map(color -> playerColorToPlayerState.get(color))
                 .map(PlayerState::getPlayer)
                 .collect(Collectors.toList());
     }
@@ -66,15 +79,20 @@ public class GameModel {
     }
 
     public Player getCurrentPlayer() {
-        return playerStates.get(currentPlayerIndex).getPlayer();
+        return playerColorToPlayerState.get(currentPlayerColor).getPlayer();
+    }
+
+    public void setCurrentPlayerColor(PlayerColor color) {
+        this.currentPlayerColor = color;
     }
 
     public void advanceToNextPlayer() {
-        currentPlayerIndex = (currentPlayerIndex + 1) % playerStates.size();
+        currentPlayerIndex = (currentPlayerIndex + 1) % playerColors.size();
+        currentPlayerColor = playerColors.get(currentPlayerIndex);
     }
 
-    public PlayerState getPlayerState(int index) {
-        return playerStates.get(index);
+    public PlayerState getPlayerState(PlayerColor color) {
+        return playerColorToPlayerState.get(color);
     }
 
     public void performTurn(int roll) { // takes in the dice roll, doesn't perform it.
@@ -88,7 +106,7 @@ public class GameModel {
         try {
 
             Resource card = decks.get(rslt).draw();
-            playerStates.get(currentPlayerIndex).addResource(card);
+            playerColorToPlayerState.get(currentPlayerColor).addResource(card);
 
         } catch (Exception e) {
             // Gracefully handle empty deck - no resource distributed
@@ -102,7 +120,23 @@ public class GameModel {
     }
 
     // Functionalities to be added
-    public void attemptBuildSettlement(){};
+    public void attemptBuildSettlement(int nodeID){
+        for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER, Resource.WOOL, Resource.GRAIN)) {
+            checkPlayerOwnsEnoughResources(currentPlayerColor, r, 1);
+        }
+        board.buildSettlement(currentPlayerColor, nodeID);
+        for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER, Resource.WOOL, Resource.GRAIN)) {
+            reducePlayerResources(currentPlayerColor, r, 1);
+        }
+    };
+
+    private void checkPlayerOwnsEnoughResources(PlayerColor currentPlayerColor, Resource type, int amount){
+    }
+
+    private void reducePlayerResources(PlayerColor currentPlayerColor, Resource r, int amount) {
+        PlayerState releventPlayerState = playerColorToPlayerState.get(currentPlayerColor);
+        releventPlayerState.reduceResources(r, amount);
+    }
 
     public void attemptBuildCity(){};
 

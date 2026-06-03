@@ -2,6 +2,7 @@ package ui.controller;
 
 import domain.model.GameSetupModel;
 import domain.model.board.Board;
+import domain.model.board.BoardHandler;
 import domain.model.development_cards.DevelopmentCardDeck;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
@@ -90,7 +91,7 @@ public class GameSetupController {
      * @param model the game setup model
      * @return the game board
      */
-    public Board getBoard(GameSetupModel model) {
+    public BoardHandler getBoard(GameSetupModel model) {
         return model.getBoard();
     }
 
@@ -100,7 +101,7 @@ public class GameSetupController {
      * @param board the game board
      * @return the number of hexes
      */
-    public int getBoardHexCount(Board board) {
+    public int getBoardHexCount(BoardHandler board) {
         return board.getHexCount();
     }
 
@@ -110,7 +111,7 @@ public class GameSetupController {
      * @param board the game board
      * @return the list of hex types in order
      */
-    public List<String> getHexOrder(Board board) {
+    public List<String> getHexOrder(BoardHandler board) {
         return board.getHexOrder();
     }
 

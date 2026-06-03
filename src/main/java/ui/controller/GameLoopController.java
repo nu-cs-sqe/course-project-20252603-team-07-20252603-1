@@ -3,6 +3,7 @@ package ui.controller;
 import domain.model.GameModel;
 import domain.model.game_pieces.DiceHandler;
 import domain.model.player.Player;
+import domain.model.player.PlayerColor;
 import domain.model.player.PlayerState;
 import domain.model.resources.Resource;
 
@@ -17,8 +18,8 @@ public class GameLoopController {
         return model.getCurrentPlayerIndex();
     }
 
-    public int getResourceCount(GameModel model, int playerIndex, Resource type) {
-        PlayerState state = model.getPlayerState(playerIndex);
+    public int getResourceCount(GameModel model, PlayerColor color, Resource type) {
+        PlayerState state = model.getPlayerState(color);
         return state.getResourceCount(type);
     }
 

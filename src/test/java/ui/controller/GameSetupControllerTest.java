@@ -2,6 +2,7 @@ package ui.controller;
 
 import domain.model.GameSetupModel;
 import domain.model.board.Board;
+import domain.model.board.BoardHandler;
 import domain.model.development_cards.DevelopmentCardDeck;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
@@ -23,13 +24,13 @@ class GameSetupControllerTest {
 
     private GameSetupController controller;
     private GameSetupModel mockModel;
-    private Board mockBoard;
+    private BoardHandler mockBoard;
 
     @BeforeEach
     void setUp() {
         controller = new GameSetupController();
         mockModel = createMock(GameSetupModel.class);
-        mockBoard = createMock(Board.class);
+        mockBoard = createMock(BoardHandler.class);
     }
 
     // ========== Player Count Validation Tests ==========
@@ -283,7 +284,7 @@ class GameSetupControllerTest {
         replay(mockModel);
 
         // Act
-        Board board = controller.getBoard(mockModel);
+        BoardHandler board = controller.getBoard(mockModel);
 
         // Assert
         assertNotNull(board);
@@ -573,7 +574,7 @@ class GameSetupControllerTest {
 
         // Act
         boolean validPlayerCount = controller.validatePlayerCount(mockModel);
-        Board board = controller.getBoard(mockModel);
+        BoardHandler board = controller.getBoard(mockModel);
         ResourceDeck resourceDeck = controller.getResourceDeck(mockModel);
         DevelopmentCardDeck devDeck = controller.getDevelopmentCardDeck(mockModel);
         List<Player> turnOrder = controller.getTurnOrder(mockModel);

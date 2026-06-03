@@ -1,5 +1,9 @@
 package domain.model.board;
 
+import domain.model.exceptions.AdjacentNodeAlreadyClaimed;
+import domain.model.exceptions.IllegalEdgeClaim;
+import domain.model.player.PlayerColor;
+
 import java.util.Set;
 
 import domain.model.exceptions.AdjacentNodeAlreadyClaimed;
