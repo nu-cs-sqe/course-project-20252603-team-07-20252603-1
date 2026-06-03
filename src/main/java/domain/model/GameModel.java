@@ -206,10 +206,10 @@ public class GameModel {
         }
     }
 
-    private void checkPlayerOwnsEnoughResources(PlayerColor currentPlayerColor, Resource type, int amount){
+    private void checkPlayerOwnsEnoughResources(PlayerColor currentPlayerColor, Resource type, int amountNeeded){
         PlayerState relevantPlayerState = getPlayerState(currentPlayerColor);
         int amountPlayerOwnsResource = relevantPlayerState.getResourceCount(type);
-        if (amountPlayerOwnsResource < amount) {
+        if (amountPlayerOwnsResource < amountNeeded) {
             throw new InsufficientResourcesException("Insufficient resources");
         }
     }
