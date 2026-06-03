@@ -174,7 +174,8 @@ public class DevelopmentCardDeckTests {
       deck.drawCard();
     }
     boolean actual = deck.isEmpty();
+    boolean expected = false;
 
-    assertEquals(false, actual);
+    assertEquals(expected, actual);
   }
 }
