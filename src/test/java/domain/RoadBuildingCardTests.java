@@ -3,6 +3,8 @@ package domain;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -50,6 +52,7 @@ public class RoadBuildingCardTests {
     Edge edge1 = EasyMock.createMock(Edge.class);
     Edge edge2 = EasyMock.createMock(Edge.class);
 
+    EasyMock.expect(player.getRoads()).andReturn(Collections.emptyList());
     player.placeRoad(edge1);
     player.placeRoad(edge2);
     EasyMock.replay(player, edge1, edge2);
