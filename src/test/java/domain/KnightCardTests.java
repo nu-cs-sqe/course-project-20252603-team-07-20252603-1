@@ -50,4 +50,29 @@ public class KnightCardTests {
     assertEquals(5, robber.getRobberLocation());
     EasyMock.verify(victim, player);
   }
+
+  @Test // Test Case 3
+  public void Play_LowBoundaryTarget_RobberMovesAndResourceTransferred() {
+    KnightCard knightCard = new KnightCard(new Random(0));
+    
+    Player player = EasyMock.createMock(Player.class);
+    Robber robber = EasyMock.createMock(Robber.class);
+    Player victim = EasyMock.createMock(Player.class);
+
+    robber.moveRobber(0);
+    EasyMock.expectLastCall();
+
+    EasyMock.expect(victim.getResources()).andReturn(Map.of(Resource.LUMBER, 2));
+    victim.updateResources(Resource.LUMBER, -1);
+    EasyMock.expectLastCall();
+
+    player.receiveResources(Map.of(Resource.LUMBER, 1));
+    EasyMock.expectLastCall();
+
+    EasyMock.replay(robber, victim, player);
+
+    knightCard.play(player, robber, 0, victim);
+
+    EasyMock.verify(robber, victim, player);
+  }
 }
