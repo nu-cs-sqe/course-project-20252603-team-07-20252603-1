@@ -124,4 +124,21 @@ public class MonopolyCardTests {
 
     EasyMock.verify(player, opponent1, opponent2, opponent3);
   }
+
+  @Test // Test Case 8
+  public void Play_OneOpponentWithOneLumber_ExpectTransferOneLumber() {
+    MonopolyCard monopolyCard = new MonopolyCard();
+
+    Player player = EasyMock.createMock(Player.class);
+    Player opponent = EasyMock.createMock(Player.class);
+
+    EasyMock.expect(opponent.getResourceCount(Resource.LUMBER)).andReturn(1);
+    opponent.updateResources(Resource.LUMBER, -1);
+    player.receiveResources(Map.of(Resource.LUMBER, 1));
+    EasyMock.replay(player, opponent);
+
+    monopolyCard.play(player, Resource.LUMBER, List.of(opponent));
+
+    EasyMock.verify(player, opponent);
+  }
 }

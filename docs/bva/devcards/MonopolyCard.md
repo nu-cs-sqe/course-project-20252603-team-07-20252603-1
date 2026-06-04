@@ -42,4 +42,4 @@ Step 3:
 | Test Case 5 | resource = ORE, 1 opponent has 5 ORE                                               | opponent loses 5 ORE; player gains 5 ORE                    | :x:          |
 | Test Case 6 | resource = WOOL, 1 opponent has 0 WOOL                                             | no WOOL transferred; player's WOOL unchanged                 | :x:          |
 | Test Case 7 | resource = GRAIN, 3 opponents have 2, 0, and 4 GRAIN respectively                 | opponents lose 2, 0, and 4 GRAIN; player gains 6 GRAIN      | :x:          |
-| Test Case 8 | resource = LUMBER, 1 opponent has 1 LUMBER (minimum transferable amount)           | opponent loses 1 LUMBER; player gains 1 LUMBER              | :x:          |
+| Test Case 8 | resource = LUMBER, 1 opponent has 1 LUMBER (minimum transferable amount)           | opponent loses 1 LUMBER; player gains 1 LUMBER              | :white_check_mark: |
