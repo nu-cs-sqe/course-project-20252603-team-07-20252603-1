@@ -47,15 +47,15 @@ public class BoardGraphController {
     }
 
     private void handleCheckNodeIsUnoccupied(int nodeID) {
-        if (!boardGraph.checkIfAdjacentNodesNotClaimed(nodeID)) {
-            throw new IllegalSettlementPlacementException("Can not claim node adjacent to node already claimed");
-        }
     }
 
     private void handleCheckPlayerOwnsNeighboringEdge(PlayerColor color, int nodeID) {
     }
 
     private void handleCheckAdjacentNodesNotClaimed(int nodeID) {
+        if (!boardGraph.checkIfAdjacentNodesNotClaimed(nodeID)) {
+            throw new IllegalSettlementPlacementException("Can not claim node adjacent to node already claimed");
+        }
     }
 
 }
