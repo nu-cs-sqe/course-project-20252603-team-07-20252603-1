@@ -90,5 +90,5 @@
 | Test Case 1 | Red Claims edge0to3, edge unclaimed, owns adjacent road         | Success                                                | :white_check_mark: |
 | Test Case 2 | Blue Claims edge0to3, edge claimed                              | Error "Edge already claimed"                           | :white_check_mark: |
 | Test Case 3 | Orange Claims edge50to53,  edge unclaimed, owns adjacent        | Success                                                | :white_check_mark: |
-| Test Case 4 | White Claims ID edge50to53, edge unclaimed, owns no adjacencies | Error -> "Edge must be adjacent to an owned structure" | :x:                |
+| Test Case 4 | White Claims ID edge50to53, edge unclaimed, owns no adjacencies | Error -> "Edge must be adjacent to an owned structure" | :whtie_check_mark: |
 

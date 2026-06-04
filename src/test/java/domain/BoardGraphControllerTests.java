@@ -236,6 +236,8 @@ public class BoardGraphControllerTests {
         BoardGraphController boardControl = new BoardGraphController(boardMock);
 
         EasyMock.expect(boardMock.checkEdgeOccupied(0, 3)).andReturn(false);
+        EasyMock.expect(boardMock.edgeCheckPlayerOwnsNeighboringEdge(PlayerColor.RED, 0, 3)).andReturn(true);
+
         EasyMock.expect(boardMock.claimGraphEdgeObject(PlayerColor.RED, 0, 3)).andReturn(true);
 
         EasyMock.replay(boardMock);
@@ -267,11 +269,30 @@ public class BoardGraphControllerTests {
         BoardGraphController boardControl = new BoardGraphController(boardMock);
 
         EasyMock.expect(boardMock.checkEdgeOccupied(50, 53)).andReturn(false);
+        EasyMock.expect(boardMock.edgeCheckPlayerOwnsNeighboringEdge(PlayerColor.ORANGE, 50, 53)).andReturn(true);
+
         EasyMock.expect(boardMock.claimGraphEdgeObject(PlayerColor.ORANGE, 50, 53)).andReturn(true);
 
         EasyMock.replay(boardMock);
 
         boardControl.playerClaimStoredEdge(PlayerColor.ORANGE, 50, 53);
+
+        EasyMock.verify(boardMock);
+    }
+
+    @Test
+    void playerClaimStoredEdge_test04_EdgeUnclaimed__OwnsNoAdjacency_ExpectError(){
+        BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
+        BoardGraphController boardControl = new BoardGraphController(boardMock);
+
+        EasyMock.expect(boardMock.checkEdgeOccupied(0, 3)).andReturn(false);
+        EasyMock.expect(boardMock.edgeCheckPlayerOwnsNeighboringEdge(PlayerColor.WHITE, 0, 3)).andReturn(false);
+        EasyMock.replay(boardMock);
+
+        Exception exception = assertThrows(IllegalEdgeClaim.class,
+                () -> boardControl.playerClaimStoredEdge(PlayerColor.WHITE, 0, 3));
+
+        assertEquals("Edge must be adjacent to an owned structure", exception.getMessage());
 
         EasyMock.verify(boardMock);
     }
