@@ -43,12 +43,12 @@ Step 3:
 
 |             | System under test                                                                  | Expected output                                                  | Implemented? |
 | ----------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------- | ------------ |
-| Test Case 1 | robber = null                                                                      | IllegalArgumentException: "Robber cannot be null."               | :x:          |
-| Test Case 2 | targetHexId = 5 (valid, different from current), victim has 3 resources            | robber moves to hex 5; 1 random resource transferred from victim | :x:          |
-| Test Case 3 | targetHexId = 0 (LOW boundary), victim has resources                               | robber moves to hex 0; 1 random resource transferred from victim | :x:          |
-| Test Case 4 | targetHexId = 18 (HIGH boundary), victim has resources                             | robber moves to hex 18; 1 random resource transferred from victim| :x:          |
-| Test Case 5 | targetHexId = −1 (below LOW boundary)                                              | IllegalArgumentException: "Cannot move Robber to invalid HexId"  | :x:          |
-| Test Case 6 | targetHexId = 19 (above HIGH boundary)                                             | IllegalArgumentException: "Cannot move Robber to invalid HexId"  | :x:          |
-| Test Case 7 | targetHexId = robber's current hex (same hex)                                      | IllegalArgumentException: "Must move robber to a different hex." | :x:          |
-| Test Case 8 | targetHexId valid, victim = null (no adjacent opponent)                             | robber moves; no resource stolen                                 | :x:          |
-| Test Case 9 | targetHexId valid, victim has 0 resource cards                                     | robber moves; no resource stolen                                 | :x:          |
+| Test Case 1 | robber = null                                                                      | IllegalArgumentException: "Robber cannot be null."               | :white_check_mark: |
+| Test Case 2 | targetHexId = 5 (valid, different from current), victim has 3 resources            | robber moves to hex 5; 1 random resource transferred from victim | :white_check_mark: |
+| Test Case 3 | targetHexId = 0 (LOW boundary), victim has resources                               | robber moves to hex 0; 1 random resource transferred from victim | :white_check_mark: |
+| Test Case 4 | targetHexId = 18 (HIGH boundary), victim has resources                             | robber moves to hex 18; 1 random resource transferred from victim| :white_check_mark: |
+| Test Case 5 | targetHexId = −1 (below LOW boundary)                                              | IllegalArgumentException: "Cannot move Robber to invalid HexId"  | :white_check_mark: |
+| Test Case 6 | targetHexId = 19 (above HIGH boundary)                                             | IllegalArgumentException: "Cannot move Robber to invalid HexId"  | :white_check_mark: |
+| Test Case 7 | targetHexId = robber's current hex (same hex)                                      | IllegalArgumentException: "Must move robber to a different hex." | :white_check_mark: |
+| Test Case 8 | targetHexId valid, victim = null (no adjacent opponent)                             | robber moves; no resource stolen                                 | :white_check_mark: |
+| Test Case 9 | targetHexId valid, victim has 0 resource cards                                     | robber moves; no resource stolen                                 | :white_check_mark: |

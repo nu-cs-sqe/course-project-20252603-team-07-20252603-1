@@ -35,11 +35,11 @@ Step 3:
 
 |             | System under test                                                                  | Expected output                                              | Implemented? |
 | ----------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------ | ------------ |
-| Test Case 1 | resource = null                                                                    | IllegalArgumentException: "Resource cannot be null."         | :x:          |
-| Test Case 2 | resource = DESERT                                                                  | IllegalArgumentException: "Cannot monopolize DESERT."        | :x:          |
-| Test Case 3 | otherPlayers = null                                                                | IllegalArgumentException: "Other players list cannot be null." | :x:        |
-| Test Case 4 | resource = BRICK, otherPlayers = [] (empty list)                                   | no resources transferred; player's resources unchanged       | :x:          |
-| Test Case 5 | resource = ORE, 1 opponent has 5 ORE                                               | opponent loses 5 ORE; player gains 5 ORE                    | :x:          |
-| Test Case 6 | resource = WOOL, 1 opponent has 0 WOOL                                             | no WOOL transferred; player's WOOL unchanged                 | :x:          |
-| Test Case 7 | resource = GRAIN, 3 opponents have 2, 0, and 4 GRAIN respectively                 | opponents lose 2, 0, and 4 GRAIN; player gains 6 GRAIN      | :x:          |
+| Test Case 1 | resource = null                                                                    | IllegalArgumentException: "Resource cannot be null."         | :white_check_mark: |
+| Test Case 2 | resource = DESERT                                                                  | IllegalArgumentException: "Cannot monopolize DESERT."        | :white_check_mark: |
+| Test Case 3 | otherPlayers = null                                                                | IllegalArgumentException: "Other players list cannot be null." | :white_check_mark: |
+| Test Case 4 | resource = BRICK, otherPlayers = [] (empty list)                                   | no resources transferred; player's resources unchanged       | :white_check_mark: |
+| Test Case 5 | resource = ORE, 1 opponent has 5 ORE                                               | opponent loses 5 ORE; player gains 5 ORE                    | :white_check_mark: |
+| Test Case 6 | resource = WOOL, 1 opponent has 0 WOOL                                             | no WOOL transferred; player's WOOL unchanged                 | :white_check_mark: |
+| Test Case 7 | resource = GRAIN, 3 opponents have 2, 0, and 4 GRAIN respectively                 | opponents lose 2, 0, and 4 GRAIN; player gains 6 GRAIN      | :white_check_mark: |
 | Test Case 8 | resource = LUMBER, 1 opponent has 1 LUMBER (minimum transferable amount)           | opponent loses 1 LUMBER; player gains 1 LUMBER              | :white_check_mark: |
