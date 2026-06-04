@@ -870,7 +870,7 @@ public class BoardGraphTests {
         b.addGraphNodeConnection(0, edge0to3);
         b.addGraphNodeConnection(0, edge0to1);
 
-        assertTrue(b.nodeCheckPlayerOwnsNeighboringEdge(PlayerColor.RED, 0));
+        assertTrue(b.nodeCheckPlayerOwnsNeighboringEdge(PlayerColor.WHITE, 0));
 
     }
 

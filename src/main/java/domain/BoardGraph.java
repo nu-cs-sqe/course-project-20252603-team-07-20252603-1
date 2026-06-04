@@ -151,7 +151,6 @@ public class BoardGraph {
         return startingNode.checkColor() == color || endingNode.checkColor() == color;
     }
 
-    // TODO; stub from working on BoardGraphController
     public boolean nodeCheckPlayerOwnsNeighboringEdge(PlayerColor color, int nodeID) {
         Set<GraphEdge> relevantEdgeSet = getConnectingEdgesByID(nodeID);
         for (GraphEdge edge : relevantEdgeSet) {
@@ -256,7 +255,4 @@ public class BoardGraph {
     protected int checkAmountOfNodesInEdgeMapForTesting() {
         return this.nodeIDToConnectingEdges.size();
     }
-
-
-
 }
