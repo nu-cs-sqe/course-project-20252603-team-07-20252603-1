@@ -23,4 +23,18 @@ public class MonopolyCardTests {
     );
     assertEquals("Resource cannot be null.", exception.getMessage());
   }
+
+  @Test // Test Case 2
+  public void Play_DesertResource_ExpectIllegalArgumentException() {
+    MonopolyCard monopolyCard = new MonopolyCard();
+
+    Player player = EasyMock.createMock(Player.class);
+    EasyMock.replay(player);
+
+    IllegalArgumentException exception = assertThrows(
+        IllegalArgumentException.class,
+        () -> monopolyCard.play(Resource.DESERT, List.of(player))
+    );
+    assertEquals("Cannot monopolize DESERT.", exception.getMessage());
+  }
 }

@@ -12,5 +12,8 @@ public class MonopolyCard extends DevelopmentCard {
     if (resource == null) {
       throw new IllegalArgumentException("Resource cannot be null.");
     }
+    if (resource == Resource.DESERT) {
+      throw new IllegalArgumentException("Cannot monopolize DESERT.");
+    }
   }
 }
