@@ -161,7 +161,7 @@
 | Test Case 3 | Multiple element set, edge exists         | Correct Object  | :white_check_mark: |
 | Test Case 4 | Multiple element set, edge does not exist | Error           | :white_check_mark: |
 
-### Method under test: `checkPlayerOwnsNeighboringEdge(PlayerColor color, int startingNodeID, int endingNodeID)`
+### Method under test: `edgeCheckPlayerOwnsNeighboringEdge(PlayerColor color, int startingNodeID, int endingNodeID)`
 
 #### Inputs:
 - PlayerColor -> RED, WHITE, BLUE, ORANGE
@@ -181,7 +181,7 @@
 | Test Case 4 | Orange, checking edge [52, 53], owns edges connecting to both 52 and 53 | True            | :white_check_mark: |
 
 
-### Method under test: `checkPlayerOwnsNeighboringNode(PlayerColor color, int startingNodeID, int endingNodeID)`
+### Method under test: `edgeCheckPlayerOwnsNeighboringNode(PlayerColor color, int startingNodeID, int endingNodeID)`
 
 #### Inputs:
 - PlayerColor -> RED, WHITE, BLUE, ORANGE
@@ -200,6 +200,23 @@
 | Test Case 2 | White, checking edge [0, 1], White owns node 1                  | True            | :white_check_mark: |
 | Test Case 3 | Blue, checking edge [52, 53], does not own any connecting nodes | False           | :white_check_mark: |
 | Test Case 4 | Orange, checking edge [52, 53], owns both nodes                 | True            | :white_check_mark: |
+
+### Method under test: `nodeCheckPlayerOwnsNeighboringEdge(PlayerColor color, int nodeID)`
+#### Inputs:
+- PlayerColor -> RED, WHITE, BLUE, ORANGE
+- System State/Graph Topology -> Cases
+  - Player owns no adjacent edge
+  - Player owns adjacent edge
+
+#### Outputs:
+- Boolean
+
+|             | State of the System                                         | Expected output | Implemented?       |
+|-------------|-------------------------------------------------------------|-----------------|--------------------|
+| Test Case 1 | Red, checking node 0, Red owns edge connecting to node 0    | True            | :white_check_mark: |
+| Test Case 2 | White, checking node 0, White owns edge conneting to node 0 | True            | :x:                |
+| Test Case 3 | Blue, checking node 53, does not own any connecting edges   | False           | :x:                |
+| Test Case 4 | Orange, checking node 53, does not own any connecting edges | False           | :x:                |
 
 ### Method under test: `checkIfAdjacentNodesNotClaimed(int nodeID)`
 
