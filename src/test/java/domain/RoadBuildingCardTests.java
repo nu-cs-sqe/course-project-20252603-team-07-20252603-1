@@ -54,6 +54,7 @@ public class RoadBuildingCardTests {
     Edge edge2 = EasyMock.createMock(Edge.class);
 
     EasyMock.expect(player.getRoads()).andReturn(Collections.emptyList());
+    EasyMock.expect(edge1.isOccupied()).andReturn(false);
     player.placeRoad(edge1);
     player.placeRoad(edge2);
     EasyMock.replay(player, edge1, edge2);
@@ -73,6 +74,7 @@ public class RoadBuildingCardTests {
 
     List<Edge> existingRoads = Collections.nCopies(13, null);
     EasyMock.expect(player.getRoads()).andReturn(existingRoads);
+    EasyMock.expect(edge1.isOccupied()).andReturn(false);
     player.placeRoad(edge1);
     player.placeRoad(edge2);
     EasyMock.replay(player, edge1, edge2);
@@ -91,6 +93,7 @@ public class RoadBuildingCardTests {
 
     List<Edge> existingRoads = Collections.nCopies(14, null);
     EasyMock.expect(player.getRoads()).andReturn(existingRoads);
+    EasyMock.expect(edge1.isOccupied()).andReturn(false);
     player.placeRoad(edge1);
     EasyMock.replay(player, edge1);
 
@@ -116,6 +119,27 @@ public class RoadBuildingCardTests {
         () -> roadBuildingCard.play(player, edge1, edge2)
     );
     assertEquals("No roads remaining.", exception.getMessage());
+
+    EasyMock.verify(player, edge1, edge2);
+  }
+
+  @Test // Test Case 7
+  public void Play_Edge1Occupied_ExpectIllegalArgumentException() {
+    RoadBuildingCard roadBuildingCard = new RoadBuildingCard();
+
+    Player player = EasyMock.createMock(Player.class);
+    Edge edge1 = EasyMock.createMock(Edge.class);
+    Edge edge2 = EasyMock.createMock(Edge.class);
+
+    EasyMock.expect(player.getRoads()).andReturn(Collections.emptyList());
+    EasyMock.expect(edge1.isOccupied()).andReturn(true);
+    EasyMock.replay(player, edge1, edge2);
+
+    IllegalArgumentException exception = assertThrows(
+        IllegalArgumentException.class,
+        () -> roadBuildingCard.play(player, edge1, edge2)
+    );
+    assertEquals("Edge is already occupied.", exception.getMessage());
 
     EasyMock.verify(player, edge1, edge2);
   }

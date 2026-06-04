@@ -9,21 +9,28 @@ public class RoadBuildingCard extends DevelopmentCard {
   }
 
   public void play(Player player, Edge edge1, Edge edge2) {
+    int remainingRoads = validatePlacement(player, edge1);
+
+    player.placeRoad(edge1);
+    if (remainingRoads >= 2) {
+      player.placeRoad(edge2);
+    }
+  }
+
+  private int validatePlacement(Player player, Edge edge1) {
     if (player == null) {
       throw new IllegalArgumentException("Player cannot be null.");
     }
     if (edge1 == null) {
       throw new IllegalArgumentException("Edge cannot be null.");
     }
-
     int remainingRoads = MAX_ROADS - player.getRoads().size();
     if (remainingRoads == 0) {
       throw new IllegalStateException("No roads remaining.");
     }
-
-    player.placeRoad(edge1);
-    if (remainingRoads >= 2) {
-      player.placeRoad(edge2);
+    if (edge1.isOccupied()) {
+      throw new IllegalArgumentException("Edge is already occupied.");
     }
+    return remainingRoads;
   }
 }
