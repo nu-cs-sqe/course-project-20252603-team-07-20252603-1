@@ -98,4 +98,30 @@ public class MonopolyCardTests {
 
     EasyMock.verify(player, opponent);
   }
+
+  @Test // Test Case 7
+  public void Play_ThreeOpponentsWithGrain_ExpectTransferSixGrainTotal() {
+    MonopolyCard monopolyCard = new MonopolyCard();
+
+    Player player = EasyMock.createMock(Player.class);
+    Player opponent1 = EasyMock.createMock(Player.class);
+    Player opponent2 = EasyMock.createMock(Player.class);
+    Player opponent3 = EasyMock.createMock(Player.class);
+
+    EasyMock.expect(opponent1.getResourceCount(Resource.GRAIN)).andReturn(2);
+    opponent1.updateResources(Resource.GRAIN, -2);
+    player.receiveResources(Map.of(Resource.GRAIN, 2));
+
+    EasyMock.expect(opponent2.getResourceCount(Resource.GRAIN)).andReturn(0);
+
+    EasyMock.expect(opponent3.getResourceCount(Resource.GRAIN)).andReturn(4);
+    opponent3.updateResources(Resource.GRAIN, -4);
+    player.receiveResources(Map.of(Resource.GRAIN, 4));
+
+    EasyMock.replay(player, opponent1, opponent2, opponent3);
+
+    monopolyCard.play(player, Resource.GRAIN, List.of(opponent1, opponent2, opponent3));
+
+    EasyMock.verify(player, opponent1, opponent2, opponent3);
+  }
 }
