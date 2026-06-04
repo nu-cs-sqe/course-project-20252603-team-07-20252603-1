@@ -39,14 +39,14 @@ Step 3:
 
 
 |              | System under test                                                                           | Expected output                                                             | Implemented? |
-| ------------ | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ------------ |
-| Test Case 1  | player = null                                                                               | IllegalArgumentException: "Player cannot be null."                          | :x:          |
-| Test Case 2  | edge1 = null, roads placed = 0                                                              | IllegalArgumentException: "Edge cannot be null."                            | :x:          |
-| Test Case 3  | edge1 valid, edge2 valid, roads placed = 0 (15 remaining)                                   | 2 roads placed; player road count increases by 2                            | :x:          |
-| Test Case 4  | edge1 valid, edge2 valid, roads placed = 13 (2 remaining — last pair that fits)             | 2 roads placed; player road count is 15                                     | :white_check_mark:          |
-| Test Case 5  | edge1 valid, edge2 = null, roads placed = 14 (only 1 remaining)                             | 1 road placed; player road count is 15                                      | :white_check_mark:          |
-| Test Case 6  | roads placed = 15 (no roads remaining)                                                      | IllegalStateException: "No roads remaining."                                | :white_check_mark:          |
-| Test Case 7  | edge1 is already occupied, roads placed = 0                                                 | IllegalArgumentException: "Edge is already occupied."                       | :x:          |
-| Test Case 8  | edge1 not connected to player's network, roads placed = 0                                   | IllegalArgumentException: "Road must connect to player's existing network." | :x:          |
-| Test Case 9  | edge1 valid, edge2 is already occupied, roads placed = 0                                    | IllegalArgumentException: "Edge is already occupied."                       | :x:          |
-| Test Case 10 | edge1 valid, edge2 not connected to player's network (including edge1), roads placed = 0    | IllegalArgumentException: "Road must connect to player's existing network." | :x:          |
+| ------------ | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | --------- |
+| Test Case 1  | player = null                                                                               | IllegalArgumentException: "Player cannot be null."                          | :white_check_mark:        |
+| Test Case 2  | edge1 = null, roads placed = 0                                                              | IllegalArgumentException: "Edge cannot be null."                            | :white_check_mark:        |
+| Test Case 3  | edge1 valid, edge2 valid, roads placed = 0 (15 remaining)                                   | 2 roads placed; player road count increases by 2                            | :white_check_mark:        |
+| Test Case 4  | edge1 valid, edge2 valid, roads placed = 13 (2 remaining — last pair that fits)             | 2 roads placed; player road count is 15                                     | :white_check_mark:       |
+| Test Case 5  | edge1 valid, edge2 = null, roads placed = 14 (only 1 remaining)                             | 1 road placed; player road count is 15                                      | :white_check_mark:       |
+| Test Case 6  | roads placed = 15 (no roads remaining)                                                      | IllegalStateException: "No roads remaining."                                | :white_check_mark:       |
+| Test Case 7  | edge1 is already occupied, roads placed = 0                                                 | IllegalArgumentException: "Edge is already occupied."                       | :x:       |
+| Test Case 8  | edge1 not connected to player's network, roads placed = 0                                   | IllegalArgumentException: "Road must connect to player's existing network." | :x:       |
+| Test Case 9  | edge1 valid, edge2 is already occupied, roads placed = 0                                    | IllegalArgumentException: "Edge is already occupied."                       | :x:       |
+| Test Case 10 | edge1 valid, edge2 not connected to player's network (including edge1), roads placed = 0    | IllegalArgumentException: "Road must connect to player's existing network." | :x:       |
