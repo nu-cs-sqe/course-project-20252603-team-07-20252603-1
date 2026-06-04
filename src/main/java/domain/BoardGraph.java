@@ -66,6 +66,11 @@ public class BoardGraph {
         }
     }
 
+    public boolean checkNodeOccupied(int nodeID) {
+        GraphNode nodeOfInterest = getGraphNodeByID(nodeID);
+        return nodeOfInterest.checkOccupied();
+    }
+
     boolean checkPlayerOwnsGraphNodeObject(PlayerColor color, int nodeID) {
         GraphNode nodeOfInterest = getGraphNodeByID(nodeID);
         PlayerColor nodeColor = nodeOfInterest.checkColor();
@@ -234,6 +239,7 @@ public class BoardGraph {
     protected int checkAmountOfNodesInEdgeMapForTesting() {
         return this.nodeIDToConnectingEdges.size();
     }
+
 
 
 }

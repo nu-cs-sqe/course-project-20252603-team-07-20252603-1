@@ -47,6 +47,9 @@ public class BoardGraphController {
     }
 
     private void handleCheckNodeIsUnoccupied(int nodeID) {
+        if (boardGraph.checkNodeOccupied(nodeID)) {
+            throw new IllegalSettlementPlacementException("Node already claimed");
+        }
     }
 
     private void handleCheckPlayerOwnsNeighboringEdge(PlayerColor color, int nodeID) {

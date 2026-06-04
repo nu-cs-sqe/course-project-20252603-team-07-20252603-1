@@ -155,6 +155,7 @@ public class BoardGraphControllerTests {
         BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
         BoardGraphController boardControl = new BoardGraphController(boardMock);
 
+        EasyMock.expect(boardMock.checkNodeOccupied(0)).andReturn(false);
         EasyMock.expect(boardMock.checkIfAdjacentNodesNotClaimed(0)).andReturn(true);
 
         EasyMock.expect(boardMock.claimGraphNodeObject(PlayerColor.RED, 0)).andReturn(true);
@@ -171,6 +172,7 @@ public class BoardGraphControllerTests {
         BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
         BoardGraphController boardControl = new BoardGraphController(boardMock);
 
+        EasyMock.expect(boardMock.checkNodeOccupied(53)).andReturn(false);
         EasyMock.expect(boardMock.checkIfAdjacentNodesNotClaimed(53)).andReturn(false);
 
         EasyMock.replay(boardMock);
@@ -179,6 +181,25 @@ public class BoardGraphControllerTests {
                 ()->boardControl.playerClaimStoredNode(PlayerColor.BLUE, 53));
 
         assertEquals("Can not claim node adjacent to node already claimed",
+                exception.getMessage());
+
+        EasyMock.verify(boardMock);
+
+    }
+
+    @Test
+    void playerClaimStoredNode_test03_NodeAlreadyClaimed_ExpectError(){
+        BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
+        BoardGraphController boardControl = new BoardGraphController(boardMock);
+
+        EasyMock.expect(boardMock.checkNodeOccupied(53)).andReturn(true);
+
+        EasyMock.replay(boardMock);
+
+        Exception exception = assertThrows(IllegalSettlementPlacementException.class,
+                ()->boardControl.playerClaimStoredNode(PlayerColor.ORANGE, 53));
+
+        assertEquals("Node already claimed",
                 exception.getMessage());
 
         EasyMock.verify(boardMock);
