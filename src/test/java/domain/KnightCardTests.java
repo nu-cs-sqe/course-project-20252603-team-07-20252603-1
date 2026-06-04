@@ -32,9 +32,12 @@ public class KnightCardTests {
   public void Play_ValidTargetWithVictimResources_RobberMovesAndResourceTransferred() {
     KnightCard knightCard = new KnightCard(new Random(0));
     Player player = EasyMock.createMock(Player.class);
-
-    Robber robber = new Robber(0);
+    Robber robber = EasyMock.createMock(Robber.class);
     Player victim = EasyMock.createMock(Player.class);
+
+    EasyMock.expect(robber.getRobberLocation()).andReturn(0);
+    robber.moveRobber(5);
+    EasyMock.expectLastCall();
 
     EasyMock.expect(victim.getResources()).andReturn(Map.of(Resource.LUMBER, 3));
     victim.updateResources(Resource.LUMBER, -1);
@@ -43,12 +46,11 @@ public class KnightCardTests {
     player.receiveResources(Map.of(Resource.LUMBER, 1));
     EasyMock.expectLastCall();
 
-    EasyMock.replay(victim, player);
+    EasyMock.replay(robber, victim, player);
 
     knightCard.play(player, robber, 5, victim);
 
-    assertEquals(5, robber.getRobberLocation());
-    EasyMock.verify(victim, player);
+    EasyMock.verify(robber, victim, player);
   }
 
   @Test // Test Case 3
@@ -154,17 +156,19 @@ public class KnightCardTests {
     KnightCard knightCard = new KnightCard();
 
     Player player = EasyMock.createMock(Player.class);
-    Robber robber = new Robber(5);
+    Robber robber = EasyMock.createMock(Robber.class);
     Player victim = EasyMock.createMock(Player.class);
 
-    EasyMock.replay(player, victim);
+    EasyMock.expect(robber.getRobberLocation()).andReturn(5);
+
+    EasyMock.replay(player, robber, victim);
 
     IllegalArgumentException exception = assertThrows(
         IllegalArgumentException.class,
         () -> knightCard.play(player, robber, 5, victim)
     );
     assertEquals("Must move robber to a different hex.", exception.getMessage());
-    EasyMock.verify(player, victim);
+    EasyMock.verify(player, robber, victim);
   }
 
   @Test // Test Case 8
@@ -184,4 +188,5 @@ public class KnightCardTests {
 
     EasyMock.verify(robber, player);
   }
+
 }
