@@ -10,5 +10,8 @@ public class RoadBuildingCard extends DevelopmentCard {
     if (player == null) {
       throw new IllegalArgumentException("Player cannot be null.");
     }
+    if (edge1 == null) {
+      throw new IllegalArgumentException("Edge cannot be null.");
+    }
   }
 }

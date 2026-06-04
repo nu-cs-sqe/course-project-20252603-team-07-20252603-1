@@ -24,4 +24,21 @@ public class RoadBuildingCardTests {
 
     EasyMock.verify(edge1, edge2);
   }
+
+  @Test // Test Case 2
+  public void Play_NullEdge1_ExpectIllegalArgumentException() {
+    RoadBuildingCard roadBuildingCard = new RoadBuildingCard();
+
+    Player player = EasyMock.createMock(Player.class);
+    Edge edge2 = EasyMock.createMock(Edge.class);
+    EasyMock.replay(player, edge2);
+
+    IllegalArgumentException exception = assertThrows(
+        IllegalArgumentException.class,
+        () -> roadBuildingCard.play(player, null, edge2)
+    );
+    assertEquals("Edge cannot be null.", exception.getMessage());
+
+    EasyMock.verify(player, edge2);
+  }
 }
