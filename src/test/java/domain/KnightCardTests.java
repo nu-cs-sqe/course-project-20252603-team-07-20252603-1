@@ -59,6 +59,7 @@ public class KnightCardTests {
     Robber robber = EasyMock.createMock(Robber.class);
     Player victim = EasyMock.createMock(Player.class);
 
+    EasyMock.expect(robber.getRobberLocation()).andReturn(5);
     robber.moveRobber(0);
     EasyMock.expectLastCall();
 
@@ -84,6 +85,7 @@ public class KnightCardTests {
     Robber robber = EasyMock.createMock(Robber.class);
     Player victim = EasyMock.createMock(Player.class);
 
+    EasyMock.expect(robber.getRobberLocation()).andReturn(5);
     robber.moveRobber(18);
     EasyMock.expectLastCall();
 
@@ -109,6 +111,7 @@ public class KnightCardTests {
     Robber robber = EasyMock.createMock(Robber.class);
     Player victim = EasyMock.createMock(Player.class);
 
+    EasyMock.expect(robber.getRobberLocation()).andReturn(5);
     robber.moveRobber(-1);
     EasyMock.expectLastCall().andThrow(
         new IllegalArgumentException("Cannot move Robber to invalid HexId"));
@@ -131,6 +134,7 @@ public class KnightCardTests {
     Robber robber = EasyMock.createMock(Robber.class);
     Player victim = EasyMock.createMock(Player.class);
 
+    EasyMock.expect(robber.getRobberLocation()).andReturn(5);
     robber.moveRobber(19);
     EasyMock.expectLastCall().andThrow(
         new IllegalArgumentException("Cannot move Robber to invalid HexId"));
@@ -143,5 +147,23 @@ public class KnightCardTests {
     );
     assertEquals("Cannot move Robber to invalid HexId", exception.getMessage());
     EasyMock.verify(player, robber, victim);
+  }
+
+  @Test // Test Case 7
+  public void Play_SameHexTarget_ExpectIllegalArgumentException() {
+    KnightCard knightCard = new KnightCard();
+
+    Player player = EasyMock.createMock(Player.class);
+    Robber robber = new Robber(5);
+    Player victim = EasyMock.createMock(Player.class);
+
+    EasyMock.replay(player, victim);
+
+    IllegalArgumentException exception = assertThrows(
+        IllegalArgumentException.class,
+        () -> knightCard.play(player, robber, 5, victim)
+    );
+    assertEquals("Must move robber to a different hex.", exception.getMessage());
+    EasyMock.verify(player, victim);
   }
 }

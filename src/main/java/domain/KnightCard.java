@@ -22,6 +22,9 @@ public class KnightCard extends DevelopmentCard {
     if (robber == null) {
       throw new IllegalArgumentException("Robber cannot be null.");
     }
+    if (robber.getRobberLocation() == targetHexId) {
+      throw new IllegalArgumentException("Must move robber to a different hex.");
+    }
     robber.moveRobber(targetHexId);
 
     if (victim != null) {
