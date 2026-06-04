@@ -98,4 +98,25 @@ public class RoadBuildingCardTests {
 
     EasyMock.verify(player, edge1);
   }
+
+  @Test // Test Case 6
+  public void Play_FifteenRoadsPlaced_ExpectIllegalStateException() {
+    RoadBuildingCard roadBuildingCard = new RoadBuildingCard();
+
+    Player player = EasyMock.createMock(Player.class);
+    Edge edge1 = EasyMock.createMock(Edge.class);
+    Edge edge2 = EasyMock.createMock(Edge.class);
+
+    List<Edge> existingRoads = Collections.nCopies(15, null);
+    EasyMock.expect(player.getRoads()).andReturn(existingRoads);
+    EasyMock.replay(player, edge1, edge2);
+
+    IllegalStateException exception = assertThrows(
+        IllegalStateException.class,
+        () -> roadBuildingCard.play(player, edge1, edge2)
+    );
+    assertEquals("No roads remaining.", exception.getMessage());
+
+    EasyMock.verify(player, edge1, edge2);
+  }
 }

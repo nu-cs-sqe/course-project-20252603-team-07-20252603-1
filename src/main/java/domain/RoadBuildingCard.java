@@ -15,7 +15,11 @@ public class RoadBuildingCard extends DevelopmentCard {
     if (edge1 == null) {
       throw new IllegalArgumentException("Edge cannot be null.");
     }
+
     int remainingRoads = MAX_ROADS - player.getRoads().size();
+    if (remainingRoads == 0) {
+      throw new IllegalStateException("No roads remaining.");
+    }
 
     player.placeRoad(edge1);
     if (remainingRoads >= 2) {
