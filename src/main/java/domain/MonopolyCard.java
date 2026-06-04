@@ -8,7 +8,7 @@ public class MonopolyCard extends DevelopmentCard {
     super(DevelopmentCardType.MONOPOLY);
   }
 
-  public void play(Resource resource, List<Player> otherPlayers) {
+  public void play(Player player, Resource resource, List<Player> otherPlayers) {
     if (resource == null) {
       throw new IllegalArgumentException("Resource cannot be null.");
     }

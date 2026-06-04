@@ -15,11 +15,12 @@ public class MonopolyCardTests {
     MonopolyCard monopolyCard = new MonopolyCard();
 
     Player player = EasyMock.createMock(Player.class);
-    EasyMock.replay(player);
+    Player otherPlayer = EasyMock.createMock(Player.class);
+    EasyMock.replay(player, otherPlayer);
 
     IllegalArgumentException exception = assertThrows(
         IllegalArgumentException.class,
-        () -> monopolyCard.play(null, List.of(player))
+        () -> monopolyCard.play(player, null, List.of(otherPlayer))
     );
     assertEquals("Resource cannot be null.", exception.getMessage());
   }
@@ -29,11 +30,12 @@ public class MonopolyCardTests {
     MonopolyCard monopolyCard = new MonopolyCard();
 
     Player player = EasyMock.createMock(Player.class);
-    EasyMock.replay(player);
+    Player otherPlayer = EasyMock.createMock(Player.class);
+    EasyMock.replay(player, otherPlayer);
 
     IllegalArgumentException exception = assertThrows(
         IllegalArgumentException.class,
-        () -> monopolyCard.play(Resource.DESERT, List.of(player))
+        () -> monopolyCard.play(player, Resource.DESERT, List.of(otherPlayer))
     );
     assertEquals("Cannot monopolize DESERT.", exception.getMessage());
   }
@@ -42,10 +44,25 @@ public class MonopolyCardTests {
   public void Play_NullOtherPlayers_ExpectIllegalArgumentException() {
     MonopolyCard monopolyCard = new MonopolyCard();
 
+    Player player = EasyMock.createMock(Player.class);
+    EasyMock.replay(player);
+
     IllegalArgumentException exception = assertThrows(
         IllegalArgumentException.class,
-        () -> monopolyCard.play(Resource.BRICK, null)
+        () -> monopolyCard.play(player, Resource.BRICK, null)
     );
     assertEquals("Other players list cannot be null.", exception.getMessage());
+  }
+
+  @Test // Test Case 4
+  public void Play_EmptyOtherPlayersList_ExpectNoResourcesTransferred() {
+    MonopolyCard monopolyCard = new MonopolyCard();
+
+    Player player = EasyMock.createMock(Player.class);
+    EasyMock.replay(player);
+
+    monopolyCard.play(player, Resource.BRICK, List.of());
+
+    EasyMock.verify(player);
   }
 }
