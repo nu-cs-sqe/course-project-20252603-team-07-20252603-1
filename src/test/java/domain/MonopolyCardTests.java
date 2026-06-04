@@ -37,4 +37,15 @@ public class MonopolyCardTests {
     );
     assertEquals("Cannot monopolize DESERT.", exception.getMessage());
   }
+
+  @Test // Test Case 3
+  public void Play_NullOtherPlayers_ExpectIllegalArgumentException() {
+    MonopolyCard monopolyCard = new MonopolyCard();
+
+    IllegalArgumentException exception = assertThrows(
+        IllegalArgumentException.class,
+        () -> monopolyCard.play(Resource.BRICK, null)
+    );
+    assertEquals("Other players list cannot be null.", exception.getMessage());
+  }
 }
