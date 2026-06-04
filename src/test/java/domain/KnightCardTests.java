@@ -122,4 +122,26 @@ public class KnightCardTests {
     assertEquals("Cannot move Robber to invalid HexId", exception.getMessage());
     EasyMock.verify(player, robber, victim);
   }
+
+  @Test // Test Case 6
+  public void Play_AboveHighBoundaryTarget_ExpectIllegalArgumentException() {
+    KnightCard knightCard = new KnightCard();
+
+    Player player = EasyMock.createMock(Player.class);
+    Robber robber = EasyMock.createMock(Robber.class);
+    Player victim = EasyMock.createMock(Player.class);
+
+    robber.moveRobber(19);
+    EasyMock.expectLastCall().andThrow(
+        new IllegalArgumentException("Cannot move Robber to invalid HexId"));
+
+    EasyMock.replay(player, robber, victim);
+
+    IllegalArgumentException exception = assertThrows(
+        IllegalArgumentException.class,
+        () -> knightCard.play(player, robber, 19, victim)
+    );
+    assertEquals("Cannot move Robber to invalid HexId", exception.getMessage());
+    EasyMock.verify(player, robber, victim);
+  }
 }
