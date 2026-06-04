@@ -2,6 +2,8 @@ package domain;
 
 public class RoadBuildingCard extends DevelopmentCard {
 
+  private static final int MAX_ROADS = 15;
+
   public RoadBuildingCard() {
     super(DevelopmentCardType.ROAD_BUILDING);
   }
@@ -13,10 +15,11 @@ public class RoadBuildingCard extends DevelopmentCard {
     if (edge1 == null) {
       throw new IllegalArgumentException("Edge cannot be null.");
     }
-
-    int roadsPlaced = player.getRoads().size();
+    int remainingRoads = MAX_ROADS - player.getRoads().size();
 
     player.placeRoad(edge1);
-    player.placeRoad(edge2);
+    if (remainingRoads >= 2) {
+      player.placeRoad(edge2);
+    }
   }
 }
