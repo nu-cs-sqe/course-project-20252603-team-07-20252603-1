@@ -228,6 +228,22 @@ public class BoardGraphControllerTests {
 
     }
 
+    // playerClaimStoredEdge Tests
+
+    @Test
+    void playerClaimStoredEdge_EdgeUnclaimed_OwnsAdjacencyToStart_ExpectSuccess(){
+        BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
+        BoardGraphController boardControl = new BoardGraphController(boardMock);
+
+        EasyMock.expect(boardMock.claimGraphEdgeObject(PlayerColor.RED, 0, 3)).andReturn(true);
+
+        EasyMock.replay(boardMock);
+
+        boardControl.playerClaimStoredEdge(PlayerColor.RED, 0, 3);
+
+        EasyMock.verify(boardMock);
+    }
+
 }
 
 

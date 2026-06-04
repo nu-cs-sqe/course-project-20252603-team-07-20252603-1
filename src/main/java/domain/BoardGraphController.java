@@ -64,6 +64,10 @@ public class BoardGraphController {
         }
     }
 
+    void playerClaimStoredEdge(PlayerColor color, int startingNodeID, int endingNodeID){
+        boardGraph.claimGraphEdgeObject(color, startingNodeID, endingNodeID);
+    }
+
 }
 
 

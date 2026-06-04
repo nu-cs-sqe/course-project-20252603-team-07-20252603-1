@@ -61,7 +61,7 @@
 - Change of state of color class -> will need to Mock
 - True -> on success
 - Error class: IllegalSettlementPlacementException
-- Error 1 -> "Node does not exist"
+- Error 1 -> "Must own an adjacent road to claim node"
 - Error 2 -> "Node already claimed"
 - Error 3 -> "Can not claim node adjacent to node already claimed"
 
@@ -72,3 +72,23 @@
 | Test Case 2 | Blue Claims ID 53, node is not claimed, adjacent nodes claimed, player owns adjacent road | Error "Can not claim node adjacent to node already claimed" | :white_check_mark: |
 | Test Case 3 | Orange Claims ID 53, node exists, is claimed                                              | Error "Node already claimed"                                | :white_check_mark: |
 | Test Case 4 | White Claims ID 0, player does not own adjacent road                                      | Error "Must own an adjacent road to claim node"             | :white_check_mark: |
+
+### Method under test: `playerClaimStoredEdge(PlayerColor color, int startingNodeID, int endingNodeID)`
+
+#### Inputs:
+- PlayerColor -> RED, BLUE, ORANGE, WHITE
+- Edge -> Cases: claimed or not; player owns adjacent road or not (technically, the rules say an adjacent structure, but by the rules of building, after the setup phase, if they are building a road next to a settlement, then that settlement would at least have one road attached to it; so we can just check adjacent edges)
+#### Outputs:
+- Change of state of system -> edge claimed on by player
+- Exception Type: IllegalEdgeClaim
+- Error -> "Edge must be adjacent to an owned structure"
+- Error -> "Edge already claimed"
+
+
+|             | State of the System                                                           | Expected output                                        | Implemented?       |
+|-------------|-------------------------------------------------------------------------------|--------------------------------------------------------|--------------------|
+| Test Case 1 | Red Claims edge0to3, edge unclaimed, owns adjacent road to startingNodeID     | Success                                                | :white_check_mark: |
+| Test Case 2 | Blue Claims edge0to3, edge claimed                                            | Error "Edge already claimed"                           | :x:                |
+| Test Case 3 | Orange Claims edge50to53,  edge unclaimed, owns adjacent road to endingNodeID | Success                                                | :x:                |
+| Test Case 4 | White Claims ID edge50to53, edge unclaimed, owns no adjacencies               | Error -> "Edge must be adjacent to an owned structure" | :x:                |
+
