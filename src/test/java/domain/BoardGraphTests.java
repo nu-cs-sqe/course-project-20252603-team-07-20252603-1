@@ -810,7 +810,7 @@ public class BoardGraphTests {
     // nodeCheckPlayerOwnsNeighboringEdge() tests
 
     @Test
-    void nodeCheckPlayerOwnsNeighboringEdge_playerOwnsNeighboringEdge_ExpectTrue() {
+    void nodeCheckPlayerOwnsNeighboringEdge_test01_playerOwnsNeighboringEdge_ExpectTrue() {
         BoardGraph b = new BoardGraph();
         GraphNode nodeStub0 = EasyMock.createNiceMock(GraphNode.class);
         GraphNode nodeStub1 = EasyMock.createNiceMock(GraphNode.class);
@@ -841,6 +841,40 @@ public class BoardGraphTests {
         assertTrue(b.nodeCheckPlayerOwnsNeighboringEdge(PlayerColor.RED, 0));
 
     }
+
+    @Test
+    void nodeCheckPlayerOwnsNeighboringEdge_test02_playerOwnsNeighboringEdge_ExpectTrue() {
+        BoardGraph b = new BoardGraph();
+        GraphNode nodeStub0 = EasyMock.createNiceMock(GraphNode.class);
+        GraphNode nodeStub1 = EasyMock.createNiceMock(GraphNode.class);
+        GraphNode nodeStub3 = EasyMock.createNiceMock(GraphNode.class);
+
+        GraphEdge edge0to1 = EasyMock.createNiceMock(GraphEdge.class);
+        GraphEdge edge0to3 = EasyMock.createNiceMock(GraphEdge.class);
+
+        EasyMock.expect(nodeStub0.getNodeID()).andStubReturn(0);
+        EasyMock.expect(nodeStub1.getNodeID()).andStubReturn(1);
+        EasyMock.expect(nodeStub3.getNodeID()).andStubReturn(3);
+
+        EasyMock.expect(edge0to3.getStartingNodeID()).andStubReturn(0);
+        EasyMock.expect(edge0to3.getEndingNodeID()).andStubReturn(3);
+        EasyMock.expect(edge0to3.checkOwningColor()).andStubReturn(PlayerColor.WHITE);
+        EasyMock.expect(edge0to1.getStartingNodeID()).andStubReturn(0);
+        EasyMock.expect(edge0to1.getEndingNodeID()).andStubReturn(1);
+        // Adjacent Edge which Red Owns
+        EasyMock.expect(edge0to1.checkOwningColor()).andStubReturn(PlayerColor.RED);
+
+        EasyMock.replay(nodeStub0, nodeStub3, nodeStub1, edge0to3, edge0to1);
+        b.addGraphNodeObject(nodeStub0);
+        b.addGraphNodeObject(nodeStub3);
+        b.addGraphNodeObject(nodeStub1);
+        b.addGraphNodeConnection(0, edge0to3);
+        b.addGraphNodeConnection(0, edge0to1);
+
+        assertTrue(b.nodeCheckPlayerOwnsNeighboringEdge(PlayerColor.RED, 0));
+
+    }
+
     // checkIfAdjacentNodesNotClaimed() tests
 
     @Test
