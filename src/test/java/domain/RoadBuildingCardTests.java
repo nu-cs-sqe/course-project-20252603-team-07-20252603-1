@@ -41,4 +41,21 @@ public class RoadBuildingCardTests {
 
     EasyMock.verify(player, edge2);
   }
+
+  @Test // Test Case 3
+  public void Play_ValidEdgesZeroRoadsPlaced_ExpectTwoRoadsPlaced() {
+    RoadBuildingCard roadBuildingCard = new RoadBuildingCard();
+
+    Player player = EasyMock.createMock(Player.class);
+    Edge edge1 = EasyMock.createMock(Edge.class);
+    Edge edge2 = EasyMock.createMock(Edge.class);
+
+    player.placeRoad(edge1);
+    player.placeRoad(edge2);
+    EasyMock.replay(player, edge1, edge2);
+
+    roadBuildingCard.play(player, edge1, edge2);
+
+    EasyMock.verify(player, edge1, edge2);
+  }
 }
