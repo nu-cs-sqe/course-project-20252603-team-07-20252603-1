@@ -153,7 +153,13 @@ public class BoardGraph {
 
     // TODO; stub from working on BoardGraphController
     public boolean nodeCheckPlayerOwnsNeighboringEdge(PlayerColor color, int nodeID) {
-        return true;
+        Set<GraphEdge> relevantEdgeSet = getConnectingEdgesByID(nodeID);
+        for (GraphEdge edge : relevantEdgeSet) {
+            if (edge.checkOwningColor() == color) {
+                return true;
+            }
+        }
+        return false;
     }
 
     void buildBoard() {

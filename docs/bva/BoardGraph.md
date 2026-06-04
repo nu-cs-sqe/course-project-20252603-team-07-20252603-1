@@ -215,7 +215,7 @@
 |-------------|-------------------------------------------------------------|-----------------|--------------------|
 | Test Case 1 | Red, checking node 0, Red owns edge connecting to node 0    | True            | :white_check_mark: |
 | Test Case 2 | White, checking node 0, White owns edge conneting to node 0 | True            | :white_check_mark: |
-| Test Case 3 | Blue, checking node 53, does not own any connecting edges   | False           | :x:                |
+| Test Case 3 | Blue, checking node 53, does not own any connecting edges   | False           | :white_check_mark: |
 | Test Case 4 | Orange, checking node 53, does not own any connecting edges | False           | :x:                |
 
 ### Method under test: `checkIfAdjacentNodesNotClaimed(int nodeID)`
