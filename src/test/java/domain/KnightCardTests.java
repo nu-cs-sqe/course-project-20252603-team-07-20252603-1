@@ -189,4 +189,25 @@ public class KnightCardTests {
     EasyMock.verify(robber, player);
   }
 
+
+  @Test // Test Case 9
+  public void Play_ValidTargetWithVictimZeroResources_RobberMovesNoResourceStolen() {
+    KnightCard knightCard = new KnightCard();
+
+    Player player = EasyMock.createMock(Player.class);
+    Robber robber = EasyMock.createMock(Robber.class);
+    Player victim = EasyMock.createMock(Player.class);
+
+    EasyMock.expect(robber.getRobberLocation()).andReturn(0);
+    robber.moveRobber(5);
+    EasyMock.expectLastCall();
+
+    EasyMock.expect(victim.getResources()).andReturn(Map.of());
+
+    EasyMock.replay(player, robber, victim);
+
+    knightCard.play(player, robber, 5, victim);
+
+    EasyMock.verify(robber, player, victim);
+  }
 }
