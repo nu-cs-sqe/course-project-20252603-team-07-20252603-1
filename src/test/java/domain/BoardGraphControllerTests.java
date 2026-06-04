@@ -231,15 +231,32 @@ public class BoardGraphControllerTests {
     // playerClaimStoredEdge Tests
 
     @Test
-    void playerClaimStoredEdge_EdgeUnclaimed_OwnsAdjacencyToStart_ExpectSuccess(){
+    void playerClaimStoredEdge_test01_EdgeUnclaimed_OwnsAdjacencyToStart_ExpectSuccess(){
         BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
         BoardGraphController boardControl = new BoardGraphController(boardMock);
 
+        EasyMock.expect(boardMock.checkEdgeOccupied(0, 3)).andReturn(false);
         EasyMock.expect(boardMock.claimGraphEdgeObject(PlayerColor.RED, 0, 3)).andReturn(true);
 
         EasyMock.replay(boardMock);
 
         boardControl.playerClaimStoredEdge(PlayerColor.RED, 0, 3);
+
+        EasyMock.verify(boardMock);
+    }
+
+    @Test
+    void playerClaimStoredEdge_test02_EdgeClaimed_ExpectError(){
+        BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
+        BoardGraphController boardControl = new BoardGraphController(boardMock);
+
+        EasyMock.expect(boardMock.checkEdgeOccupied(0, 3)).andReturn(true);
+        EasyMock.replay(boardMock);
+
+        Exception exception = assertThrows(IllegalEdgeClaim.class,
+                () -> boardControl.playerClaimStoredEdge(PlayerColor.BLUE, 0, 3));
+
+        assertEquals("Edge already claimed", exception.getMessage());
 
         EasyMock.verify(boardMock);
     }

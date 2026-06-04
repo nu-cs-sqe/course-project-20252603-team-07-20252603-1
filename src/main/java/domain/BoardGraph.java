@@ -71,6 +71,12 @@ public class BoardGraph {
         return nodeOfInterest.checkOccupied();
     }
 
+    public boolean checkEdgeOccupied(int startingNodeID, int endingNodeID) {
+        Set<GraphEdge> setWithRelevantEdge = getConnectingEdgesByID(startingNodeID);
+        GraphEdge edgeToCheck = getMatchingEdgeFromSet(setWithRelevantEdge, startingNodeID, endingNodeID);
+        return edgeToCheck.checkRoadExists();
+    }
+
     boolean checkPlayerOwnsGraphNodeObject(PlayerColor color, int nodeID) {
         GraphNode nodeOfInterest = getGraphNodeByID(nodeID);
         PlayerColor nodeColor = nodeOfInterest.checkColor();

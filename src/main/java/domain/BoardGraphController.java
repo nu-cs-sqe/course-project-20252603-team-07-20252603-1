@@ -65,7 +65,14 @@ public class BoardGraphController {
     }
 
     void playerClaimStoredEdge(PlayerColor color, int startingNodeID, int endingNodeID){
+        handleCheckEdgeIsUnoccupied(startingNodeID, endingNodeID);
         boardGraph.claimGraphEdgeObject(color, startingNodeID, endingNodeID);
+    }
+
+    private void handleCheckEdgeIsUnoccupied(int startingNodeID, int endingNodeID) {
+        if (boardGraph.checkEdgeOccupied(startingNodeID, endingNodeID)) {
+            throw new IllegalEdgeClaim("Edge already claimed");
+        }
     }
 
 }

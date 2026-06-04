@@ -85,10 +85,10 @@
 - Error -> "Edge already claimed"
 
 
-|             | State of the System                                                           | Expected output                                        | Implemented?       |
-|-------------|-------------------------------------------------------------------------------|--------------------------------------------------------|--------------------|
-| Test Case 1 | Red Claims edge0to3, edge unclaimed, owns adjacent road to startingNodeID     | Success                                                | :white_check_mark: |
-| Test Case 2 | Blue Claims edge0to3, edge claimed                                            | Error "Edge already claimed"                           | :x:                |
-| Test Case 3 | Orange Claims edge50to53,  edge unclaimed, owns adjacent road to endingNodeID | Success                                                | :x:                |
-| Test Case 4 | White Claims ID edge50to53, edge unclaimed, owns no adjacencies               | Error -> "Edge must be adjacent to an owned structure" | :x:                |
+|             | State of the System                                             | Expected output                                        | Implemented?       |
+|-------------|-----------------------------------------------------------------|--------------------------------------------------------|--------------------|
+| Test Case 1 | Red Claims edge0to3, edge unclaimed, owns adjacent road         | Success                                                | :white_check_mark: |
+| Test Case 2 | Blue Claims edge0to3, edge claimed                              | Error "Edge already claimed"                           | :white_check_mark: |
+| Test Case 3 | Orange Claims edge50to53,  edge unclaimed, owns adjacent        | Success                                                | :x:                |
+| Test Case 4 | White Claims ID edge50to53, edge unclaimed, owns no adjacencies | Error -> "Edge must be adjacent to an owned structure" | :x:                |
 
