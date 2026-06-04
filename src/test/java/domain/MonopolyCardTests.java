@@ -83,4 +83,19 @@ public class MonopolyCardTests {
 
     EasyMock.verify(player, opponent);
   }
+
+  @Test // Test Case 6
+  public void Play_OneOpponentWithZeroWool_ExpectNoResourcesTransferred() {
+    MonopolyCard monopolyCard = new MonopolyCard();
+
+    Player player = EasyMock.createMock(Player.class);
+    Player opponent = EasyMock.createMock(Player.class);
+
+    EasyMock.expect(opponent.getResourceCount(Resource.WOOL)).andReturn(0);
+    EasyMock.replay(player, opponent);
+
+    monopolyCard.play(player, Resource.WOOL, List.of(opponent));
+
+    EasyMock.verify(player, opponent);
+  }
 }
