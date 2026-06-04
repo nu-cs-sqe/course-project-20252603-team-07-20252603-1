@@ -91,7 +91,7 @@ public class Player {
   }
 
   // TODO: BVA analysis and implementation
-  void updateResources(Resource resource, int amount) {
+  public void updateResources(Resource resource, int amount) {
 
   }
 
