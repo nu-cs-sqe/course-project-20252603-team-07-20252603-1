@@ -69,6 +69,6 @@
 |             | State of the System                                                                       | Expected output                                              | Implemented?       |
 |-------------|-------------------------------------------------------------------------------------------|--------------------------------------------------------------|--------------------|
 | Test Case 1 | Red Claims ID 0, node is not claimed, adjacent nodes unclaimed, player owns adjacent road | True                                                         | :white_check_mark: |
-| Test Case 2 | Blue Claims ID 53, node is not claimed, adjacent nodes claimed, player owns adjacent road | Error "Can not claim node adjacent to node already claimed"  | :x:                |
+| Test Case 2 | Blue Claims ID 53, node is not claimed, adjacent nodes claimed, player owns adjacent road | Error "Can not claim node adjacent to node already claimed"  | :white_check_mark: |
 | Test Case 3 | Orange Claims ID 53, node exists, is claimed                                              | Error "Node already claimed"                                 | :x:                |
 | Test Case 4 | White Claims ID 0, player does not own adjacent road                                      | Error "Must own an adjacent road"                            | :x:                |
