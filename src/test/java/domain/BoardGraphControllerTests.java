@@ -149,6 +149,22 @@ public class BoardGraphControllerTests {
         EasyMock.verify(boardMock);
     }
 
+    //playerClaimStoredNode Test
+    @Test
+    void playerClaimStoredNode_test01_NodeUnclaimed_PlayerOwnsAdjacentEdge_AdjacentNodesUnclaimed_ExpectSuccess(){
+        BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
+        BoardGraphController boardControl = new BoardGraphController(boardMock);
+
+        EasyMock.expect(boardMock.claimGraphNodeObject(PlayerColor.RED, 0)).andReturn(true);
+
+        EasyMock.replay(boardMock);
+
+        boardControl.playerClaimStoredNode(PlayerColor.RED, 0);
+
+        EasyMock.verify(boardMock);
+
+    }
+
 }
 
 

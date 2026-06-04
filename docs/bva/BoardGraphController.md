@@ -48,3 +48,27 @@
 | Test Case 4 | White Claims ID edge50to53, just claimed node 53, edge unclaimed | True                                                                              | :white_check_mark: |
 | Test Case 5 | White Claims edge adjacent to node 0, which they do not own      | Error "During setup phase, player must own node next to edge they want to claim"  | :white_check_mark: |
 
+
+
+### Method under test: `playerClaimStoredNode(PlayerColor color, int NodeID)`
+
+#### Inputs:
+- State of graph -> Adjacent node is claimed or not; player owns adjacent rode or not
+- State of Node -> claimed or not
+- PlayerColor Color -> Cases -> [Red, Blue, Orange, White]
+
+#### Outputs:
+- Change of state of color class -> will need to Mock
+- True -> on success
+- Error class: IllegalSettlementPlacementException
+- Error 1 -> "Node does not exist"
+- Error 2 -> "Node already claimed"
+- Error 3 -> "Can not claim node adjacent to node already claimed"
+
+
+|             | State of the System                                                                       | Expected output                                              | Implemented?       |
+|-------------|-------------------------------------------------------------------------------------------|--------------------------------------------------------------|--------------------|
+| Test Case 1 | Red Claims ID 0, node is not claimed, adjacent nodes unclaimed, player owns adjacent road | True                                                         | :white_check_mark: |
+| Test Case 2 | Blue Claims ID 53, node is not claimed, adjacent nodes claimed, player owns adjacent road | Error "Can not claim node adjacent to node already claimed"  | :x:                |
+| Test Case 3 | Orange Claims ID 53, node exists, is claimed                                              | Error "Node already claimed"                                 | :x:                |
+| Test Case 4 | White Claims ID 0, player does not own adjacent road                                      | Error "Must own an adjacent road"                            | :x:                |

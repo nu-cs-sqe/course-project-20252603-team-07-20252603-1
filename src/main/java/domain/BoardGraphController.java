@@ -38,14 +38,23 @@ public class BoardGraphController {
         }
     }
 
-/*
-// TODO for the non-setup phase
 
-    boolean playerClaimStoredNode(PlayerColor color, int nodeID) {
-        //Node must be next to a built road, and not adjacent to any other claimed nodes
-        return false;
+    void playerClaimStoredNode(PlayerColor color, int nodeID) {
+        handleCheckNodeIsUnoccupied(nodeID);
+        handleCheckAdjacentNodesNotClaimed(nodeID);
+        handleCheckPlayerOwnsNeighboringEdge(color, nodeID);
+        boardGraph.claimGraphNodeObject(color, nodeID);
     }
- */
+
+    private void handleCheckNodeIsUnoccupied(int nodeID) {
+    }
+
+    private void handleCheckPlayerOwnsNeighboringEdge(PlayerColor color, int nodeID) {
+    }
+
+    private void handleCheckAdjacentNodesNotClaimed(int nodeID) {
+    }
+
 }
 
 
