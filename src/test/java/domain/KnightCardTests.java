@@ -166,4 +166,22 @@ public class KnightCardTests {
     assertEquals("Must move robber to a different hex.", exception.getMessage());
     EasyMock.verify(player, victim);
   }
+
+  @Test // Test Case 8
+  public void Play_ValidTargetWithNullVictim_RobberMovesNoResourceStolen() {
+    KnightCard knightCard = new KnightCard();
+
+    Player player = EasyMock.createMock(Player.class);
+    Robber robber = EasyMock.createMock(Robber.class);
+
+    EasyMock.expect(robber.getRobberLocation()).andReturn(0);
+    robber.moveRobber(5);
+    EasyMock.expectLastCall();
+
+    EasyMock.replay(player, robber);
+
+    knightCard.play(player, robber, 5, null);
+
+    EasyMock.verify(robber, player);
+  }
 }
