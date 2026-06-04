@@ -157,6 +157,7 @@ public class BoardGraphControllerTests {
 
         EasyMock.expect(boardMock.checkNodeOccupied(0)).andReturn(false);
         EasyMock.expect(boardMock.checkIfAdjacentNodesNotClaimed(0)).andReturn(true);
+        EasyMock.expect(boardMock.nodeCheckPlayerOwnsNeighboringEdge(PlayerColor.RED, 0)).andReturn(true);
 
         EasyMock.expect(boardMock.claimGraphNodeObject(PlayerColor.RED, 0)).andReturn(true);
 
@@ -200,6 +201,27 @@ public class BoardGraphControllerTests {
                 ()->boardControl.playerClaimStoredNode(PlayerColor.ORANGE, 53));
 
         assertEquals("Node already claimed",
+                exception.getMessage());
+
+        EasyMock.verify(boardMock);
+
+    }
+
+    @Test
+    void playerClaimStoredNode_test04_PlayerOwnsNoAdjacentRoads_ExpectError(){
+        BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
+        BoardGraphController boardControl = new BoardGraphController(boardMock);
+
+        EasyMock.expect(boardMock.checkNodeOccupied(0)).andReturn(false);
+        EasyMock.expect(boardMock.checkIfAdjacentNodesNotClaimed(0)).andReturn(true);
+        EasyMock.expect(boardMock.nodeCheckPlayerOwnsNeighboringEdge(PlayerColor.WHITE, 0)).andReturn(false);
+
+        EasyMock.replay(boardMock);
+
+        Exception exception = assertThrows(IllegalSettlementPlacementException.class,
+                ()->boardControl.playerClaimStoredNode(PlayerColor.WHITE, 0));
+
+        assertEquals("Must own an adjacent road to claim node",
                 exception.getMessage());
 
         EasyMock.verify(boardMock);

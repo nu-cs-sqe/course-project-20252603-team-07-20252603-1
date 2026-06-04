@@ -53,6 +53,9 @@ public class BoardGraphController {
     }
 
     private void handleCheckPlayerOwnsNeighboringEdge(PlayerColor color, int nodeID) {
+        if (!boardGraph.nodeCheckPlayerOwnsNeighboringEdge(color, nodeID)) {
+            throw new IllegalSettlementPlacementException("Must own an adjacent road to claim node");
+        }
     }
 
     private void handleCheckAdjacentNodesNotClaimed(int nodeID) {

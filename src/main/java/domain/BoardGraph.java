@@ -145,6 +145,11 @@ public class BoardGraph {
         return startingNode.checkColor() == color || endingNode.checkColor() == color;
     }
 
+    // TODO; stub from working on BoardGraphController
+    public boolean nodeCheckPlayerOwnsNeighboringEdge(PlayerColor color, int nodeID) {
+        return true;
+    }
+
     void buildBoard() {
         // add all the graphNodes
         for (int i = 0; i < 54; i++) {
