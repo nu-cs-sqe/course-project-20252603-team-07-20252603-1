@@ -1,6 +1,7 @@
 package domain;
 
 import java.util.List;
+import java.util.Map;
 
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
@@ -64,5 +65,22 @@ public class MonopolyCardTests {
     monopolyCard.play(player, Resource.BRICK, List.of());
 
     EasyMock.verify(player);
+  }
+
+  @Test // Test Case 5
+  public void Play_OneOpponentWithFiveOre_ExpectTransferFiveOre() {
+    MonopolyCard monopolyCard = new MonopolyCard();
+
+    Player player = EasyMock.createMock(Player.class);
+    Player opponent = EasyMock.createMock(Player.class);
+
+    EasyMock.expect(opponent.getResourceCount(Resource.ORE)).andReturn(5);
+    opponent.updateResources(Resource.ORE, -5);
+    player.receiveResources(Map.of(Resource.ORE, 5));
+    EasyMock.replay(player, opponent);
+
+    monopolyCard.play(player, Resource.ORE, List.of(opponent));
+
+    EasyMock.verify(player, opponent);
   }
 }
