@@ -1,9 +1,9 @@
 package ui.view;
 
 import domain.model.Board;
-import domain.model.DiceRoller;
 import domain.model.GameModel;
 import domain.model.resources.ResourceDeck;
+import java.text.MessageFormat;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -11,7 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import ui.controller.GameLoopController;
+import ui.ViewContext;
 
 
 public class GameRoundView {
@@ -23,8 +23,7 @@ public class GameRoundView {
     private static final String DICE_READOUT_CSS = "dice-readout";
 
     private final GameModel model;
-    private final GameLoopController controller;
-    private final DiceRoller diceRoller;
+    private final ViewContext context;
     private final ResourceDeck deck;
 
     private final CurrentPlayerBanner banner;
@@ -33,19 +32,17 @@ public class GameRoundView {
     private final BorderPane root;
 
     public GameRoundView(RoundNavigator navigator,
-                         GameLoopController controller,
+                         ViewContext context,
                          GameModel model,
-                         DiceRoller diceRoller,
                          ResourceDeck deck,
                          Board board) {
         this.model = model;
-        this.controller = controller;
-        this.diceRoller = diceRoller;
+        this.context = context;
         this.deck = deck;
 
-        this.banner = new CurrentPlayerBanner();
+        this.banner = new CurrentPlayerBanner(context.labels());
         this.lastRollLabel = buildLastRollLabel();
-        this.resourcesPanel = new PlayerResourcesPanel(controller, model);
+        this.resourcesPanel = new PlayerResourcesPanel(context.loop(), model, context.labels());
         this.root = buildLayout(board);
 
         beginTurn();
@@ -59,21 +56,21 @@ public class GameRoundView {
         BorderPane pane = new BorderPane();
         pane.getStyleClass().add(GAME_ROOT_CSS);
         pane.setTop(banner.getRoot());
-        pane.setCenter(new BoardPlaceholderView(board).getRoot());
+        pane.setCenter(new BoardPlaceholderView(board, context.labels()).getRoot());
         pane.setRight(buildResourcesSection());
         pane.setBottom(buildControlsBar());
         return pane;
     }
 
     private VBox buildResourcesSection() {
-        VBox section = new VBox(new Label("Resources"), resourcesPanel.getRoot());
+        VBox section = new VBox(new Label(context.labels().getString("round.resources")), resourcesPanel.getRoot());
         section.getStyleClass().add(SECTION_CSS);
         section.setPadding(new Insets(SECTION_PADDING_PX));
         return section;
     }
 
     private HBox buildControlsBar() {
-        Button endTurnButton = new Button("End Turn");
+        Button endTurnButton = new Button(context.labels().getString("round.endTurn"));
         endTurnButton.setOnAction(e -> onEndTurn());
         HBox bar = new HBox(lastRollLabel, endTurnButton);
         bar.getStyleClass().add(BUTTON_BAR_CSS);
@@ -87,14 +84,14 @@ public class GameRoundView {
     }
 
     private void onEndTurn() {
-        controller.endTurn(model);
+        context.loop().endTurn(model);
         beginTurn();
     }
 
     private void beginTurn() {
-        int roll = controller.rollDiceAndDistribute(model, diceRoller, deck);
-        lastRollLabel.setText(String.format("Rolled: %d", roll));
-        banner.update(controller.getCurrentPlayer(model));
+        int roll = context.loop().rollDiceAndDistribute(model, context.dice(), deck);
+        lastRollLabel.setText(MessageFormat.format(context.labels().getString("round.rolled"), roll));
+        banner.update(context.loop().getCurrentPlayer(model));
         resourcesPanel.refresh();
     }
 }

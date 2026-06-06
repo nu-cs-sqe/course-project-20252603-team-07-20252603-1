@@ -1,10 +1,8 @@
 package ui;
 
-import domain.model.DiceRoller;
 import domain.model.GameModel;
 import domain.model.GameSetupModel;
 import javafx.scene.Scene;
-import ui.controller.GameLoopController;
 import ui.controller.GameSetupController;
 import ui.view.GameRoundView;
 import ui.view.HomeScreenView;
@@ -16,63 +14,57 @@ import ui.view.SetupSummaryView;
 
 public class Navigator implements SetupNavigator, RoundNavigator {
     private final Scene scene;
-    private final GameSetupController setupController;
-    private final GameLoopController loopController;
-    private final DiceRoller diceRoller;
+    private final ViewContext context;
 
     private GameSetupModel setupModel;
     private GameModel gameModel;
 
-    public Navigator(Scene scene,
-                     GameSetupController setupController,
-                     GameLoopController loopController,
-                     DiceRoller diceRoller) {
+    public Navigator(Scene scene, ViewContext context) {
         this.scene = scene;
-        this.setupController = setupController;
-        this.loopController = loopController;
-        this.diceRoller = diceRoller;
+        this.context = context;
         this.setupModel = new GameSetupModel();
     }
 
     @Override
     public void goToHome() {
-        scene.setRoot(new HomeScreenView(this).getRoot());
+        scene.setRoot(new HomeScreenView(this, context).getRoot());
     }
 
     @Override
     public void goToPlayerCount() {
-        scene.setRoot(new PlayerCountView(this).getRoot());
+        scene.setRoot(new PlayerCountView(this, context).getRoot());
     }
 
     @Override
     public void goToPlayerConfig(int count) {
         setupModel = new GameSetupModel();
-        scene.setRoot(new PlayerConfigView(this, setupController, setupModel, count).getRoot());
+        scene.setRoot(new PlayerConfigView(this, context, setupModel, count).getRoot());
     }
 
     @Override
     public void goToSetupSummary() {
-        setupController.initializeResourceDeck(setupModel);
-        setupController.initializeDevelopmentCardDeck(setupModel);
-        setupController.determineTurnOrder(setupModel);
-        scene.setRoot(new SetupSummaryView(this, setupController, setupModel).getRoot());
+        GameSetupController setup = context.setup();
+        setup.initializeResourceDeck(setupModel);
+        setup.initializeDevelopmentCardDeck(setupModel);
+        setup.determineTurnOrder(setupModel);
+        scene.setRoot(new SetupSummaryView(this, context, setupModel).getRoot());
     }
 
     @Override
     public void startGame() {
-        gameModel = new GameModel(setupController.getTurnOrder(setupModel));
+        gameModel = new GameModel(context.setup().getTurnOrder(setupModel));
         goToGameRound();
     }
 
     @Override
     public void goToGameRound() {
+        GameSetupController setup = context.setup();
         scene.setRoot(new GameRoundView(
                 this,
-                loopController,
+                context,
                 gameModel,
-                diceRoller,
-                setupController.getResourceDeck(setupModel),
-                setupController.getBoard(setupModel)
+                setup.getResourceDeck(setupModel),
+                setup.getBoard(setupModel)
         ).getRoot());
     }
 }

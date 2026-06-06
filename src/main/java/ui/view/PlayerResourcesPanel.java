@@ -13,6 +13,7 @@ import javafx.scene.layout.Region;
 import ui.controller.GameLoopController;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class PlayerResourcesPanel {
 
@@ -33,10 +34,12 @@ public class PlayerResourcesPanel {
     private final GridPane root;
     private final GameModel model;
     private final GameLoopController controller;
+    private final ResourceBundle labels;
 
-    public PlayerResourcesPanel(GameLoopController controller, GameModel model) {
+    public PlayerResourcesPanel(GameLoopController controller, GameModel model, ResourceBundle labels) {
         this.controller = controller;
         this.model = model;
+        this.labels = labels;
         this.root = new GridPane();
         this.root.getStyleClass().add(PANEL_CSS);
         refresh();
@@ -53,9 +56,9 @@ public class PlayerResourcesPanel {
     }
 
     private void addHeaderRow() {
-        root.add(buildHeaderCell("Player"), PLAYER_NAME_COLUMN, HEADER_ROW);
+        root.add(buildHeaderCell(labels.getString("resources.playerHeader")), PLAYER_NAME_COLUMN, HEADER_ROW);
         for (int resourceIdx = 0; resourceIdx < RESOURCE_COLUMNS.length; resourceIdx++) {
-            root.add(buildHeaderCell(RESOURCE_COLUMNS[resourceIdx].name()),
+            root.add(buildHeaderCell(labels.getString("resource." + RESOURCE_COLUMNS[resourceIdx].name())),
                     FIRST_RESOURCE_COLUMN + resourceIdx, HEADER_ROW);
         }
     }

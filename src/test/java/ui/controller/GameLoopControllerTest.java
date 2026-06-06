@@ -1,4 +1,4 @@
-how package ui.controller;
+package ui.controller;
 
 import domain.model.DiceRoller;
 import domain.model.GameModel;

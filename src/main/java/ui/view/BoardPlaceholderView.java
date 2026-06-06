@@ -7,6 +7,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class BoardPlaceholderView {
 
@@ -14,8 +15,8 @@ public class BoardPlaceholderView {
 
     private final VBox root;
 
-    public BoardPlaceholderView(Board board) {
-        root = buildGrid(board.getHexOrder());
+    public BoardPlaceholderView(Board board, ResourceBundle labels) {
+        root = buildGrid(board.getHexOrder(), labels);
     }
 
     public Parent getRoot() {
@@ -23,11 +24,11 @@ public class BoardPlaceholderView {
     }
 
     //TODO: make with actual hexes instead of rectangles
-    private static VBox buildGrid(List<String> hexes) {
+    private static VBox buildGrid(List<String> hexes, ResourceBundle labels) {
         HBox[] rows = new HBox[HEX_ROW_SIZES.length];
         int idx = 0;
         for (int i = 0; i < rows.length; i++) {
-            rows[i] = buildRow(hexes, idx, HEX_ROW_SIZES[i]);
+            rows[i] = buildRow(hexes, idx, HEX_ROW_SIZES[i], labels);
             idx += HEX_ROW_SIZES[i];
         }
         VBox grid = new VBox(rows);
@@ -35,18 +36,19 @@ public class BoardPlaceholderView {
         return grid;
     }
 
-    private static HBox buildRow(List<String> hexes, int startIdx, int rowSize) {
+    private static HBox buildRow(List<String> hexes, int startIdx, int rowSize, ResourceBundle labels) {
         Label[] cells = new Label[rowSize];
         for (int i = 0; i < rowSize; i++) {
-            cells[i] = buildHex(hexes.get(startIdx + i));
+            cells[i] = buildHex(hexes.get(startIdx + i), labels);
         }
         HBox row = new HBox(cells);
         row.getStyleClass().add("hex-row");
         return row;
     }
 
-    private static Label buildHex(String type) {
-        Label hex = new Label(type);
+    private static Label buildHex(String type, ResourceBundle labels) {
+        // Display name is localized; the CSS class keeps the canonical hex type.
+        Label hex = new Label(labels.getString("hex." + type));
         hex.getStyleClass().addAll("hex", String.format("hex-%s", type.toLowerCase()));
         return hex;
     }

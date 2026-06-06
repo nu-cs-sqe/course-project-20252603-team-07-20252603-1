@@ -10,28 +10,35 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import ui.ViewContext;
 import ui.controller.GameSetupController;
 
+import java.text.MessageFormat;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class SetupSummaryView {
 
     private static final int[] HEX_ROW_SIZES = {3, 4, 5, 4, 3};
 
     private final ScrollPane root;
+    private final ResourceBundle labels;
 
-    public SetupSummaryView(SetupNavigator navigator, GameSetupController controller, GameSetupModel model) {
-        Label header = new Label("Game Setup Complete");
+    public SetupSummaryView(SetupNavigator navigator, ViewContext context, GameSetupModel model) {
+        this.labels = context.labels();
+        GameSetupController controller = context.setup();
+
+        Label header = new Label(labels.getString("summary.title"));
         header.getStyleClass().add("title");
 
         VBox turnOrder = buildTurnOrderSection(controller, model);
         VBox board = buildBoardSection(controller, model);
         VBox decks = buildDecksSection(controller, model);
 
-        Button homeButton = new Button("Back to Home");
+        Button homeButton = new Button(labels.getString("common.backToHome"));
         homeButton.setOnAction(e -> navigator.goToHome());
 
-        Button startGameButton = new Button("Start Game");
+        Button startGameButton = new Button(labels.getString("common.startGame"));
         startGameButton.setDisable(controller.getTurnOrder(model).isEmpty());
         startGameButton.setOnAction(e -> navigator.startGame());
 
@@ -50,7 +57,7 @@ public class SetupSummaryView {
     }
 
     private VBox buildTurnOrderSection(GameSetupController controller, GameSetupModel model) {
-        Label heading = new Label("Turn Order");
+        Label heading = new Label(labels.getString("summary.turnOrder"));
         heading.getStyleClass().add("section-heading");
 
         VBox playerLines = new VBox();
@@ -75,7 +82,7 @@ public class SetupSummaryView {
     }
 
     private VBox buildBoardSection(GameSetupController controller, GameSetupModel model) {
-        Label heading = new Label("Board Layout");
+        Label heading = new Label(labels.getString("summary.boardLayout"));
         heading.getStyleClass().add("section-heading");
 
         Board board = controller.getBoard(model);
@@ -90,7 +97,8 @@ public class SetupSummaryView {
             row.getStyleClass().add("hex-row");
             for (int j = 0; j < rowSize; j++) {
                 String type = hexes.get(idx++);
-                Label hex = new Label(type);
+                // Display name is localized; the CSS class keeps the canonical hex type.
+                Label hex = new Label(labels.getString("hex." + type));
                 hex.getStyleClass().addAll("hex", "hex-" + type.toLowerCase());
                 row.getChildren().add(hex);
             }
@@ -103,14 +111,16 @@ public class SetupSummaryView {
     }
 
     private VBox buildDecksSection(GameSetupController controller, GameSetupModel model) {
-        Label heading = new Label("Decks");
+        Label heading = new Label(labels.getString("summary.decks"));
         heading.getStyleClass().add("section-heading");
 
         int resourceCount = controller.getResourceDeck(model).getTotalCards();
         int devCount = controller.getDevelopmentCardDeck(model).countRemaining();
 
-        Label resources = new Label("Resource cards: " + resourceCount);
-        Label dev = new Label("Development cards: " + devCount);
+        Label resources = new Label(
+                MessageFormat.format(labels.getString("summary.resourceCards"), resourceCount));
+        Label dev = new Label(
+                MessageFormat.format(labels.getString("summary.developmentCards"), devCount));
 
         VBox section = new VBox(heading, resources, dev);
         section.getStyleClass().add("summary-section");
