@@ -25,6 +25,8 @@ public class PlayerState {
         // As such, the way that keeps track of resources is by using a Map
         // From resource Type to int (i.e. wood -> 3)
         // I've edited the methods below to use this map
+        // At some point in the future, we will mutate their use of the player class
+        // to use the PlayerState class, this is just in anticipation for that
         for (Resource r : Resource.values()){
             resourceCount.put(r, 0);
         }
@@ -64,16 +66,19 @@ public class PlayerState {
     }
 
     // Defined while working on GameModel
+    //TODO
     public boolean reduceResources(Resource r, int amount) {
         return true;
     }
 
     // Defined while working on GameModel
+    //TODO
     public int getSettlementCount() {
         return this.numSettlement;
     }
 
     // Defined while working on GameModel
+    //TODO
     public void increaseSettlementCount() {
         this.numSettlement++;
     }
