@@ -29,13 +29,13 @@ Step 3:
 - Output: Hexes have player in list of settlements, hex player list not updated
 - Output: "Out of bounds nodeId", "Node already occupied"
 
-|             | System under test                                              | Expected output                                                              | Implemented? |
-|-------------|----------------------------------------------------------------|------------------------------------------------------------------------------|--------------|
-| Test Case 1 | RED tries to claim node 0, which is free                       | RED now owns node 0, RED now in Hex city lists                               | x            |
-| Test Case 2 | BLUE tries to claim node 53, which is free                     | BLUE now owns node 53, BLUE now in Hex city lists                            | x            |
-| Test Case 3 | ORANGE tries to claim node -1                                  | "Out of bounds nodeId", still unoccupied                                     | x            |
-| Test Case 4 | WHITE tries to claim node 54                                   | "Out of bounds nodeId", still unoccupied                                     | x            |
-| Test Case 5 | ORANGE tries to claim node 10, which is already owned by WHITE | "Node already occupied", still occupied by WHITE, Hex city lists not updated | x            |
+|             | System under test                                              | Expected output                                                              | Implemented?       |
+|-------------|----------------------------------------------------------------|------------------------------------------------------------------------------|--------------------|
+| Test Case 1 | RED tries to claim node 0, which is free                       | RED now owns node 0, RED now in Hex city lists                               | :white_check_mark: |
+| Test Case 2 | BLUE tries to claim node 53, which is free                     | BLUE now owns node 53, BLUE now in Hex city lists                            | x                  |
+| Test Case 3 | ORANGE tries to claim node -1                                  | "Out of bounds nodeId", still unoccupied                                     | x                  |
+| Test Case 4 | WHITE tries to claim node 54                                   | "Out of bounds nodeId", still unoccupied                                     | x                  |
+| Test Case 5 | ORANGE tries to claim node 10, which is already owned by WHITE | "Node already occupied", still occupied by WHITE, Hex city lists not updated | x                  |
 
 
 ### Method under test: `buildCity(Player player, int nodeId)`

@@ -3,7 +3,7 @@ package domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class Hex {
+public class Hex {
   private static final int MIN_HEX_ID = 0;
   private static final int MAX_HEX_ID = 18;
 
@@ -127,5 +127,10 @@ public final class Hex {
 
   public boolean isPlayerCityOnHex(Player player) {
     return playerCities.contains(player);
+  }
+
+  @Override
+  protected final void finalize() {
+    // intentionally empty — blocks finalizer attacks
   }
 }
