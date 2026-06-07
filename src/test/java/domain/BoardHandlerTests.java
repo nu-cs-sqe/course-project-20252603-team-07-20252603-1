@@ -282,5 +282,38 @@ public class BoardHandlerTests {
         assertEquals(expectedMessage, actualMessage);
     }
 
+    // Test Case 11
+    @Test
+    void RedBuildsCityOnNodeSix_BlueOwnsNodeSix_ThrowsError(){
+        EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE);
+        EasyMock.expect(mockRedPlayer.getPlayerColor()).andReturn(PlayerColor.RED);
+
+        PlayerColor expectedColor = PlayerColor.BLUE;
+
+        mockBoardGraphController.playerClaimStoredNode(expectedColor, 6);
+        EasyMock.expectLastCall();
+
+        mockHexes.get(2).addPlayerSettlementToHex(mockBluePlayer);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(mockBoardGraphController, mockBluePlayer, mockHexes.get(2));
+
+        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes);
+
+        b.buildSettlement(mockBluePlayer, 6);
+
+        Exception exception = assertThrows(IllegalStateException.class, () -> {
+            b.buildCity(mockRedPlayer, 6);
+        });
+
+        EasyMock.verify(mockBoardGraphController, mockBluePlayer, mockHexes.get(2));
+
+        String expectedMessage = "Node owned by other player, cannot build here.";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+
+        assertTrue(b.checkPlayerOwnsNode(expectedColor, 6));
+    }
+
 
 }

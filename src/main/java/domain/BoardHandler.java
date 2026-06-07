@@ -65,6 +65,10 @@ public class BoardHandler {
         if (nodeId < 0 || nodeId > 53){
             throw new IllegalArgumentException("Invalid NodeID - must be within [0, 53].");
         }
+        PlayerColor claimingColor = player.getPlayerColor();
+        if (!checkPlayerOwnsNode(claimingColor, nodeId)){
+            throw new IllegalStateException("Node owned by other player, cannot build here.");
+        }
         List<Integer> hexIds = nodeIdToHexes.get(nodeId);
         for (int hexId : hexIds){
             hexes.get(hexId).removePlayerSettlementFromHex(player);

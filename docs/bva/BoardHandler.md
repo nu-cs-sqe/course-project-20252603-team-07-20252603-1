@@ -62,7 +62,8 @@ Step 3:
 - Input: RED, BLUE, ORANGE, WHITE
 - Input: 0, 53, -1, 54
 - Input: Node is adjacent to 1, 2, or 3 hexes
-- Output: Node occupied, node not occupied, node still occupied by other player (was already occupied by other player)
+- Output: Node occupied, node not occupied, node still occupied by other player (was already occupied by other player) 
+  - Note: Needed for cities, but not settlements, as claiming a node in BoardGraph already handles already owning a node, but isn't called here
 - Output: Hex has player in list of cities, hex player list not updated - For integration testing, not unit testable
 - Output: Player cities list updated or not (Other validation completed by Player BVA testing)
 - Output: "Out of bounds nodeId", "Must build a settlement before building a city"
