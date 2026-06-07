@@ -62,7 +62,7 @@ public class BoardHandler {
     }
 
     void buildCity(Player player, int nodeId){
-        if (nodeId < 0){
+        if (nodeId < 0 || nodeId > 53){
             throw new IllegalArgumentException("Invalid NodeID - must be within [0, 53].");
         }
         List<Integer> hexIds = nodeIdToHexes.get(nodeId);
