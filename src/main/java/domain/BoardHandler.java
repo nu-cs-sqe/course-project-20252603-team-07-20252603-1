@@ -10,7 +10,7 @@ public class BoardHandler {
     private BoardGraphController boardGraphController;
     private List<Hex> hexes;
     private Map<Integer, List<Integer>> nodeIdToHexes;
-    private Integer[] nodeBuildingLevels;
+    private int[] nodeBuildingLevels;
     private PlayerColor[] nodeOwners;
 
     // private constructor for testing
@@ -18,7 +18,7 @@ public class BoardHandler {
         this.boardGraphController = boardGraphController;
         this.hexes = hexes;
         this.nodeIdToHexes = nodeIdToHexes;
-        this.nodeBuildingLevels = new Integer[54];
+        this.nodeBuildingLevels = new int[54];
         this.nodeOwners = new PlayerColor[54];
         Arrays.fill(this.nodeOwners, PlayerColor.SETUP);
     }
@@ -34,7 +34,7 @@ public class BoardHandler {
         this.boardGraphController = new BoardGraphController(constructorGraph);
         this.hexes = initHexes();
         this.nodeIdToHexes = initNodeHexMap();
-        this.nodeBuildingLevels = new Integer[54];
+        this.nodeBuildingLevels = new int[54];
         this.nodeOwners = new PlayerColor[54];
         Arrays.fill(this.nodeOwners, PlayerColor.SETUP);
     }
@@ -65,10 +65,16 @@ public class BoardHandler {
         if (nodeId < 0 || nodeId > 53){
             throw new IllegalArgumentException("Invalid NodeID - must be within [0, 53].");
         }
+
         PlayerColor claimingColor = player.getPlayerColor();
-        if (!checkPlayerOwnsNode(claimingColor, nodeId)){
+        if (!checkPlayerOwnsNode(claimingColor, nodeId) && getNodeBuildingLevel(nodeId) != 0){
             throw new IllegalStateException("Node owned by other player, cannot build here.");
         }
+
+        if (getNodeBuildingLevel(nodeId) != SETTLEMENT_LEVEL){
+            throw new IllegalStateException("Must upgrade a settlement to a city.");
+        }
+
         List<Integer> hexIds = nodeIdToHexes.get(nodeId);
         for (int hexId : hexIds){
             hexes.get(hexId).removePlayerSettlementFromHex(player);

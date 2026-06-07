@@ -66,7 +66,7 @@ Step 3:
   - Note: Needed for cities, but not settlements, as claiming a node in BoardGraph already handles already owning a node, but isn't called here
 - Output: Hex has player in list of cities, hex player list not updated - For integration testing, not unit testable
 - Output: Player cities list updated or not (Other validation completed by Player BVA testing)
-- Output: "Out of bounds nodeId", "Must build a settlement before building a city"
+- Output: "Out of bounds nodeId", "Must upgrade a settlement to a city."
 
 |              | System under test                                                       | Expected output                                                                                          | Implemented?       |
 |--------------|-------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|--------------------|
@@ -74,8 +74,8 @@ Step 3:
 | Test Case 8  | BLUE tries to build a city on node 53, which they had a settlement on   | Calls to remove BLUE settlement to hex 53 and add BLUE city to hex 53, node level is city, owned by BLUE | :white_check_mark: |
 | Test Case 9  | ORANGE tries to build a city on node -1                                 | "Invalid NodeID - must be within [0, 53]."                                                               | :white_check_mark: |
 | Test Case 10 | WHITE tries to build a city on node 54                                  | "Invalid NodeID - must be within [0, 53]."                                                               | :white_check_mark: |
-| Test Case 11 | RED tries to build a city on node 6, which BLUE owns                    | "Node owned by other player, cannot build here.", no calls to hex, still owned by BLUE                   | x                  |
-| Test Case 12 | BLUE tries to build a city on node 36, which is unoccupied              | "Must build a settlement before building a city", no calls to hex, still unowned and level 0             | x                  |
+| Test Case 11 | RED tries to build a city on node 6, which BLUE owns                    | "Node owned by other player, cannot build here.", no calls to hex, still owned by BLUE                   | :white_check_mark: |
+| Test Case 12 | BLUE tries to build a city on node 36, which is unoccupied              | "Must upgrade a settlement to a city.", no calls to hex, still unowned and level 0                       | :white_check_mark: |
 | Test Case 13 | ORANGE tries to build a city on node 20, which they had a settlement on | Calls to remove ORANGE settlement and add city to hexes 6 and 11, node level is city, owned by ORANGE    | x                  |
 | Test Case 14 | RED tries to build a city on node 24, which they had a settlement on    | Calls to remove RED settlement and add city to hexes 5, 9, and 10, node level is city, owned by RED      | x                  |
 

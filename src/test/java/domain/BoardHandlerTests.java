@@ -187,7 +187,7 @@ public class BoardHandlerTests {
     // Test Case 7
     @Test
     void RedBuildsCityOnOwnedNodeZero_HexRemovesSettlement_AddsCity(){
-        EasyMock.expect(mockRedPlayer.getPlayerColor()).andReturn(PlayerColor.RED);
+        EasyMock.expect(mockRedPlayer.getPlayerColor()).andReturn(PlayerColor.RED).times(2);
 
         PlayerColor expectedColor = PlayerColor.RED;
 
@@ -222,7 +222,7 @@ public class BoardHandlerTests {
     // Test Case 8
     @Test
     void BlueBuildsCityOnOwnedNodeFiftyThree_HexRemovesSettlement_AddsCity(){
-        EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE);
+        EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE).times(2);
 
         PlayerColor expectedColor = PlayerColor.BLUE;
 
@@ -315,5 +315,28 @@ public class BoardHandlerTests {
         assertTrue(b.checkPlayerOwnsNode(expectedColor, 6));
     }
 
+    // Test Case 12
+    @Test
+    void BlueBuildsCity_OnUnclaimedNode_ThrowsError() {
+        EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE);
+
+        EasyMock.replay(mockBluePlayer);
+
+        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes);
+
+        Exception exception = assertThrows(IllegalStateException.class, () -> {
+            b.buildCity(mockBluePlayer, 36);
+        });
+
+        String expectedMessage = "Must upgrade a settlement to a city.";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+
+        EasyMock.verify(mockBluePlayer);
+
+        int expected = 0;
+        int actual = b.getNodeBuildingLevel(36);
+        assertEquals(expected, actual);
+    }
 
 }
