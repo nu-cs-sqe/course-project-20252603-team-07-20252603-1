@@ -1,20 +1,26 @@
 package domain;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BoardHandler {
+    // static fields to represent the type of building on a node
+    private static final int SETTLEMENT_LEVEL = 1;
+    private static final int CITY_LEVEL = 2;
+
     private BoardGraphController boardGraphController;
     private List<Hex> hexes;
     private Map<Integer, List<Integer>> nodeIdToHexes;
+    private Integer[] nodeBuildingLevels;
+    private PlayerColor[] nodeOwners;
 
     // private constructor for testing
     private BoardHandler(BoardGraphController boardGraphController, List<Hex> hexes, Map<Integer, List<Integer>> nodeIdToHexes) {
         this.boardGraphController = boardGraphController;
         this.hexes = hexes;
         this.nodeIdToHexes = nodeIdToHexes;
+        this.nodeBuildingLevels = new Integer[54];
+        this.nodeOwners = new PlayerColor[54];
+        Arrays.fill(this.nodeOwners, PlayerColor.SETUP);
     }
 
     // static factory method that calls the private constructor
@@ -28,6 +34,9 @@ public class BoardHandler {
         this.boardGraphController = new BoardGraphController(constructorGraph);
         this.hexes = initHexes();
         this.nodeIdToHexes = initNodeHexMap();
+        this.nodeBuildingLevels = new Integer[54];
+        this.nodeOwners = new PlayerColor[54];
+        Arrays.fill(this.nodeOwners, PlayerColor.SETUP);
     }
 
     void buildSettlement(Player player, int nodeId){
@@ -40,10 +49,22 @@ public class BoardHandler {
         for (int hexId : hexIds){
             hexes.get(hexId).addPlayerSettlementToHex(player);
         }
+        nodeOwners[nodeId] = claimingColor;
+        nodeBuildingLevels[nodeId] = SETTLEMENT_LEVEL;
+    }
+
+    boolean checkPlayerOwnsNode(PlayerColor playerColor, Integer nodeId){
+        return nodeOwners[nodeId] == playerColor;
+    }
+
+    Integer getNodeBuildingLevel(Integer nodeId){
+        return nodeBuildingLevels[nodeId];
     }
 
     void buildCity(Player player, int nodeId){
-
+        hexes.get(nodeId).removePlayerSettlementFromHex(player);
+        hexes.get(nodeId).addPlayerCityToHex(player);
+        nodeBuildingLevels[nodeId] = CITY_LEVEL;
     }
 
     void addRoad(int edgeId){

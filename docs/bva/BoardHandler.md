@@ -25,18 +25,18 @@ Step 3:
 - Input: RED, BLUE, ORANGE, WHITE
 - Input: 0, 53, -1, 54
 - Input: Node is adjacent to 1, 2, or 3 hexes
-- Output: Node now occupied, node not occupied, node still occupied by other player (was already occupied) - For integration testing, not unit testable
+- Output: Node now occupied, node not occupied, node still occupied by other player (was already occupied) 
 - Output: Hexes have player in list of settlements, hex player list not updated - For integration testing, not unit testable
 - Output: "Invalid NodeID - must be within [0, 53]."
 
-|             | System under test             | Expected output                                                                                             | Implemented?       |
-|-------------|-------------------------------|-------------------------------------------------------------------------------------------------------------|--------------------|
-| Test Case 1 | RED tries to claim node 0     | Calls to add RED settlement to hex 0 and claimStoredNode                                                    | :white_check_mark: |
-| Test Case 2 | BLUE tries to claim node 53   | Calls to add BLUE settlement to hex 18 and claimStoredNode                                                  | :white_check_mark: |
-| Test Case 3 | ORANGE tries to claim node -1 | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNode and addPlayerSettlementToHex not called   | :white_check_mark: |
-| Test Case 4 | WHITE tries to claim node 54  | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNode and addPlayerSettlementToHex not called   | :white_check_mark: |
-| Test Case 5 | ORANGE tries to claim node 8  | Calls to add ORANGE settlement to hexes 0, 1, and 4 and claimStoredNode                                     | :white_check_mark: |
-| Test Case 6 | BLUE tries to claim node 4    | Calls to add BLUE settlement to hexes 0 and 1 and claimStoredNode                                           | :white_check_mark: |
+|             | System under test             | Expected output                                                                                                    | Implemented?       |
+|-------------|-------------------------------|--------------------------------------------------------------------------------------------------------------------|--------------------|
+| Test Case 1 | RED tries to claim node 0     | Calls to add RED settlement to hex 0 and claimStoredNode, node level is settlement, owned by RED                   | :white_check_mark: |
+| Test Case 2 | BLUE tries to claim node 53   | Calls to add BLUE settlement to hex 18 and claimStoredNode, node level is settlement, owned by BLUE                | :white_check_mark: |
+| Test Case 3 | ORANGE tries to claim node -1 | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNode and addPlayerSettlementToHex not called          | :white_check_mark: |
+| Test Case 4 | WHITE tries to claim node 54  | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNode and addPlayerSettlementToHex not called          | :white_check_mark: |
+| Test Case 5 | ORANGE tries to claim node 8  | Calls to add ORANGE settlement to hexes 0, 1, and 4 and claimStoredNode, node level is settlement, owned by ORANGE | :white_check_mark: |
+| Test Case 6 | BLUE tries to claim node 4    | Calls to add BLUE settlement to hexes 0 and 1 and claimStoredNode, node level is settlement, owned by BLUE         | :white_check_mark: |
 
 
 
@@ -67,16 +67,16 @@ Step 3:
 - Output: Player cities list updated or not (Other validation completed by Player BVA testing)
 - Output: "Out of bounds nodeId", "Must build a settlement before building a city"
 
-|              | System under test                                                       | Expected output                                                     | Implemented? |
-|--------------|-------------------------------------------------------------------------|---------------------------------------------------------------------|--------------|
-| Test Case 7  | RED tries to build a city on node 0, which they had a settlement on     | Calls to remove RED settlement to hex 0 and add RED city to hex 0   | x            |
-| Test Case 8  | BLUE tries to build a city on node 53, which they had a settlement on   | Calls to remove RED settlement to hex 53 and add RED city to hex 53 | x            |
-| Test Case 9  | ORANGE tries to build a city on node -1                                 | "Out of bounds nodeId"                                              | x            |
-| Test Case 10 | WHITE tries to build a city on node 54                                  | "Out of bounds nodeId"                                              | x            |
-| Test Case 11 | RED tries to build a city on node 6, which BLUE owns                    | "Must build a settlement before building a city", no calls to hex   | x            |
-| Test Case 12 | BLUE tries to build a city on node 36, which is unoccupied              | "Must build a settlement before building a city", no calls to hex   | x            |
-| Test Case 13 | ORANGE tries to build a city on node 20, which they had a settlement on | Calls to remove ORANGE settlement and add city to hexes 6 and 11    | x            |
-| Test Case 14 | RED tries to build a city on node 24, which they had a settlement on    | Calls to remove RED settlement and add city to hexes 5, 9, and 10   | x            |
+|              | System under test                                                       | Expected output                                                                                          | Implemented? |
+|--------------|-------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|--------------|
+| Test Case 7  | RED tries to build a city on node 0, which they had a settlement on     | Calls to remove RED settlement to hex 0 and add RED city to hex 0, node level is city, owned by RED      | x            |
+| Test Case 8  | BLUE tries to build a city on node 53, which they had a settlement on   | Calls to remove BLUE settlement to hex 53 and add BLUE city to hex 53, node level is city, owned by BLUE | x            |
+| Test Case 9  | ORANGE tries to build a city on node -1                                 | "Invalid NodeID - must be within [0, 53]."                                                               | x            |
+| Test Case 10 | WHITE tries to build a city on node 54                                  | "Invalid NodeID - must be within [0, 53]."                                                               | x            |
+| Test Case 11 | RED tries to build a city on node 6, which BLUE owns                    | "Node owned by other player, cannot build here.", no calls to hex, still owned by BLUE                   | x            |
+| Test Case 12 | BLUE tries to build a city on node 36, which is unoccupied              | "Must build a settlement before building a city", no calls to hex, still unowned and level 0             | x            |
+| Test Case 13 | ORANGE tries to build a city on node 20, which they had a settlement on | Calls to remove ORANGE settlement and add city to hexes 6 and 11, node level is city, owned by ORANGE    | x            |
+| Test Case 14 | RED tries to build a city on node 24, which they had a settlement on    | Calls to remove RED settlement and add city to hexes 5, 9, and 10, node level is city, owned by RED      | x            |
 
 
 ### Method under test: `addRoad(Player player, int nodeId, int nodeId)`
