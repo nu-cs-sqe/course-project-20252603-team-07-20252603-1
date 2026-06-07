@@ -254,4 +254,18 @@ public class BoardHandlerTests {
         assertEquals(expected, actual);
     }
 
+    // Test Case 9
+    @Test
+    void OrangeBuildsCityOnNodeNegativeOne_ThrowsError(){
+        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            b.buildCity(mockOrangePlayer, -1);
+        });
+
+        String expectedMessage = "Invalid NodeID - must be within [0, 53].";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
 }
