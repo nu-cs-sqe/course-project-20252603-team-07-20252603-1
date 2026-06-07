@@ -110,4 +110,28 @@ public class BoardHandlerTests {
         assertEquals(expectedMessage, actualMessage);
     }
 
+    // Test Case 5
+    @Test
+    void OrangeClaimsNodeEight_HexesZeroOneFourUpdated(){
+        EasyMock.expect(mockOrangePlayer.getPlayerColor()).andReturn(PlayerColor.ORANGE);
+
+        PlayerColor expectedColor = PlayerColor.ORANGE;
+
+        mockBoardGraphController.playerClaimStoredNode(expectedColor, 8);
+        EasyMock.expectLastCall();
+
+        mockHexes.get(0).addPlayerSettlementToHex(mockOrangePlayer);
+        mockHexes.get(1).addPlayerSettlementToHex(mockOrangePlayer);
+        mockHexes.get(4).addPlayerSettlementToHex(mockOrangePlayer);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(mockBoardGraphController, mockOrangePlayer, mockHexes.get(0), mockHexes.get(1), mockHexes.get(4));
+
+        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes);
+
+        b.buildSettlement(mockOrangePlayer, 8);
+
+        EasyMock.verify(mockBoardGraphController, mockOrangePlayer, mockHexes.get(0), mockHexes.get(1), mockHexes.get(4));
+    }
+
 }
