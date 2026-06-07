@@ -96,4 +96,18 @@ public class BoardHandlerTests {
         assertEquals(expectedMessage, actualMessage);
     }
 
+    // Test Case 4
+    @Test
+    void WhiteClaimsNodeFiftyFour_ReturnsError(){
+        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            b.buildSettlement(mockOrangePlayer, 54);
+        });
+
+        String expectedMessage = "Invalid NodeID - must be within [0, 53].";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
 }

@@ -31,7 +31,7 @@ public class BoardHandler {
     }
 
     void buildSettlement(Player player, int nodeId){
-        if (nodeId < 0){
+        if (nodeId < 0 || nodeId > 53){
             throw new IllegalArgumentException("Invalid NodeID - must be within [0, 53].");
         }
         PlayerColor claimingColor = player.getPlayerColor();
