@@ -102,7 +102,7 @@ public class BoardHandlerTests {
         BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes);
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            b.buildSettlement(mockOrangePlayer, 54);
+            b.buildSettlement(mockWhitePlayer, 54);
         });
 
         String expectedMessage = "Invalid NodeID - must be within [0, 53].";
@@ -132,6 +132,29 @@ public class BoardHandlerTests {
         b.buildSettlement(mockOrangePlayer, 8);
 
         EasyMock.verify(mockBoardGraphController, mockOrangePlayer, mockHexes.get(0), mockHexes.get(1), mockHexes.get(4));
+    }
+
+    // Test Case 6
+    @Test
+    void BlueClaimsNodeFour_HexesZeroOneUpdated(){
+        EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE);
+
+        PlayerColor expectedColor = PlayerColor.BLUE;
+
+        mockBoardGraphController.playerClaimStoredNode(expectedColor, 4);
+        EasyMock.expectLastCall();
+
+        mockHexes.get(0).addPlayerSettlementToHex(mockBluePlayer);
+        mockHexes.get(1).addPlayerSettlementToHex(mockBluePlayer);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(mockBoardGraphController, mockBluePlayer, mockHexes.get(0), mockHexes.get(1));
+
+        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes);
+
+        b.buildSettlement(mockBluePlayer, 4);
+
+        EasyMock.verify(mockBoardGraphController, mockBluePlayer, mockHexes.get(0), mockHexes.get(1));
     }
 
 }

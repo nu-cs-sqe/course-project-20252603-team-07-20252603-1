@@ -36,7 +36,7 @@ Step 3:
 | Test Case 3 | ORANGE tries to claim node -1 | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNode and addPlayerSettlementToHex not called   | :white_check_mark: |
 | Test Case 4 | WHITE tries to claim node 54  | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNode and addPlayerSettlementToHex not called   | :white_check_mark: |
 | Test Case 5 | ORANGE tries to claim node 8  | Calls to add ORANGE settlement to hexes 0, 1, and 4 and claimStoredNode                                     | :white_check_mark: |
-| Test Case 6 | BLUE tries to claim node 4    | Calls to add BLUE settlement to hexes 0 and 1 and claimStoredNode                                           | x                  |
+| Test Case 6 | BLUE tries to claim node 4    | Calls to add BLUE settlement to hexes 0 and 1 and claimStoredNode                                           | :white_check_mark: |
 
 
 
