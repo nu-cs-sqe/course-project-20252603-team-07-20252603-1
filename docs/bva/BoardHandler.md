@@ -27,16 +27,16 @@ Step 3:
 - Input: Node is adjacent to 1, 2, or 3 hexes
 - Output: Node now occupied, node not occupied, node still occupied by other player (was already occupied) - For integration testing, not unit testable
 - Output: Hexes have player in list of settlements, hex player list not updated - For integration testing, not unit testable
-- Output: "Out of bounds nodeId"
+- Output: "Invalid NodeID - must be within [0, 53]."
 
-|             | System under test             | Expected output                                                                       | Implemented?       |
-|-------------|-------------------------------|---------------------------------------------------------------------------------------|--------------------|
-| Test Case 1 | RED tries to claim node 0     | Calls to add RED settlement to hex 0 and claimStoredNode                              | :white_check_mark: |
-| Test Case 2 | BLUE tries to claim node 53   | Calls to add BLUE settlement to hex 18 and claimStoredNode                            | :white_check_mark: |
-| Test Case 3 | ORANGE tries to claim node -1 | "Out of bounds nodeId", playerClaimStoredNode and addPlayerSettlementToHex not called | x                  |
-| Test Case 4 | WHITE tries to claim node 54  | "Out of bounds nodeId", playerClaimStoredNode and addPlayerSettlementToHex not called | x                  |
-| Test Case 5 | ORANGE tries to claim node 8  | Calls to add ORANGE settlement to hexes 0, 1, and 4 and claimStoredNode               | x                  |
-| Test Case 6 | BLUE tries to claim node 4    | Calls to add BLUE settlement to hexes 0 and 1 and claimStoredNode                     | x                  |
+|             | System under test             | Expected output                                                                                             | Implemented?       |
+|-------------|-------------------------------|-------------------------------------------------------------------------------------------------------------|--------------------|
+| Test Case 1 | RED tries to claim node 0     | Calls to add RED settlement to hex 0 and claimStoredNode                                                    | :white_check_mark: |
+| Test Case 2 | BLUE tries to claim node 53   | Calls to add BLUE settlement to hex 18 and claimStoredNode                                                  | :white_check_mark: |
+| Test Case 3 | ORANGE tries to claim node -1 | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNode and addPlayerSettlementToHex not called   | x                  |
+| Test Case 4 | WHITE tries to claim node 54  | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNode and addPlayerSettlementToHex not called   | x                  |
+| Test Case 5 | ORANGE tries to claim node 8  | Calls to add ORANGE settlement to hexes 0, 1, and 4 and claimStoredNode                                     | x                  |
+| Test Case 6 | BLUE tries to claim node 4    | Calls to add BLUE settlement to hexes 0 and 1 and claimStoredNode                                           | x                  |
 
 
 

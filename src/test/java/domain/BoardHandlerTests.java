@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 import static domain.BoardHandler.initNodeHexMap;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class BoardHandlerTests {
 
@@ -78,6 +80,20 @@ public class BoardHandlerTests {
         b.buildSettlement(mockBluePlayer, 53);
 
         EasyMock.verify(mockBoardGraphController, mockBluePlayer, mockHexes.get(18));
+    }
+
+    // Test Case 3
+    @Test
+    void OrangeClaimsNodeNegativeOne_ReturnsError(){
+        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            b.buildSettlement(mockOrangePlayer, -1);
+        });
+
+        String expectedMessage = "Invalid NodeID - must be within [0, 53].";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
     }
 
 }
