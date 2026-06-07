@@ -339,4 +339,98 @@ public class BoardHandlerTests {
         assertEquals(expected, actual);
     }
 
+    // Test Case 13
+    @Test
+    void OrangeBuildsCityOnOwnedNodeTwenty_HexRemovesSettlement_AddsCity_Twice(){
+        EasyMock.expect(mockOrangePlayer.getPlayerColor()).andReturn(PlayerColor.ORANGE).times(2);
+
+        PlayerColor expectedColor = PlayerColor.ORANGE;
+
+        mockBoardGraphController.playerClaimStoredNode(expectedColor, 20);
+        EasyMock.expectLastCall();
+
+        mockHexes.get(6).addPlayerSettlementToHex(mockOrangePlayer);
+        EasyMock.expectLastCall();
+
+        mockHexes.get(6).removePlayerSettlementFromHex(mockOrangePlayer);
+        EasyMock.expectLastCall();
+        mockHexes.get(6).addPlayerCityToHex(mockOrangePlayer);
+        EasyMock.expectLastCall();
+
+        mockHexes.get(11).addPlayerSettlementToHex(mockOrangePlayer);
+        EasyMock.expectLastCall();
+
+        mockHexes.get(11).removePlayerSettlementFromHex(mockOrangePlayer);
+        EasyMock.expectLastCall();
+        mockHexes.get(11).addPlayerCityToHex(mockOrangePlayer);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(mockBoardGraphController, mockOrangePlayer, mockHexes.get(6), mockHexes.get(11));
+
+        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes);
+
+        b.buildSettlement(mockOrangePlayer, 20);
+
+        b.buildCity(mockOrangePlayer, 20);
+
+        EasyMock.verify(mockBoardGraphController, mockOrangePlayer, mockHexes.get(6), mockHexes.get(11));
+
+        assertTrue(b.checkPlayerOwnsNode(expectedColor, 20));
+
+        int expected = 2;
+        int actual = b.getNodeBuildingLevel(20);
+        assertEquals(expected, actual);
+    }
+
+    // Test Case 13
+    @Test
+    void WhiteBuildsCityOnOwnedNodeTwentyFour_HexRemovesSettlement_AddsCity_ThreeTimes(){
+        EasyMock.expect(mockWhitePlayer.getPlayerColor()).andReturn(PlayerColor.WHITE).times(2);
+
+        PlayerColor expectedColor = PlayerColor.WHITE;
+
+        mockBoardGraphController.playerClaimStoredNode(expectedColor, 24);
+        EasyMock.expectLastCall();
+
+        mockHexes.get(5).addPlayerSettlementToHex(mockWhitePlayer);
+        EasyMock.expectLastCall();
+
+        mockHexes.get(5).removePlayerSettlementFromHex(mockWhitePlayer);
+        EasyMock.expectLastCall();
+        mockHexes.get(5).addPlayerCityToHex(mockWhitePlayer);
+        EasyMock.expectLastCall();
+
+        mockHexes.get(9).addPlayerSettlementToHex(mockWhitePlayer);
+        EasyMock.expectLastCall();
+
+        mockHexes.get(9).removePlayerSettlementFromHex(mockWhitePlayer);
+        EasyMock.expectLastCall();
+        mockHexes.get(9).addPlayerCityToHex(mockWhitePlayer);
+        EasyMock.expectLastCall();
+
+        mockHexes.get(10).addPlayerSettlementToHex(mockWhitePlayer);
+        EasyMock.expectLastCall();
+
+        mockHexes.get(10).removePlayerSettlementFromHex(mockWhitePlayer);
+        EasyMock.expectLastCall();
+        mockHexes.get(10).addPlayerCityToHex(mockWhitePlayer);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(mockBoardGraphController, mockWhitePlayer, mockHexes.get(5), mockHexes.get(9), mockHexes.get(10));
+
+        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes);
+
+        b.buildSettlement(mockWhitePlayer, 24);
+
+        b.buildCity(mockWhitePlayer, 24);
+
+        EasyMock.verify(mockBoardGraphController, mockWhitePlayer, mockHexes.get(5), mockHexes.get(9), mockHexes.get(10));
+
+        assertTrue(b.checkPlayerOwnsNode(expectedColor, 24));
+
+        int expected = 2;
+        int actual = b.getNodeBuildingLevel(24);
+        assertEquals(expected, actual);
+    }
+
 }
