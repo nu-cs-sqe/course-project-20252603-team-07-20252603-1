@@ -219,4 +219,39 @@ public class BoardHandlerTests {
         assertEquals(expected, actual);
     }
 
+    // Test Case 8
+    @Test
+    void BlueBuildsCityOnOwnedNodeFiftyThree_HexRemovesSettlement_AddsCity(){
+        EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE);
+
+        PlayerColor expectedColor = PlayerColor.BLUE;
+
+        mockBoardGraphController.playerClaimStoredNode(expectedColor, 53);
+        EasyMock.expectLastCall();
+
+        mockHexes.get(18).addPlayerSettlementToHex(mockBluePlayer);
+        EasyMock.expectLastCall();
+
+        mockHexes.get(18).removePlayerSettlementFromHex(mockBluePlayer);
+        EasyMock.expectLastCall();
+        mockHexes.get(18).addPlayerCityToHex(mockBluePlayer);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(mockBoardGraphController, mockBluePlayer, mockHexes.get(18));
+
+        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes);
+
+        b.buildSettlement(mockBluePlayer, 53);
+
+        b.buildCity(mockBluePlayer, 53);
+
+        EasyMock.verify(mockBoardGraphController, mockBluePlayer, mockHexes.get(18));
+
+        assertTrue(b.checkPlayerOwnsNode(expectedColor, 53));
+
+        int expected = 2;
+        int actual = b.getNodeBuildingLevel(53);
+        assertEquals(expected, actual);
+    }
+
 }

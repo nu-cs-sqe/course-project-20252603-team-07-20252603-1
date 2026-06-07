@@ -62,8 +62,11 @@ public class BoardHandler {
     }
 
     void buildCity(Player player, int nodeId){
-        hexes.get(nodeId).removePlayerSettlementFromHex(player);
-        hexes.get(nodeId).addPlayerCityToHex(player);
+        List<Integer> hexIds = nodeIdToHexes.get(nodeId);
+        for (int hexId : hexIds){
+            hexes.get(hexId).removePlayerSettlementFromHex(player);
+            hexes.get(hexId).addPlayerCityToHex(player);
+        }
         nodeBuildingLevels[nodeId] = CITY_LEVEL;
     }
 
