@@ -201,7 +201,7 @@ Step 3:
 | Test Case 37 | RED has three cities                | RED                                     | :white_check_mark: |
 | Test Case 38 | No settlements or cities            | Empty set                               | :white_check_mark: |
 | Test Case 39 | Calls getPlayers with -1            | "Invalid Hex ID, must be within [0,18]" | :white_check_mark: |
-| Test Case 40 | Calls getPlayers with 19            | "Invalid Hex ID, must be within [0,18]" | x                  |
+| Test Case 40 | Calls getPlayers with 19            | "Invalid Hex ID, must be within [0,18]" | :white_check_mark: |
 
 
 ### Method under test: `buildSetupSettlement(Player player, int nodeId)`
