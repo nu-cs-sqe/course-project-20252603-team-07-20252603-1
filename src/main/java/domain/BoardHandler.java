@@ -135,6 +135,10 @@ public class BoardHandler {
     }
 
     void buildSetupSettlement(Player player, int nodeId){
+        if (nodeId < 0){
+            throw new IllegalArgumentException("Invalid NodeID - must be within [0, 53].");
+        }
+
         PlayerColor claimingColor = player.getPlayerColor();
         boardGraphController.playerClaimStoredNodeSetupPhase(claimingColor, nodeId);
         List<Integer> hexIds = nodeIdToHexes.get(nodeId);
