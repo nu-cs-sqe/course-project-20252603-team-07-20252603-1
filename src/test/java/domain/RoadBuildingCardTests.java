@@ -57,6 +57,7 @@ public class RoadBuildingCardTests {
     EasyMock.expect(edge1.isOccupied()).andReturn(false);
     EasyMock.expect(edge1.isConnectedToPlayerNetwork()).andReturn(true);
     player.placeRoad(edge1);
+    EasyMock.expect(edge2.isOccupied()).andReturn(false);
     player.placeRoad(edge2);
     EasyMock.replay(player, edge1, edge2);
 
@@ -78,6 +79,7 @@ public class RoadBuildingCardTests {
     EasyMock.expect(edge1.isOccupied()).andReturn(false);
     EasyMock.expect(edge1.isConnectedToPlayerNetwork()).andReturn(true);
     player.placeRoad(edge1);
+    EasyMock.expect(edge2.isOccupied()).andReturn(false);
     player.placeRoad(edge2);
     EasyMock.replay(player, edge1, edge2);
 
@@ -165,6 +167,30 @@ public class RoadBuildingCardTests {
         () -> roadBuildingCard.play(player, edge1, edge2)
     );
     assertEquals("Road must connect to player's existing network.", exception.getMessage());
+
+    EasyMock.verify(player, edge1, edge2);
+  }
+
+  @Test // Test Case 9
+  public void Play_Edge2Occupied_ExpectIllegalArgumentException() {
+    RoadBuildingCard roadBuildingCard = new RoadBuildingCard();
+
+    Player player = EasyMock.createMock(Player.class);
+    Edge edge1 = EasyMock.createMock(Edge.class);
+    Edge edge2 = EasyMock.createMock(Edge.class);
+
+    EasyMock.expect(player.getRoads()).andReturn(Collections.emptyList());
+    EasyMock.expect(edge1.isOccupied()).andReturn(false);
+    EasyMock.expect(edge1.isConnectedToPlayerNetwork()).andReturn(true);
+    player.placeRoad(edge1);
+    EasyMock.expect(edge2.isOccupied()).andReturn(true);
+    EasyMock.replay(player, edge1, edge2);
+
+    IllegalArgumentException exception = assertThrows(
+        IllegalArgumentException.class,
+        () -> roadBuildingCard.play(player, edge1, edge2)
+    );
+    assertEquals("Edge is already occupied.", exception.getMessage());
 
     EasyMock.verify(player, edge1, edge2);
   }

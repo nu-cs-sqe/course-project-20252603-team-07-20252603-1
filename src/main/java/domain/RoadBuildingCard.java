@@ -13,6 +13,9 @@ public class RoadBuildingCard extends DevelopmentCard {
 
     player.placeRoad(edge1);
     if (remainingRoads >= 2) {
+      if (edge2.isOccupied()) {
+        throw new IllegalArgumentException("Edge is already occupied.");
+      }
       player.placeRoad(edge2);
     }
   }
