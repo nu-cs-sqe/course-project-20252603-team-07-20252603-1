@@ -107,7 +107,8 @@ public class BoardHandler {
     }
 
     void moveRobber(int hexId){
-
+        int previousRobberLocation = robber.getRobberLocation();
+        robber.moveRobber(hexId);
     }
 
     void getPlayersOnHex(int hexId){

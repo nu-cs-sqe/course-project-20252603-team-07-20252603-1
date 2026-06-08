@@ -699,6 +699,23 @@ public class BoardHandlerTests {
         EasyMock.verify(mockRobber);
     }
 
+    // Test Case 26
+    @Test
+    void MoveRobberLocation_FromHexIdZero_Eighteen(){
+        EasyMock.expect(mockRobber.getRobberLocation()).andReturn(0);
+
+        mockRobber.moveRobber(18);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(mockRobber);
+
+        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+
+        b.moveRobber(18);
+
+        EasyMock.verify(mockRobber);
+    }
+
 
 
 }

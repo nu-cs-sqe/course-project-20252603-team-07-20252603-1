@@ -156,14 +156,15 @@ Step 2:
 Step 3:
 - Input: 0, 18, -1, 19
 - Output: 0, 18, -1 (not feasible), 19 (not feasible)
-- Output: "Cannot move Robber to invalid Hex ID"
+- Output: "Cannot move Robber to invalid Hex ID", "Must move robber to new location"
 
-|              | System under test                 | Expected output                        | Implemented? |
-|--------------|-----------------------------------|----------------------------------------|--------------|
-| Test Case 24 | Move robber from hex 0 to hex 18  | Robber is now on hex 18                | x            |
-| Test Case 25 | Move robber from hex 18 to hex 0  | Robber is now on hex 0                 | x            |
-| Test Case 26 | Move robber from hex 0 to hex -1  | "Cannot move Robber to invalid Hex ID" | x            |       
-| Test Case 27 | Move robber from hex 0 to hex 19  | "Cannot move Robber to invalid Hex ID" | x            |
+|              | System under test                | Expected output                        | Implemented?       |
+|--------------|----------------------------------|----------------------------------------|--------------------|
+| Test Case 26 | Move robber from hex 0 to hex 18 | Robber is now on hex 18                | :white_check_mark: |
+| Test Case 27 | Move robber from hex 18 to hex 0 | Robber is now on hex 0                 | x                  |
+| Test Case 28 | Move robber from hex 0 to hex -1 | "Cannot move Robber to invalid Hex ID" | x                  |       
+| Test Case 29 | Move robber from hex 0 to hex 19 | "Cannot move Robber to invalid Hex ID" | x                  |
+| Test Case 30 | Move robber from hex 9 to hex 9  | "Must move robber to new location"     | x                  |
 
 
 ### Method under test: `getPlayersOnHex(int hexId)`
