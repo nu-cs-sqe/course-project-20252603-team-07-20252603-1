@@ -1,12 +1,13 @@
 package domain.model.board;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import domain.model.player.Player;
 import domain.model.resources.Resource;
 
-public final class Hex {
+public class Hex {
   private static final int MIN_HEX_ID = 0;
   private static final int MAX_HEX_ID = 18;
 
@@ -130,5 +131,13 @@ public final class Hex {
 
   public boolean isPlayerCityOnHex(Player player) {
     return playerCities.contains(player);
+  }
+
+  public List<Player> getHexSettlementPlayers() {
+    return Collections.unmodifiableList(playerSettlements);
+  }
+
+  public List<Player> getHexCityPlayers() {
+    return Collections.unmodifiableList(playerCities);
   }
 }

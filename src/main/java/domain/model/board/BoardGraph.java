@@ -7,8 +7,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import domain.model.player.PlayerColor;
-
 public class BoardGraph {
     // map that connects Nodes to the edges connected
 
@@ -239,5 +237,23 @@ public class BoardGraph {
         return this.nodeIDToConnectingEdges.size();
     }
 
+    public boolean checkNodeOccupied(int nodeID) {
+        return getGraphNodeByID(nodeID).checkOccupied();
+    }
 
+    public boolean checkEdgeOccupied(int startingNodeID, int endingNodeID) {
+        Set<GraphEdge> setWithRelevantEdge = getConnectingEdgesByID(startingNodeID);
+        GraphEdge edgeToCheck = getMatchingEdgeFromSet(setWithRelevantEdge, startingNodeID, endingNodeID);
+        return edgeToCheck.checkRoadExists();
+    }
+
+    public boolean nodeCheckPlayerOwnsNeighboringEdge(PlayerColor color, int nodeID) {
+        Set<GraphEdge> relevantEdgeSet = getConnectingEdgesByID(nodeID);
+        for (GraphEdge edge : relevantEdgeSet) {
+            if (edge.checkOwningColor() == color) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

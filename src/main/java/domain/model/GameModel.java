@@ -161,7 +161,7 @@ public class GameModel {
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER, Resource.WOOL, Resource.GRAIN)) {
             checkPlayerOwnsEnoughResources(currentPlayerColor, r, 1);
         }
-        board.buildSettlement(currentPlayerColor, nodeID);
+        board.buildSettlement(getCurrentPlayer(), nodeID);
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER, Resource.WOOL, Resource.GRAIN)) {
             reducePlayerResources(currentPlayerColor, r, 1);
             ResourceDeck deckToReplenish = decks.get(r);
@@ -175,7 +175,7 @@ public class GameModel {
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER)) {
             checkPlayerOwnsEnoughResources(currentPlayerColor, r, 1);
         }
-        board.addRoad(currentPlayerColor, startingNodeID, endingNodeID);
+        board.addRoad(getCurrentPlayer(), startingNodeID, endingNodeID);
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER)) {
             reducePlayerResources(currentPlayerColor, r, 1);
             ResourceDeck deckToReplenish = decks.get(r);
@@ -238,7 +238,7 @@ public class GameModel {
         checkPlayerOwnsEnoughResources(currentPlayerColor, Resource.ORE, 3);
         checkPlayerOwnsEnoughResources(currentPlayerColor, Resource.GRAIN, 2);
         try {
-            board.buildCity(currentPlayerColor, nodeID);
+            board.buildCity(getCurrentPlayer(), nodeID);
         } catch (Exception e) {
             throw new IllegalCityPlacementException("Can not place city at specified node");
         }
