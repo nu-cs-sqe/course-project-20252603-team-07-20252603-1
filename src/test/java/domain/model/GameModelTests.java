@@ -400,4 +400,28 @@ public class GameModelTests {
 
         EasyMock.verify(redStateMock, boardMock, oreDeckMock, grainDeckMock);
     }
+
+    @Test
+    void attemptBuildCity_test02_NotEnoughOre_ExpectError(){
+        PlayerState whiteStateMock = EasyMock.createMock(PlayerState.class);
+        ColorToPlayerStateMock = Map.of(
+                PlayerColor.WHITE, whiteStateMock
+        );
+
+        EasyMock.expect(whiteStateMock.getResourceCount(Resource.ORE)).andReturn(2);
+
+        EasyMock.replay(whiteStateMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
+
+        model.setCurrentPlayerColor(PlayerColor.WHITE);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        Exception exception = assertThrows(InsufficientResourcesException.class,
+                () -> model.attemptBuildCity(0));
+
+        assertEquals("Insufficient resources", exception.getMessage());
+
+        EasyMock.verify(whiteStateMock);
+    }
 }
