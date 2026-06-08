@@ -3,6 +3,7 @@ package domain.model.board;
 import domain.model.game_pieces.Robber;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
+import domain.model.resources.Resource;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -971,5 +972,64 @@ public class BoardHandlerTest {
         String expectedMessage = "Invalid Hex ID, must be within [0,18]";
         String actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
+    }
+
+    // Test Case 41
+    @Test
+    void getHexCount_standardBoard_returnsNineteen() {
+        BoardHandler b = new BoardHandler();
+        assertEquals(19, b.getHexCount());
+    }
+
+    // Test Case 42
+    @Test
+    void getHexOrder_standardBoard_returnsNonNull() {
+        BoardHandler b = new BoardHandler();
+        assertNotNull(b.getHexOrder());
+    }
+
+    // Test Case 43
+    @Test
+    void getHexOrder_standardBoard_sizeMatchesGetHexCount() {
+        BoardHandler b = new BoardHandler();
+        assertEquals(b.getHexCount(), b.getHexOrder().size());
+    }
+
+    // Test Case 44
+    @Test
+    void getHexOrder_standardBoard_matchesInitHexesOrder() {
+        BoardHandler b = new BoardHandler();
+        List<String> expected = List.of(
+                Resource.ORE.name(),
+                Resource.WOOL.name(),
+                Resource.LUMBER.name(),
+                Resource.GRAIN.name(),
+                Resource.BRICK.name(),
+                Resource.WOOL.name(),
+                Resource.BRICK.name(),
+                Resource.GRAIN.name(),
+                Resource.LUMBER.name(),
+                Resource.DESERT.name(),
+                Resource.LUMBER.name(),
+                Resource.ORE.name(),
+                Resource.LUMBER.name(),
+                Resource.ORE.name(),
+                Resource.GRAIN.name(),
+                Resource.WOOL.name(),
+                Resource.BRICK.name(),
+                Resource.GRAIN.name(),
+                Resource.LUMBER.name()
+        );
+        assertEquals(expected, b.getHexOrder());
+    }
+
+    // Test Case 45
+    @Test
+    void getHexOrder_mutatingReturnedList_doesNotAffectSubsequentCall() {
+        BoardHandler b = new BoardHandler();
+        List<String> first = b.getHexOrder();
+        first.add("EXTRA");
+        List<String> second = b.getHexOrder();
+        assertEquals(19, second.size());
     }
 }
