@@ -8,6 +8,7 @@ import java.util.Map;
 
 import domain.model.board.Edge;
 import domain.model.board.Vertex;
+import domain.model.exceptions.InsufficientResourcesException;
 import domain.model.game_pieces.Settlement;
 import domain.model.resources.Resource;
 
@@ -98,21 +99,29 @@ public class Player {
         return this.color;
     }
 
-    // TODO: BVA analysis and implementation
     // these should maybe be package private
         // if so, then we should put TradeManager at least into player sub-package
-    public void updateResources(Resource resource, int amount){
-
+    public void updateResources(Resource resource, int delta) {
+        if (resource == null)
+            throw new IllegalArgumentException("Resource cannot be null.");
+        if (resource == Resource.DESERT)
+            throw new IllegalArgumentException("Cannot update DESERT resources.");
+        int newCount = getResourceCount(resource) + delta;
+        if (newCount < 0)
+            throw new InsufficientResourcesException("Insufficient " + resource + " resources.");
+        resources.put(resource, newCount);
     }
 
-    //TODO - From Spencer
     public int getResourceCount(Resource resource) {
-        return 0;
+        if (resource == null)
+            throw new IllegalArgumentException("Resource cannot be null.");
+        if (resource == Resource.DESERT)
+            throw new IllegalArgumentException("Cannot get count of DESERT.");
+        return resources.getOrDefault(resource, 0);
     }
 
-    // TODO: implement — sum all non-desert resource counts
     public int getTotalResourceCount() {
-        return 0;
+        return resources.values().stream().mapToInt(Integer::intValue).sum();
     }
 
     public void increaseSettlementCount() {

@@ -131,3 +131,6 @@ $RECYCLE.BIN/
 
 # claude-users personal permissions
 .claude
+
+local-notes-tm/*
+local-notes-tm/
