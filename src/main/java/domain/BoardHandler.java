@@ -98,8 +98,8 @@ public class BoardHandler {
         int robberLocation = robber.getRobberLocation();
 
         for (Hex hex : hexes) {
-            if (hex.getHexRollNum() == rollNum && robberLocation != rollNum){
-                int curHexId = hex.getHexId();
+            int curHexId = hex.getHexId();
+            if (hex.getHexRollNum() == rollNum && robberLocation != curHexId){
                 hexes.get(curHexId).awardSettlementResources();
                 hexes.get(curHexId).awardCityResources();
             }

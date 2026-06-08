@@ -536,8 +536,10 @@ public class BoardHandlerTests {
     void TwoRolled_RobberNotPresent_CallsAwardResources(){
         for (int i = 0; i < 19; i++) {
             if (i == 1) {
+                EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(1);
                 EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(2);
             } else {
+                EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(0);
                 EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
             }
         }
@@ -547,17 +549,17 @@ public class BoardHandlerTests {
         mockHexes.get(1).awardCityResources();
         EasyMock.expectLastCall();
 
-        EasyMock.expect(mockHexes.get(1).getHexId()).andReturn(1);
-
         EasyMock.expect(mockRobber.getRobberLocation()).andReturn(9);
 
-        EasyMock.replay(mockHexes.toArray(), mockRobber);
+        EasyMock.replay(mockHexes.toArray());
+        EasyMock.replay(mockRobber);
 
         BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
 
         b.awardResources(2);
 
-        EasyMock.verify(mockHexes.toArray(), mockRobber);
+        EasyMock.verify(mockHexes.toArray());
+        EasyMock.verify(mockRobber);
     }
 
     // Test Case 22
@@ -565,8 +567,11 @@ public class BoardHandlerTests {
     void TwelveRolled_RobberNotPresent_CallsAwardResources(){
         for (int i = 0; i < 19; i++) {
             if (i == 3) {
+                EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(3);
                 EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(12);
-            } else {
+            }
+            else {
+                EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(0);
                 EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
             }
         }
@@ -576,8 +581,6 @@ public class BoardHandlerTests {
 
         mockHexes.get(3).awardCityResources();
         EasyMock.expectLastCall();
-
-        EasyMock.expect(mockHexes.get(3).getHexId()).andReturn(3);
 
         EasyMock.expect(mockRobber.getRobberLocation()).andReturn(9);
 
@@ -596,9 +599,16 @@ public class BoardHandlerTests {
     @Test
     void EightRolled_RobberNotPresent_CallsAwardResourcesTwice(){
         for (int i = 0; i < 19; i++) {
-            if (i == 11 || i == 12) {
+            if (i == 11) {
+                EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(11);
                 EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(8);
-            } else {
+            }
+            else if (i == 12) {
+                EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(12);
+                EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(8);
+            }
+            else {
+                EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(0);
                 EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
             }
         }
@@ -612,9 +622,6 @@ public class BoardHandlerTests {
         EasyMock.expectLastCall();
         mockHexes.get(12).awardCityResources();
         EasyMock.expectLastCall();
-
-        EasyMock.expect(mockHexes.get(11).getHexId()).andReturn(11);
-        EasyMock.expect(mockHexes.get(12).getHexId()).andReturn(12);
 
         EasyMock.expect(mockRobber.getRobberLocation()).andReturn(9);
 
@@ -634,8 +641,11 @@ public class BoardHandlerTests {
     void TwoRolled_RobberIsPresent_NoCallsToAward(){
         for (int i = 0; i < 19; i++) {
             if (i == 1) {
+                EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(1);
                 EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(2);
-            } else {
+            }
+            else {
+                EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(0);
                 EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
             }
         }
@@ -647,10 +657,48 @@ public class BoardHandlerTests {
 
         BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
 
+        b.awardResources(2);
+
+        EasyMock.verify(mockHexes.toArray());
+        EasyMock.verify(mockRobber);
+    }
+
+    // Test Case 25
+    @Test
+    void EightRolled_RobberIsPresent_CallsAwardResourcesOnce(){
+        for (int i = 0; i < 19; i++) {
+            if (i == 11) {
+                EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(11);
+                EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(8);
+            }
+            else if (i == 12) {
+                EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(12);
+                EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(8);
+            }
+            else {
+                EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(0);
+                EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
+            }
+        }
+
+        mockHexes.get(11).awardSettlementResources();
+        EasyMock.expectLastCall();
+        mockHexes.get(11).awardCityResources();
+        EasyMock.expectLastCall();
+
+        EasyMock.expect(mockRobber.getRobberLocation()).andReturn(12);
+
+        EasyMock.replay(mockHexes.toArray());
+        EasyMock.replay(mockRobber);
+
+        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+
         b.awardResources(8);
 
         EasyMock.verify(mockHexes.toArray());
         EasyMock.verify(mockRobber);
     }
+
+
 
 }
