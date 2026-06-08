@@ -66,4 +66,20 @@ public class YearOfPlentyCardTests {
 
     EasyMock.verify(player);
   }
+
+  @Test // Test Case 5
+  public void Play_DesertResource2_ExpectIllegalArgumentException() {
+    YearOfPlentyCard yearOfPlentyCard = new YearOfPlentyCard();
+
+    Player player = EasyMock.createMock(Player.class);
+    EasyMock.replay(player);
+
+    IllegalArgumentException exception = assertThrows(
+        IllegalArgumentException.class,
+        () -> yearOfPlentyCard.play(player, Resource.LUMBER, Resource.DESERT)
+    );
+    assertEquals("Cannot take DESERT as a resource.", exception.getMessage());
+
+    EasyMock.verify(player);
+  }
 }
