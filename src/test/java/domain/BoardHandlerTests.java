@@ -557,12 +557,6 @@ public class BoardHandlerTests {
     // Test Case 22
     @Test
     void TwelveRolled_RobberNotPresent_CallsAwardResources(){
-        mockHexes.get(3).awardSettlementResources();
-        EasyMock.expectLastCall();
-
-        mockHexes.get(3).awardCityResources();
-        EasyMock.expectLastCall();
-
         for (int i = 0; i < 19; i++) {
             if (i == 3) {
                 EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(12);
@@ -571,6 +565,12 @@ public class BoardHandlerTests {
             }
         }
 
+        mockHexes.get(3).awardSettlementResources();
+        EasyMock.expectLastCall();
+
+        mockHexes.get(3).awardCityResources();
+        EasyMock.expectLastCall();
+
         EasyMock.expect(mockHexes.get(3).getHexId()).andReturn(3);
 
         EasyMock.replay(mockHexes.toArray());
@@ -578,6 +578,39 @@ public class BoardHandlerTests {
         BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes);
 
         b.awardResources(12);
+
+        EasyMock.verify(mockHexes.toArray());
+    }
+
+    // Test Case 23
+    @Test
+    void EightRolled_RobberNotPresent_CallsAwardResourcesTwice(){
+        for (int i = 0; i < 19; i++) {
+            if (i == 11 || i == 12) {
+                EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(8);
+            } else {
+                EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
+            }
+        }
+
+        mockHexes.get(11).awardSettlementResources();
+        EasyMock.expectLastCall();
+        mockHexes.get(11).awardCityResources();
+        EasyMock.expectLastCall();
+
+        mockHexes.get(12).awardSettlementResources();
+        EasyMock.expectLastCall();
+        mockHexes.get(12).awardCityResources();
+        EasyMock.expectLastCall();
+
+        EasyMock.expect(mockHexes.get(11).getHexId()).andReturn(11);
+        EasyMock.expect(mockHexes.get(12).getHexId()).andReturn(12);
+
+        EasyMock.replay(mockHexes.toArray());
+
+        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes);
+
+        b.awardResources(8);
 
         EasyMock.verify(mockHexes.toArray());
     }
