@@ -747,6 +747,20 @@ public class BoardHandlerTests {
         assertEquals(expectedMessage, actualMessage);
     }
 
+    // Test Case 29
+    @Test
+    void MoveRobberLocation_ToNineteen_ThrowError(){
+        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            b.moveRobber(19);
+        });
+
+        String expectedMessage = "Cannot move Robber to invalid Hex ID";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
 
 
 }
