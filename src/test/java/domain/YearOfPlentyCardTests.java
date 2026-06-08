@@ -34,4 +34,20 @@ public class YearOfPlentyCardTests {
 
     EasyMock.verify(player);
   }
+
+  @Test // Test Case 3
+  public void Play_NullResource2_ExpectIllegalArgumentException() {
+    YearOfPlentyCard yearOfPlentyCard = new YearOfPlentyCard();
+
+    Player player = EasyMock.createMock(Player.class);
+    EasyMock.replay(player);
+
+    IllegalArgumentException exception = assertThrows(
+        IllegalArgumentException.class,
+        () -> yearOfPlentyCard.play(player, Resource.BRICK, null)
+    );
+    assertEquals("Resource cannot be null.", exception.getMessage());
+
+    EasyMock.verify(player);
+  }
 }

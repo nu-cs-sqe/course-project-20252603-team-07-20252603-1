@@ -10,7 +10,7 @@ public class YearOfPlentyCard extends DevelopmentCard {
     if (player == null) {
       throw new IllegalArgumentException("Player cannot be null.");
     }
-    if (resource1 == null) {
+    if (resource1 == null || resource2 == null) {
       throw new IllegalArgumentException("Resource cannot be null.");
     }
   }
