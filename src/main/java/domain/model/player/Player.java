@@ -110,6 +110,11 @@ public class Player {
         return 0;
     }
 
+    // TODO: implement — sum all non-desert resource counts
+    public int getTotalResourceCount() {
+        return 0;
+    }
+
     public void increaseSettlementCount() {
         this.numSettlement++;
     }
