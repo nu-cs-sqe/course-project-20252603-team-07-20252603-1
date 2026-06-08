@@ -27,4 +27,4 @@ Step 3:
 
 |             | System under test                        | Expected output | Implemented? |
 | ----------- | ---------------------------------------- | --------------- | ------------ |
-| Test Case 1 | getVictoryPoints() on a VictoryPointCard | 1               | :x:          |
+| Test Case 1 | getVictoryPoints() on a VictoryPointCard | 1               | :white_check_mark:          |
