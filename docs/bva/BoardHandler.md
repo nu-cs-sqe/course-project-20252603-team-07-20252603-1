@@ -164,7 +164,7 @@ Step 3:
 | Test Case 27 | Move robber from hex 18 to hex 0 | Robber is now on hex 0                 | :white_check_mark: |
 | Test Case 28 | Move robber from hex 0 to hex -1 | "Cannot move Robber to invalid Hex ID" | :white_check_mark: |       
 | Test Case 29 | Move robber from hex 0 to hex 19 | "Cannot move Robber to invalid Hex ID" | :white_check_mark: |
-| Test Case 30 | Move robber from hex 9 to hex 9  | "Must move robber to new location"     | x                  |
+| Test Case 30 | Move robber from hex 9 to hex 9  | "Must move robber to new location"     | :white_check_mark: |
 
 
 ### Method under test: `getPlayersOnHex(int hexId)`

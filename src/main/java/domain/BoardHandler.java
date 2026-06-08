@@ -112,7 +112,12 @@ public class BoardHandler {
         if (hexId < MIN_HEX_ID || hexId > MAX_HEX_ID){
             throw new IllegalArgumentException("Cannot move Robber to invalid Hex ID");
         }
+
         int previousRobberLocation = robber.getRobberLocation();
+        if (previousRobberLocation == hexId){
+            throw new IllegalArgumentException("Must move robber to new location");
+        }
+
         robber.moveRobber(hexId);
     }
 

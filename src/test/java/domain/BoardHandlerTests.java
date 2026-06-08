@@ -761,6 +761,26 @@ public class BoardHandlerTests {
         assertEquals(expectedMessage, actualMessage);
     }
 
+    // Test Case 30
+    @Test
+    void MoveRobberLocation_FromNine_ToNine_ThrowError(){
+        EasyMock.expect(mockRobber.getRobberLocation()).andReturn(9);
+
+        EasyMock.replay(mockRobber);
+
+        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            b.moveRobber(9);
+        });
+
+        String expectedMessage = "Must move robber to new location";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+
+        EasyMock.verify(mockRobber);
+    }
+
 
 
 }
