@@ -527,4 +527,22 @@ public class BoardHandlerTests {
         assertEquals(expectedMessage, actualMessage);
     }
 
+    // Test Case 21
+    @Test
+    void TwoRolled_RobberNotPresent_CallsAwardResources(){
+        mockHexes.get(1).awardSettlementResources();
+        EasyMock.expectLastCall();
+
+        mockHexes.get(1).awardCityResources();
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(mockHexes.get(1));
+
+        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes);
+
+        b.awardResources(2);
+
+        EasyMock.verify(mockHexes.get(1));
+    }
+
 }

@@ -92,7 +92,8 @@ public class BoardHandler {
     }
 
     void awardResources(int rollNum){
-
+        hexes.get(1).awardSettlementResources();
+        hexes.get(1).awardCityResources();
     }
 
     void moveRobber(int hexId){
