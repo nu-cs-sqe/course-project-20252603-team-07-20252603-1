@@ -1163,5 +1163,19 @@ public class BoardHandlerTests {
         assertEquals(expectedMessage, actualMessage);
     }
 
+    // Test Case 50
+    @Test
+    void WhiteClaimsEdgeSetupPhase_Zero_NegativeOne_ThrowError(){
+        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            b.buildSetupRoad(mockWhitePlayer, 0, 0, -1);
+        });
+
+        String expectedMessage = "Edge nodeId out of bounds. Must be within [0, 53].";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
 
 }
