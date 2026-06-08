@@ -6,6 +6,8 @@ public class BoardHandler {
     // static fields to represent the type of building on a node
     private static final int SETTLEMENT_LEVEL = 1;
     private static final int CITY_LEVEL = 2;
+    private static final int MIN_HEX_ID = 0;
+    private static final int MAX_HEX_ID = 18;
 
     private BoardGraphController boardGraphController;
     private List<Hex> hexes;
@@ -107,6 +109,9 @@ public class BoardHandler {
     }
 
     void moveRobber(int hexId){
+        if (hexId < MIN_HEX_ID){
+            throw new IllegalArgumentException("Cannot move Robber to invalid Hex ID");
+        }
         int previousRobberLocation = robber.getRobberLocation();
         robber.moveRobber(hexId);
     }

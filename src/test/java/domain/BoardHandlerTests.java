@@ -733,6 +733,20 @@ public class BoardHandlerTests {
         EasyMock.verify(mockRobber);
     }
 
+    // Test Case 28
+    @Test
+    void MoveRobberLocation_ToNegativeOne_ThrowError(){
+        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            b.moveRobber(-1);
+        });
+
+        String expectedMessage = "Cannot move Robber to invalid Hex ID";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
 
 
 }
