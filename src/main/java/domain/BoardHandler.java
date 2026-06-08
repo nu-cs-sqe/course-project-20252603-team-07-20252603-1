@@ -122,6 +122,9 @@ public class BoardHandler {
     }
 
     Set<Player> getPlayersOnHex(int hexId){
+        if (hexId < MIN_HEX_ID){
+            throw new IllegalArgumentException("Invalid Hex ID, must be within [0,18]");
+        }
         Hex curHex = hexes.get(hexId);
 
         Set<Player> playersOnHex = new HashSet<>();

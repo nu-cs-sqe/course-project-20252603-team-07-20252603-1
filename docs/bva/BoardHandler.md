@@ -174,29 +174,34 @@ Step 1:
 - Input: State of the Hex - Settlements
 - Input: State of the Hex - Cities
 - Output: List of Players
+- Output: Error
 
 Step 2:
 - Input - Interval
 - Input - Collection
 - Input - Collection
 - Output - Collection
+- Output - Exception
 
 Step 3:
-- Input: 0, 18, -1, 19
+- Input: 0, 18, -1, 19 - Will be validated by moveRobber
 - Input: empty collection, contains just one element, contains more than one element, duplicate elements, max possible size
 - Input: empty collection, contains just one element, contains more than one element, duplicate elements, max possible size
-- Output: empty collection (not feasible), contains just one element, contains more than one element, duplicate elements (not feasible), max possible size
+- Output: empty collection, contains just one element, contains more than one element, duplicate elements (not feasible), max possible size
+- Output: "Invalid Hex ID, must be within [0,18]"
 
-|              | System under test                   | Expected output    | Implemented?       |
-|--------------|-------------------------------------|--------------------|--------------------|
-| Test Case 31 | BLUE settlement on Hex 0, no cities | BLUE               | :white_check_mark: |
-| Test Case 32 | RED city on Hex 18, no settlements  | RED                | :white_check_mark: |
-| Test Case 33 | WHITE, ORANGE settlements, RED city | WHITE, ORANGE, RED | :white_check_mark: |
-| Test Case 34 | WHITE has two settlments, RED city  | WHITE, RED         | :white_check_mark: |
-| Test Case 35 | No settlements, BLUE has two cities | BLUE               | :white_check_mark: |
-| Test Case 36 | ORANGE has three settlements        | ORANGE             | :white_check_mark: |
-| Test Case 37 | RED has three cities                | RED                | :white_check_mark: |
-| Test Case 38 | No settlements or cities            | SETUP player       | x                  |
+|              | System under test                   | Expected output                         | Implemented?       |
+|--------------|-------------------------------------|-----------------------------------------|--------------------|
+| Test Case 31 | BLUE settlement on Hex 0, no cities | BLUE                                    | :white_check_mark: |
+| Test Case 32 | RED city on Hex 18, no settlements  | RED                                     | :white_check_mark: |
+| Test Case 33 | WHITE, ORANGE settlements, RED city | WHITE, ORANGE, RED                      | :white_check_mark: |
+| Test Case 34 | WHITE has two settlments, RED city  | WHITE, RED                              | :white_check_mark: |
+| Test Case 35 | No settlements, BLUE has two cities | BLUE                                    | :white_check_mark: |
+| Test Case 36 | ORANGE has three settlements        | ORANGE                                  | :white_check_mark: |
+| Test Case 37 | RED has three cities                | RED                                     | :white_check_mark: |
+| Test Case 38 | No settlements or cities            | Empty set                               | :white_check_mark: |
+| Test Case 39 | Calls getPlayers with -1            | "Invalid Hex ID, must be within [0,18]" | :white_check_mark: |
+| Test Case 40 | Calls getPlayers with 19            | "Invalid Hex ID, must be within [0,18]" | x                  |
 
 
 ### Method under test: `buildSetupSettlement(Player player, int nodeId)`
