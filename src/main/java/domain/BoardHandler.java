@@ -153,8 +153,9 @@ public class BoardHandler {
         nodeBuildingLevels[nodeId] = SETTLEMENT_LEVEL;
     }
 
-    void buildSetupRoad(int edgeId){
-
+    void buildSetupRoad(Player player, int claimedNodeId, int nodeId1, int nodeId2){
+        PlayerColor claimingColor = player.getPlayerColor();
+        boardGraphController.playerClaimStoredEdgeSetupPhase(claimingColor, claimedNodeId, nodeId1, nodeId2);
     }
 
     Player calculateLongestRoad(){

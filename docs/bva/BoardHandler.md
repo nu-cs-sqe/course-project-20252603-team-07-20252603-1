@@ -230,18 +230,18 @@ Step 3:
 - Output: Hexes have player in list of settlements, hex player list not updated - For integration testing, not unit testable
 - Output: "Invalid NodeID - must be within [0, 53]."
 
-|              | System under test             | Expected output                                                                                                    | Implemented?       |
-|--------------|-------------------------------|--------------------------------------------------------------------------------------------------------------------|--------------------|
-| Test Case 41 | RED tries to claim node 0     | Calls to add RED settlement to hex 0 and claimStoredNode, node level is settlement, owned by RED                   | :white_check_mark: |
-| Test Case 42 | BLUE tries to claim node 53   | Calls to add BLUE settlement to hex 18 and claimStoredNode, node level is settlement, owned by BLUE                | :white_check_mark: |
-| Test Case 43 | ORANGE tries to claim node -1 | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNode and addPlayerSettlementToHex not called          | :white_check_mark: |
-| Test Case 44 | WHITE tries to claim node 54  | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNode and addPlayerSettlementToHex not called          | :white_check_mark: |
-| Test Case 45 | ORANGE tries to claim node 8  | Calls to add ORANGE settlement to hexes 0, 1, and 4 and claimStoredNode, node level is settlement, owned by ORANGE | :white_check_mark: |
-| Test Case 46 | BLUE tries to claim node 4    | Calls to add BLUE settlement to hexes 0 and 1 and claimStoredNode, node level is settlement, owned by BLUE         | :white_check_mark: |
+|              | System under test             | Expected output                                                                                                              | Implemented?       |
+|--------------|-------------------------------|------------------------------------------------------------------------------------------------------------------------------|--------------------|
+| Test Case 41 | RED tries to claim node 0     | Calls to add RED settlement to hex 0 and claimStoredNodeSetupPhase, node level is settlement, owned by RED                   | :white_check_mark: |
+| Test Case 42 | BLUE tries to claim node 53   | Calls to add BLUE settlement to hex 18 and claimStoredNodeSetupPhase, node level is settlement, owned by BLUE                | :white_check_mark: |
+| Test Case 43 | ORANGE tries to claim node -1 | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNodeSetupPhase and addPlayerSettlementToHex not called          | :white_check_mark: |
+| Test Case 44 | WHITE tries to claim node 54  | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNodeSetupPhase and addPlayerSettlementToHex not called          | :white_check_mark: |
+| Test Case 45 | ORANGE tries to claim node 8  | Calls to add ORANGE settlement to hexes 0, 1, and 4 and claimStoredNodeSetupPhase, node level is settlement, owned by ORANGE | :white_check_mark: |
+| Test Case 46 | BLUE tries to claim node 4    | Calls to add BLUE settlement to hexes 0 and 1 and claimStoredNodeSetupPhase, node level is settlement, owned by BLUE         | :white_check_mark: |
 
 
 
-### Method under test: `buildSetupRoad(int edgeId)`
+### Method under test: `buildSetupRoad(Player player, int nodeID, int startingNodeID, int endingNodeID)`
 
 Step 1:
 - Input: nodeId
@@ -260,16 +260,18 @@ Step 2:
 Step 3:
 - Input: 0, 53, -1, 54
 - Input: 0, 53, -1, 54
+- Input: 0, 53, -1, 54 (out of bounds not feasible for previous node claimed)
 - Input: Edge claimed, edge unclaimed - Handled by BoardGraphController
 - Input: RED, BLUE, ORANGE, WHITE
 - Output: Edge claimed, edge unclaimed - Handled by BoardGraphController
-- Output: "Edge nodeId out of bounds. Must be within [0, 53]."
+- Output: "Edge nodeId out of bounds. Must be within [0, 53].", IllegalEdgeClaim("Edge must be adjacent to just placed settlement");
 
-|              | System under test                 | Expected output                                      | Implemented? |
-|--------------|-----------------------------------|------------------------------------------------------|--------------|
-| Test Case 47 | RED claims edge [0,1]             | playerClaimStoredEdge is called                      | x            |
-| Test Case 48 | ORANGE claims edge [52, 53]       | playerClaimStoredEdge is called                      | x            |
-| Test Case 49 | WHITE tries to claim edge [-1, 0] | "Edge nodeId out of bounds. Must be within [0, 53]." | x            |
-| Test Case 50 | WHITE tries to claim edge [0, -1] | "Edge nodeId out of bounds. Must be within [0, 53]." | x            |
-| Test Case 51 | BLUE tries to claim edge [53, 54] | "Edge nodeId out of bounds. Must be within [0, 53]." | x            |
-| Test Case 52 | BLUE tries to claim edge [54, 53] | "Edge nodeId out of bounds. Must be within [0, 53]." | x            |
+|              | System under test                             | Expected output                                      | Implemented? |
+|--------------|-----------------------------------------------|------------------------------------------------------|--------------|
+| Test Case 47 | RED claims edge [0,1] after claiming 0        | playerClaimSetupStoredEdge is called                 | x            |
+| Test Case 48 | ORANGE claims edge [52, 53] after claiming 53 | playerClaimSetupStoredEdge is called                 | x            |
+| Test Case 49 | WHITE tries to claim edge [-1, 0]             | "Edge nodeId out of bounds. Must be within [0, 53]." | x            |
+| Test Case 50 | WHITE tries to claim edge [0, -1]             | "Edge nodeId out of bounds. Must be within [0, 53]." | x            |
+| Test Case 51 | BLUE tries to claim edge [53, 54]             | "Edge nodeId out of bounds. Must be within [0, 53]." | x            |
+| Test Case 52 | BLUE tries to claim edge [54, 53]             | "Edge nodeId out of bounds. Must be within [0, 53]." | x            |
+| Test Case 53 | ORANGE tries to claim [0,1] after claiming 53 | "Edge must be adjacent to just placed settlement"    | x            |
