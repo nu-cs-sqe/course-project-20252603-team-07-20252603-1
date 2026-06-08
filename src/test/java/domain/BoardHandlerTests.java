@@ -1130,6 +1130,24 @@ public class BoardHandlerTests {
         EasyMock.verify(mockBoardGraphController, mockRedPlayer);
     }
 
+    // Test Case 48
+    @Test
+    void OrangeClaimsNode53_ThenEdge_FiftyTwo_FiftyThree_CallPlayerClaimStoredEdgeSetupPhase(){
+        EasyMock.expect(mockOrangePlayer.getPlayerColor()).andReturn(PlayerColor.ORANGE);
+
+        PlayerColor expectedColor = PlayerColor.ORANGE;
+
+        EasyMock.expect(mockBoardGraphController.playerClaimStoredEdgeSetupPhase(expectedColor, 53, 52, 53)).andReturn(true);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(mockBoardGraphController, mockOrangePlayer);
+
+        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+
+        b.buildSetupRoad(mockOrangePlayer, 53, 52, 53);
+
+        EasyMock.verify(mockBoardGraphController, mockOrangePlayer);
+    }
 
 
 }
