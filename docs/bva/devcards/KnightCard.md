@@ -10,18 +10,19 @@ the player after being played and contribute toward the Largest Army special car
 
 ---
 
-### Method under test: `play(Robber robber, int targetHexId, Player victim)`
+### Method under test: `play(Player player, Robber robber, int targetHexId, Player victim)`
 
 Step 1:
 
-- Input: robber, targetHexId, victim
+- Input: player, robber, targetHexId, victim
 - State: robber's current hex location, victim's resource count
 - Output: robber moved to targetHexId
-- Output: 1 random resource transferred from victim to playing player (if applicable)
+- Output: 1 random resource transferred from victim to player (if applicable)
 - Output: exception
 
 Step 2:
 
+- player: Pointer
 - robber: Pointer
 - targetHexId: Interval [0, 18]
 - victim: Pointer (null allowed — no adjacent opponent)
@@ -33,6 +34,7 @@ Step 2:
 
 Step 3:
 
+- Input player (Pointer): valid Player instance (no null check in implementation)
 - Input robber (Pointer): null; valid Robber instance
 - Input targetHexId (Interval [0, 18]): −1 (CAN'T SET); 0 (LOW); 18 (HIGH); 19 (CAN'T SET)
 - Input targetHexId vs current location (Pair of Intervals): same hex (invalid — must move); different hex (valid)
