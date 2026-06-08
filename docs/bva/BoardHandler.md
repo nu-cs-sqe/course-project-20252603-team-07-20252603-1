@@ -109,7 +109,7 @@ Step 3:
 | Test Case 15 | RED claims edge [0,1]             | playerClaimStoredEdge is called                      | :white_check_mark: |
 | Test Case 16 | ORANGE claims edge [52, 53]       | playerClaimStoredEdge is called                      | :white_check_mark: |
 | Test Case 17 | WHITE tries to claim edge [-1, 0] | "Edge nodeId out of bounds. Must be within [0, 53]." | :white_check_mark: |
-| Test Case 18 | WHITE tries to claim edge [0, -1] | "Edge nodeId out of bounds. Must be within [0, 53]." | x                  |
+| Test Case 18 | WHITE tries to claim edge [0, -1] | "Edge nodeId out of bounds. Must be within [0, 53]." | :white_check_mark: |
 | Test Case 19 | BLUE tries to claim edge [53, 54] | "Edge nodeId out of bounds. Must be within [0, 53]." | x                  |
 | Test Case 20 | BLUE tries to claim edge [54, 53] | "Edge nodeId out of bounds. Must be within [0, 53]." | x                  |
 
