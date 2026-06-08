@@ -942,6 +942,19 @@ public class BoardHandlerTests {
         assertEquals(Set.of(), result);
     }
 
+    // Test Case 39
+    @Test
+    void GetPlayersOnHexNegativeOne_ThrowError(){
+        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            b.getPlayersOnHex(-1);
+        });
+
+        String expectedMessage = "Invalid Hex ID, must be within [0,18]";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
 
 
 }
