@@ -16,6 +16,9 @@ public class RoadBuildingCard extends DevelopmentCard {
       if (edge2.isOccupied()) {
         throw new IllegalArgumentException("Edge is already occupied.");
       }
+      if (!edge2.isConnectedToPlayerNetwork()) {
+        throw new IllegalArgumentException("Road must connect to player's existing network.");
+      }
       player.placeRoad(edge2);
     }
   }
