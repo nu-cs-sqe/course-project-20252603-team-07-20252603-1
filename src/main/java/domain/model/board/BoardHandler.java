@@ -22,4 +22,12 @@ public class BoardHandler {
 
     public void buildCity(PlayerColor playerColor, int i) {
     }
+
+    public PlayerColor getNodeOwner(int nodeId) {
+        return null;
+    }
+
+    public boolean isRoadOwnedBy(PlayerColor color, int startNodeId, int endNodeId) {
+        return false;
+    }
 }
