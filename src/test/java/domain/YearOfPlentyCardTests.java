@@ -1,5 +1,6 @@
 package domain;
 
+import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,5 +17,21 @@ public class YearOfPlentyCardTests {
         () -> yearOfPlentyCard.play(null, Resource.BRICK, Resource.LUMBER)
     );
     assertEquals("Player cannot be null.", exception.getMessage());
+  }
+
+  @Test // Test Case 2
+  public void Play_NullResource1_ExpectIllegalArgumentException() {
+    YearOfPlentyCard yearOfPlentyCard = new YearOfPlentyCard();
+
+    Player player = EasyMock.createMock(Player.class);
+    EasyMock.replay(player);
+
+    IllegalArgumentException exception = assertThrows(
+        IllegalArgumentException.class,
+        () -> yearOfPlentyCard.play(player, null, Resource.BRICK)
+    );
+    assertEquals("Resource cannot be null.", exception.getMessage());
+
+    EasyMock.verify(player);
   }
 }

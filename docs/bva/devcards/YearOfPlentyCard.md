@@ -36,7 +36,7 @@ Step 3:
 |             | System under test                                     | Expected output                                           | Implemented?       |
 | ----------- | ----------------------------------------------------- | --------------------------------------------------------- |--------------------|
 | Test Case 1 | player = null                                         | IllegalArgumentException: "Player cannot be null."        | :white_check_mark: |
-| Test Case 2 | resource1 = null, resource2 = BRICK                   | IllegalArgumentException: "Resource cannot be null."      | :x:                |
+| Test Case 2 | resource1 = null, resource2 = BRICK                   | IllegalArgumentException: "Resource cannot be null."      | :white_check_mark: |
 | Test Case 3 | resource1 = BRICK, resource2 = null                   | IllegalArgumentException: "Resource cannot be null."      | :x:                |
 | Test Case 4 | resource1 = DESERT, resource2 = ORE                   | IllegalArgumentException: "Cannot take DESERT as a resource." | :x:                |
 | Test Case 5 | resource1 = LUMBER, resource2 = DESERT                | IllegalArgumentException: "Cannot take DESERT as a resource." | :x:                |
