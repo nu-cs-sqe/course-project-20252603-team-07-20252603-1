@@ -83,8 +83,9 @@ public class BoardHandler {
         nodeBuildingLevels[nodeId] = CITY_LEVEL;
     }
 
-    void addRoad(int edgeId){
-
+    void addRoad(Player player, int nodeId1, int nodeId2){
+        PlayerColor claimingColor = player.getPlayerColor();
+        boardGraphController.playerClaimStoredEdge(claimingColor, nodeId1, nodeId2);
     }
 
     void awardResources(int rollNum){

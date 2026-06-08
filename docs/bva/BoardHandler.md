@@ -80,7 +80,7 @@ Step 3:
 | Test Case 14 | WHITE tries to build a city on node 24, which they had a settlement on  | Calls to remove WHITE settlement and add city to hexes 5, 9, and 10, node level is city, owned by RED    | :white_check_mark: |
 
 
-### Method under test: `addRoad(Player player, int nodeId, int nodeId)`
+### Method under test: `addRoad(Player player, int nodeId1, int nodeId2)`
 
 Step 1:
 - Input: nodeId
@@ -99,21 +99,17 @@ Step 2:
 Step 3:
 - Input: 0, 53, -1, 54
 - Input: 0, 53, -1, 54
-- Input: Edge claimed, edge unclaimed
+- Input: Edge claimed, edge unclaimed - Handled by BoardGraphController
 - Input: RED, BLUE, ORANGE, WHITE
-- Output: Edge claimed, edge unclaimed
-- Output: "Road already claimed", "Road not adjacent to player roads/buildings", "Not a valid edge"
+- Output: Edge claimed, edge unclaimed - Handled by BoardGraphController
+- Output: "Edge nodeId out of bounds. Must be within [0, 53]."
 
-|              | System under test                                                         | Expected output                                                     | Implemented? |
-|--------------|---------------------------------------------------------------------------|---------------------------------------------------------------------|--------------|
-| Test Case 12 | RED claims edge [0,1]                                                     | RED owns graph edge [0,1]                                           | x            |
-| Test Case 13 | ORANGE claims edge [52, 53]                                               | ORANGE owns graph edge [52, 53]                                     | x            |
-| Test Case 14 | BLUE tries to claim edge [10, 11], already owned by WHITE                 | "Road already claimed"                                              | x            |
-| Test Case 15 | WHITE tries to claim edge [10, 11], not adjacent to other roads/buildings | "Road not adjacent to player roads/buildings", edge still unclaimed | x            |
-| Test Case 16 | RED tries to claim edge [-1, 0]                                           | "Not a valid edge"                                                  | x            |
-| Test Case 17 | ORANGE tries to claim edge [53, 54]                                       | "Not a valid edge"                                                  | x            |
-| Test Case 18 | BLUE tries to claim edge [53, 54]                                         | "Not a valid edge"                                                  | x            |
-| Test Case 19 | WHITE tries to claim edge [0, 16]                                         | "Not a valid edge"                                                  | x            |
+|              | System under test                                                         | Expected output                 | Implemented?       |
+|--------------|---------------------------------------------------------------------------|---------------------------------|--------------------|
+| Test Case 15 | RED claims edge [0,1]                                                     | playerClaimStoredEdge is called | :white_check_mark: |
+| Test Case 16 | ORANGE claims edge [52, 53]                                               | playerClaimStoredEdge is called | x                  |
+| Test Case 17 | RED tries to claim edge [-1, 0]                                           | "Not a valid edge"              | x                  |
+| Test Case 18 | BLUE tries to claim edge [53, 54]                                         | "Not a valid edge"              | x                  |
 
 
 ### Method under test: `awardResources(int rollNum)`

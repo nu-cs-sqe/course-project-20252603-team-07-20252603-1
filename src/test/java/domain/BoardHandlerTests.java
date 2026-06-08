@@ -382,7 +382,7 @@ public class BoardHandlerTests {
         assertEquals(expected, actual);
     }
 
-    // Test Case 13
+    // Test Case 14
     @Test
     void WhiteBuildsCityOnOwnedNodeTwentyFour_HexRemovesSettlement_AddsCity_ThreeTimes(){
         EasyMock.expect(mockWhitePlayer.getPlayerColor()).andReturn(PlayerColor.WHITE).times(2);
@@ -431,6 +431,25 @@ public class BoardHandlerTests {
         int expected = 2;
         int actual = b.getNodeBuildingLevel(24);
         assertEquals(expected, actual);
+    }
+
+    // Test Case 15
+    @Test
+    void RedClaimsEdge_ZeroOne_CallPlayerClaimStoredEdge(){
+        EasyMock.expect(mockRedPlayer.getPlayerColor()).andReturn(PlayerColor.RED);
+
+        PlayerColor expectedColor = PlayerColor.RED;
+
+        mockBoardGraphController.playerClaimStoredEdge(expectedColor, 0, 1);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(mockBoardGraphController, mockRedPlayer);
+
+        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes);
+
+        b.addRoad(mockRedPlayer, 0, 1);
+
+        EasyMock.verify(mockBoardGraphController, mockRedPlayer);
     }
 
 }
