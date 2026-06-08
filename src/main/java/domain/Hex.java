@@ -129,6 +129,14 @@ public class Hex {
     return playerCities.contains(player);
   }
 
+  public List<Player> getHexSettlementPlayers(){
+    return List.of();
+  };
+
+  public List<Player> getHexCityPlayers(){
+    return List.of();
+  };
+
   @Override
   protected final void finalize() {
     // intentionally empty — blocks finalizer attacks

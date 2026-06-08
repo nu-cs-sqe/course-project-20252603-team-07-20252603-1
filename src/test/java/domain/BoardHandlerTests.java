@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static domain.BoardHandler.initNodeHexMap;
 import static org.junit.jupiter.api.Assertions.*;
@@ -781,6 +782,24 @@ public class BoardHandlerTests {
         EasyMock.verify(mockRobber);
     }
 
+    // Test Case 31
+    @Test
+    void GetPlayersOnHexZero_JustBlueSettlement_ReturnBlue(){
+        List<Player> settlementPlayers = List.of(mockBluePlayer);
+        List<Player> cityPlayers = List.of();
 
+        EasyMock.expect(mockHexes.get(0).getHexSettlementPlayers()).andReturn(settlementPlayers);
+        EasyMock.expect(mockHexes.get(0).getHexCityPlayers()).andReturn(cityPlayers);
+
+        EasyMock.replay(mockHexes.get(0));
+
+        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+
+        Set<Player> result = b.getPlayersOnHex(0);
+
+        EasyMock.verify(mockHexes.get(0));
+
+        assertEquals(Set.of(mockBluePlayer), result);
+    }
 
 }

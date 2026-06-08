@@ -170,30 +170,33 @@ Step 3:
 ### Method under test: `getPlayersOnHex(int hexId)`
 
 Step 1:
+- Input: hexId
 - Input: State of the Hex - Settlements
 - Input: State of the Hex - Cities
 - Output: List of Players
 
 Step 2:
+- Input - Interval
 - Input - Collection
 - Input - Collection
 - Output - Collection
 
 Step 3:
+- Input: 0, 18, -1, 19
 - Input: empty collection, contains just one element, contains more than one element, duplicate elements, max possible size
 - Input: empty collection, contains just one element, contains more than one element, duplicate elements, max possible size
 - Output: empty collection (not feasible), contains just one element, contains more than one element, duplicate elements (not feasible), max possible size
 
-|              | System under test                   | Expected output    | Implemented? |
-|--------------|-------------------------------------|--------------------|--------------|
-| Test Case 28 | BLUE settlement on Hex, no cities   | BLUE               | x            |
-| Test Case 29 | RED city on Hex, no settlements     | RED                | x            |
-| Test Case 30 | WHITE, ORANGE settlements, RED city | WHITE, ORANGE, RED | x            |
-| Test Case 31 | WHITE has two settlments, RED city  | WHITE, RED         | x            |
-| Test Case 32 | No settlements, BLUE has two cities | BLUE               | x            |
-| Test Case 33 | ORANGE has three settlements        | ORANGE             | x            |
-| Test Case 34 | RED has three cities                | RED                | x            |
-| Test Case 35 | No settlements or cities            | SETUP player       | x            |
+|              | System under test                   | Expected output    | Implemented?       |
+|--------------|-------------------------------------|--------------------|--------------------|
+| Test Case 31 | BLUE settlement on Hex, no cities   | BLUE               | :white_check_mark: |
+| Test Case 32 | RED city on Hex, no settlements     | RED                | x                  |
+| Test Case 33 | WHITE, ORANGE settlements, RED city | WHITE, ORANGE, RED | x                  |
+| Test Case 34 | WHITE has two settlments, RED city  | WHITE, RED         | x                  |
+| Test Case 35 | No settlements, BLUE has two cities | BLUE               | x                  |
+| Test Case 36 | ORANGE has three settlements        | ORANGE             | x                  |
+| Test Case 37 | RED has three cities                | RED                | x                  |
+| Test Case 38 | No settlements or cities            | SETUP player       | x                  |
 
 
 ### Method under test: `buildSetupSettlement(Player player, int nodeId)`
@@ -217,18 +220,19 @@ Step 2:
 Step 3:
 - Input: RED, BLUE, ORANGE, WHITE
 - Input: 0, 53, -1, 54
-- Input: Node already occupied, node free (owned by setup)
+- Input: Node is adjacent to 1, 2, or 3 hexes
 - Output: Node now occupied, node not occupied, node still occupied by other player (was already occupied)
-- Output: Hexes have player in list of settlements, hex player list not updated
-- Output: "Out of bounds nodeId", "Node already occupied"
+- Output: Hexes have player in list of settlements, hex player list not updated - For integration testing, not unit testable
+- Output: "Invalid NodeID - must be within [0, 53]."
 
-|              | System under test                                              | Expected output                                                              | Implemented? |
-|--------------|----------------------------------------------------------------|------------------------------------------------------------------------------|--------------|
-| Test Case 36 | RED tries to claim node 0, which is free                       | RED now owns node 0, RED now in Hex city lists                               | x            |
-| Test Case 37 | BLUE tries to claim node 53, which is free                     | BLUE now owns node 53, BLUE now in Hex city lists                            | x            |
-| Test Case 38 | ORANGE tries to claim node -1                                  | "Out of bounds nodeId", still unoccupied                                     | x            |
-| Test Case 39 | WHITE tries to claim node 54                                   | "Out of bounds nodeId", still unoccupied                                     | x            |
-| Test Case 40 | ORANGE tries to claim node 10, which is already owned by WHITE | "Node already occupied", still occupied by WHITE, Hex city lists not updated | x            |
+|              | System under test             | Expected output                                                                                                    | Implemented? |
+|--------------|-------------------------------|--------------------------------------------------------------------------------------------------------------------|--------------|
+| Test Case 39 | RED tries to claim node 0     | Calls to add RED settlement to hex 0 and claimStoredNode, node level is settlement, owned by RED                   | x            |
+| Test Case 40 | BLUE tries to claim node 53   | Calls to add BLUE settlement to hex 18 and claimStoredNode, node level is settlement, owned by BLUE                | x            |
+| Test Case 41 | ORANGE tries to claim node -1 | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNode and addPlayerSettlementToHex not called          | x            |
+| Test Case 42 | WHITE tries to claim node 54  | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNode and addPlayerSettlementToHex not called          | x            |
+| Test Case 43 | ORANGE tries to claim node 8  | Calls to add ORANGE settlement to hexes 0, 1, and 4 and claimStoredNode, node level is settlement, owned by ORANGE | x            |
+| Test Case 44 | BLUE tries to claim node 4    | Calls to add BLUE settlement to hexes 0 and 1 and claimStoredNode, node level is settlement, owned by BLUE         | x            |
 
 
 
@@ -251,18 +255,16 @@ Step 2:
 Step 3:
 - Input: 0, 53, -1, 54
 - Input: 0, 53, -1, 54
-- Input: Edge claimed, edge unclaimed
+- Input: Edge claimed, edge unclaimed - Handled by BoardGraphController
 - Input: RED, BLUE, ORANGE, WHITE
-- Output: Edge claimed, edge unclaimed
-- Output: "Road already claimed", "Road not adjacent to player roads/buildings", "Not a valid edge"
+- Output: Edge claimed, edge unclaimed - Handled by BoardGraphController
+- Output: "Edge nodeId out of bounds. Must be within [0, 53]."
 
-|              | System under test                                                         | Expected output                                                     | Implemented? |
-|--------------|---------------------------------------------------------------------------|---------------------------------------------------------------------|--------------|
-| Test Case 41 | RED claims edge [0,1]                                                     | RED owns graph edge [0,1]                                           | x            |
-| Test Case 42 | ORANGE claims edge [52, 53]                                               | ORANGE owns graph edge [52, 53]                                     | x            |
-| Test Case 43 | BLUE tries to claim edge [10, 11], already owned by WHITE                 | "Road already claimed"                                              | x            |
-| Test Case 44 | WHITE tries to claim edge [10, 11], not adjacent to other roads/buildings | "Road not adjacent to player roads/buildings", edge still unclaimed | x            |
-| Test Case 45 | RED tries to claim edge [-1, 0]                                           | "Not a valid edge"                                                  | x            |
-| Test Case 46 | ORANGE tries to claim edge [53, 54]                                       | "Not a valid edge"                                                  | x            |
-| Test Case 47 | BLUE tries to claim edge [53, 54]                                         | "Not a valid edge"                                                  | x            |
-| Test Case 48 | WHITE tries to claim edge [0, 16]                                         | "Not a valid edge"                                                  | x            |
+|              | System under test                 | Expected output                                      | Implemented? |
+|--------------|-----------------------------------|------------------------------------------------------|--------------|
+| Test Case 45 | RED claims edge [0,1]             | playerClaimStoredEdge is called                      | x            |
+| Test Case 46 | ORANGE claims edge [52, 53]       | playerClaimStoredEdge is called                      | x            |
+| Test Case 47 | WHITE tries to claim edge [-1, 0] | "Edge nodeId out of bounds. Must be within [0, 53]." | x            |
+| Test Case 48 | WHITE tries to claim edge [0, -1] | "Edge nodeId out of bounds. Must be within [0, 53]." | x            |
+| Test Case 49 | BLUE tries to claim edge [53, 54] | "Edge nodeId out of bounds. Must be within [0, 53]." | x            |
+| Test Case 50 | BLUE tries to claim edge [54, 53] | "Edge nodeId out of bounds. Must be within [0, 53]." | x            |

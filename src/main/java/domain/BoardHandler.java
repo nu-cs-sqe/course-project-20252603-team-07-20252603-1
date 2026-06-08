@@ -121,8 +121,14 @@ public class BoardHandler {
         robber.moveRobber(hexId);
     }
 
-    void getPlayersOnHex(int hexId){
+    Set<Player> getPlayersOnHex(int hexId){
+        Hex curHex = hexes.get(hexId);
 
+        Set<Player> playersOnHex = new HashSet<>();
+        playersOnHex.addAll(curHex.getHexSettlementPlayers());
+        playersOnHex.addAll(curHex.getHexCityPlayers());
+
+        return playersOnHex;
     }
 
     int buildSetupSettlement(Player player, int nodeId){
