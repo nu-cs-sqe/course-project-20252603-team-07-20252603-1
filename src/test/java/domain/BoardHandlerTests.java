@@ -186,7 +186,6 @@ public class BoardHandlerTests {
         int expected = 1;
         int actual = b.getNodeBuildingLevel(4);
         assertEquals(expected, actual);
-
     }
 
     // Test Case 7
@@ -1080,6 +1079,35 @@ public class BoardHandlerTests {
 
         int expected = 1;
         int actual = b.getNodeBuildingLevel(8);
+        assertEquals(expected, actual);
+    }
+
+    // Test Case 46
+    @Test
+    void BlueClaimsSetupNodeFour_HexesZeroOneUpdated(){
+        EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE);
+
+        PlayerColor expectedColor = PlayerColor.BLUE;
+
+        EasyMock.expect(mockBoardGraphController.playerClaimStoredNodeSetupPhase(expectedColor, 4)).andReturn(true);
+
+        mockHexes.get(0).addPlayerSettlementToHex(mockBluePlayer);
+        EasyMock.expectLastCall();
+        mockHexes.get(1).addPlayerSettlementToHex(mockBluePlayer);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(mockBoardGraphController, mockBluePlayer, mockHexes.get(0), mockHexes.get(1));
+
+        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+
+        b.buildSetupSettlement(mockBluePlayer, 4);
+
+        EasyMock.verify(mockBoardGraphController, mockBluePlayer, mockHexes.get(0), mockHexes.get(1));
+
+        assertTrue(b.checkPlayerOwnsNode(expectedColor, 4));
+
+        int expected = 1;
+        int actual = b.getNodeBuildingLevel(4);
         assertEquals(expected, actual);
     }
 
