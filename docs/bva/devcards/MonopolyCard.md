@@ -7,17 +7,18 @@ named resource, they give nothing. The deck contains 2 Monopoly cards.
 
 ---
 
-### Method under test: `play(Resource resource, List<Player> otherPlayers)`
+### Method under test: `play(Player player, Resource resource, List<Player> otherPlayers)`
 
 Step 1:
 
-- Input: resource, otherPlayers
+- Input: player, resource, otherPlayers
 - State: each other player's holdings of the named resource
-- Output: all cards of the named resource transferred from other players to the playing player
+- Output: all cards of the named resource transferred from other players to player
 - Output: exception
 
 Step 2:
 
+- player: Pointer
 - resource: Pointer / Case (BRICK, GRAIN, LUMBER, ORE, WOOL; DESERT is invalid)
 - otherPlayers: Pointer / Size of Collection
 - per-player holdings of named resource: Count [0, 19]
@@ -26,10 +27,11 @@ Step 2:
 
 Step 3:
 
+- Input player (Pointer): valid Player instance (no null check in implementation)
 - Input resource (Pointer / Case): null; BRICK; GRAIN; LUMBER; ORE; WOOL; DESERT (invalid)
 - Input otherPlayers (Pointer / Size of Collection): null; empty list; one player; more than one player
 - State per-player holdings of named resource (Count): 0 (has none — nothing transferred); 1 (has exactly one); >1 (has several)
-- Output: playing player's resource count increases by the total taken from all opponents
+- Output: player's resource count increases by the total taken from all opponents
 - Output: "Resource cannot be null." / "Cannot monopolize DESERT." / "Other players list cannot be null."
 
 
