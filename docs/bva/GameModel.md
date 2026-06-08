@@ -29,8 +29,6 @@
 | Test Case 6 | Incorrect Game Phase                                                    | IllegalGamePhaseException                                   | :white_check_mark: |
 
 
-// Methods Under Spencer's responsibility
-
 ### Method under test: `attemptBuildRoad()`
 
 #### Inputs:
@@ -52,4 +50,28 @@
 | Test Case 2 | White claims edge, Boardhandler fails, has enough resources     | IllegalRoadPlacementException  | :white_check_mark: |
 | Test Case 3 | Orange claims edge, BoardHandler succeeds, not enough resources | InsufficientResourcesException | :white_check_mark: |
 | Test Case 4 | Blue attempts, Improper Game Phase                              | IllegalGamePhaseException      | :white_check_mark: |
+
+### Method under test: `attemptBuildCity()`
+
+
+#### Inputs:
+- PlayerColor
+- Cases
+  - BoardHandler check succeed
+  - Player has enough resources or not
+
+#### Outputs:
+- Board Updated
+- PlayerState updated with less resources
+- Resource Deck Replenished
+- Victory Point awarded
+- Error -> InsufficientResourcesException, IllegalCityPlacementException, IllegalGamePhaseException
+
+|             | State of the System                                          | Expected output                   | Implemented?       |
+|-------------|--------------------------------------------------------------|-----------------------------------|--------------------|
+| Test Case 1 | Red builds city, BoardHandler succeeds, has enough resources | Success                           | :white_check_mark: |
+| Test Case 2 | White builds city, not enough resources (ore)                | InsufficientResourcesException    | :x:                |
+| Test Case 3 | White builds city, not enough resources (grain)              | InsufficientResourcesException    | :x:                |
+| Test Case 4 | Orange builds, BoardHandler fails                            | IllegalCityPlacementException     | :x:                |
+| Test Case 5 | Blue attempts, Improper Game Phase                           | IllegalGamePhaseException         | :x:                |
 

@@ -68,7 +68,8 @@ public class GameModelTests {
         EasyMock.expect(boardMock.buildSettlement(PlayerColor.RED, 0)).andReturn(true);
 
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER, Resource.WOOL, Resource.GRAIN)) {
-            EasyMock.expect(redStateMock.reduceResources(r, 1)).andReturn(true);
+            redStateMock.reduceResources(r, 1);
+            EasyMock.expectLastCall();
             decks.get(r).replenish();
             EasyMock.expectLastCall();
         }
@@ -193,7 +194,8 @@ public class GameModelTests {
         EasyMock.expect(boardMock.buildSettlement(PlayerColor.BLUE, 0)).andReturn(true);
 
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER, Resource.WOOL, Resource.GRAIN)) {
-            EasyMock.expect(blueStateMock.reduceResources(r, 1)).andReturn(true);
+            blueStateMock.reduceResources(r, 1);
+            EasyMock.expectLastCall();
             decks.get(r).replenish();
             EasyMock.expectLastCall();
         }
@@ -254,7 +256,8 @@ public class GameModelTests {
         EasyMock.expectLastCall();
 
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER)) {
-            EasyMock.expect(redStateMock.reduceResources(r, 1)).andReturn(true);
+            redStateMock.reduceResources(r, 1);
+            EasyMock.expectLastCall();
             decks.get(r).replenish();
             EasyMock.expectLastCall();
         }
@@ -361,5 +364,40 @@ public class GameModelTests {
         EasyMock.verify(lumberDeckMock, brickDeckMock, grainDeckMock,
                 oreDeckMock, woolDeckMock, boardMock);
 
+    }
+
+    @Test
+    void attemptBuildCity_test01_EnoughResources_BoardSucceeds_ExpectSuccess(){
+        PlayerState redStateMock = EasyMock.createMock(PlayerState.class);
+        ColorToPlayerStateMock = Map.of(
+                PlayerColor.RED, redStateMock
+        );
+
+        EasyMock.expect(redStateMock.getResourceCount(Resource.ORE)).andReturn(3);
+        EasyMock.expect(redStateMock.getResourceCount(Resource.GRAIN)).andReturn(2);
+
+        boardMock.buildCity(PlayerColor.RED, 0);
+        EasyMock.expectLastCall();
+
+        redStateMock.reduceResources(Resource.ORE, 3);
+        EasyMock.expectLastCall();
+        oreDeckMock.replenish(3);
+        EasyMock.expectLastCall();
+
+        redStateMock.reduceResources(Resource.GRAIN, 2);
+        EasyMock.expectLastCall();
+        grainDeckMock.replenish(2);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(redStateMock, boardMock, oreDeckMock, grainDeckMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
+
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        model.attemptBuildCity(0);
+
+        EasyMock.verify(redStateMock, boardMock, oreDeckMock, grainDeckMock);
     }
 }

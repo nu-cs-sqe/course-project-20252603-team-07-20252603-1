@@ -215,12 +215,21 @@ public class GameModel {
         }
     }
 
-    private void reducePlayerResources(PlayerColor currentPlayerColor, Resource r, int amount) {
+    private void reducePlayerResources(PlayerColor currentPlayerColor, Resource type, int amount) {
         PlayerState releventPlayerState = playerColorToPlayerState.get(currentPlayerColor);
-        releventPlayerState.reduceResources(r, amount);
+        releventPlayerState.reduceResources(type, amount);
     }
 
-    public void attemptBuildCity(){};
+
+    public void attemptBuildCity(int nodeID){
+        checkPlayerOwnsEnoughResources(currentPlayerColor, Resource.ORE, 3);
+        checkPlayerOwnsEnoughResources(currentPlayerColor, Resource.GRAIN, 2);
+        board.buildCity(currentPlayerColor, nodeID);
+        reducePlayerResources(currentPlayerColor, Resource.ORE, 3);
+        oreDeck.replenish(3);
+        reducePlayerResources(currentPlayerColor, Resource.GRAIN, 2);
+        grainDeck.replenish(2);
+    };
 
 
     public void attemptTrade(){};

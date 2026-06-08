@@ -19,4 +19,7 @@ public class BoardHandler {
 
     public void addRoad(PlayerColor currentPlayerColor, int startingNodeID, int endingNodeID) {
     }
+
+    public void buildCity(PlayerColor playerColor, int i) {
+    }
 }

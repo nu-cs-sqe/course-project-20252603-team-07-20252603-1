@@ -67,8 +67,7 @@ public class PlayerState {
 
     // Defined while working on GameModel
     //TODO
-    public boolean reduceResources(Resource r, int amount) {
-        return true;
+    public void reduceResources(Resource r, int amount) {
     }
 
     // Defined while working on GameModel
