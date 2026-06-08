@@ -195,7 +195,7 @@ Step 3:
 | Test Case 34 | WHITE has two settlments, RED city  | WHITE, RED         | :white_check_mark: |
 | Test Case 35 | No settlements, BLUE has two cities | BLUE               | :white_check_mark: |
 | Test Case 36 | ORANGE has three settlements        | ORANGE             | :white_check_mark: |
-| Test Case 37 | RED has three cities                | RED                | x                  |
+| Test Case 37 | RED has three cities                | RED                | :white_check_mark: |
 | Test Case 38 | No settlements or cities            | SETUP player       | x                  |
 
 
