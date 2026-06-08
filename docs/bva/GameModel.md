@@ -72,6 +72,6 @@
 | Test Case 1 | Red builds city, BoardHandler succeeds, has enough resources | Success                           | :white_check_mark: |
 | Test Case 2 | White builds city, not enough resources (ore)                | InsufficientResourcesException    | :white_check_mark: |
 | Test Case 3 | White builds city, not enough resources (grain)              | InsufficientResourcesException    | :white_check_mark: |
-| Test Case 4 | Orange builds, BoardHandler fails                            | IllegalCityPlacementException     | :x:                |
+| Test Case 4 | Orange builds, BoardHandler fails                            | IllegalCityPlacementException     | :white_check_mark: |
 | Test Case 5 | Blue attempts, Improper Game Phase                           | IllegalGamePhaseException         | :x:                |
 

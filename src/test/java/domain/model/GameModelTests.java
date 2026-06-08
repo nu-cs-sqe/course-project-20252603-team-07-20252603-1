@@ -1,10 +1,7 @@
 package domain.model;
 
 import domain.model.board.BoardHandler;
-import domain.model.exceptions.IllegalGamePhaseException;
-import domain.model.exceptions.IllegalRoadPlacementException;
-import domain.model.exceptions.IllegalSettlementPlacementException;
-import domain.model.exceptions.InsufficientResourcesException;
+import domain.model.exceptions.*;
 import domain.model.player.PlayerColor;
 import domain.model.player.PlayerState;
 import domain.model.resources.Resource;
@@ -448,5 +445,33 @@ public class GameModelTests {
         assertEquals("Insufficient resources", exception.getMessage());
 
         EasyMock.verify(whiteStateMock);
+    }
+
+    @Test
+    void attemptBuildCity_test04_EnoughResources_BoardFails_ExpectError(){
+        PlayerState orangeStateMock = EasyMock.createMock(PlayerState.class);
+        ColorToPlayerStateMock = Map.of(
+                PlayerColor.ORANGE, orangeStateMock
+        );
+
+        EasyMock.expect(orangeStateMock.getResourceCount(Resource.ORE)).andReturn(3);
+        EasyMock.expect(orangeStateMock.getResourceCount(Resource.GRAIN)).andReturn(2);
+
+        boardMock.buildCity(PlayerColor.ORANGE, 0);
+        EasyMock.expectLastCall().andThrow(new IllegalArgumentException());
+
+        EasyMock.replay(orangeStateMock, boardMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
+
+        model.setCurrentPlayerColor(PlayerColor.ORANGE);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        Exception exception = assertThrows (IllegalCityPlacementException.class,
+                () -> model.attemptBuildCity(0));
+
+        assertEquals("Can not place city at specified node", exception.getMessage());
+
+        EasyMock.verify(orangeStateMock, boardMock);
     }
 }

@@ -1,6 +1,7 @@
 package domain.model;
 
 import domain.model.board.BoardHandler;
+import domain.model.exceptions.IllegalCityPlacementException;
 import domain.model.exceptions.IllegalGamePhaseException;
 import domain.model.exceptions.IllegalSettlementPlacementException;
 import domain.model.player.PlayerColor;
@@ -227,7 +228,11 @@ public class GameModel {
     public void attemptBuildCity(int nodeID){
         checkPlayerOwnsEnoughResources(currentPlayerColor, Resource.ORE, 3);
         checkPlayerOwnsEnoughResources(currentPlayerColor, Resource.GRAIN, 2);
-        board.buildCity(currentPlayerColor, nodeID);
+        try {
+            board.buildCity(currentPlayerColor, nodeID);
+        } catch (Exception e) {
+            throw new IllegalCityPlacementException("Can not place city at specified node");
+        }
         reducePlayerResources(currentPlayerColor, Resource.ORE, 3);
         oreDeck.replenish(3);
         reducePlayerResources(currentPlayerColor, Resource.GRAIN, 2);
