@@ -40,5 +40,5 @@ Step 3:
 | Test Case 3 | resource1 = BRICK, resource2 = null                   | IllegalArgumentException: "Resource cannot be null."      | :white_check_mark: |
 | Test Case 4 | resource1 = DESERT, resource2 = ORE                   | IllegalArgumentException: "Cannot take DESERT as a resource." | :white_check_mark: |
 | Test Case 5 | resource1 = LUMBER, resource2 = DESERT                | IllegalArgumentException: "Cannot take DESERT as a resource." | :white_check_mark: |
-| Test Case 6 | resource1 = ORE, resource2 = ORE (same type)          | player gains 2 ORE                                       | :x:                |
+| Test Case 6 | resource1 = ORE, resource2 = ORE (same type)          | player gains 2 ORE                                       | :white_check_mark: |
 | Test Case 7 | resource1 = BRICK, resource2 = WOOL (different types) | player gains 1 BRICK and 1 WOOL                          | :x:                |

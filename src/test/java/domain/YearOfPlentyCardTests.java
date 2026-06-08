@@ -3,6 +3,8 @@ package domain;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -79,6 +81,20 @@ public class YearOfPlentyCardTests {
         () -> yearOfPlentyCard.play(player, Resource.LUMBER, Resource.DESERT)
     );
     assertEquals("Cannot take DESERT as a resource.", exception.getMessage());
+
+    EasyMock.verify(player);
+  }
+
+  @Test // Test Case 6
+  public void Play_SameResourceType_PlayerGainsBoth() {
+    YearOfPlentyCard yearOfPlentyCard = new YearOfPlentyCard();
+
+    Player player = EasyMock.createMock(Player.class);
+    player.receiveResources(Map.of(Resource.ORE, 2));
+    EasyMock.expectLastCall();
+    EasyMock.replay(player);
+
+    yearOfPlentyCard.play(player, Resource.ORE, Resource.ORE);
 
     EasyMock.verify(player);
   }
