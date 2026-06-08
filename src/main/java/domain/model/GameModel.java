@@ -9,7 +9,6 @@ import domain.model.resources.ResourceDeck;
 import domain.model.game_pieces.DiceHandler;
 import domain.model.game_pieces.Die;
 import domain.model.player.Player;
-import domain.model.player.PlayerState;
 import domain.model.resources.Resource;
 
 import domain.model.exceptions.InsufficientResourcesException;
@@ -87,6 +86,7 @@ public class GameModel {
         }
         this.currentPlayerIndex = 0;
         this.currentPlayerColor = playerColors.get(0);
+        this.currentGamePhase = GamePhase.BEFORE_ROLL;
     }
 
 
@@ -126,24 +126,23 @@ public class GameModel {
         return playerColorToPlayerObject.get(color);
     }
 
-    public void performTurn(int roll) { // takes in the dice roll, doesn't perform it.
-        // Roll dice
-        // int roll = diceHandler.rollTwoDice();
-        currentGamePhase = GamePhase.RESOURCE_PRODUCTION;
+    public void performTurn(int roll) {
+        checkCurrentGamePhaseMatches(GamePhase.BEFORE_ROLL);
 
-        // interpret the rol result somehow
+        if (roll == 7) {
+            currentGamePhase = GamePhase.MOVE_ROBBER;
+            return;
+        }
+
+        // stub production — real distribution comes in a later part
         Resource rslt = interpretRoll(roll);
-
-        // Give current player one resource (minimal stub - ignoring dice result for now)
         try {
-
             Resource card = decks.get(rslt).draw();
             playerColorToPlayerObject.get(currentPlayerColor).updateResources(card, 1);
-
         } catch (Exception e) {
-            // Gracefully handle empty deck - no resource distributed
-            throw new IllegalArgumentException(e.getMessage()); // placeholder to placate spotbugs
+            throw new IllegalArgumentException(e.getMessage());
         }
+        currentGamePhase = GamePhase.GENERAL_PLAY;
     }
 
     public Resource interpretRoll(int roll) {
@@ -193,7 +192,9 @@ public class GameModel {
     }
 
     public void endTurn() {
-        // TODO: implement — check GENERAL_PLAY, advance player, reset to BEFORE_ROLL
+        checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY);
+        advanceToNextPlayer();
+        currentGamePhase = GamePhase.BEFORE_ROLL;
     }
 
     private void checkCurrentGamePhaseMatches(GamePhase... expectedGamePhaseOptions) {

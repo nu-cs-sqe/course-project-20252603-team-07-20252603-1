@@ -30,6 +30,6 @@ public class GameLoopController {
     }
 
     public void endTurn(GameModel model) {
-        model.advanceToNextPlayer();
+        model.endTurn();
     }
 }
