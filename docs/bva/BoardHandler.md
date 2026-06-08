@@ -230,14 +230,14 @@ Step 3:
 - Output: Hexes have player in list of settlements, hex player list not updated - For integration testing, not unit testable
 - Output: "Invalid NodeID - must be within [0, 53]."
 
-|              | System under test             | Expected output                                                                                                    | Implemented? |
-|--------------|-------------------------------|--------------------------------------------------------------------------------------------------------------------|--------------|
-| Test Case 39 | RED tries to claim node 0     | Calls to add RED settlement to hex 0 and claimStoredNode, node level is settlement, owned by RED                   | x            |
-| Test Case 40 | BLUE tries to claim node 53   | Calls to add BLUE settlement to hex 18 and claimStoredNode, node level is settlement, owned by BLUE                | x            |
-| Test Case 41 | ORANGE tries to claim node -1 | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNode and addPlayerSettlementToHex not called          | x            |
-| Test Case 42 | WHITE tries to claim node 54  | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNode and addPlayerSettlementToHex not called          | x            |
-| Test Case 43 | ORANGE tries to claim node 8  | Calls to add ORANGE settlement to hexes 0, 1, and 4 and claimStoredNode, node level is settlement, owned by ORANGE | x            |
-| Test Case 44 | BLUE tries to claim node 4    | Calls to add BLUE settlement to hexes 0 and 1 and claimStoredNode, node level is settlement, owned by BLUE         | x            |
+|              | System under test             | Expected output                                                                                                    | Implemented?       |
+|--------------|-------------------------------|--------------------------------------------------------------------------------------------------------------------|--------------------|
+| Test Case 41 | RED tries to claim node 0     | Calls to add RED settlement to hex 0 and claimStoredNode, node level is settlement, owned by RED                   | :white_check_mark: |
+| Test Case 42 | BLUE tries to claim node 53   | Calls to add BLUE settlement to hex 18 and claimStoredNode, node level is settlement, owned by BLUE                | x                  |
+| Test Case 43 | ORANGE tries to claim node -1 | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNode and addPlayerSettlementToHex not called          | x                  |
+| Test Case 44 | WHITE tries to claim node 54  | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNode and addPlayerSettlementToHex not called          | x                  |
+| Test Case 45 | ORANGE tries to claim node 8  | Calls to add ORANGE settlement to hexes 0, 1, and 4 and claimStoredNode, node level is settlement, owned by ORANGE | x                  |
+| Test Case 46 | BLUE tries to claim node 4    | Calls to add BLUE settlement to hexes 0 and 1 and claimStoredNode, node level is settlement, owned by BLUE         | x                  |
 
 
 
@@ -267,9 +267,9 @@ Step 3:
 
 |              | System under test                 | Expected output                                      | Implemented? |
 |--------------|-----------------------------------|------------------------------------------------------|--------------|
-| Test Case 45 | RED claims edge [0,1]             | playerClaimStoredEdge is called                      | x            |
-| Test Case 46 | ORANGE claims edge [52, 53]       | playerClaimStoredEdge is called                      | x            |
-| Test Case 47 | WHITE tries to claim edge [-1, 0] | "Edge nodeId out of bounds. Must be within [0, 53]." | x            |
-| Test Case 48 | WHITE tries to claim edge [0, -1] | "Edge nodeId out of bounds. Must be within [0, 53]." | x            |
-| Test Case 49 | BLUE tries to claim edge [53, 54] | "Edge nodeId out of bounds. Must be within [0, 53]." | x            |
-| Test Case 50 | BLUE tries to claim edge [54, 53] | "Edge nodeId out of bounds. Must be within [0, 53]." | x            |
+| Test Case 47 | RED claims edge [0,1]             | playerClaimStoredEdge is called                      | x            |
+| Test Case 48 | ORANGE claims edge [52, 53]       | playerClaimStoredEdge is called                      | x            |
+| Test Case 49 | WHITE tries to claim edge [-1, 0] | "Edge nodeId out of bounds. Must be within [0, 53]." | x            |
+| Test Case 50 | WHITE tries to claim edge [0, -1] | "Edge nodeId out of bounds. Must be within [0, 53]." | x            |
+| Test Case 51 | BLUE tries to claim edge [53, 54] | "Edge nodeId out of bounds. Must be within [0, 53]." | x            |
+| Test Case 52 | BLUE tries to claim edge [54, 53] | "Edge nodeId out of bounds. Must be within [0, 53]." | x            |

@@ -134,8 +134,15 @@ public class BoardHandler {
         return playersOnHex;
     }
 
-    int buildSetupSettlement(Player player, int nodeId){
-        return 0;
+    void buildSetupSettlement(Player player, int nodeId){
+        PlayerColor claimingColor = player.getPlayerColor();
+        boardGraphController.playerClaimStoredNodeSetupPhase(claimingColor, nodeId);
+        List<Integer> hexIds = nodeIdToHexes.get(nodeId);
+        for (int hexId : hexIds){
+            hexes.get(hexId).addPlayerSettlementToHex(player);
+        }
+        nodeOwners[nodeId] = claimingColor;
+        nodeBuildingLevels[nodeId] = SETTLEMENT_LEVEL;
     }
 
     void buildSetupRoad(int edgeId){

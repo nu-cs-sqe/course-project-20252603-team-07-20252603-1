@@ -970,5 +970,33 @@ public class BoardHandlerTests {
         assertEquals(expectedMessage, actualMessage);
     }
 
+    // Test Case 41
+    @Test
+    void RedClaimsSetupNodeZero_AndSucceeds(){
+        EasyMock.expect(mockRedPlayer.getPlayerColor()).andReturn(PlayerColor.RED);
+
+        PlayerColor expectedColor = PlayerColor.RED;
+
+        EasyMock.expect(mockBoardGraphController.playerClaimStoredNodeSetupPhase(expectedColor, 0)).andReturn(true);
+        EasyMock.expectLastCall();
+
+        mockHexes.get(0).addPlayerSettlementToHex(mockRedPlayer);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(mockBoardGraphController, mockRedPlayer, mockHexes.get(0));
+
+        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+
+        b.buildSetupSettlement(mockRedPlayer, 0);
+
+        EasyMock.verify(mockBoardGraphController, mockRedPlayer, mockHexes.get(0));
+
+        assertTrue(b.checkPlayerOwnsNode(expectedColor, 0));
+
+        int expected = 1;
+        int actual = b.getNodeBuildingLevel(0);
+        assertEquals(expected, actual);
+    }
+
 
 }
