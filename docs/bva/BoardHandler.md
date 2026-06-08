@@ -135,7 +135,7 @@ Step 3:
 |              | System under test                 | Expected output                                                           | Implemented?       |
 |--------------|-----------------------------------|---------------------------------------------------------------------------|--------------------|
 | Test Case 21 | 2 is rolled, robber not on hex    | awardSettlementResources() and awardCityResources() are called once       | :white_check_mark: |
-| Test Case 22 | 12 is rolled, robber not on hex   | awardSettlementResources() and awardCityResources() are called once       | x                  |
+| Test Case 22 | 12 is rolled, robber not on hex   | awardSettlementResources() and awardCityResources() are called once       | :white_check_mark: |
 | Test Case 23 | 8 is rolled, robber not on hex    | awardSettlementResources() and awardCityResources() are each called twice | x                  |
 | Test Case 24 | 8 is rolled, but robber IS on hex | awardSettlementResources() and awardCityResources() are never called      | x                  |
 

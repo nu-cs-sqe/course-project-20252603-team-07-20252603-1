@@ -92,8 +92,13 @@ public class BoardHandler {
     }
 
     void awardResources(int rollNum){
-        hexes.get(1).awardSettlementResources();
-        hexes.get(1).awardCityResources();
+        for (Hex hex : hexes) {
+            if (hex.getHexRollNum() == rollNum){
+                int curHexId = hex.getHexId();
+                hexes.get(curHexId).awardSettlementResources();
+                hexes.get(curHexId).awardCityResources();
+            }
+        }
     }
 
     void moveRobber(int hexId){
