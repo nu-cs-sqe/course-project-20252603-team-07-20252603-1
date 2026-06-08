@@ -471,4 +471,18 @@ public class BoardHandlerTests {
         EasyMock.verify(mockBoardGraphController, mockOrangePlayer);
     }
 
+    // Test Case 17
+    @Test
+    void WhiteClaimsEdge_NegativeOne_Zero_ThrowError(){
+        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            b.addRoad(mockWhitePlayer, -1, 0);
+        });
+
+        String expectedMessage = "Edge nodeId out of bounds. Must be within [0, 53].";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
 }

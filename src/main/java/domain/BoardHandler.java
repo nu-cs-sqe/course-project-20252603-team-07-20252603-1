@@ -84,6 +84,9 @@ public class BoardHandler {
     }
 
     void addRoad(Player player, int nodeId1, int nodeId2){
+        if (nodeId1 < 0){
+            throw new IllegalArgumentException("Edge nodeId out of bounds. Must be within [0, 53].");
+        }
         PlayerColor claimingColor = player.getPlayerColor();
         boardGraphController.playerClaimStoredEdge(claimingColor, nodeId1, nodeId2);
     }
