@@ -98,4 +98,18 @@ public class YearOfPlentyCardTests {
 
     EasyMock.verify(player);
   }
+
+  @Test // Test Case 7
+  public void Play_DifferentResourceTypes_PlayerGainsBoth() {
+    YearOfPlentyCard yearOfPlentyCard = new YearOfPlentyCard();
+
+    Player player = EasyMock.createMock(Player.class);
+    player.receiveResources(Map.of(Resource.BRICK, 1, Resource.WOOL, 1));
+    EasyMock.expectLastCall();
+    EasyMock.replay(player);
+
+    yearOfPlentyCard.play(player, Resource.BRICK, Resource.WOOL);
+
+    EasyMock.verify(player);
+  }
 }
