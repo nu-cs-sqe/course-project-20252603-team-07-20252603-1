@@ -5,7 +5,6 @@ public enum GamePhase {
     MOVE_ROBBER, // Player rolls a 7, or plays a dev card, must immediately move robber
     GENERAL_PLAY,
     MONOPOLY_DEV_CARD,
-    BUILDING_ROAD,
-    BUILDING_SETTLEMENT,
+    ROAD_BUILDING_DEV_CARD,
     OFFERING_TRADE
 }

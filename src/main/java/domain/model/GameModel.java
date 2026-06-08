@@ -171,8 +171,8 @@ public class GameModel {
         incrementNumSettlements(currentPlayerColor);
     }
 
-    public void attemptBuildRoad(int startingNodeID, int endingNodeID){
-        checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY);
+    public void attemptBuildRoad(int startingNodeID, int endingNodeID) {
+        checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY, GamePhase.ROAD_BUILDING_DEV_CARD);
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER)) {
             checkPlayerOwnsEnoughResources(currentPlayerColor, r, 1);
         }
@@ -188,10 +188,13 @@ public class GameModel {
         this.currentGamePhase = newGamePhase;
     }
 
-    private void checkCurrentGamePhaseMatches(GamePhase expectedGamePhase) {
-        if(currentGamePhase != expectedGamePhase) {
-            throw new IllegalGamePhaseException("Not proper phase for that action");
+    private void checkCurrentGamePhaseMatches(GamePhase... expectedGamePhaseOptions) {
+        for (GamePhase allowedPhase : expectedGamePhaseOptions) {
+            if (currentGamePhase == allowedPhase) {
+                return;
+            }
         }
+        throw new IllegalGamePhaseException("Not proper phase for that action");
     }
 
     private void incrementNumSettlements(PlayerColor currentPlayerColor) {
