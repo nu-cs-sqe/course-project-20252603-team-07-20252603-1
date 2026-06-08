@@ -13,5 +13,8 @@ public class YearOfPlentyCard extends DevelopmentCard {
     if (resource1 == null || resource2 == null) {
       throw new IllegalArgumentException("Resource cannot be null.");
     }
+    if (resource1 == Resource.DESERT || resource2 == Resource.DESERT) {
+      throw new IllegalArgumentException("Cannot take DESERT as a resource.");
+    }
   }
 }
