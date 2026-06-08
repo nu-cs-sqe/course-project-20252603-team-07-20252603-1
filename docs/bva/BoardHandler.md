@@ -192,7 +192,7 @@ Step 3:
 | Test Case 31 | BLUE settlement on Hex 0, no cities | BLUE               | :white_check_mark: |
 | Test Case 32 | RED city on Hex 18, no settlements  | RED                | :white_check_mark: |
 | Test Case 33 | WHITE, ORANGE settlements, RED city | WHITE, ORANGE, RED | :white_check_mark: |
-| Test Case 34 | WHITE has two settlments, RED city  | WHITE, RED         | x                  |
+| Test Case 34 | WHITE has two settlments, RED city  | WHITE, RED         | :white_check_mark: |
 | Test Case 35 | No settlements, BLUE has two cities | BLUE               | x                  |
 | Test Case 36 | ORANGE has three settlements        | ORANGE             | x                  |
 | Test Case 37 | RED has three cities                | RED                | x                  |
