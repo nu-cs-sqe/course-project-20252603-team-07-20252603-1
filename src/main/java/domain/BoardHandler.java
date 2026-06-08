@@ -8,6 +8,9 @@ public class BoardHandler {
     private static final int CITY_LEVEL = 2;
     private static final int MIN_HEX_ID = 0;
     private static final int MAX_HEX_ID = 18;
+    private static final int MIN_NODE_ID = 0;
+    private static final int MAX_NODE_ID = 53;
+    private static final int NUM_NODES = 54;
 
     private BoardGraphController boardGraphController;
     private List<Hex> hexes;
@@ -22,8 +25,8 @@ public class BoardHandler {
         this.boardGraphController = new BoardGraphController(constructorGraph);
         this.hexes = initHexes();
         this.nodeIdToHexes = initNodeHexMap();
-        this.nodeBuildingLevels = new int[54];
-        this.nodeOwners = new PlayerColor[54];
+        this.nodeBuildingLevels = new int[NUM_NODES];
+        this.nodeOwners = new PlayerColor[NUM_NODES];
         Arrays.fill(this.nodeOwners, PlayerColor.SETUP);
         this.robber = new Robber(9);
     }
@@ -33,8 +36,8 @@ public class BoardHandler {
         this.boardGraphController = boardGraphController;
         this.hexes = hexes;
         this.nodeIdToHexes = nodeIdToHexes;
-        this.nodeBuildingLevels = new int[54];
-        this.nodeOwners = new PlayerColor[54];
+        this.nodeBuildingLevels = new int[NUM_NODES];
+        this.nodeOwners = new PlayerColor[NUM_NODES];
         Arrays.fill(this.nodeOwners, PlayerColor.SETUP);
         this.robber = robber;
     }
@@ -45,7 +48,7 @@ public class BoardHandler {
     }
 
     void buildSettlement(Player player, int nodeId){
-        if (nodeId < 0 || nodeId > 53){
+        if (nodeId < MIN_NODE_ID || nodeId > MAX_NODE_ID){
             throw new IllegalArgumentException("Invalid NodeID - must be within [0, 53].");
         }
 
@@ -70,7 +73,7 @@ public class BoardHandler {
     }
 
     void buildCity(Player player, int nodeId){
-        if (nodeId < 0 || nodeId > 53){
+        if (nodeId < MIN_NODE_ID || nodeId > MAX_NODE_ID){
             throw new IllegalArgumentException("Invalid NodeID - must be within [0, 53].");
         }
 
@@ -92,7 +95,7 @@ public class BoardHandler {
     }
 
     void addRoad(Player player, int nodeId1, int nodeId2){
-        if (nodeId1 < 0 || nodeId2 < 0 || nodeId1 > 53 || nodeId2 > 53){
+        if (nodeId1 < MIN_NODE_ID || nodeId2 < MIN_NODE_ID || nodeId1 > MAX_NODE_ID || nodeId2 > MAX_NODE_ID){
             throw new IllegalArgumentException("Edge nodeId out of bounds. Must be within [0, 53].");
         }
         PlayerColor claimingColor = player.getPlayerColor();
@@ -138,7 +141,7 @@ public class BoardHandler {
     }
 
     void buildSetupSettlement(Player player, int nodeId){
-        if (nodeId < 0 || nodeId > 53){
+        if (nodeId < MIN_NODE_ID || nodeId > MAX_NODE_ID){
             throw new IllegalArgumentException("Invalid NodeID - must be within [0, 53].");
         }
 
@@ -154,7 +157,7 @@ public class BoardHandler {
     }
 
     void buildSetupRoad(Player player, int claimedNodeId, int nodeId1, int nodeId2){
-        if (nodeId1 < 0 || nodeId2 < 0 || nodeId2 > 53){
+        if (nodeId1 < MIN_NODE_ID || nodeId2 < MIN_NODE_ID || nodeId1 > MAX_NODE_ID || nodeId2 > MAX_NODE_ID){
             throw new IllegalArgumentException("Edge nodeId out of bounds. Must be within [0, 53].");
         }
         PlayerColor claimingColor = player.getPlayerColor();

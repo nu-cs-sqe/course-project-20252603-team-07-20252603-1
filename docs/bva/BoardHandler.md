@@ -264,7 +264,6 @@ Step 3:
 - Input: Edge claimed, edge unclaimed - Handled by BoardGraphController
 - Input: RED, BLUE, ORANGE, WHITE
 - Output: Edge claimed, edge unclaimed - Handled by BoardGraphController
-- Output: "Edge nodeId out of bounds. Must be within [0, 53].", IllegalEdgeClaim("Edge must be adjacent to just placed settlement");
 
 |              | System under test                             | Expected output                                      | Implemented?       |
 |--------------|-----------------------------------------------|------------------------------------------------------|--------------------|
@@ -272,6 +271,5 @@ Step 3:
 | Test Case 48 | ORANGE claims edge [52, 53] after claiming 53 | playerClaimSetupStoredEdge is called                 | :white_check_mark: |
 | Test Case 49 | WHITE tries to claim edge [-1, 0]             | "Edge nodeId out of bounds. Must be within [0, 53]." | :white_check_mark: |
 | Test Case 50 | WHITE tries to claim edge [0, -1]             | "Edge nodeId out of bounds. Must be within [0, 53]." | :white_check_mark: |
-| Test Case 51 | BLUE tries to claim edge [53, 54]             | "Edge nodeId out of bounds. Must be within [0, 53]." | x                  |
-| Test Case 52 | BLUE tries to claim edge [54, 53]             | "Edge nodeId out of bounds. Must be within [0, 53]." | x                  |
-| Test Case 53 | ORANGE tries to claim [0,1] after claiming 53 | "Edge must be adjacent to just placed settlement"    | x                  |
+| Test Case 51 | BLUE tries to claim edge [53, 54]             | "Edge nodeId out of bounds. Must be within [0, 53]." | :white_check_mark: |
+| Test Case 52 | BLUE tries to claim edge [54, 53]             | "Edge nodeId out of bounds. Must be within [0, 53]." | :white_check_mark: |
