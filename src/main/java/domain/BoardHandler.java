@@ -12,21 +12,7 @@ public class BoardHandler {
     private Map<Integer, List<Integer>> nodeIdToHexes;
     private int[] nodeBuildingLevels;
     private PlayerColor[] nodeOwners;
-
-    // private constructor for testing
-    private BoardHandler(BoardGraphController boardGraphController, List<Hex> hexes, Map<Integer, List<Integer>> nodeIdToHexes) {
-        this.boardGraphController = boardGraphController;
-        this.hexes = hexes;
-        this.nodeIdToHexes = nodeIdToHexes;
-        this.nodeBuildingLevels = new int[54];
-        this.nodeOwners = new PlayerColor[54];
-        Arrays.fill(this.nodeOwners, PlayerColor.SETUP);
-    }
-
-    // static factory method that calls the private constructor
-    public static BoardHandler createForTesting(BoardGraphController boardGraphController, List<Hex> hexes, Map<Integer, List<Integer>> nodeIdToHexes) {
-        return new BoardHandler(boardGraphController, hexes, nodeIdToHexes);
-    }
+    private Robber robber;
 
     // public constructor
     public BoardHandler() {
@@ -37,6 +23,23 @@ public class BoardHandler {
         this.nodeBuildingLevels = new int[54];
         this.nodeOwners = new PlayerColor[54];
         Arrays.fill(this.nodeOwners, PlayerColor.SETUP);
+        this.robber = new Robber(9);
+    }
+
+    // private constructor for testing
+    private BoardHandler(BoardGraphController boardGraphController, List<Hex> hexes, Map<Integer, List<Integer>> nodeIdToHexes, Robber robber) {
+        this.boardGraphController = boardGraphController;
+        this.hexes = hexes;
+        this.nodeIdToHexes = nodeIdToHexes;
+        this.nodeBuildingLevels = new int[54];
+        this.nodeOwners = new PlayerColor[54];
+        Arrays.fill(this.nodeOwners, PlayerColor.SETUP);
+        this.robber = robber;
+    }
+
+    // static factory method that calls the private constructor
+    public static BoardHandler createForTesting(BoardGraphController boardGraphController, List<Hex> hexes, Map<Integer, List<Integer>> nodeIdToHexes, Robber robber) {
+        return new BoardHandler(boardGraphController, hexes, nodeIdToHexes, robber);
     }
 
     void buildSettlement(Player player, int nodeId){
@@ -92,8 +95,10 @@ public class BoardHandler {
     }
 
     void awardResources(int rollNum){
+        int robberLocation = robber.getRobberLocation();
+
         for (Hex hex : hexes) {
-            if (hex.getHexRollNum() == rollNum){
+            if (hex.getHexRollNum() == rollNum && robberLocation != rollNum){
                 int curHexId = hex.getHexId();
                 hexes.get(curHexId).awardSettlementResources();
                 hexes.get(curHexId).awardCityResources();
