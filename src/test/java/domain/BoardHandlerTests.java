@@ -802,4 +802,24 @@ public class BoardHandlerTests {
         assertEquals(Set.of(mockBluePlayer), result);
     }
 
+    // Test Case 32
+    @Test
+    void GetPlayersOnHexEighteen_JustRedCity_ReturnRed(){
+        List<Player> settlementPlayers = List.of();
+        List<Player> cityPlayers = List.of(mockRedPlayer);
+
+        EasyMock.expect(mockHexes.get(18).getHexSettlementPlayers()).andReturn(settlementPlayers);
+        EasyMock.expect(mockHexes.get(18).getHexCityPlayers()).andReturn(cityPlayers);
+
+        EasyMock.replay(mockHexes.get(18));
+
+        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+
+        Set<Player> result = b.getPlayersOnHex(18);
+
+        EasyMock.verify(mockHexes.get(18));
+
+        assertEquals(Set.of(mockRedPlayer), result);
+    }
+
 }

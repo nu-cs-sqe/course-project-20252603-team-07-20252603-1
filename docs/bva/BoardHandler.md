@@ -189,8 +189,8 @@ Step 3:
 
 |              | System under test                   | Expected output    | Implemented?       |
 |--------------|-------------------------------------|--------------------|--------------------|
-| Test Case 31 | BLUE settlement on Hex, no cities   | BLUE               | :white_check_mark: |
-| Test Case 32 | RED city on Hex, no settlements     | RED                | x                  |
+| Test Case 31 | BLUE settlement on Hex 0, no cities | BLUE               | :white_check_mark: |
+| Test Case 32 | RED city on Hex 18, no settlements  | RED                | :white_check_mark: |
 | Test Case 33 | WHITE, ORANGE settlements, RED city | WHITE, ORANGE, RED | x                  |
 | Test Case 34 | WHITE has two settlments, RED city  | WHITE, RED         | x                  |
 | Test Case 35 | No settlements, BLUE has two cities | BLUE               | x                  |
