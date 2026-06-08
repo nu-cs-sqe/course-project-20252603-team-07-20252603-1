@@ -150,6 +150,7 @@ public class GameModel {
         // just a fakey function to make performTurn not error
         // really this would be closer to something like Map<Hex, (Player[], Resource)>
         // Rewarding resources on is the responsibility of the tile, just cause lowkey
+        // Ben has rewarding resources in his hex class
         return Resource.WOOL;
     }
 
