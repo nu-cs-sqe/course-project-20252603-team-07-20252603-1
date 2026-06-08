@@ -17,6 +17,7 @@ public class Player {
     private final Map<Resource, Integer> resources;
     private PlayerColor color;
     private String name;
+    private int numSettlement;
 
     public Player(String name, PlayerColor color) {
         this.settlements = new ArrayList<>();
@@ -24,6 +25,7 @@ public class Player {
         this.resources = new HashMap<>();
         this.color = color;
         this.name = name;
+        this.numSettlement = 0;
     }
 
     public Map<Resource, Integer> getResources() {
@@ -103,7 +105,18 @@ public class Player {
 
     }
 
+    //TODO - From Spencer
     public int getResourceCount(Resource resource) {
         return 0;
     }
+
+    public void increaseSettlementCount() {
+        this.numSettlement++;
+    }
+
+
+    public int getSettlementCount() {
+        return this.numSettlement;
+    }
+
 }

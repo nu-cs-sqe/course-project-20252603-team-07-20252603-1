@@ -19,8 +19,8 @@ public class GameLoopController {
     }
 
     public int getResourceCount(GameModel model, PlayerColor color, Resource type) {
-        PlayerState state = model.getPlayerState(color);
-        return state.getResourceCount(type);
+        Player playerOfInterest = model.getArbitraryPlayer(color);
+        return playerOfInterest.getResourceCount(type);
     }
 
     public int rollDiceAndDistribute(GameModel model, DiceHandler roller) {

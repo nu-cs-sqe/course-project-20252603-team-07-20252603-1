@@ -2,8 +2,9 @@ package domain.model;
 
 import domain.model.board.BoardHandler;
 import domain.model.exceptions.*;
+import domain.model.player.Player;
 import domain.model.player.PlayerColor;
-import domain.model.player.PlayerState;
+import domain.model.player.Player;
 import domain.model.resources.Resource;
 import domain.model.resources.ResourceDeck;
 import org.easymock.EasyMock;
@@ -27,7 +28,7 @@ public class GameModelTests {
     private ResourceDeck grainDeckMock;
     private ResourceDeck oreDeckMock;
     private ResourceDeck woolDeckMock;
-    private Map<PlayerColor, PlayerState> ColorToPlayerStateMock = new HashMap<>();
+    private Map<PlayerColor, Player> ColorToPlayerObjMock = new HashMap<>();
     private Map<Resource, ResourceDeck> decks = new HashMap<>();
 
 
@@ -51,8 +52,8 @@ public class GameModelTests {
 
     @Test
     void attemptBuildSettlement_test01_BoardHandlerSucceeds_EnoughResources_UnderMaxCount_ExpectSuccess(){
-        PlayerState redStateMock = EasyMock.createMock(PlayerState.class);
-        ColorToPlayerStateMock = Map.of(
+        Player redStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
                 PlayerColor.RED, redStateMock
         );
 
@@ -65,7 +66,7 @@ public class GameModelTests {
         EasyMock.expect(boardMock.buildSettlement(PlayerColor.RED, 0)).andReturn(true);
 
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER, Resource.WOOL, Resource.GRAIN)) {
-            redStateMock.reduceResources(r, 1);
+            redStateMock.updateResources(r, -1);
             EasyMock.expectLastCall();
             decks.get(r).replenish();
             EasyMock.expectLastCall();
@@ -78,7 +79,7 @@ public class GameModelTests {
                 woolDeckMock);
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-        oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
+        oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
 
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
@@ -90,8 +91,8 @@ public class GameModelTests {
 
     @Test
     void attemptBuildSettlement_test02_BoardHandlerFails_EnoughResources_UnderMaxCount_ExpectError(){
-        PlayerState whiteStateMock = EasyMock.createMock(PlayerState.class);
-        ColorToPlayerStateMock = Map.of(
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
                 PlayerColor.WHITE, whiteStateMock
         );
 
@@ -108,7 +109,7 @@ public class GameModelTests {
                 woolDeckMock);
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
 
         model.setCurrentPlayerColor(PlayerColor.WHITE);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
@@ -123,8 +124,8 @@ public class GameModelTests {
 
     @Test
     void attemptBuildSettlement_test03_BoardHandlerSucceeds_NotEnoughResources_UnderMaxCount_ExpectError(){
-        PlayerState orangeStateMock = EasyMock.createMock(PlayerState.class);
-        ColorToPlayerStateMock = Map.of(
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
                 PlayerColor.ORANGE, orangeStateMock
         );
 
@@ -136,7 +137,7 @@ public class GameModelTests {
                 woolDeckMock);
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
 
         model.setCurrentPlayerColor(PlayerColor.ORANGE);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
@@ -151,8 +152,8 @@ public class GameModelTests {
 
     @Test
     void attemptBuildSettlement_test04_BoardHandlerSucceeds_EnoughResources_AtMaxCount_ExpectError(){
-        PlayerState redStateMock = EasyMock.createMock(PlayerState.class);
-        ColorToPlayerStateMock = Map.of(
+        Player redStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
                 PlayerColor.RED, redStateMock
         );
 
@@ -162,7 +163,7 @@ public class GameModelTests {
                 woolDeckMock);
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
 
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
@@ -177,8 +178,8 @@ public class GameModelTests {
 
     @Test
     void attemptBuildSettlement_test05_BoardHandlerSucceeds_EnoughResources_UnderMaxCount_ExpectSuccess(){
-        PlayerState blueStateMock = EasyMock.createMock(PlayerState.class);
-        ColorToPlayerStateMock = Map.of(
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
                 PlayerColor.BLUE, blueStateMock
         );
 
@@ -191,7 +192,7 @@ public class GameModelTests {
         EasyMock.expect(boardMock.buildSettlement(PlayerColor.BLUE, 0)).andReturn(true);
 
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER, Resource.WOOL, Resource.GRAIN)) {
-            blueStateMock.reduceResources(r, 1);
+            blueStateMock.updateResources(r, -1);
             EasyMock.expectLastCall();
             decks.get(r).replenish();
             EasyMock.expectLastCall();
@@ -204,7 +205,7 @@ public class GameModelTests {
                 woolDeckMock);
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
 
         model.setCurrentPlayerColor(PlayerColor.BLUE);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
@@ -216,8 +217,8 @@ public class GameModelTests {
 
     @Test
     void attemptBuildSettlement_test06_IncorrectPhase_ExpectError(){
-        PlayerState redStateMock = EasyMock.createMock(PlayerState.class);
-        ColorToPlayerStateMock = Map.of(
+        Player redStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
                 PlayerColor.RED, redStateMock
         );
 
@@ -225,7 +226,7 @@ public class GameModelTests {
                 woolDeckMock);
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
 
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.RESOURCE_PRODUCTION);
@@ -240,8 +241,8 @@ public class GameModelTests {
 
     @Test
     void attemptBuildRoad_test01_BoardHandlerSucceeds_EnoughResources_ExpectSuccess(){
-        PlayerState redStateMock = EasyMock.createMock(PlayerState.class);
-        ColorToPlayerStateMock = Map.of(
+        Player redStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
                 PlayerColor.RED, redStateMock
         );
 
@@ -253,7 +254,7 @@ public class GameModelTests {
         EasyMock.expectLastCall();
 
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER)) {
-            redStateMock.reduceResources(r, 1);
+            redStateMock.updateResources(r, -1);
             EasyMock.expectLastCall();
             decks.get(r).replenish();
             EasyMock.expectLastCall();
@@ -263,7 +264,7 @@ public class GameModelTests {
                 oreDeckMock, woolDeckMock, boardMock);
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
 
 
 
@@ -278,8 +279,8 @@ public class GameModelTests {
 
     @Test
     void attemptBuildRoad_test02_BoardHandlerFails_ExpectError(){
-        PlayerState whiteStateMock = EasyMock.createMock(PlayerState.class);
-        ColorToPlayerStateMock = Map.of(
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
                 PlayerColor.WHITE, whiteStateMock
         );
 
@@ -295,7 +296,7 @@ public class GameModelTests {
                 oreDeckMock, woolDeckMock, boardMock);
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
 
 
 
@@ -313,8 +314,8 @@ public class GameModelTests {
 
     @Test
     void attemptBuildRoad_test03_BoardHandlerSucceeds_NotEnoughResources_ExpectError(){
-        PlayerState orangeStateMock = EasyMock.createMock(PlayerState.class);
-        ColorToPlayerStateMock = Map.of(
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
                 PlayerColor.ORANGE, orangeStateMock
         );
 
@@ -324,7 +325,7 @@ public class GameModelTests {
                 oreDeckMock, woolDeckMock, boardMock);
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
 
         model.setCurrentPlayerColor(PlayerColor.ORANGE);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
@@ -340,8 +341,8 @@ public class GameModelTests {
 
     @Test
     void attemptBuildRoad_test04_IncorrectGamePhase_ExpectError(){
-        PlayerState blueStateMock = EasyMock.createMock(PlayerState.class);
-        ColorToPlayerStateMock = Map.of(
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
                 PlayerColor.BLUE, blueStateMock
         );
 
@@ -349,7 +350,7 @@ public class GameModelTests {
                 oreDeckMock, woolDeckMock, boardMock);
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
 
         model.setCurrentPlayerColor(PlayerColor.BLUE);
         model.setCurrentGamePhase(GamePhase.RESOURCE_PRODUCTION);
@@ -365,8 +366,8 @@ public class GameModelTests {
 
     @Test
     void attemptBuildCity_test01_EnoughResources_BoardSucceeds_ExpectSuccess(){
-        PlayerState redStateMock = EasyMock.createMock(PlayerState.class);
-        ColorToPlayerStateMock = Map.of(
+        Player redStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
                 PlayerColor.RED, redStateMock
         );
 
@@ -376,12 +377,12 @@ public class GameModelTests {
         boardMock.buildCity(PlayerColor.RED, 0);
         EasyMock.expectLastCall();
 
-        redStateMock.reduceResources(Resource.ORE, 3);
+        redStateMock.updateResources(Resource.ORE, -3);
         EasyMock.expectLastCall();
         oreDeckMock.replenish(3);
         EasyMock.expectLastCall();
 
-        redStateMock.reduceResources(Resource.GRAIN, 2);
+        redStateMock.updateResources(Resource.GRAIN, -2);
         EasyMock.expectLastCall();
         grainDeckMock.replenish(2);
         EasyMock.expectLastCall();
@@ -389,7 +390,7 @@ public class GameModelTests {
         EasyMock.replay(redStateMock, boardMock, oreDeckMock, grainDeckMock);
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
 
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
@@ -400,8 +401,8 @@ public class GameModelTests {
 
     @Test
     void attemptBuildCity_test02_NotEnoughOre_ExpectError(){
-        PlayerState whiteStateMock = EasyMock.createMock(PlayerState.class);
-        ColorToPlayerStateMock = Map.of(
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
                 PlayerColor.WHITE, whiteStateMock
         );
 
@@ -410,7 +411,7 @@ public class GameModelTests {
         EasyMock.replay(whiteStateMock);
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
 
         model.setCurrentPlayerColor(PlayerColor.WHITE);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
@@ -424,8 +425,8 @@ public class GameModelTests {
 
     @Test
     void attemptBuildCity_test03_NotEnoughGrain_ExpectError(){
-        PlayerState whiteStateMock = EasyMock.createMock(PlayerState.class);
-        ColorToPlayerStateMock = Map.of(
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
                 PlayerColor.WHITE, whiteStateMock
         );
 
@@ -435,7 +436,7 @@ public class GameModelTests {
         EasyMock.replay(whiteStateMock);
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
 
         model.setCurrentPlayerColor(PlayerColor.WHITE);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
@@ -449,8 +450,8 @@ public class GameModelTests {
 
     @Test
     void attemptBuildCity_test04_EnoughResources_BoardFails_ExpectError(){
-        PlayerState orangeStateMock = EasyMock.createMock(PlayerState.class);
-        ColorToPlayerStateMock = Map.of(
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
                 PlayerColor.ORANGE, orangeStateMock
         );
 
@@ -463,7 +464,7 @@ public class GameModelTests {
         EasyMock.replay(orangeStateMock, boardMock);
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
 
         model.setCurrentPlayerColor(PlayerColor.ORANGE);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
@@ -477,15 +478,15 @@ public class GameModelTests {
 
     @Test
     void attemptBuildCity_test05_IllegalPhase_ExpectError(){
-        PlayerState blueStateMock = EasyMock.createMock(PlayerState.class);
-        ColorToPlayerStateMock = Map.of(
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
                 PlayerColor.ORANGE, blueStateMock
         );;
 
 
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
 
         model.setCurrentPlayerColor(PlayerColor.ORANGE);
         model.setCurrentGamePhase(GamePhase.ROAD_BUILDING_DEV_CARD);

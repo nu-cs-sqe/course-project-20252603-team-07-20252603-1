@@ -27,7 +27,7 @@ public class GameModel {
     private int currentPlayerIndex;
     private List<PlayerColor> playerColors;
     private PlayerColor currentPlayerColor;
-    private Map<PlayerColor, PlayerState> playerColorToPlayerState = new HashMap<>();
+    private Map<PlayerColor, Player> playerColorToPlayerObject = new HashMap<>();
 
 
     private final ResourceDeck lumberDeck;
@@ -41,7 +41,7 @@ public class GameModel {
     GameModel(ResourceDeck lumberDeck, ResourceDeck brickDeck,
               ResourceDeck grainDeck, ResourceDeck oreDeck,
               ResourceDeck woolDeck,
-              Map<PlayerColor, PlayerState> playerColorToPlayerState,
+              Map<PlayerColor, Player> playerColorToPlayerObject,
               BoardHandler board) {
         this.lumberDeck = lumberDeck;
         this.brickDeck = brickDeck;
@@ -55,7 +55,7 @@ public class GameModel {
                 Resource.WOOL, woolDeck,
                 Resource.ORE, oreDeck
         );
-        this.playerColorToPlayerState = playerColorToPlayerState;
+        this.playerColorToPlayerObject = playerColorToPlayerObject;
         this.board = board;
     }
 
@@ -80,9 +80,9 @@ public class GameModel {
 
         playerColors = new ArrayList<>();
         for (Player player : players) {
-            PlayerState newState = new PlayerState(player);
+            //PlayerState newState = new PlayerState(player);
             PlayerColor currentColor = player.getColor();
-            this.playerColorToPlayerState.put(currentColor, newState);
+            this.playerColorToPlayerObject.put(currentColor, player);
             playerColors.add(currentColor);
         }
         this.currentPlayerIndex = 0;
@@ -101,8 +101,7 @@ public class GameModel {
 
     public List<Player> getTurnOrder() {
         return playerColors.stream()
-                .map(color -> playerColorToPlayerState.get(color))
-                .map(PlayerState::getPlayer)
+                .map(color -> playerColorToPlayerObject.get(color))
                 .collect(Collectors.toList());
     }
 
@@ -111,7 +110,7 @@ public class GameModel {
     }
 
     public Player getCurrentPlayer() {
-        return playerColorToPlayerState.get(currentPlayerColor).getPlayer();
+        return playerColorToPlayerObject.get(currentPlayerColor);
     }
 
     public void setCurrentPlayerColor(PlayerColor color) {
@@ -123,8 +122,8 @@ public class GameModel {
         currentPlayerColor = playerColors.get(currentPlayerIndex);
     }
 
-    public PlayerState getPlayerState(PlayerColor color) {
-        return playerColorToPlayerState.get(color);
+    public Player getArbitraryPlayer(PlayerColor color) {
+        return playerColorToPlayerObject.get(color);
     }
 
     public void performTurn(int roll) { // takes in the dice roll, doesn't perform it.
@@ -139,7 +138,7 @@ public class GameModel {
         try {
 
             Resource card = decks.get(rslt).draw();
-            playerColorToPlayerState.get(currentPlayerColor).addResource(card);
+            playerColorToPlayerObject.get(currentPlayerColor).updateResources(card, 1);
 
         } catch (Exception e) {
             // Gracefully handle empty deck - no resource distributed
@@ -159,7 +158,7 @@ public class GameModel {
 
     public void attemptBuildSettlement(int nodeID){
         checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY);
-        checkIfPlayerAtMaxSettlements();
+        checkIfPlayerAtMaxSettlements(currentPlayerColor);
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER, Resource.WOOL, Resource.GRAIN)) {
             checkPlayerOwnsEnoughResources(currentPlayerColor, r, 1);
         }
@@ -198,30 +197,30 @@ public class GameModel {
         throw new IllegalGamePhaseException("Not proper phase for that action");
     }
 
-    private void incrementNumSettlements(PlayerColor currentPlayerColor) {
-        PlayerState relevantPlayerState = getPlayerState(currentPlayerColor);
-        relevantPlayerState.increaseSettlementCount();
+    private void incrementNumSettlements(PlayerColor playerColorOfInterest) {
+        Player relevantPlayer = getArbitraryPlayer(playerColorOfInterest);
+        relevantPlayer.increaseSettlementCount();
     }
 
-    private void checkIfPlayerAtMaxSettlements() {
-        PlayerState relevantPlayerState = getPlayerState(currentPlayerColor);
-        int currentAmountSettlements = relevantPlayerState.getSettlementCount();
+    private void checkIfPlayerAtMaxSettlements(PlayerColor playerColorOfInterest) {
+        Player relevantPlayer = getArbitraryPlayer(playerColorOfInterest);
+        int currentAmountSettlements = relevantPlayer.getSettlementCount();
         if (currentAmountSettlements >= 5) {
             throw new IllegalSettlementPlacementException("Can not have more than 5 settlements");
         }
     }
 
-    private void checkPlayerOwnsEnoughResources(PlayerColor currentPlayerColor, Resource type, int amountNeeded){
-        PlayerState relevantPlayerState = getPlayerState(currentPlayerColor);
-        int amountPlayerOwnsResource = relevantPlayerState.getResourceCount(type);
+    private void checkPlayerOwnsEnoughResources(PlayerColor playerColorOfInterest, Resource type, int amountNeeded){
+        Player relevantPlayer = getArbitraryPlayer(playerColorOfInterest);
+        int amountPlayerOwnsResource = relevantPlayer.getResourceCount(type);
         if (amountPlayerOwnsResource < amountNeeded) {
             throw new InsufficientResourcesException("Insufficient resources");
         }
     }
 
-    private void reducePlayerResources(PlayerColor currentPlayerColor, Resource type, int amount) {
-        PlayerState releventPlayerState = playerColorToPlayerState.get(currentPlayerColor);
-        releventPlayerState.reduceResources(type, amount);
+    private void reducePlayerResources(PlayerColor playerColorOfInterest, Resource type, int amount) {
+        Player relevantPlayer = playerColorToPlayerObject.get(playerColorOfInterest);
+        relevantPlayer.updateResources(type, -amount);
     }
 
 
