@@ -978,7 +978,6 @@ public class BoardHandlerTests {
         PlayerColor expectedColor = PlayerColor.RED;
 
         EasyMock.expect(mockBoardGraphController.playerClaimStoredNodeSetupPhase(expectedColor, 0)).andReturn(true);
-        EasyMock.expectLastCall();
 
         mockHexes.get(0).addPlayerSettlementToHex(mockRedPlayer);
         EasyMock.expectLastCall();
@@ -1006,7 +1005,6 @@ public class BoardHandlerTests {
         PlayerColor expectedColor = PlayerColor.BLUE;
 
         EasyMock.expect(mockBoardGraphController.playerClaimStoredNodeSetupPhase(expectedColor, 53)).andReturn(true);
-        EasyMock.expectLastCall();
 
         mockHexes.get(18).addPlayerSettlementToHex(mockBluePlayer);
         EasyMock.expectLastCall();
@@ -1052,6 +1050,37 @@ public class BoardHandlerTests {
         String expectedMessage = "Invalid NodeID - must be within [0, 53].";
         String actualMessage = exception.getMessage();
         assertEquals(expectedMessage, actualMessage);
+    }
+
+    // Test Case 45
+    @Test
+    void OrangeClaimsSetupNodeEight_HexesZeroOneFourUpdated(){
+        EasyMock.expect(mockOrangePlayer.getPlayerColor()).andReturn(PlayerColor.ORANGE);
+
+        PlayerColor expectedColor = PlayerColor.ORANGE;
+
+        EasyMock.expect(mockBoardGraphController.playerClaimStoredNodeSetupPhase(expectedColor, 8)).andReturn(true);
+
+        mockHexes.get(0).addPlayerSettlementToHex(mockOrangePlayer);
+        EasyMock.expectLastCall();
+        mockHexes.get(1).addPlayerSettlementToHex(mockOrangePlayer);
+        EasyMock.expectLastCall();
+        mockHexes.get(4).addPlayerSettlementToHex(mockOrangePlayer);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(mockBoardGraphController, mockOrangePlayer, mockHexes.get(0), mockHexes.get(1), mockHexes.get(4));
+
+        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+
+        b.buildSetupSettlement(mockOrangePlayer, 8);
+
+        EasyMock.verify(mockBoardGraphController, mockOrangePlayer, mockHexes.get(0), mockHexes.get(1), mockHexes.get(4));
+
+        assertTrue(b.checkPlayerOwnsNode(expectedColor, 8));
+
+        int expected = 1;
+        int actual = b.getNodeBuildingLevel(8);
+        assertEquals(expected, actual);
     }
 
 

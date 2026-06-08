@@ -48,12 +48,15 @@ public class BoardHandler {
         if (nodeId < 0 || nodeId > 53){
             throw new IllegalArgumentException("Invalid NodeID - must be within [0, 53].");
         }
+
         PlayerColor claimingColor = player.getPlayerColor();
         boardGraphController.playerClaimStoredNode(claimingColor, nodeId);
+
         List<Integer> hexIds = nodeIdToHexes.get(nodeId);
         for (int hexId : hexIds){
             hexes.get(hexId).addPlayerSettlementToHex(player);
         }
+
         nodeOwners[nodeId] = claimingColor;
         nodeBuildingLevels[nodeId] = SETTLEMENT_LEVEL;
     }
@@ -141,6 +144,7 @@ public class BoardHandler {
 
         PlayerColor claimingColor = player.getPlayerColor();
         boardGraphController.playerClaimStoredNodeSetupPhase(claimingColor, nodeId);
+
         List<Integer> hexIds = nodeIdToHexes.get(nodeId);
         for (int hexId : hexIds){
             hexes.get(hexId).addPlayerSettlementToHex(player);
