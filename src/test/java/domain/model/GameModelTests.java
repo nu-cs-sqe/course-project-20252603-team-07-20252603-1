@@ -474,4 +474,25 @@ public class GameModelTests {
 
         EasyMock.verify(orangeStateMock, boardMock);
     }
+
+    @Test
+    void attemptBuildCity_test05_IllegalPhase_ExpectError(){
+        PlayerState blueStateMock = EasyMock.createMock(PlayerState.class);
+        ColorToPlayerStateMock = Map.of(
+                PlayerColor.ORANGE, blueStateMock
+        );;
+
+
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerStateMock, boardMock);
+
+        model.setCurrentPlayerColor(PlayerColor.ORANGE);
+        model.setCurrentGamePhase(GamePhase.ROAD_BUILDING_DEV_CARD);
+        Exception exception = assertThrows (IllegalGamePhaseException.class,
+                () -> model.attemptBuildCity(0));
+
+        assertEquals("Not proper phase for that action", exception.getMessage());
+
+    }
 }

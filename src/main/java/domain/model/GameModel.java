@@ -226,6 +226,7 @@ public class GameModel {
 
 
     public void attemptBuildCity(int nodeID){
+        checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY);
         checkPlayerOwnsEnoughResources(currentPlayerColor, Resource.ORE, 3);
         checkPlayerOwnsEnoughResources(currentPlayerColor, Resource.GRAIN, 2);
         try {
