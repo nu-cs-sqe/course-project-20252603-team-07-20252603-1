@@ -188,6 +188,14 @@ public class GameModel {
         this.currentGamePhase = newGamePhase;
     }
 
+    public GamePhase getCurrentPhase() {
+        return currentGamePhase;
+    }
+
+    public void endTurn() {
+        // TODO: implement — check GENERAL_PLAY, advance player, reset to BEFORE_ROLL
+    }
+
     private void checkCurrentGamePhaseMatches(GamePhase... expectedGamePhaseOptions) {
         for (GamePhase allowedPhase : expectedGamePhaseOptions) {
             if (currentGamePhase == allowedPhase) {

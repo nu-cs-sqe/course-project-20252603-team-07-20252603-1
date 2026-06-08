@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -495,5 +496,148 @@ public class GameModelTests {
 
         assertEquals("Not proper phase for that action", exception.getMessage());
 
+    }
+
+    // --- phase transition tests ---
+
+    @Test
+    void newGameModel_startsInBeforeRollPhase() {
+        BoardHandler board = EasyMock.createMock(BoardHandler.class);
+        EasyMock.replay(board);
+        GameModel model = new GameModel(List.of(new Player("Alice", PlayerColor.RED)), board);
+        assertEquals(GamePhase.BEFORE_ROLL, model.getCurrentPhase());
+        EasyMock.verify(board);
+    }
+
+    @Test
+    void performTurn_rollSix_nonSeven_transitionsToGeneralPlay() {
+        BoardHandler board = EasyMock.createMock(BoardHandler.class);
+        EasyMock.replay(board);
+        GameModel model = new GameModel(List.of(new Player("Alice", PlayerColor.RED)), board);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+        model.performTurn(6);
+        assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+        EasyMock.verify(board);
+    }
+
+    // BVA: minimum non-7 dice total
+    @Test
+    void performTurn_rollTwo_BVAMin_transitionsToGeneralPlay() {
+        BoardHandler board = EasyMock.createMock(BoardHandler.class);
+        EasyMock.replay(board);
+        GameModel model = new GameModel(List.of(new Player("Alice", PlayerColor.RED)), board);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+        model.performTurn(2);
+        assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+        EasyMock.verify(board);
+    }
+
+    // BVA: maximum dice total
+    @Test
+    void performTurn_rollTwelve_BVAMax_transitionsToGeneralPlay() {
+        BoardHandler board = EasyMock.createMock(BoardHandler.class);
+        EasyMock.replay(board);
+        GameModel model = new GameModel(List.of(new Player("Alice", PlayerColor.RED)), board);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+        model.performTurn(12);
+        assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+        EasyMock.verify(board);
+    }
+
+    @Test
+    void performTurn_rollSeven_transitionsToMoveRobber() {
+        BoardHandler board = EasyMock.createMock(BoardHandler.class);
+        EasyMock.replay(board);
+        GameModel model = new GameModel(List.of(new Player("Alice", PlayerColor.RED)), board);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+        model.performTurn(7);
+        assertEquals(GamePhase.MOVE_ROBBER, model.getCurrentPhase());
+        EasyMock.verify(board);
+    }
+
+    @Test
+    void attemptBuildRoad_beforeRoll_expectError() {
+        Player playerMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.RED, playerMock);
+        EasyMock.replay(playerMock, boardMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock, woolDeckMock);
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+        assertThrows(IllegalGamePhaseException.class, () -> model.attemptBuildRoad(0, 1));
+        EasyMock.verify(playerMock, boardMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock, woolDeckMock);
+    }
+
+    @Test
+    void attemptBuildSettlement_beforeRoll_expectError() {
+        Player playerMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.RED, playerMock);
+        EasyMock.replay(playerMock, boardMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock, woolDeckMock);
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+        assertThrows(IllegalGamePhaseException.class, () -> model.attemptBuildSettlement(0));
+        EasyMock.verify(playerMock, boardMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock, woolDeckMock);
+    }
+
+    @Test
+    void attemptBuildCity_beforeRoll_expectError() {
+        Player playerMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.ORANGE, playerMock);
+        EasyMock.replay(playerMock, boardMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock, woolDeckMock);
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentPlayerColor(PlayerColor.ORANGE);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+        assertThrows(IllegalGamePhaseException.class, () -> model.attemptBuildCity(0));
+        EasyMock.verify(playerMock, boardMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock, woolDeckMock);
+    }
+
+    @Test
+    void performTurn_rollingTwiceInOneTurn_expectError() {
+        BoardHandler board = EasyMock.createMock(BoardHandler.class);
+        EasyMock.replay(board);
+        GameModel model = new GameModel(List.of(new Player("Alice", PlayerColor.RED)), board);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+        model.performTurn(6);
+        assertThrows(IllegalGamePhaseException.class, () -> model.performTurn(6));
+        EasyMock.verify(board);
+    }
+
+    @Test
+    void endTurn_fromGeneralPlay_advancesPlayerAndResetsToBeforeRoll() {
+        Player alice = new Player("Alice", PlayerColor.RED);
+        Player bob = new Player("Bob", PlayerColor.BLUE);
+        BoardHandler board = EasyMock.createMock(BoardHandler.class);
+        EasyMock.replay(board);
+        GameModel model = new GameModel(List.of(alice, bob), board);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        model.endTurn();
+        assertEquals(GamePhase.BEFORE_ROLL, model.getCurrentPhase());
+        assertEquals(bob, model.getCurrentPlayer());
+        EasyMock.verify(board);
+    }
+
+    @Test
+    void endTurn_fromBeforeRoll_expectError() {
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+        assertThrows(IllegalGamePhaseException.class, () -> model.endTurn());
+    }
+
+    @Test
+    void endTurn_fromMoveRobber_expectError() {
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentGamePhase(GamePhase.MOVE_ROBBER);
+        assertThrows(IllegalGamePhaseException.class, () -> model.endTurn());
     }
 }

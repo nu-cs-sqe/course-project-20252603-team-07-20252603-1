@@ -64,7 +64,7 @@ class GameLoopControllerTest {
 
     @Test
     void testEndTurnDelegatesToModel() {
-        mockModel.advanceToNextPlayer();
+        mockModel.endTurn();
         expectLastCall();
         replay(mockModel);
 
