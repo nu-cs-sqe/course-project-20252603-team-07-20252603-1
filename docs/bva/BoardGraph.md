@@ -271,7 +271,7 @@
 |             | State of the System                                                | Expected output    | Implemented?       |
 |-------------|--------------------------------------------------------------------|--------------------|--------------------|
 | Test Case 1 | No player has any roads, no previous winner                        | PlayerColor.SETUP  | :white_check_mark: |
-| Test Case 2 | RED has exactly 4 roads, no previous winner                        | PlayerColor.SETUP  | x                  |
+| Test Case 2 | RED has exactly 4 roads, no previous winner                        | PlayerColor.SETUP  | :white_check_mark: |
 | Test Case 3 | ORANGE has exactly 5 roads, no previous winner                     | PlayerColor.ORANGE | x                  |
 | Test Case 4 | WHITE and BLUE both have exactly 5 roads, WHITE is previous winner | PlayerColor.WHITE  | x                  |
 | Test Case 5 | RED and BLUE both have exactly 5 roads, BLUE is previous winner    | PlayerColor.BLUE   | x                  |

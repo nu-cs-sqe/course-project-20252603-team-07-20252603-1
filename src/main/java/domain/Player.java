@@ -87,4 +87,8 @@ public class Player {
     int getResourceCount(Resource resource) {
         return 0;
     }
+
+    PlayerColor getPlayerColor(){
+        return PlayerColor.SETUP;
+    }
 }
