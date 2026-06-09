@@ -84,4 +84,14 @@ class DevelopmentCardTest {
         DevelopmentCard card = new DevelopmentCard(DevelopmentCardType.KNIGHT, drawnAtRound);
         assertTrue(card.isPlayable(currentRound));
     }
+
+    // TC14: isPlayable(0), MONOPOLY drawn at round 0 (both at LOW boundary) -> false
+    @Test
+    void isPlayable_MonopolyCardBothRoundsAtLowBoundary_ExpectFalse() {
+        final int drawnAtRound = 0;
+        final int currentRound = 0;
+
+        DevelopmentCard card = new DevelopmentCard(DevelopmentCardType.MONOPOLY, drawnAtRound);
+        assertFalse(card.isPlayable(currentRound));
+    }
 }
