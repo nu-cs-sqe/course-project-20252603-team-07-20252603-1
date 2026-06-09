@@ -153,6 +153,9 @@ public class DevelopmentCardHandler {
         if (resource2 == null) {
             throw new IllegalArgumentException("Resource cannot be null.");
         }
+        if (resource1 == Resource.DESERT) {
+            throw new IllegalArgumentException("Cannot take DESERT as a resource.");
+        }
     }
 
 }
