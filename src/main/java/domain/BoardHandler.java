@@ -1,7 +1,16 @@
 package domain;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+/**
+ * Handles all board-related operations for a game of Catan.
+ */
 public class BoardHandler {
   // static fields to represent the type of building on a node
   private static final int SETTLEMENT_LEVEL = 1;
@@ -20,7 +29,9 @@ public class BoardHandler {
   private Robber robber;
   private LongestRoadCalculator longestRoadCalc;
 
-  // public constructor
+  /**
+   * Creates a new BoardHandler with a fresh board state.
+   */
   public BoardHandler() {
     BoardGraph constructorGraph = new BoardGraph();
     this.boardGraphController = new BoardGraphController(constructorGraph);
@@ -49,7 +60,16 @@ public class BoardHandler {
     this.longestRoadCalc = longestRoadCalc;
   }
 
-  // static factory method that calls the private constructor
+  /**
+   * Creates a BoardHandler with injected dependencies for testing.
+   *
+   * @param boardGraphController the board graph controller
+   * @param hexes the list of hexes
+   * @param nodeIdToHexes mapping of node IDs to adjacent hex IDs
+   * @param robber the robber
+   * @param longestRoadCalc the longest road calculator
+   * @return a new BoardHandler instance
+   */
   public static BoardHandler createForTesting(BoardGraphController boardGraphController,
                                               List<Hex> hexes, Map<Integer,
                                               List<Integer>> nodeIdToHexes,
@@ -106,7 +126,8 @@ public class BoardHandler {
   }
 
   void addRoad(Player player, int nodeId1, int nodeId2) {
-    if (nodeId1 < MIN_NODE_ID || nodeId2 < MIN_NODE_ID || nodeId1 > MAX_NODE_ID || nodeId2 > MAX_NODE_ID) {
+    if (nodeId1 < MIN_NODE_ID || nodeId2 < MIN_NODE_ID
+            || nodeId1 > MAX_NODE_ID || nodeId2 > MAX_NODE_ID) {
       throw new IllegalArgumentException("Edge nodeId out of bounds. Must be within [0, 53].");
     }
     PlayerColor claimingColor = player.getPlayerColor();
@@ -168,11 +189,13 @@ public class BoardHandler {
   }
 
   void buildSetupRoad(Player player, int claimedNodeId, int nodeId1, int nodeId2) {
-    if (nodeId1 < MIN_NODE_ID || nodeId2 < MIN_NODE_ID || nodeId1 > MAX_NODE_ID || nodeId2 > MAX_NODE_ID) {
+    if (nodeId1 < MIN_NODE_ID || nodeId2 < MIN_NODE_ID
+            || nodeId1 > MAX_NODE_ID || nodeId2 > MAX_NODE_ID) {
       throw new IllegalArgumentException("Edge nodeId out of bounds. Must be within [0, 53].");
     }
     PlayerColor claimingColor = player.getPlayerColor();
-    boardGraphController.playerClaimStoredEdgeSetupPhase(claimingColor, claimedNodeId, nodeId1, nodeId2);
+    boardGraphController.playerClaimStoredEdgeSetupPhase(claimingColor,
+            claimedNodeId, nodeId1, nodeId2);
   }
 
   // Note: Returns SETUP PlayerColor if nobody has achieved longest road yet

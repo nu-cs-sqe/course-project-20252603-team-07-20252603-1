@@ -14,1270 +14,1282 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class BoardHandlerTests {
 
-    private BoardGraphController mockBoardGraphController;
-    private Player mockRedPlayer;
-    private Player mockBluePlayer;
-    private Player mockWhitePlayer;
-    private Player mockOrangePlayer;
-    private List<Hex> mockHexes;
-    private Map<Integer, List<Integer>> nodeIdToHexes;
-    private Robber mockRobber;
-    private LongestRoadCalculator mockLongestRoadCalc;
+  private BoardGraphController mockBoardGraphController;
+  private Player mockRedPlayer;
+  private Player mockBluePlayer;
+  private Player mockWhitePlayer;
+  private Player mockOrangePlayer;
+  private List<Hex> mockHexes;
+  private Map<Integer, List<Integer>> nodeIdToHexes;
+  private Robber mockRobber;
+  private LongestRoadCalculator mockLongestRoadCalc;
 
-    @BeforeEach
-    void setUp() {
-        mockBoardGraphController = EasyMock.createMock(BoardGraphController.class);
+  @BeforeEach
+  void setUp() {
+    mockBoardGraphController = EasyMock.createMock(BoardGraphController.class);
 
-        mockRedPlayer = EasyMock.createMock(Player.class);
-        mockBluePlayer = EasyMock.createMock(Player.class);
-        mockWhitePlayer = EasyMock.createMock(Player.class);
-        mockOrangePlayer = EasyMock.createMock(Player.class);
+    mockRedPlayer = EasyMock.createMock(Player.class);
+    mockBluePlayer = EasyMock.createMock(Player.class);
+    mockWhitePlayer = EasyMock.createMock(Player.class);
+    mockOrangePlayer = EasyMock.createMock(Player.class);
 
-        mockHexes = new ArrayList<>();
-        for (int i = 0; i < 19; i++) {
-            mockHexes.add(EasyMock.createMock(Hex.class));
-        }
-
-        nodeIdToHexes = initNodeHexMap();
-
-        mockRobber = EasyMock.createMock(Robber.class);
-
-        mockLongestRoadCalc = EasyMock.createMock(LongestRoadCalculator.class);
+    mockHexes = new ArrayList<>();
+    for (int i = 0; i < 19; i++) {
+      mockHexes.add(EasyMock.createMock(Hex.class));
     }
 
-    // Test Case 1
-    @Test
-    void RedClaimsNodeZero_AndSucceeds(){
-        EasyMock.expect(mockRedPlayer.getPlayerColor()).andReturn(PlayerColor.RED);
+    nodeIdToHexes = initNodeHexMap();
 
-        PlayerColor expectedColor = PlayerColor.RED;
+    mockRobber = EasyMock.createMock(Robber.class);
 
-        mockBoardGraphController.playerClaimStoredNode(expectedColor, 0);
-        EasyMock.expectLastCall();
+    mockLongestRoadCalc = EasyMock.createMock(LongestRoadCalculator.class);
+  }
 
-        mockHexes.get(0).addPlayerSettlementToHex(mockRedPlayer);
-        EasyMock.expectLastCall();
+  // Test Case 1
+  @Test
+  void RedClaimsNodeZero_AndSucceeds() {
+    EasyMock.expect(mockRedPlayer.getPlayerColor()).andReturn(PlayerColor.RED);
 
-        EasyMock.replay(mockBoardGraphController, mockRedPlayer, mockHexes.get(0));
+    PlayerColor expectedColor = PlayerColor.RED;
 
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+    mockBoardGraphController.playerClaimStoredNode(expectedColor, 0);
+    EasyMock.expectLastCall();
 
-        b.buildSettlement(mockRedPlayer, 0);
+    mockHexes.get(0).addPlayerSettlementToHex(mockRedPlayer);
+    EasyMock.expectLastCall();
 
-        EasyMock.verify(mockBoardGraphController, mockRedPlayer, mockHexes.get(0));
+    EasyMock.replay(mockBoardGraphController, mockRedPlayer, mockHexes.get(0));
 
-        assertTrue(b.checkPlayerOwnsNode(expectedColor, 0));
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-        int expected = 1;
-        int actual = b.getNodeBuildingLevel(0);
-        assertEquals(expected, actual);
+    b.buildSettlement(mockRedPlayer, 0);
+
+    EasyMock.verify(mockBoardGraphController, mockRedPlayer, mockHexes.get(0));
+
+    assertTrue(b.checkPlayerOwnsNode(expectedColor, 0));
+
+    int expected = 1;
+    int actual = b.getNodeBuildingLevel(0);
+    assertEquals(expected, actual);
+  }
+
+  // Test Case 2
+  @Test
+  void BlueClaimsNodeFiftyThree_AndSucceeds() {
+    EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE);
+
+    PlayerColor expectedColor = PlayerColor.BLUE;
+
+    mockBoardGraphController.playerClaimStoredNode(expectedColor, 53);
+    EasyMock.expectLastCall();
+
+    mockHexes.get(18).addPlayerSettlementToHex(mockBluePlayer);
+    EasyMock.expectLastCall();
+
+    EasyMock.replay(mockBoardGraphController, mockBluePlayer, mockHexes.get(18));
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+
+    b.buildSettlement(mockBluePlayer, 53);
+
+    EasyMock.verify(mockBoardGraphController, mockBluePlayer, mockHexes.get(18));
+
+    assertTrue(b.checkPlayerOwnsNode(expectedColor, 53));
+
+    int expected = 1;
+    int actual = b.getNodeBuildingLevel(53);
+    assertEquals(expected, actual);
+  }
+
+  // Test Case 3
+  @Test
+  void OrangeClaimsNodeNegativeOne_ReturnsError() {
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      b.buildSettlement(mockOrangePlayer, -1);
+    });
+
+    String expectedMessage = "Invalid NodeID - must be within [0, 53].";
+    String actualMessage = exception.getMessage();
+    assertEquals(expectedMessage, actualMessage);
+  }
+
+  // Test Case 4
+  @Test
+  void WhiteClaimsNodeFiftyFour_ReturnsError() {
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      b.buildSettlement(mockWhitePlayer, 54);
+    });
+
+    String expectedMessage = "Invalid NodeID - must be within [0, 53].";
+    String actualMessage = exception.getMessage();
+    assertEquals(expectedMessage, actualMessage);
+  }
+
+  // Test Case 5
+  @Test
+  void OrangeClaimsNodeEight_HexesZeroOneFourUpdated() {
+    EasyMock.expect(mockOrangePlayer.getPlayerColor()).andReturn(PlayerColor.ORANGE);
+
+    PlayerColor expectedColor = PlayerColor.ORANGE;
+
+    mockBoardGraphController.playerClaimStoredNode(expectedColor, 8);
+    EasyMock.expectLastCall();
+
+    mockHexes.get(0).addPlayerSettlementToHex(mockOrangePlayer);
+    EasyMock.expectLastCall();
+    mockHexes.get(1).addPlayerSettlementToHex(mockOrangePlayer);
+    EasyMock.expectLastCall();
+    mockHexes.get(4).addPlayerSettlementToHex(mockOrangePlayer);
+    EasyMock.expectLastCall();
+
+    EasyMock.replay(mockBoardGraphController, mockOrangePlayer, mockHexes.get(0), mockHexes.get(1), mockHexes.get(4));
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+
+    b.buildSettlement(mockOrangePlayer, 8);
+
+    EasyMock.verify(mockBoardGraphController, mockOrangePlayer, mockHexes.get(0), mockHexes.get(1), mockHexes.get(4));
+
+    assertTrue(b.checkPlayerOwnsNode(expectedColor, 8));
+
+    int expected = 1;
+    int actual = b.getNodeBuildingLevel(8);
+    assertEquals(expected, actual);
+  }
+
+  // Test Case 6
+  @Test
+  void BlueClaimsNodeFour_HexesZeroOneUpdated() {
+    EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE);
+
+    PlayerColor expectedColor = PlayerColor.BLUE;
+
+    mockBoardGraphController.playerClaimStoredNode(expectedColor, 4);
+    EasyMock.expectLastCall();
+
+    mockHexes.get(0).addPlayerSettlementToHex(mockBluePlayer);
+    EasyMock.expectLastCall();
+    mockHexes.get(1).addPlayerSettlementToHex(mockBluePlayer);
+    EasyMock.expectLastCall();
+
+    EasyMock.replay(mockBoardGraphController, mockBluePlayer, mockHexes.get(0), mockHexes.get(1));
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+
+    b.buildSettlement(mockBluePlayer, 4);
+
+    EasyMock.verify(mockBoardGraphController, mockBluePlayer, mockHexes.get(0), mockHexes.get(1));
+
+    assertTrue(b.checkPlayerOwnsNode(expectedColor, 4));
+
+    int expected = 1;
+    int actual = b.getNodeBuildingLevel(4);
+    assertEquals(expected, actual);
+  }
+
+  // Test Case 7
+  @Test
+  void RedBuildsCityOnOwnedNodeZero_HexRemovesSettlement_AddsCity() {
+    EasyMock.expect(mockRedPlayer.getPlayerColor()).andReturn(PlayerColor.RED).times(2);
+
+    PlayerColor expectedColor = PlayerColor.RED;
+
+    mockBoardGraphController.playerClaimStoredNode(expectedColor, 0);
+    EasyMock.expectLastCall();
+
+    mockHexes.get(0).addPlayerSettlementToHex(mockRedPlayer);
+    EasyMock.expectLastCall();
+
+    mockHexes.get(0).removePlayerSettlementFromHex(mockRedPlayer);
+    EasyMock.expectLastCall();
+    mockHexes.get(0).addPlayerCityToHex(mockRedPlayer);
+    EasyMock.expectLastCall();
+
+    EasyMock.replay(mockBoardGraphController, mockRedPlayer, mockHexes.get(0));
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+
+    b.buildSettlement(mockRedPlayer, 0);
+
+    b.buildCity(mockRedPlayer, 0);
+
+    EasyMock.verify(mockBoardGraphController, mockRedPlayer, mockHexes.get(0));
+
+    assertTrue(b.checkPlayerOwnsNode(expectedColor, 0));
+
+    int expected = 2;
+    int actual = b.getNodeBuildingLevel(0);
+    assertEquals(expected, actual);
+  }
+
+  // Test Case 8
+  @Test
+  void BlueBuildsCityOnOwnedNodeFiftyThree_HexRemovesSettlement_AddsCity() {
+    EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE).times(2);
+
+    PlayerColor expectedColor = PlayerColor.BLUE;
+
+    mockBoardGraphController.playerClaimStoredNode(expectedColor, 53);
+    EasyMock.expectLastCall();
+
+    mockHexes.get(18).addPlayerSettlementToHex(mockBluePlayer);
+    EasyMock.expectLastCall();
+
+    mockHexes.get(18).removePlayerSettlementFromHex(mockBluePlayer);
+    EasyMock.expectLastCall();
+    mockHexes.get(18).addPlayerCityToHex(mockBluePlayer);
+    EasyMock.expectLastCall();
+
+    EasyMock.replay(mockBoardGraphController, mockBluePlayer, mockHexes.get(18));
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+
+    b.buildSettlement(mockBluePlayer, 53);
+
+    b.buildCity(mockBluePlayer, 53);
+
+    EasyMock.verify(mockBoardGraphController, mockBluePlayer, mockHexes.get(18));
+
+    assertTrue(b.checkPlayerOwnsNode(expectedColor, 53));
+
+    int expected = 2;
+    int actual = b.getNodeBuildingLevel(53);
+    assertEquals(expected, actual);
+  }
+
+  // Test Case 9
+  @Test
+  void OrangeBuildsCityOnNodeNegativeOne_ThrowsError() {
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      b.buildCity(mockOrangePlayer, -1);
+    });
+
+    String expectedMessage = "Invalid NodeID - must be within [0, 53].";
+    String actualMessage = exception.getMessage();
+    assertEquals(expectedMessage, actualMessage);
+  }
+
+  // Test Case 10
+  @Test
+  void WhiteBuildsCityOnNodeFiftyFour_ThrowsError() {
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      b.buildCity(mockOrangePlayer, 54);
+    });
+
+    String expectedMessage = "Invalid NodeID - must be within [0, 53].";
+    String actualMessage = exception.getMessage();
+    assertEquals(expectedMessage, actualMessage);
+  }
+
+  // Test Case 11
+  @Test
+  void RedBuildsCityOnNodeSix_BlueOwnsNodeSix_ThrowsError() {
+    EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE);
+    EasyMock.expect(mockRedPlayer.getPlayerColor()).andReturn(PlayerColor.RED);
+
+    PlayerColor expectedColor = PlayerColor.BLUE;
+
+    mockBoardGraphController.playerClaimStoredNode(expectedColor, 6);
+    EasyMock.expectLastCall();
+
+    mockHexes.get(2).addPlayerSettlementToHex(mockBluePlayer);
+    EasyMock.expectLastCall();
+
+    EasyMock.replay(mockBoardGraphController, mockBluePlayer, mockHexes.get(2));
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+
+    b.buildSettlement(mockBluePlayer, 6);
+
+    Exception exception = assertThrows(IllegalStateException.class, () -> {
+      b.buildCity(mockRedPlayer, 6);
+    });
+
+    EasyMock.verify(mockBoardGraphController, mockBluePlayer, mockHexes.get(2));
+
+    String expectedMessage = "Node owned by other player, cannot build here.";
+    String actualMessage = exception.getMessage();
+    assertEquals(expectedMessage, actualMessage);
+
+    assertTrue(b.checkPlayerOwnsNode(expectedColor, 6));
+  }
+
+  // Test Case 12
+  @Test
+  void BlueBuildsCity_OnUnclaimedNode_ThrowsError() {
+    EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE);
+
+    EasyMock.replay(mockBluePlayer);
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+
+    Exception exception = assertThrows(IllegalStateException.class, () -> {
+      b.buildCity(mockBluePlayer, 36);
+    });
+
+    String expectedMessage = "Must upgrade a settlement to a city.";
+    String actualMessage = exception.getMessage();
+    assertEquals(expectedMessage, actualMessage);
+
+    EasyMock.verify(mockBluePlayer);
+
+    int expected = 0;
+    int actual = b.getNodeBuildingLevel(36);
+    assertEquals(expected, actual);
+  }
+
+  // Test Case 13
+  @Test
+  void OrangeBuildsCityOnOwnedNodeTwenty_HexRemovesSettlement_AddsCity_Twice() {
+    EasyMock.expect(mockOrangePlayer.getPlayerColor()).andReturn(PlayerColor.ORANGE).times(2);
+
+    PlayerColor expectedColor = PlayerColor.ORANGE;
+
+    mockBoardGraphController.playerClaimStoredNode(expectedColor, 20);
+    EasyMock.expectLastCall();
+
+    mockHexes.get(6).addPlayerSettlementToHex(mockOrangePlayer);
+    EasyMock.expectLastCall();
+
+    mockHexes.get(6).removePlayerSettlementFromHex(mockOrangePlayer);
+    EasyMock.expectLastCall();
+    mockHexes.get(6).addPlayerCityToHex(mockOrangePlayer);
+    EasyMock.expectLastCall();
+
+    mockHexes.get(11).addPlayerSettlementToHex(mockOrangePlayer);
+    EasyMock.expectLastCall();
+
+    mockHexes.get(11).removePlayerSettlementFromHex(mockOrangePlayer);
+    EasyMock.expectLastCall();
+    mockHexes.get(11).addPlayerCityToHex(mockOrangePlayer);
+    EasyMock.expectLastCall();
+
+    EasyMock.replay(mockBoardGraphController, mockOrangePlayer, mockHexes.get(6), mockHexes.get(11));
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+
+    b.buildSettlement(mockOrangePlayer, 20);
+
+    b.buildCity(mockOrangePlayer, 20);
+
+    EasyMock.verify(mockBoardGraphController, mockOrangePlayer, mockHexes.get(6), mockHexes.get(11));
+
+    assertTrue(b.checkPlayerOwnsNode(expectedColor, 20));
+
+    int expected = 2;
+    int actual = b.getNodeBuildingLevel(20);
+    assertEquals(expected, actual);
+  }
+
+  // Test Case 14
+  @Test
+  void WhiteBuildsCityOnOwnedNodeTwentyFour_HexRemovesSettlement_AddsCity_ThreeTimes() {
+    EasyMock.expect(mockWhitePlayer.getPlayerColor()).andReturn(PlayerColor.WHITE).times(2);
+
+    PlayerColor expectedColor = PlayerColor.WHITE;
+
+    mockBoardGraphController.playerClaimStoredNode(expectedColor, 24);
+    EasyMock.expectLastCall();
+
+    mockHexes.get(5).addPlayerSettlementToHex(mockWhitePlayer);
+    EasyMock.expectLastCall();
+
+    mockHexes.get(5).removePlayerSettlementFromHex(mockWhitePlayer);
+    EasyMock.expectLastCall();
+    mockHexes.get(5).addPlayerCityToHex(mockWhitePlayer);
+    EasyMock.expectLastCall();
+
+    mockHexes.get(9).addPlayerSettlementToHex(mockWhitePlayer);
+    EasyMock.expectLastCall();
+
+    mockHexes.get(9).removePlayerSettlementFromHex(mockWhitePlayer);
+    EasyMock.expectLastCall();
+    mockHexes.get(9).addPlayerCityToHex(mockWhitePlayer);
+    EasyMock.expectLastCall();
+
+    mockHexes.get(10).addPlayerSettlementToHex(mockWhitePlayer);
+    EasyMock.expectLastCall();
+
+    mockHexes.get(10).removePlayerSettlementFromHex(mockWhitePlayer);
+    EasyMock.expectLastCall();
+    mockHexes.get(10).addPlayerCityToHex(mockWhitePlayer);
+    EasyMock.expectLastCall();
+
+    EasyMock.replay(mockBoardGraphController, mockWhitePlayer, mockHexes.get(5), mockHexes.get(9), mockHexes.get(10));
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+
+    b.buildSettlement(mockWhitePlayer, 24);
+
+    b.buildCity(mockWhitePlayer, 24);
+
+    EasyMock.verify(mockBoardGraphController, mockWhitePlayer, mockHexes.get(5), mockHexes.get(9), mockHexes.get(10));
+
+    assertTrue(b.checkPlayerOwnsNode(expectedColor, 24));
+
+    int expected = 2;
+    int actual = b.getNodeBuildingLevel(24);
+    assertEquals(expected, actual);
+  }
+
+  // Test Case 15
+  @Test
+  void RedClaimsEdge_ZeroOne_CallPlayerClaimStoredEdge() {
+    EasyMock.expect(mockRedPlayer.getPlayerColor()).andReturn(PlayerColor.RED);
+
+    PlayerColor expectedColor = PlayerColor.RED;
+
+    mockBoardGraphController.playerClaimStoredEdge(expectedColor, 0, 1);
+    EasyMock.expectLastCall();
+
+    EasyMock.replay(mockBoardGraphController, mockRedPlayer);
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+
+    b.addRoad(mockRedPlayer, 0, 1);
+
+    EasyMock.verify(mockBoardGraphController, mockRedPlayer);
+  }
+
+  // Test Case 16
+  @Test
+  void OrangeClaimsEdge_FiftyTwo_FiftyThree_CallPlayerClaimStoredEdge() {
+    EasyMock.expect(mockOrangePlayer.getPlayerColor()).andReturn(PlayerColor.ORANGE);
+
+    PlayerColor expectedColor = PlayerColor.ORANGE;
+
+    mockBoardGraphController.playerClaimStoredEdge(expectedColor, 52, 53);
+    EasyMock.expectLastCall();
+
+    EasyMock.replay(mockBoardGraphController, mockOrangePlayer);
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+
+    b.addRoad(mockOrangePlayer, 52, 53);
+
+    EasyMock.verify(mockBoardGraphController, mockOrangePlayer);
+  }
+
+  // Test Case 17
+  @Test
+  void WhiteClaimsEdge_NegativeOne_Zero_ThrowError() {
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      b.addRoad(mockWhitePlayer, -1, 0);
+    });
+
+    String expectedMessage = "Edge nodeId out of bounds. Must be within [0, 53].";
+    String actualMessage = exception.getMessage();
+    assertEquals(expectedMessage, actualMessage);
+  }
+
+  // Test Case 18
+  @Test
+  void WhiteClaimsEdge_Zero_NegativeOne_ThrowError() {
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      b.addRoad(mockWhitePlayer, 0, -1);
+    });
+
+    String expectedMessage = "Edge nodeId out of bounds. Must be within [0, 53].";
+    String actualMessage = exception.getMessage();
+    assertEquals(expectedMessage, actualMessage);
+  }
+
+  // Test Case 19
+  @Test
+  void BlueClaimsEdge_FiftyThree_FiftyFour_ThrowError() {
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      b.addRoad(mockBluePlayer, 53, 54);
+    });
+
+    String expectedMessage = "Edge nodeId out of bounds. Must be within [0, 53].";
+    String actualMessage = exception.getMessage();
+    assertEquals(expectedMessage, actualMessage);
+  }
+
+  // Test Case 20
+  @Test
+  void BlueClaimsEdge_FiftyFour_FiftyThree_ThrowError() {
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      b.addRoad(mockBluePlayer, 54, 53);
+    });
+
+    String expectedMessage = "Edge nodeId out of bounds. Must be within [0, 53].";
+    String actualMessage = exception.getMessage();
+    assertEquals(expectedMessage, actualMessage);
+  }
+
+  // Test Case 21
+  @Test
+  void TwoRolled_RobberNotPresent_CallsAwardResources() {
+    for (int i = 0; i < 19; i++) {
+      if (i == 1) {
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(1);
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(2);
+      } else {
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(0);
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
+      }
     }
 
-    // Test Case 2
-    @Test
-    void BlueClaimsNodeFiftyThree_AndSucceeds(){
-        EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE);
+    mockHexes.get(1).awardSettlementResources();
+    EasyMock.expectLastCall();
+    mockHexes.get(1).awardCityResources();
+    EasyMock.expectLastCall();
 
-        PlayerColor expectedColor = PlayerColor.BLUE;
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(9);
 
-        mockBoardGraphController.playerClaimStoredNode(expectedColor, 53);
-        EasyMock.expectLastCall();
+    EasyMock.replay(mockHexes.toArray());
+    EasyMock.replay(mockRobber);
 
-        mockHexes.get(18).addPlayerSettlementToHex(mockBluePlayer);
-        EasyMock.expectLastCall();
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-        EasyMock.replay(mockBoardGraphController, mockBluePlayer, mockHexes.get(18));
+    b.awardResources(2);
 
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+    EasyMock.verify(mockHexes.toArray());
+    EasyMock.verify(mockRobber);
+  }
 
-        b.buildSettlement(mockBluePlayer, 53);
-
-        EasyMock.verify(mockBoardGraphController, mockBluePlayer, mockHexes.get(18));
-
-        assertTrue(b.checkPlayerOwnsNode(expectedColor, 53));
-
-        int expected = 1;
-        int actual = b.getNodeBuildingLevel(53);
-        assertEquals(expected, actual);
+  // Test Case 22
+  @Test
+  void TwelveRolled_RobberNotPresent_CallsAwardResources() {
+    for (int i = 0; i < 19; i++) {
+      if (i == 3) {
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(3);
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(12);
+      } else {
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(0);
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
+      }
     }
 
-    // Test Case 3
-    @Test
-    void OrangeClaimsNodeNegativeOne_ReturnsError(){
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+    mockHexes.get(3).awardSettlementResources();
+    EasyMock.expectLastCall();
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            b.buildSettlement(mockOrangePlayer, -1);
-        });
+    mockHexes.get(3).awardCityResources();
+    EasyMock.expectLastCall();
 
-        String expectedMessage = "Invalid NodeID - must be within [0, 53].";
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(9);
+
+    EasyMock.replay(mockHexes.toArray());
+    EasyMock.replay(mockRobber);
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+
+    b.awardResources(12);
+
+    EasyMock.verify(mockHexes.toArray());
+    EasyMock.verify(mockRobber);
+  }
+
+  // Test Case 23
+  @Test
+  void EightRolled_RobberNotPresent_CallsAwardResourcesTwice() {
+    for (int i = 0; i < 19; i++) {
+      if (i == 11) {
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(11);
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(8);
+      } else if (i == 12) {
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(12);
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(8);
+      } else {
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(0);
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
+      }
     }
 
-    // Test Case 4
-    @Test
-    void WhiteClaimsNodeFiftyFour_ReturnsError(){
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+    mockHexes.get(11).awardSettlementResources();
+    EasyMock.expectLastCall();
+    mockHexes.get(11).awardCityResources();
+    EasyMock.expectLastCall();
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            b.buildSettlement(mockWhitePlayer, 54);
-        });
+    mockHexes.get(12).awardSettlementResources();
+    EasyMock.expectLastCall();
+    mockHexes.get(12).awardCityResources();
+    EasyMock.expectLastCall();
 
-        String expectedMessage = "Invalid NodeID - must be within [0, 53].";
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(9);
+
+    EasyMock.replay(mockHexes.toArray());
+    EasyMock.replay(mockRobber);
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+
+    b.awardResources(8);
+
+    EasyMock.verify(mockHexes.toArray());
+    EasyMock.verify(mockRobber);
+  }
+
+  // Test Case 24
+  @Test
+  void TwoRolled_RobberIsPresent_NoCallsToAward() {
+    for (int i = 0; i < 19; i++) {
+      if (i == 1) {
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(1);
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(2);
+      } else {
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(0);
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
+      }
     }
 
-    // Test Case 5
-    @Test
-    void OrangeClaimsNodeEight_HexesZeroOneFourUpdated(){
-        EasyMock.expect(mockOrangePlayer.getPlayerColor()).andReturn(PlayerColor.ORANGE);
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(1);
 
-        PlayerColor expectedColor = PlayerColor.ORANGE;
+    EasyMock.replay(mockHexes.toArray());
+    EasyMock.replay(mockRobber);
 
-        mockBoardGraphController.playerClaimStoredNode(expectedColor, 8);
-        EasyMock.expectLastCall();
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-        mockHexes.get(0).addPlayerSettlementToHex(mockOrangePlayer);
-        EasyMock.expectLastCall();
-        mockHexes.get(1).addPlayerSettlementToHex(mockOrangePlayer);
-        EasyMock.expectLastCall();
-        mockHexes.get(4).addPlayerSettlementToHex(mockOrangePlayer);
-        EasyMock.expectLastCall();
+    b.awardResources(2);
 
-        EasyMock.replay(mockBoardGraphController, mockOrangePlayer, mockHexes.get(0), mockHexes.get(1), mockHexes.get(4));
+    EasyMock.verify(mockHexes.toArray());
+    EasyMock.verify(mockRobber);
+  }
 
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
-
-        b.buildSettlement(mockOrangePlayer, 8);
-
-        EasyMock.verify(mockBoardGraphController, mockOrangePlayer, mockHexes.get(0), mockHexes.get(1), mockHexes.get(4));
-
-        assertTrue(b.checkPlayerOwnsNode(expectedColor, 8));
-
-        int expected = 1;
-        int actual = b.getNodeBuildingLevel(8);
-        assertEquals(expected, actual);
+  // Test Case 25
+  @Test
+  void EightRolled_RobberIsPresent_CallsAwardResourcesOnce() {
+    for (int i = 0; i < 19; i++) {
+      if (i == 11) {
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(11);
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(8);
+      } else if (i == 12) {
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(12);
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(8);
+      } else {
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(0);
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
+      }
     }
 
-    // Test Case 6
-    @Test
-    void BlueClaimsNodeFour_HexesZeroOneUpdated(){
-        EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE);
+    mockHexes.get(11).awardSettlementResources();
+    EasyMock.expectLastCall();
+    mockHexes.get(11).awardCityResources();
+    EasyMock.expectLastCall();
 
-        PlayerColor expectedColor = PlayerColor.BLUE;
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(12);
 
-        mockBoardGraphController.playerClaimStoredNode(expectedColor, 4);
-        EasyMock.expectLastCall();
+    EasyMock.replay(mockHexes.toArray());
+    EasyMock.replay(mockRobber);
 
-        mockHexes.get(0).addPlayerSettlementToHex(mockBluePlayer);
-        EasyMock.expectLastCall();
-        mockHexes.get(1).addPlayerSettlementToHex(mockBluePlayer);
-        EasyMock.expectLastCall();
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-        EasyMock.replay(mockBoardGraphController, mockBluePlayer, mockHexes.get(0), mockHexes.get(1));
+    b.awardResources(8);
 
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+    EasyMock.verify(mockHexes.toArray());
+    EasyMock.verify(mockRobber);
+  }
 
-        b.buildSettlement(mockBluePlayer, 4);
+  // Test Case 26
+  @Test
+  void MoveRobberLocation_FromHexIdZero_Eighteen() {
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(0);
 
-        EasyMock.verify(mockBoardGraphController, mockBluePlayer, mockHexes.get(0), mockHexes.get(1));
+    mockRobber.moveRobber(18);
+    EasyMock.expectLastCall();
 
-        assertTrue(b.checkPlayerOwnsNode(expectedColor, 4));
+    EasyMock.replay(mockRobber);
 
-        int expected = 1;
-        int actual = b.getNodeBuildingLevel(4);
-        assertEquals(expected, actual);
-    }
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-    // Test Case 7
-    @Test
-    void RedBuildsCityOnOwnedNodeZero_HexRemovesSettlement_AddsCity(){
-        EasyMock.expect(mockRedPlayer.getPlayerColor()).andReturn(PlayerColor.RED).times(2);
+    b.moveRobber(18);
 
-        PlayerColor expectedColor = PlayerColor.RED;
+    EasyMock.verify(mockRobber);
+  }
 
-        mockBoardGraphController.playerClaimStoredNode(expectedColor, 0);
-        EasyMock.expectLastCall();
+  // Test Case 27
+  @Test
+  void MoveRobberLocation_FromHexIdEighteen_ToZero() {
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(18);
 
-        mockHexes.get(0).addPlayerSettlementToHex(mockRedPlayer);
-        EasyMock.expectLastCall();
+    mockRobber.moveRobber(0);
+    EasyMock.expectLastCall();
 
-        mockHexes.get(0).removePlayerSettlementFromHex(mockRedPlayer);
-        EasyMock.expectLastCall();
-        mockHexes.get(0).addPlayerCityToHex(mockRedPlayer);
-        EasyMock.expectLastCall();
+    EasyMock.replay(mockRobber);
 
-        EasyMock.replay(mockBoardGraphController, mockRedPlayer, mockHexes.get(0));
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+    b.moveRobber(0);
 
-        b.buildSettlement(mockRedPlayer, 0);
+    EasyMock.verify(mockRobber);
+  }
 
-        b.buildCity(mockRedPlayer, 0);
+  // Test Case 28
+  @Test
+  void MoveRobberLocation_ToNegativeOne_ThrowError() {
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-        EasyMock.verify(mockBoardGraphController, mockRedPlayer, mockHexes.get(0));
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      b.moveRobber(-1);
+    });
 
-        assertTrue(b.checkPlayerOwnsNode(expectedColor, 0));
+    String expectedMessage = "Cannot move Robber to invalid Hex ID";
+    String actualMessage = exception.getMessage();
+    assertEquals(expectedMessage, actualMessage);
+  }
 
-        int expected = 2;
-        int actual = b.getNodeBuildingLevel(0);
-        assertEquals(expected, actual);
-    }
+  // Test Case 29
+  @Test
+  void MoveRobberLocation_ToNineteen_ThrowError() {
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-    // Test Case 8
-    @Test
-    void BlueBuildsCityOnOwnedNodeFiftyThree_HexRemovesSettlement_AddsCity(){
-        EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE).times(2);
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      b.moveRobber(19);
+    });
 
-        PlayerColor expectedColor = PlayerColor.BLUE;
+    String expectedMessage = "Cannot move Robber to invalid Hex ID";
+    String actualMessage = exception.getMessage();
+    assertEquals(expectedMessage, actualMessage);
+  }
 
-        mockBoardGraphController.playerClaimStoredNode(expectedColor, 53);
-        EasyMock.expectLastCall();
+  // Test Case 30
+  @Test
+  void MoveRobberLocation_FromNine_ToNine_ThrowError() {
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(9);
 
-        mockHexes.get(18).addPlayerSettlementToHex(mockBluePlayer);
-        EasyMock.expectLastCall();
+    EasyMock.replay(mockRobber);
 
-        mockHexes.get(18).removePlayerSettlementFromHex(mockBluePlayer);
-        EasyMock.expectLastCall();
-        mockHexes.get(18).addPlayerCityToHex(mockBluePlayer);
-        EasyMock.expectLastCall();
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-        EasyMock.replay(mockBoardGraphController, mockBluePlayer, mockHexes.get(18));
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      b.moveRobber(9);
+    });
 
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+    String expectedMessage = "Must move robber to new location";
+    String actualMessage = exception.getMessage();
+    assertEquals(expectedMessage, actualMessage);
 
-        b.buildSettlement(mockBluePlayer, 53);
+    EasyMock.verify(mockRobber);
+  }
 
-        b.buildCity(mockBluePlayer, 53);
+  // Test Case 31
+  @Test
+  void GetPlayersOnHexZero_JustBlueSettlement_ReturnBlue() {
+    List<Player> settlementPlayers = List.of(mockBluePlayer);
+    List<Player> cityPlayers = List.of();
 
-        EasyMock.verify(mockBoardGraphController, mockBluePlayer, mockHexes.get(18));
+    EasyMock.expect(mockHexes.get(0).getHexSettlementPlayers()).andReturn(settlementPlayers);
+    EasyMock.expect(mockHexes.get(0).getHexCityPlayers()).andReturn(cityPlayers);
 
-        assertTrue(b.checkPlayerOwnsNode(expectedColor, 53));
+    EasyMock.replay(mockHexes.get(0));
 
-        int expected = 2;
-        int actual = b.getNodeBuildingLevel(53);
-        assertEquals(expected, actual);
-    }
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-    // Test Case 9
-    @Test
-    void OrangeBuildsCityOnNodeNegativeOne_ThrowsError(){
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+    Set<Player> result = b.getPlayersOnHex(0);
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            b.buildCity(mockOrangePlayer, -1);
-        });
+    EasyMock.verify(mockHexes.get(0));
 
-        String expectedMessage = "Invalid NodeID - must be within [0, 53].";
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
-    }
+    assertEquals(Set.of(mockBluePlayer), result);
+  }
 
-    // Test Case 10
-    @Test
-    void WhiteBuildsCityOnNodeFiftyFour_ThrowsError(){
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+  // Test Case 32
+  @Test
+  void GetPlayersOnHexEighteen_JustRedCity_ReturnRed() {
+    List<Player> settlementPlayers = List.of();
+    List<Player> cityPlayers = List.of(mockRedPlayer);
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            b.buildCity(mockOrangePlayer, 54);
-        });
+    EasyMock.expect(mockHexes.get(18).getHexSettlementPlayers()).andReturn(settlementPlayers);
+    EasyMock.expect(mockHexes.get(18).getHexCityPlayers()).andReturn(cityPlayers);
 
-        String expectedMessage = "Invalid NodeID - must be within [0, 53].";
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
-    }
+    EasyMock.replay(mockHexes.get(18));
 
-    // Test Case 11
-    @Test
-    void RedBuildsCityOnNodeSix_BlueOwnsNodeSix_ThrowsError(){
-        EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE);
-        EasyMock.expect(mockRedPlayer.getPlayerColor()).andReturn(PlayerColor.RED);
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-        PlayerColor expectedColor = PlayerColor.BLUE;
+    Set<Player> result = b.getPlayersOnHex(18);
 
-        mockBoardGraphController.playerClaimStoredNode(expectedColor, 6);
-        EasyMock.expectLastCall();
+    EasyMock.verify(mockHexes.get(18));
 
-        mockHexes.get(2).addPlayerSettlementToHex(mockBluePlayer);
-        EasyMock.expectLastCall();
+    assertEquals(Set.of(mockRedPlayer), result);
+  }
 
-        EasyMock.replay(mockBoardGraphController, mockBluePlayer, mockHexes.get(2));
+  // Test Case 33
+  @Test
+  void GetPlayersOnHexEighteen_WhiteOrangeSettlements_RedCity_ReturnWhiteOrangeRed() {
+    List<Player> settlementPlayers = List.of(mockWhitePlayer, mockOrangePlayer);
+    List<Player> cityPlayers = List.of(mockRedPlayer);
 
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+    EasyMock.expect(mockHexes.get(18).getHexSettlementPlayers()).andReturn(settlementPlayers);
+    EasyMock.expect(mockHexes.get(18).getHexCityPlayers()).andReturn(cityPlayers);
 
-        b.buildSettlement(mockBluePlayer, 6);
+    EasyMock.replay(mockHexes.get(18));
 
-        Exception exception = assertThrows(IllegalStateException.class, () -> {
-            b.buildCity(mockRedPlayer, 6);
-        });
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-        EasyMock.verify(mockBoardGraphController, mockBluePlayer, mockHexes.get(2));
+    Set<Player> result = b.getPlayersOnHex(18);
 
-        String expectedMessage = "Node owned by other player, cannot build here.";
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
+    EasyMock.verify(mockHexes.get(18));
 
-        assertTrue(b.checkPlayerOwnsNode(expectedColor, 6));
-    }
+    assertEquals(Set.of(mockRedPlayer, mockWhitePlayer, mockOrangePlayer), result);
+  }
 
-    // Test Case 12
-    @Test
-    void BlueBuildsCity_OnUnclaimedNode_ThrowsError() {
-        EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE);
+  // Test Case 34
+  @Test
+  void GetPlayersOnHexEighteen_TwoWhiteSettlements_RedCity_ReturnWhiteRed_NoDuplicate() {
+    List<Player> settlementPlayers = List.of(mockWhitePlayer, mockWhitePlayer);
+    List<Player> cityPlayers = List.of(mockRedPlayer);
 
-        EasyMock.replay(mockBluePlayer);
+    EasyMock.expect(mockHexes.get(18).getHexSettlementPlayers()).andReturn(settlementPlayers);
+    EasyMock.expect(mockHexes.get(18).getHexCityPlayers()).andReturn(cityPlayers);
 
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+    EasyMock.replay(mockHexes.get(18));
 
-        Exception exception = assertThrows(IllegalStateException.class, () -> {
-            b.buildCity(mockBluePlayer, 36);
-        });
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-        String expectedMessage = "Must upgrade a settlement to a city.";
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
+    Set<Player> result = b.getPlayersOnHex(18);
 
-        EasyMock.verify(mockBluePlayer);
+    EasyMock.verify(mockHexes.get(18));
 
-        int expected = 0;
-        int actual = b.getNodeBuildingLevel(36);
-        assertEquals(expected, actual);
-    }
+    assertEquals(Set.of(mockRedPlayer, mockWhitePlayer), result);
+  }
 
-    // Test Case 13
-    @Test
-    void OrangeBuildsCityOnOwnedNodeTwenty_HexRemovesSettlement_AddsCity_Twice(){
-        EasyMock.expect(mockOrangePlayer.getPlayerColor()).andReturn(PlayerColor.ORANGE).times(2);
+  // Test Case 35
+  @Test
+  void GetPlayersOnHexEighteen_TwoBlueCities_ReturnBlue_NoDuplicate() {
+    List<Player> settlementPlayers = List.of();
+    List<Player> cityPlayers = List.of(mockBluePlayer, mockBluePlayer);
 
-        PlayerColor expectedColor = PlayerColor.ORANGE;
+    EasyMock.expect(mockHexes.get(18).getHexSettlementPlayers()).andReturn(settlementPlayers);
+    EasyMock.expect(mockHexes.get(18).getHexCityPlayers()).andReturn(cityPlayers);
 
-        mockBoardGraphController.playerClaimStoredNode(expectedColor, 20);
-        EasyMock.expectLastCall();
+    EasyMock.replay(mockHexes.get(18));
 
-        mockHexes.get(6).addPlayerSettlementToHex(mockOrangePlayer);
-        EasyMock.expectLastCall();
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-        mockHexes.get(6).removePlayerSettlementFromHex(mockOrangePlayer);
-        EasyMock.expectLastCall();
-        mockHexes.get(6).addPlayerCityToHex(mockOrangePlayer);
-        EasyMock.expectLastCall();
+    Set<Player> result = b.getPlayersOnHex(18);
 
-        mockHexes.get(11).addPlayerSettlementToHex(mockOrangePlayer);
-        EasyMock.expectLastCall();
+    EasyMock.verify(mockHexes.get(18));
 
-        mockHexes.get(11).removePlayerSettlementFromHex(mockOrangePlayer);
-        EasyMock.expectLastCall();
-        mockHexes.get(11).addPlayerCityToHex(mockOrangePlayer);
-        EasyMock.expectLastCall();
+    assertEquals(Set.of(mockBluePlayer), result);
+  }
 
-        EasyMock.replay(mockBoardGraphController, mockOrangePlayer, mockHexes.get(6), mockHexes.get(11));
+  // Test Case 36
+  @Test
+  void GetPlayersOnHexEighteen_ThreeOrangeSettlements_ReturnOrange_NoDuplicate() {
+    List<Player> settlementPlayers = List.of(mockOrangePlayer, mockOrangePlayer, mockOrangePlayer);
+    List<Player> cityPlayers = List.of();
 
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+    EasyMock.expect(mockHexes.get(18).getHexSettlementPlayers()).andReturn(settlementPlayers);
+    EasyMock.expect(mockHexes.get(18).getHexCityPlayers()).andReturn(cityPlayers);
 
-        b.buildSettlement(mockOrangePlayer, 20);
+    EasyMock.replay(mockHexes.get(18));
 
-        b.buildCity(mockOrangePlayer, 20);
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-        EasyMock.verify(mockBoardGraphController, mockOrangePlayer, mockHexes.get(6), mockHexes.get(11));
+    Set<Player> result = b.getPlayersOnHex(18);
 
-        assertTrue(b.checkPlayerOwnsNode(expectedColor, 20));
+    EasyMock.verify(mockHexes.get(18));
 
-        int expected = 2;
-        int actual = b.getNodeBuildingLevel(20);
-        assertEquals(expected, actual);
-    }
+    assertEquals(Set.of(mockOrangePlayer), result);
+  }
 
-    // Test Case 14
-    @Test
-    void WhiteBuildsCityOnOwnedNodeTwentyFour_HexRemovesSettlement_AddsCity_ThreeTimes(){
-        EasyMock.expect(mockWhitePlayer.getPlayerColor()).andReturn(PlayerColor.WHITE).times(2);
+  // Test Case 37
+  @Test
+  void GetPlayersOnHexEighteen_ThreeRedCities_ReturnRed_NoDuplicate() {
+    List<Player> settlementPlayers = List.of();
+    List<Player> cityPlayers = List.of(mockRedPlayer, mockRedPlayer, mockRedPlayer);
 
-        PlayerColor expectedColor = PlayerColor.WHITE;
+    EasyMock.expect(mockHexes.get(18).getHexSettlementPlayers()).andReturn(settlementPlayers);
+    EasyMock.expect(mockHexes.get(18).getHexCityPlayers()).andReturn(cityPlayers);
 
-        mockBoardGraphController.playerClaimStoredNode(expectedColor, 24);
-        EasyMock.expectLastCall();
+    EasyMock.replay(mockHexes.get(18));
 
-        mockHexes.get(5).addPlayerSettlementToHex(mockWhitePlayer);
-        EasyMock.expectLastCall();
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-        mockHexes.get(5).removePlayerSettlementFromHex(mockWhitePlayer);
-        EasyMock.expectLastCall();
-        mockHexes.get(5).addPlayerCityToHex(mockWhitePlayer);
-        EasyMock.expectLastCall();
+    Set<Player> result = b.getPlayersOnHex(18);
 
-        mockHexes.get(9).addPlayerSettlementToHex(mockWhitePlayer);
-        EasyMock.expectLastCall();
+    EasyMock.verify(mockHexes.get(18));
 
-        mockHexes.get(9).removePlayerSettlementFromHex(mockWhitePlayer);
-        EasyMock.expectLastCall();
-        mockHexes.get(9).addPlayerCityToHex(mockWhitePlayer);
-        EasyMock.expectLastCall();
+    assertEquals(Set.of(mockRedPlayer), result);
+  }
 
-        mockHexes.get(10).addPlayerSettlementToHex(mockWhitePlayer);
-        EasyMock.expectLastCall();
+  // Test Case 38
+  @Test
+  void GetPlayersOnHexEighteen_NoBuildings_ReturnSetup() {
+    List<Player> settlementPlayers = List.of();
+    List<Player> cityPlayers = List.of();
 
-        mockHexes.get(10).removePlayerSettlementFromHex(mockWhitePlayer);
-        EasyMock.expectLastCall();
-        mockHexes.get(10).addPlayerCityToHex(mockWhitePlayer);
-        EasyMock.expectLastCall();
+    EasyMock.expect(mockHexes.get(18).getHexSettlementPlayers()).andReturn(settlementPlayers);
+    EasyMock.expect(mockHexes.get(18).getHexCityPlayers()).andReturn(cityPlayers);
 
-        EasyMock.replay(mockBoardGraphController, mockWhitePlayer, mockHexes.get(5), mockHexes.get(9), mockHexes.get(10));
+    EasyMock.replay(mockHexes.get(18));
 
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-        b.buildSettlement(mockWhitePlayer, 24);
+    Set<Player> result = b.getPlayersOnHex(18);
 
-        b.buildCity(mockWhitePlayer, 24);
+    EasyMock.verify(mockHexes.get(18));
 
-        EasyMock.verify(mockBoardGraphController, mockWhitePlayer, mockHexes.get(5), mockHexes.get(9), mockHexes.get(10));
+    assertEquals(Set.of(), result);
+  }
 
-        assertTrue(b.checkPlayerOwnsNode(expectedColor, 24));
+  // Test Case 39
+  @Test
+  void GetPlayersOnHexNegativeOne_ThrowError() {
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-        int expected = 2;
-        int actual = b.getNodeBuildingLevel(24);
-        assertEquals(expected, actual);
-    }
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      b.getPlayersOnHex(-1);
+    });
 
-    // Test Case 15
-    @Test
-    void RedClaimsEdge_ZeroOne_CallPlayerClaimStoredEdge(){
-        EasyMock.expect(mockRedPlayer.getPlayerColor()).andReturn(PlayerColor.RED);
+    String expectedMessage = "Invalid Hex ID, must be within [0,18]";
+    String actualMessage = exception.getMessage();
+    assertEquals(expectedMessage, actualMessage);
+  }
 
-        PlayerColor expectedColor = PlayerColor.RED;
+  // Test Case 40
+  @Test
+  void GetPlayersOnHexNineteen_ThrowError() {
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-        mockBoardGraphController.playerClaimStoredEdge(expectedColor, 0, 1);
-        EasyMock.expectLastCall();
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      b.getPlayersOnHex(19);
+    });
 
-        EasyMock.replay(mockBoardGraphController, mockRedPlayer);
+    String expectedMessage = "Invalid Hex ID, must be within [0,18]";
+    String actualMessage = exception.getMessage();
+    assertEquals(expectedMessage, actualMessage);
+  }
 
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+  // Test Case 41
+  @Test
+  void RedClaimsSetupNodeZero_AndSucceeds() {
+    EasyMock.expect(mockRedPlayer.getPlayerColor()).andReturn(PlayerColor.RED);
 
-        b.addRoad(mockRedPlayer, 0, 1);
+    PlayerColor expectedColor = PlayerColor.RED;
 
-        EasyMock.verify(mockBoardGraphController, mockRedPlayer);
-    }
+    EasyMock.expect(mockBoardGraphController.playerClaimStoredNodeSetupPhase(expectedColor, 0)).andReturn(true);
 
-    // Test Case 16
-    @Test
-    void OrangeClaimsEdge_FiftyTwo_FiftyThree_CallPlayerClaimStoredEdge(){
-        EasyMock.expect(mockOrangePlayer.getPlayerColor()).andReturn(PlayerColor.ORANGE);
+    mockHexes.get(0).addPlayerSettlementToHex(mockRedPlayer);
+    EasyMock.expectLastCall();
 
-        PlayerColor expectedColor = PlayerColor.ORANGE;
+    EasyMock.replay(mockBoardGraphController, mockRedPlayer, mockHexes.get(0));
 
-        mockBoardGraphController.playerClaimStoredEdge(expectedColor, 52, 53);
-        EasyMock.expectLastCall();
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-        EasyMock.replay(mockBoardGraphController, mockOrangePlayer);
+    b.buildSetupSettlement(mockRedPlayer, 0);
 
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+    EasyMock.verify(mockBoardGraphController, mockRedPlayer, mockHexes.get(0));
 
-        b.addRoad(mockOrangePlayer, 52, 53);
+    assertTrue(b.checkPlayerOwnsNode(expectedColor, 0));
 
-        EasyMock.verify(mockBoardGraphController, mockOrangePlayer);
-    }
+    int expected = 1;
+    int actual = b.getNodeBuildingLevel(0);
+    assertEquals(expected, actual);
+  }
 
-    // Test Case 17
-    @Test
-    void WhiteClaimsEdge_NegativeOne_Zero_ThrowError(){
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+  // Test Case 42
+  @Test
+  void BlueClaimsSetupNodeFiftyThree_AndSucceeds() {
+    EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE);
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            b.addRoad(mockWhitePlayer, -1, 0);
-        });
+    PlayerColor expectedColor = PlayerColor.BLUE;
 
-        String expectedMessage = "Edge nodeId out of bounds. Must be within [0, 53].";
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
-    }
+    EasyMock.expect(mockBoardGraphController.playerClaimStoredNodeSetupPhase(expectedColor, 53)).andReturn(true);
 
-    // Test Case 18
-    @Test
-    void WhiteClaimsEdge_Zero_NegativeOne_ThrowError(){
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+    mockHexes.get(18).addPlayerSettlementToHex(mockBluePlayer);
+    EasyMock.expectLastCall();
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            b.addRoad(mockWhitePlayer, 0, -1);
-        });
+    EasyMock.replay(mockBoardGraphController, mockBluePlayer, mockHexes.get(18));
 
-        String expectedMessage = "Edge nodeId out of bounds. Must be within [0, 53].";
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
-    }
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-    // Test Case 19
-    @Test
-    void BlueClaimsEdge_FiftyThree_FiftyFour_ThrowError(){
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+    b.buildSetupSettlement(mockBluePlayer, 53);
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            b.addRoad(mockBluePlayer, 53, 54);
-        });
+    EasyMock.verify(mockBoardGraphController, mockBluePlayer, mockHexes.get(18));
 
-        String expectedMessage = "Edge nodeId out of bounds. Must be within [0, 53].";
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
-    }
+    assertTrue(b.checkPlayerOwnsNode(expectedColor, 53));
 
-    // Test Case 20
-    @Test
-    void BlueClaimsEdge_FiftyFour_FiftyThree_ThrowError(){
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+    int expected = 1;
+    int actual = b.getNodeBuildingLevel(53);
+    assertEquals(expected, actual);
+  }
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            b.addRoad(mockBluePlayer, 54, 53);
-        });
+  // Test Case 43
+  @Test
+  void OrangeClaimsSetupNodeNegativeOne_ReturnsError() {
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-        String expectedMessage = "Edge nodeId out of bounds. Must be within [0, 53].";
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
-    }
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      b.buildSetupSettlement(mockOrangePlayer, -1);
+    });
 
-    // Test Case 21
-    @Test
-    void TwoRolled_RobberNotPresent_CallsAwardResources(){
-        for (int i = 0; i < 19; i++) {
-            if (i == 1) {
-                EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(1);
-                EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(2);
-            } else {
-                EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(0);
-                EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
-            }
-        }
+    String expectedMessage = "Invalid NodeID - must be within [0, 53].";
+    String actualMessage = exception.getMessage();
+    assertEquals(expectedMessage, actualMessage);
+  }
 
-        mockHexes.get(1).awardSettlementResources();
-        EasyMock.expectLastCall();
-        mockHexes.get(1).awardCityResources();
-        EasyMock.expectLastCall();
+  // Test Case 44
+  @Test
+  void WhiteClaimsSetupNodeFiftyFour_ReturnsError() {
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-        EasyMock.expect(mockRobber.getRobberLocation()).andReturn(9);
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      b.buildSetupSettlement(mockWhitePlayer, 54);
+    });
 
-        EasyMock.replay(mockHexes.toArray());
-        EasyMock.replay(mockRobber);
+    String expectedMessage = "Invalid NodeID - must be within [0, 53].";
+    String actualMessage = exception.getMessage();
+    assertEquals(expectedMessage, actualMessage);
+  }
 
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+  // Test Case 45
+  @Test
+  void OrangeClaimsSetupNodeEight_HexesZeroOneFourUpdated() {
+    EasyMock.expect(mockOrangePlayer.getPlayerColor()).andReturn(PlayerColor.ORANGE);
 
-        b.awardResources(2);
+    PlayerColor expectedColor = PlayerColor.ORANGE;
 
-        EasyMock.verify(mockHexes.toArray());
-        EasyMock.verify(mockRobber);
-    }
+    EasyMock.expect(mockBoardGraphController.playerClaimStoredNodeSetupPhase(expectedColor, 8)).andReturn(true);
 
-    // Test Case 22
-    @Test
-    void TwelveRolled_RobberNotPresent_CallsAwardResources(){
-        for (int i = 0; i < 19; i++) {
-            if (i == 3) {
-                EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(3);
-                EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(12);
-            }
-            else {
-                EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(0);
-                EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
-            }
-        }
+    mockHexes.get(0).addPlayerSettlementToHex(mockOrangePlayer);
+    EasyMock.expectLastCall();
+    mockHexes.get(1).addPlayerSettlementToHex(mockOrangePlayer);
+    EasyMock.expectLastCall();
+    mockHexes.get(4).addPlayerSettlementToHex(mockOrangePlayer);
+    EasyMock.expectLastCall();
 
-        mockHexes.get(3).awardSettlementResources();
-        EasyMock.expectLastCall();
+    EasyMock.replay(mockBoardGraphController, mockOrangePlayer, mockHexes.get(0), mockHexes.get(1), mockHexes.get(4));
 
-        mockHexes.get(3).awardCityResources();
-        EasyMock.expectLastCall();
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-        EasyMock.expect(mockRobber.getRobberLocation()).andReturn(9);
+    b.buildSetupSettlement(mockOrangePlayer, 8);
 
-        EasyMock.replay(mockHexes.toArray());
-        EasyMock.replay(mockRobber);
+    EasyMock.verify(mockBoardGraphController, mockOrangePlayer, mockHexes.get(0), mockHexes.get(1), mockHexes.get(4));
 
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+    assertTrue(b.checkPlayerOwnsNode(expectedColor, 8));
 
-        b.awardResources(12);
+    int expected = 1;
+    int actual = b.getNodeBuildingLevel(8);
+    assertEquals(expected, actual);
+  }
 
-        EasyMock.verify(mockHexes.toArray());
-        EasyMock.verify(mockRobber);
-    }
+  // Test Case 46
+  @Test
+  void BlueClaimsSetupNodeFour_HexesZeroOneUpdated() {
+    EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE);
 
-    // Test Case 23
-    @Test
-    void EightRolled_RobberNotPresent_CallsAwardResourcesTwice(){
-        for (int i = 0; i < 19; i++) {
-            if (i == 11) {
-                EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(11);
-                EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(8);
-            }
-            else if (i == 12) {
-                EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(12);
-                EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(8);
-            }
-            else {
-                EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(0);
-                EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
-            }
-        }
+    PlayerColor expectedColor = PlayerColor.BLUE;
 
-        mockHexes.get(11).awardSettlementResources();
-        EasyMock.expectLastCall();
-        mockHexes.get(11).awardCityResources();
-        EasyMock.expectLastCall();
+    EasyMock.expect(mockBoardGraphController.playerClaimStoredNodeSetupPhase(expectedColor, 4)).andReturn(true);
 
-        mockHexes.get(12).awardSettlementResources();
-        EasyMock.expectLastCall();
-        mockHexes.get(12).awardCityResources();
-        EasyMock.expectLastCall();
+    mockHexes.get(0).addPlayerSettlementToHex(mockBluePlayer);
+    EasyMock.expectLastCall();
+    mockHexes.get(1).addPlayerSettlementToHex(mockBluePlayer);
+    EasyMock.expectLastCall();
 
-        EasyMock.expect(mockRobber.getRobberLocation()).andReturn(9);
+    EasyMock.replay(mockBoardGraphController, mockBluePlayer, mockHexes.get(0), mockHexes.get(1));
 
-        EasyMock.replay(mockHexes.toArray());
-        EasyMock.replay(mockRobber);
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+    b.buildSetupSettlement(mockBluePlayer, 4);
 
-        b.awardResources(8);
+    EasyMock.verify(mockBoardGraphController, mockBluePlayer, mockHexes.get(0), mockHexes.get(1));
 
-        EasyMock.verify(mockHexes.toArray());
-        EasyMock.verify(mockRobber);
-    }
+    assertTrue(b.checkPlayerOwnsNode(expectedColor, 4));
 
-    // Test Case 24
-    @Test
-    void TwoRolled_RobberIsPresent_NoCallsToAward(){
-        for (int i = 0; i < 19; i++) {
-            if (i == 1) {
-                EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(1);
-                EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(2);
-            }
-            else {
-                EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(0);
-                EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
-            }
-        }
+    int expected = 1;
+    int actual = b.getNodeBuildingLevel(4);
+    assertEquals(expected, actual);
+  }
 
-        EasyMock.expect(mockRobber.getRobberLocation()).andReturn(1);
+  // Test Case 47
+  @Test
+  void RedClaimsNodeZero_ThenEdgeZeroOne_CallPlayerClaimStoredEdgeSetupPhase() {
+    EasyMock.expect(mockRedPlayer.getPlayerColor()).andReturn(PlayerColor.RED);
 
-        EasyMock.replay(mockHexes.toArray());
-        EasyMock.replay(mockRobber);
+    PlayerColor expectedColor = PlayerColor.RED;
 
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+    EasyMock.expect(mockBoardGraphController.playerClaimStoredEdgeSetupPhase(expectedColor, 0, 0, 1)).andReturn(true);
+    EasyMock.expectLastCall();
 
-        b.awardResources(2);
+    EasyMock.replay(mockBoardGraphController, mockRedPlayer);
 
-        EasyMock.verify(mockHexes.toArray());
-        EasyMock.verify(mockRobber);
-    }
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-    // Test Case 25
-    @Test
-    void EightRolled_RobberIsPresent_CallsAwardResourcesOnce(){
-        for (int i = 0; i < 19; i++) {
-            if (i == 11) {
-                EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(11);
-                EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(8);
-            }
-            else if (i == 12) {
-                EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(12);
-                EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(8);
-            }
-            else {
-                EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(0);
-                EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
-            }
-        }
+    b.buildSetupRoad(mockRedPlayer, 0, 0, 1);
 
-        mockHexes.get(11).awardSettlementResources();
-        EasyMock.expectLastCall();
-        mockHexes.get(11).awardCityResources();
-        EasyMock.expectLastCall();
+    EasyMock.verify(mockBoardGraphController, mockRedPlayer);
+  }
 
-        EasyMock.expect(mockRobber.getRobberLocation()).andReturn(12);
+  // Test Case 48
+  @Test
+  void OrangeClaimsNode53_ThenEdge_FiftyTwo_FiftyThree_CallPlayerClaimStoredEdgeSetupPhase() {
+    EasyMock.expect(mockOrangePlayer.getPlayerColor()).andReturn(PlayerColor.ORANGE);
 
-        EasyMock.replay(mockHexes.toArray());
-        EasyMock.replay(mockRobber);
+    PlayerColor expectedColor = PlayerColor.ORANGE;
 
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+    EasyMock.expect(mockBoardGraphController.playerClaimStoredEdgeSetupPhase(expectedColor, 53, 52, 53)).andReturn(true);
+    EasyMock.expectLastCall();
 
-        b.awardResources(8);
+    EasyMock.replay(mockBoardGraphController, mockOrangePlayer);
 
-        EasyMock.verify(mockHexes.toArray());
-        EasyMock.verify(mockRobber);
-    }
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-    // Test Case 26
-    @Test
-    void MoveRobberLocation_FromHexIdZero_Eighteen(){
-        EasyMock.expect(mockRobber.getRobberLocation()).andReturn(0);
+    b.buildSetupRoad(mockOrangePlayer, 53, 52, 53);
 
-        mockRobber.moveRobber(18);
-        EasyMock.expectLastCall();
+    EasyMock.verify(mockBoardGraphController, mockOrangePlayer);
+  }
 
-        EasyMock.replay(mockRobber);
+  // Test Case 49
+  @Test
+  void WhiteClaimsEdgeSetupPhase_NegativeOne_Zero_ThrowError() {
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      b.buildSetupRoad(mockWhitePlayer, 0, -1, 0);
+    });
 
-        b.moveRobber(18);
+    String expectedMessage = "Edge nodeId out of bounds. Must be within [0, 53].";
+    String actualMessage = exception.getMessage();
+    assertEquals(expectedMessage, actualMessage);
+  }
 
-        EasyMock.verify(mockRobber);
-    }
+  // Test Case 50
+  @Test
+  void WhiteClaimsEdgeSetupPhase_Zero_NegativeOne_ThrowError() {
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-    // Test Case 27
-    @Test
-    void MoveRobberLocation_FromHexIdEighteen_ToZero(){
-        EasyMock.expect(mockRobber.getRobberLocation()).andReturn(18);
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      b.buildSetupRoad(mockWhitePlayer, 0, 0, -1);
+    });
 
-        mockRobber.moveRobber(0);
-        EasyMock.expectLastCall();
+    String expectedMessage = "Edge nodeId out of bounds. Must be within [0, 53].";
+    String actualMessage = exception.getMessage();
+    assertEquals(expectedMessage, actualMessage);
+  }
 
-        EasyMock.replay(mockRobber);
+  // Test Case 51
+  @Test
+  void BlueClaimsEdgeSetupPhase_FiftyThree_FiftyFour_ThrowError() {
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      b.buildSetupRoad(mockWhitePlayer, 53, 53, 54);
+    });
 
-        b.moveRobber(0);
+    String expectedMessage = "Edge nodeId out of bounds. Must be within [0, 53].";
+    String actualMessage = exception.getMessage();
+    assertEquals(expectedMessage, actualMessage);
+  }
 
-        EasyMock.verify(mockRobber);
-    }
+  // Test Case 52
+  @Test
+  void BlueClaimsEdgeSetupPhase_FiftyFour_FiftyThree_ThrowError() {
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-    // Test Case 28
-    @Test
-    void MoveRobberLocation_ToNegativeOne_ThrowError(){
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      b.buildSetupRoad(mockWhitePlayer, 53, 54, 53);
+    });
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            b.moveRobber(-1);
-        });
+    String expectedMessage = "Edge nodeId out of bounds. Must be within [0, 53].";
+    String actualMessage = exception.getMessage();
+    assertEquals(expectedMessage, actualMessage);
+  }
 
-        String expectedMessage = "Cannot move Robber to invalid Hex ID";
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
-    }
+  // Test Case 53
+  @Test
+  void RedHoldsLongestRoad_ReturnsRed() {
+    EasyMock.expect(mockLongestRoadCalc.calculateLongestRoad()).andReturn(PlayerColor.RED);
 
-    // Test Case 29
-    @Test
-    void MoveRobberLocation_ToNineteen_ThrowError(){
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+    PlayerColor expectedColor = PlayerColor.RED;
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            b.moveRobber(19);
-        });
+    EasyMock.replay(mockLongestRoadCalc);
 
-        String expectedMessage = "Cannot move Robber to invalid Hex ID";
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
-    }
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-    // Test Case 30
-    @Test
-    void MoveRobberLocation_FromNine_ToNine_ThrowError(){
-        EasyMock.expect(mockRobber.getRobberLocation()).andReturn(9);
+    PlayerColor actualColor = b.calculateLongestRoad();
 
-        EasyMock.replay(mockRobber);
+    EasyMock.verify(mockLongestRoadCalc);
 
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+    assertEquals(expectedColor, actualColor);
+  }
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            b.moveRobber(9);
-        });
+  // Test Case 54
+  @Test
+  void OrangeHoldsLongestRoad_ReturnsOrange() {
+    EasyMock.expect(mockLongestRoadCalc.calculateLongestRoad()).andReturn(PlayerColor.ORANGE);
 
-        String expectedMessage = "Must move robber to new location";
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
+    PlayerColor expectedColor = PlayerColor.ORANGE;
 
-        EasyMock.verify(mockRobber);
-    }
+    EasyMock.replay(mockLongestRoadCalc);
 
-    // Test Case 31
-    @Test
-    void GetPlayersOnHexZero_JustBlueSettlement_ReturnBlue(){
-        List<Player> settlementPlayers = List.of(mockBluePlayer);
-        List<Player> cityPlayers = List.of();
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-        EasyMock.expect(mockHexes.get(0).getHexSettlementPlayers()).andReturn(settlementPlayers);
-        EasyMock.expect(mockHexes.get(0).getHexCityPlayers()).andReturn(cityPlayers);
+    PlayerColor actualColor = b.calculateLongestRoad();
 
-        EasyMock.replay(mockHexes.get(0));
+    EasyMock.verify(mockLongestRoadCalc);
 
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+    assertEquals(expectedColor, actualColor);
+  }
 
-        Set<Player> result = b.getPlayersOnHex(0);
+  // Test Case 55
+  @Test
+  void WhiteHoldsLongestRoad_ReturnsWhite() {
+    EasyMock.expect(mockLongestRoadCalc.calculateLongestRoad()).andReturn(PlayerColor.WHITE);
 
-        EasyMock.verify(mockHexes.get(0));
+    PlayerColor expectedColor = PlayerColor.WHITE;
 
-        assertEquals(Set.of(mockBluePlayer), result);
-    }
+    EasyMock.replay(mockLongestRoadCalc);
 
-    // Test Case 32
-    @Test
-    void GetPlayersOnHexEighteen_JustRedCity_ReturnRed(){
-        List<Player> settlementPlayers = List.of();
-        List<Player> cityPlayers = List.of(mockRedPlayer);
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-        EasyMock.expect(mockHexes.get(18).getHexSettlementPlayers()).andReturn(settlementPlayers);
-        EasyMock.expect(mockHexes.get(18).getHexCityPlayers()).andReturn(cityPlayers);
+    PlayerColor actualColor = b.calculateLongestRoad();
 
-        EasyMock.replay(mockHexes.get(18));
+    EasyMock.verify(mockLongestRoadCalc);
 
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+    assertEquals(expectedColor, actualColor);
+  }
 
-        Set<Player> result = b.getPlayersOnHex(18);
+  // Test Case 56
+  @Test
+  void BlueHoldsLongestRoad_ReturnsBlue() {
+    EasyMock.expect(mockLongestRoadCalc.calculateLongestRoad()).andReturn(PlayerColor.BLUE);
 
-        EasyMock.verify(mockHexes.get(18));
+    PlayerColor expectedColor = PlayerColor.BLUE;
 
-        assertEquals(Set.of(mockRedPlayer), result);
-    }
+    EasyMock.replay(mockLongestRoadCalc);
 
-    // Test Case 33
-    @Test
-    void GetPlayersOnHexEighteen_WhiteOrangeSettlements_RedCity_ReturnWhiteOrangeRed(){
-        List<Player> settlementPlayers = List.of(mockWhitePlayer, mockOrangePlayer);
-        List<Player> cityPlayers = List.of(mockRedPlayer);
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-        EasyMock.expect(mockHexes.get(18).getHexSettlementPlayers()).andReturn(settlementPlayers);
-        EasyMock.expect(mockHexes.get(18).getHexCityPlayers()).andReturn(cityPlayers);
+    PlayerColor actualColor = b.calculateLongestRoad();
 
-        EasyMock.replay(mockHexes.get(18));
+    EasyMock.verify(mockLongestRoadCalc);
 
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+    assertEquals(expectedColor, actualColor);
+  }
 
-        Set<Player> result = b.getPlayersOnHex(18);
+  // Test Case 57
+  @Test
+  void NobodyHoldsLongestRoad_ReturnsSetup() {
+    EasyMock.expect(mockLongestRoadCalc.calculateLongestRoad()).andReturn(PlayerColor.SETUP);
 
-        EasyMock.verify(mockHexes.get(18));
+    PlayerColor expectedColor = PlayerColor.SETUP;
 
-        assertEquals(Set.of(mockRedPlayer, mockWhitePlayer, mockOrangePlayer), result);
-    }
+    EasyMock.replay(mockLongestRoadCalc);
 
-    // Test Case 34
-    @Test
-    void GetPlayersOnHexEighteen_TwoWhiteSettlements_RedCity_ReturnWhiteRed_NoDuplicate(){
-        List<Player> settlementPlayers = List.of(mockWhitePlayer, mockWhitePlayer);
-        List<Player> cityPlayers = List.of(mockRedPlayer);
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
 
-        EasyMock.expect(mockHexes.get(18).getHexSettlementPlayers()).andReturn(settlementPlayers);
-        EasyMock.expect(mockHexes.get(18).getHexCityPlayers()).andReturn(cityPlayers);
+    PlayerColor actualColor = b.calculateLongestRoad();
 
-        EasyMock.replay(mockHexes.get(18));
+    EasyMock.verify(mockLongestRoadCalc);
 
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
-
-        Set<Player> result = b.getPlayersOnHex(18);
-
-        EasyMock.verify(mockHexes.get(18));
-
-        assertEquals(Set.of(mockRedPlayer, mockWhitePlayer), result);
-    }
-
-    // Test Case 35
-    @Test
-    void GetPlayersOnHexEighteen_TwoBlueCities_ReturnBlue_NoDuplicate(){
-        List<Player> settlementPlayers = List.of();
-        List<Player> cityPlayers = List.of(mockBluePlayer, mockBluePlayer);
-
-        EasyMock.expect(mockHexes.get(18).getHexSettlementPlayers()).andReturn(settlementPlayers);
-        EasyMock.expect(mockHexes.get(18).getHexCityPlayers()).andReturn(cityPlayers);
-
-        EasyMock.replay(mockHexes.get(18));
-
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
-
-        Set<Player> result = b.getPlayersOnHex(18);
-
-        EasyMock.verify(mockHexes.get(18));
-
-        assertEquals(Set.of(mockBluePlayer), result);
-    }
-
-    // Test Case 36
-    @Test
-    void GetPlayersOnHexEighteen_ThreeOrangeSettlements_ReturnOrange_NoDuplicate(){
-        List<Player> settlementPlayers = List.of(mockOrangePlayer, mockOrangePlayer, mockOrangePlayer);
-        List<Player> cityPlayers = List.of();
-
-        EasyMock.expect(mockHexes.get(18).getHexSettlementPlayers()).andReturn(settlementPlayers);
-        EasyMock.expect(mockHexes.get(18).getHexCityPlayers()).andReturn(cityPlayers);
-
-        EasyMock.replay(mockHexes.get(18));
-
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
-
-        Set<Player> result = b.getPlayersOnHex(18);
-
-        EasyMock.verify(mockHexes.get(18));
-
-        assertEquals(Set.of(mockOrangePlayer), result);
-    }
-
-    // Test Case 37
-    @Test
-    void GetPlayersOnHexEighteen_ThreeRedCities_ReturnRed_NoDuplicate(){
-        List<Player> settlementPlayers = List.of();
-        List<Player> cityPlayers = List.of(mockRedPlayer, mockRedPlayer, mockRedPlayer);
-
-        EasyMock.expect(mockHexes.get(18).getHexSettlementPlayers()).andReturn(settlementPlayers);
-        EasyMock.expect(mockHexes.get(18).getHexCityPlayers()).andReturn(cityPlayers);
-
-        EasyMock.replay(mockHexes.get(18));
-
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
-
-        Set<Player> result = b.getPlayersOnHex(18);
-
-        EasyMock.verify(mockHexes.get(18));
-
-        assertEquals(Set.of(mockRedPlayer), result);
-    }
-
-    // Test Case 38
-    @Test
-    void GetPlayersOnHexEighteen_NoBuildings_ReturnSetup(){
-        List<Player> settlementPlayers = List.of();
-        List<Player> cityPlayers = List.of();
-
-        EasyMock.expect(mockHexes.get(18).getHexSettlementPlayers()).andReturn(settlementPlayers);
-        EasyMock.expect(mockHexes.get(18).getHexCityPlayers()).andReturn(cityPlayers);
-
-        EasyMock.replay(mockHexes.get(18));
-
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
-
-        Set<Player> result = b.getPlayersOnHex(18);
-
-        EasyMock.verify(mockHexes.get(18));
-
-        assertEquals(Set.of(), result);
-    }
-
-    // Test Case 39
-    @Test
-    void GetPlayersOnHexNegativeOne_ThrowError(){
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            b.getPlayersOnHex(-1);
-        });
-
-        String expectedMessage = "Invalid Hex ID, must be within [0,18]";
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
-    }
-
-    // Test Case 40
-    @Test
-    void GetPlayersOnHexNineteen_ThrowError(){
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            b.getPlayersOnHex(19);
-        });
-
-        String expectedMessage = "Invalid Hex ID, must be within [0,18]";
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
-    }
-
-    // Test Case 41
-    @Test
-    void RedClaimsSetupNodeZero_AndSucceeds(){
-        EasyMock.expect(mockRedPlayer.getPlayerColor()).andReturn(PlayerColor.RED);
-
-        PlayerColor expectedColor = PlayerColor.RED;
-
-        EasyMock.expect(mockBoardGraphController.playerClaimStoredNodeSetupPhase(expectedColor, 0)).andReturn(true);
-
-        mockHexes.get(0).addPlayerSettlementToHex(mockRedPlayer);
-        EasyMock.expectLastCall();
-
-        EasyMock.replay(mockBoardGraphController, mockRedPlayer, mockHexes.get(0));
-
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
-
-        b.buildSetupSettlement(mockRedPlayer, 0);
-
-        EasyMock.verify(mockBoardGraphController, mockRedPlayer, mockHexes.get(0));
-
-        assertTrue(b.checkPlayerOwnsNode(expectedColor, 0));
-
-        int expected = 1;
-        int actual = b.getNodeBuildingLevel(0);
-        assertEquals(expected, actual);
-    }
-
-    // Test Case 42
-    @Test
-    void BlueClaimsSetupNodeFiftyThree_AndSucceeds(){
-        EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE);
-
-        PlayerColor expectedColor = PlayerColor.BLUE;
-
-        EasyMock.expect(mockBoardGraphController.playerClaimStoredNodeSetupPhase(expectedColor, 53)).andReturn(true);
-
-        mockHexes.get(18).addPlayerSettlementToHex(mockBluePlayer);
-        EasyMock.expectLastCall();
-
-        EasyMock.replay(mockBoardGraphController, mockBluePlayer, mockHexes.get(18));
-
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
-
-        b.buildSetupSettlement(mockBluePlayer, 53);
-
-        EasyMock.verify(mockBoardGraphController, mockBluePlayer, mockHexes.get(18));
-
-        assertTrue(b.checkPlayerOwnsNode(expectedColor, 53));
-
-        int expected = 1;
-        int actual = b.getNodeBuildingLevel(53);
-        assertEquals(expected, actual);
-    }
-
-    // Test Case 43
-    @Test
-    void OrangeClaimsSetupNodeNegativeOne_ReturnsError(){
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            b.buildSetupSettlement(mockOrangePlayer, -1);
-        });
-
-        String expectedMessage = "Invalid NodeID - must be within [0, 53].";
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
-    }
-
-    // Test Case 44
-    @Test
-    void WhiteClaimsSetupNodeFiftyFour_ReturnsError(){
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            b.buildSetupSettlement(mockWhitePlayer, 54);
-        });
-
-        String expectedMessage = "Invalid NodeID - must be within [0, 53].";
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
-    }
-
-    // Test Case 45
-    @Test
-    void OrangeClaimsSetupNodeEight_HexesZeroOneFourUpdated(){
-        EasyMock.expect(mockOrangePlayer.getPlayerColor()).andReturn(PlayerColor.ORANGE);
-
-        PlayerColor expectedColor = PlayerColor.ORANGE;
-
-        EasyMock.expect(mockBoardGraphController.playerClaimStoredNodeSetupPhase(expectedColor, 8)).andReturn(true);
-
-        mockHexes.get(0).addPlayerSettlementToHex(mockOrangePlayer);
-        EasyMock.expectLastCall();
-        mockHexes.get(1).addPlayerSettlementToHex(mockOrangePlayer);
-        EasyMock.expectLastCall();
-        mockHexes.get(4).addPlayerSettlementToHex(mockOrangePlayer);
-        EasyMock.expectLastCall();
-
-        EasyMock.replay(mockBoardGraphController, mockOrangePlayer, mockHexes.get(0), mockHexes.get(1), mockHexes.get(4));
-
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
-
-        b.buildSetupSettlement(mockOrangePlayer, 8);
-
-        EasyMock.verify(mockBoardGraphController, mockOrangePlayer, mockHexes.get(0), mockHexes.get(1), mockHexes.get(4));
-
-        assertTrue(b.checkPlayerOwnsNode(expectedColor, 8));
-
-        int expected = 1;
-        int actual = b.getNodeBuildingLevel(8);
-        assertEquals(expected, actual);
-    }
-
-    // Test Case 46
-    @Test
-    void BlueClaimsSetupNodeFour_HexesZeroOneUpdated(){
-        EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE);
-
-        PlayerColor expectedColor = PlayerColor.BLUE;
-
-        EasyMock.expect(mockBoardGraphController.playerClaimStoredNodeSetupPhase(expectedColor, 4)).andReturn(true);
-
-        mockHexes.get(0).addPlayerSettlementToHex(mockBluePlayer);
-        EasyMock.expectLastCall();
-        mockHexes.get(1).addPlayerSettlementToHex(mockBluePlayer);
-        EasyMock.expectLastCall();
-
-        EasyMock.replay(mockBoardGraphController, mockBluePlayer, mockHexes.get(0), mockHexes.get(1));
-
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
-
-        b.buildSetupSettlement(mockBluePlayer, 4);
-
-        EasyMock.verify(mockBoardGraphController, mockBluePlayer, mockHexes.get(0), mockHexes.get(1));
-
-        assertTrue(b.checkPlayerOwnsNode(expectedColor, 4));
-
-        int expected = 1;
-        int actual = b.getNodeBuildingLevel(4);
-        assertEquals(expected, actual);
-    }
-
-    // Test Case 47
-    @Test
-    void RedClaimsNodeZero_ThenEdgeZeroOne_CallPlayerClaimStoredEdgeSetupPhase(){
-        EasyMock.expect(mockRedPlayer.getPlayerColor()).andReturn(PlayerColor.RED);
-
-        PlayerColor expectedColor = PlayerColor.RED;
-
-        EasyMock.expect(mockBoardGraphController.playerClaimStoredEdgeSetupPhase(expectedColor, 0, 0, 1)).andReturn(true);
-        EasyMock.expectLastCall();
-
-        EasyMock.replay(mockBoardGraphController, mockRedPlayer);
-
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
-
-        b.buildSetupRoad(mockRedPlayer, 0,0, 1);
-
-        EasyMock.verify(mockBoardGraphController, mockRedPlayer);
-    }
-
-    // Test Case 48
-    @Test
-    void OrangeClaimsNode53_ThenEdge_FiftyTwo_FiftyThree_CallPlayerClaimStoredEdgeSetupPhase(){
-        EasyMock.expect(mockOrangePlayer.getPlayerColor()).andReturn(PlayerColor.ORANGE);
-
-        PlayerColor expectedColor = PlayerColor.ORANGE;
-
-        EasyMock.expect(mockBoardGraphController.playerClaimStoredEdgeSetupPhase(expectedColor, 53, 52, 53)).andReturn(true);
-        EasyMock.expectLastCall();
-
-        EasyMock.replay(mockBoardGraphController, mockOrangePlayer);
-
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
-
-        b.buildSetupRoad(mockOrangePlayer, 53, 52, 53);
-
-        EasyMock.verify(mockBoardGraphController, mockOrangePlayer);
-    }
-
-    // Test Case 49
-    @Test
-    void WhiteClaimsEdgeSetupPhase_NegativeOne_Zero_ThrowError(){
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            b.buildSetupRoad(mockWhitePlayer, 0, -1, 0);
-        });
-
-        String expectedMessage = "Edge nodeId out of bounds. Must be within [0, 53].";
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
-    }
-
-    // Test Case 50
-    @Test
-    void WhiteClaimsEdgeSetupPhase_Zero_NegativeOne_ThrowError(){
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            b.buildSetupRoad(mockWhitePlayer, 0, 0, -1);
-        });
-
-        String expectedMessage = "Edge nodeId out of bounds. Must be within [0, 53].";
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
-    }
-
-    // Test Case 51
-    @Test
-    void BlueClaimsEdgeSetupPhase_FiftyThree_FiftyFour_ThrowError(){
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            b.buildSetupRoad(mockWhitePlayer, 53, 53, 54);
-        });
-
-        String expectedMessage = "Edge nodeId out of bounds. Must be within [0, 53].";
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
-    }
-
-    // Test Case 52
-    @Test
-    void BlueClaimsEdgeSetupPhase_FiftyFour_FiftyThree_ThrowError(){
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            b.buildSetupRoad(mockWhitePlayer, 53, 54, 53);
-        });
-
-        String expectedMessage = "Edge nodeId out of bounds. Must be within [0, 53].";
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
-    }
-
-    // Test Case 53
-    @Test
-    void RedHoldsLongestRoad_ReturnsRed(){
-        EasyMock.expect(mockLongestRoadCalc.calculateLongestRoad()).andReturn(PlayerColor.RED);
-
-        PlayerColor expectedColor = PlayerColor.RED;
-
-        EasyMock.replay(mockLongestRoadCalc);
-
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
-
-        PlayerColor actualColor = b.calculateLongestRoad();
-
-        EasyMock.verify(mockLongestRoadCalc);
-
-        assertEquals(expectedColor, actualColor);
-    }
-
-    // Test Case 54
-    @Test
-    void OrangeHoldsLongestRoad_ReturnsOrange(){
-        EasyMock.expect(mockLongestRoadCalc.calculateLongestRoad()).andReturn(PlayerColor.ORANGE);
-
-        PlayerColor expectedColor = PlayerColor.ORANGE;
-
-        EasyMock.replay(mockLongestRoadCalc);
-
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
-
-        PlayerColor actualColor = b.calculateLongestRoad();
-
-        EasyMock.verify(mockLongestRoadCalc);
-
-        assertEquals(expectedColor, actualColor);
-    }
-
-    // Test Case 55
-    @Test
-    void WhiteHoldsLongestRoad_ReturnsWhite(){
-        EasyMock.expect(mockLongestRoadCalc.calculateLongestRoad()).andReturn(PlayerColor.WHITE);
-
-        PlayerColor expectedColor = PlayerColor.WHITE;
-
-        EasyMock.replay(mockLongestRoadCalc);
-
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
-
-        PlayerColor actualColor = b.calculateLongestRoad();
-
-        EasyMock.verify(mockLongestRoadCalc);
-
-        assertEquals(expectedColor, actualColor);
-    }
-
-    // Test Case 56
-    @Test
-    void BlueHoldsLongestRoad_ReturnsBlue(){
-        EasyMock.expect(mockLongestRoadCalc.calculateLongestRoad()).andReturn(PlayerColor.BLUE);
-
-        PlayerColor expectedColor = PlayerColor.BLUE;
-
-        EasyMock.replay(mockLongestRoadCalc);
-
-        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
-
-        PlayerColor actualColor = b.calculateLongestRoad();
-
-        EasyMock.verify(mockLongestRoadCalc);
-
-        assertEquals(expectedColor, actualColor);
-    }
+    assertEquals(expectedColor, actualColor);
+  }
 
 }
