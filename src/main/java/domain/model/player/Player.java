@@ -21,6 +21,7 @@ public class Player {
     private PlayerColor color;
     private String name;
     private int numSettlement;
+    private boolean hasPlayedDevCardThisTurn = false;
 
     public Player(String name, PlayerColor color) {
         this.settlements = new ArrayList<>();
@@ -142,6 +143,14 @@ public class Player {
 
     public List<DevelopmentCard> getDevelopmentCards() {
         return Collections.unmodifiableList(developmentCards);
+    }
+
+    public boolean hasPlayedDevCardThisTurn() {
+        return hasPlayedDevCardThisTurn;
+    }
+
+    public void setHasPlayedDevCardThisTurn(boolean played) {
+        hasPlayedDevCardThisTurn = played;
     }
 
 } 
