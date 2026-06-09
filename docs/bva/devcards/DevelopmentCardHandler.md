@@ -87,11 +87,11 @@ Step 3:
 
 |             | System under test                                                                       | Expected output                                                                                | Implemented? |
 | ----------- | --------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ------------ |
-| Test Case 1 | buyer has 1 ORE, 1 WOOL, 1 GRAIN (exact cost); deck full (25)                          | card returned; buyer loses 1 ORE, 1 WOOL, 1 GRAIN; card added to hand; deck countRemaining() is 24 | :x:          |
+| Test Case 1 | buyer has 1 ORE, 1 WOOL, 1 GRAIN (exact cost); deck full (25)                          | card returned; buyer loses 1 ORE, 1 WOOL, 1 GRAIN; card added to hand; deck countRemaining() is 24 | :white_check_mark: |
 | Test Case 2 | buyer has 3 ORE, 2 WOOL, 4 GRAIN (surplus); deck full (25)                             | card returned; buyer's resources each decremented by 1; card added to hand                     | :x:          |
-| Test Case 3 | buyer has 0 ORE, 1 WOOL, 1 GRAIN (insufficient ORE)                                    | IllegalStateException: "Not enough resources to buy a development card."                       | :x:          |
-| Test Case 4 | buyer has 1 ORE, 0 WOOL, 1 GRAIN (insufficient WOOL)                                   | IllegalStateException: "Not enough resources to buy a development card."                       | :x:          |
-| Test Case 5 | buyer has 1 ORE, 1 WOOL, 0 GRAIN (insufficient GRAIN)                                  | IllegalStateException: "Not enough resources to buy a development card."                       | :x:          |
+| Test Case 3 | buyer has 0 ORE, 1 WOOL, 1 GRAIN (insufficient ORE)                                    | InsufficientResourcesException: "Not enough resources to buy a development card."              | :x:          |
+| Test Case 4 | buyer has 1 ORE, 0 WOOL, 1 GRAIN (insufficient WOOL)                                   | InsufficientResourcesException: "Not enough resources to buy a development card."              | :x:          |
+| Test Case 5 | buyer has 1 ORE, 1 WOOL, 0 GRAIN (insufficient GRAIN)                                  | InsufficientResourcesException: "Not enough resources to buy a development card."              | :x:          |
 | Test Case 6 | buyer has 1 ORE, 1 WOOL, 1 GRAIN; deck empty (0)                                       | EmptyDeckException: "Cannot draw new DevelopmentCard, no cards remain."                        | :x:          |
 | Test Case 7 | buyer has 1 ORE, 1 WOOL, 1 GRAIN; deck has 1 card remaining (last card)                | card returned; deck countRemaining() is 0                                                      | :x:          |
 

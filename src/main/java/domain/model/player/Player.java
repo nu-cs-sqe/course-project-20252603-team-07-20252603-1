@@ -8,6 +8,7 @@ import java.util.Map;
 
 import domain.model.board.Edge;
 import domain.model.board.Vertex;
+import domain.model.development_cards.DevelopmentCard;
 import domain.model.exceptions.InsufficientResourcesException;
 import domain.model.game_pieces.Settlement;
 import domain.model.resources.Resource;
@@ -16,6 +17,7 @@ public class Player {
     private final List<Settlement> settlements;
     private final List<Edge> roads;
     private final Map<Resource, Integer> resources;
+    private final List<DevelopmentCard> developmentCards;
     private PlayerColor color;
     private String name;
     private int numSettlement;
@@ -24,6 +26,7 @@ public class Player {
         this.settlements = new ArrayList<>();
         this.roads = new ArrayList<>();
         this.resources = new HashMap<>();
+        this.developmentCards = new ArrayList<>();
         this.color = color;
         this.name = name;
         this.numSettlement = 0;
@@ -131,6 +134,14 @@ public class Player {
 
     public int getSettlementCount() {
         return this.numSettlement;
+    }
+
+    public void addDevelopmentCard(DevelopmentCard card) {
+        this.developmentCards.add(card);
+    }
+
+    public List<DevelopmentCard> getDevelopmentCards() {
+        return Collections.unmodifiableList(developmentCards);
     }
 
 } 
