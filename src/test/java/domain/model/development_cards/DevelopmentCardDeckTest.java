@@ -4,18 +4,17 @@ import org.junit.jupiter.api.Test;
 
 import domain.model.exceptions.EmptyDeckException;
 
-import java.util.ArrayList;
-import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DevelopmentCardDeckTest {
+  final int DECK_SIZE = 25;
 
     // TC1, TC13: new DevelopmentCardDeck() -> countRemaining() == 25
     @Test
     void constructDeck_OnNewDeck_ExpectTwentyFiveCards() {
         DevelopmentCardDeck deck = new DevelopmentCardDeck();
 
-        assertEquals(25, deck.countRemaining());
+        assertEquals(DECK_SIZE, deck.countRemaining());
     }
 
   // TC2: new DevelopmentCardDeck() -> deck contains exactly 14 KNIGHT cards
@@ -24,15 +23,26 @@ class DevelopmentCardDeckTest {
     DevelopmentCardDeck deck = new DevelopmentCardDeck();
     final int expectedKnightCount = 14;
 
-    List<DevelopmentCard> drawnCards = new ArrayList<>();
-    while (deck.countRemaining() > 0) drawnCards.add(deck.drawCard());
-
     int knightCount = 0;
-    for (DevelopmentCard card : drawnCards) {
-      if (card.getType() == DevelopmentCardType.KNIGHT) knightCount++;
+    for (int i = 0; i < DECK_SIZE; i++) {
+      if (deck.drawCard().getType() == DevelopmentCardType.KNIGHT) knightCount++;
     }
 
     assertEquals(expectedKnightCount, knightCount);
+  }
+
+  // TC3: new DevelopmentCardDeck() -> deck contains exactly 2 ROAD_BUILDER cards
+  @Test
+  void constructDeck_OnNewDeck_ExpectTwoRoadBuilderCards() throws EmptyDeckException {
+    DevelopmentCardDeck deck = new DevelopmentCardDeck();
+    final int expectedRoadBuilderCount = 2;
+
+    int roadBuilderCount = 0;
+    for (int i = 0; i < DECK_SIZE; i++) {
+      if (deck.drawCard().getType() == DevelopmentCardType.ROAD_BUILDER) roadBuilderCount++;
+    }
+
+    assertEquals(expectedRoadBuilderCount, roadBuilderCount);
   }
 
     @Test
