@@ -59,6 +59,20 @@ class DevelopmentCardDeckTest {
     assertEquals(expectedYearOfPlentyCount, yearOfPlentyCount);
   }
 
+  // TC5: new DevelopmentCardDeck() -> deck contains exactly 2 MONOPOLY cards
+  @Test
+  void constructDeck_OnNewDeck_ExpectTwoMonopolyCards() throws EmptyDeckException {
+    DevelopmentCardDeck deck = new DevelopmentCardDeck();
+    final int expectedMonopolyCount = 2;
+
+    int monopolyCount = 0;
+    for (int i = 0; i < DECK_SIZE; i++) {
+      if (deck.drawCard().getType() == DevelopmentCardType.MONOPOLY) monopolyCount++;
+    }
+
+    assertEquals(expectedMonopolyCount, monopolyCount);
+  }
+
     @Test
     void testDrawCardReducesCount() throws EmptyDeckException {
         DevelopmentCardDeck deck = new DevelopmentCardDeck();
