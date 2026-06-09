@@ -120,6 +120,16 @@ class DevelopmentCardDeckTest {
     assertEquals(expectedRemaining, deck.countRemaining());
   }
 
+  // TC9: drawCard(1) from empty deck (size 0) -> EmptyDeckException: "Cannot draw new DevelopmentCard, no cards remain."
+  @Test
+  void drawCard_FromEmptyDeck_ExpectEmptyDeckException() throws EmptyDeckException {
+    DevelopmentCardDeck deck = new DevelopmentCardDeck();
+    for (int i = 0; i < DECK_SIZE; i++) deck.drawCard(0);
+
+    Exception exception = assertThrows(EmptyDeckException.class, () -> deck.drawCard(1));
+    assertEquals("Cannot draw new DevelopmentCard, no cards remain.", exception.getMessage());
+  }
+
     @Test
     void testDrawCardReducesCount() throws EmptyDeckException {
         DevelopmentCardDeck deck = new DevelopmentCardDeck();
@@ -150,18 +160,6 @@ class DevelopmentCardDeckTest {
         }
 
         assertEquals(0, deck.countRemaining());
-    }
-
-    @Test
-    void testDrawFromEmptyDeckThrowsException() throws EmptyDeckException {
-        DevelopmentCardDeck deck = new DevelopmentCardDeck();
-
-        for (int i = 0; i < 25; i++) {
-            deck.drawCard(0);
-        }
-
-        Exception exception = assertThrows(EmptyDeckException.class, () -> deck.drawCard(0));
-        assertEquals("Cannot draw new DevelopmentCard, no cards remain.", exception.getMessage());
     }
 
     @Test
