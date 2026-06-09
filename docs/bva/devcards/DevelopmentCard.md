@@ -60,11 +60,11 @@ Step 3:
 
 | | System under test | Expected output | Implemented?        |
 | ----------- | ----------------------------------------------- | --------------- |---------------------|
-| Test Case 6 | getType() on KNIGHT card | KNIGHT | :x:                 |
-| Test Case 7 | getType() on VICTORY_POINT card | VICTORY_POINT | :x: |
-| Test Case 8 | getType() on ROAD_BUILDER card | ROAD_BUILDER | :x: |
-| Test Case 9 | getType() on YEAR_OF_PLENTY card | YEAR_OF_PLENTY | :x: |
-| Test Case 10 | getType() on MONOPOLY card | MONOPOLY | :x: |
+| Test Case 6 | getType() on KNIGHT card | KNIGHT | :white_check_mark: (covered by TC1) |
+| Test Case 7 | getType() on VICTORY_POINT card | VICTORY_POINT | :white_check_mark: (covered by TC2) |
+| Test Case 8 | getType() on ROAD_BUILDER card | ROAD_BUILDER | :white_check_mark: (covered by TC3) |
+| Test Case 9 | getType() on YEAR_OF_PLENTY card | YEAR_OF_PLENTY | :white_check_mark: (covered by TC4) |
+| Test Case 10 | getType() on MONOPOLY card | MONOPOLY | :white_check_mark: (covered by TC5) |
 
 
 ---
