@@ -56,7 +56,7 @@ Step 3:
 | ----------- | ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ------------ |
 | Test Case 1 | buyDevelopmentCard(model, deck); handler returns a card                                   | controller returns the same DevelopmentCard; verify handler was called with current player, deck, and round | :white_check_mark: |
 | Test Case 2 | buyDevelopmentCard(model, deck); handler throws InsufficientResourcesException (insufficient resources) | controller relays InsufficientResourcesException to caller                                         | :white_check_mark: |
-| Test Case 3 | buyDevelopmentCard(model, deck); handler throws EmptyDeckException (deck empty)            | controller relays EmptyDeckException to caller                                                           | :x:          |
+| Test Case 3 | buyDevelopmentCard(model, deck); handler throws EmptyDeckException (deck empty)            | controller relays EmptyDeckException to caller                                                           | :white_check_mark: |
 
 
 ---
