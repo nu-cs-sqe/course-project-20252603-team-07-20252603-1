@@ -1,5 +1,6 @@
 package domain.model.development_cards;
 
+import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
 import domain.model.exceptions.EmptyDeckException;
@@ -25,7 +26,7 @@ class DevelopmentCardDeckTest {
 
     int knightCount = 0;
     for (int i = 0; i < DECK_SIZE; i++) {
-      if (deck.drawCard().getType() == DevelopmentCardType.KNIGHT) knightCount++;
+      if (deck.drawCard(0).getType() == DevelopmentCardType.KNIGHT) knightCount++;
     }
 
     assertEquals(expectedKnightCount, knightCount);
@@ -39,7 +40,7 @@ class DevelopmentCardDeckTest {
 
     int roadBuilderCount = 0;
     for (int i = 0; i < DECK_SIZE; i++) {
-      if (deck.drawCard().getType() == DevelopmentCardType.ROAD_BUILDER) roadBuilderCount++;
+      if (deck.drawCard(0).getType() == DevelopmentCardType.ROAD_BUILDER) roadBuilderCount++;
     }
 
     assertEquals(expectedRoadBuilderCount, roadBuilderCount);
@@ -53,7 +54,7 @@ class DevelopmentCardDeckTest {
 
     int yearOfPlentyCount = 0;
     for (int i = 0; i < DECK_SIZE; i++) {
-      if (deck.drawCard().getType() == DevelopmentCardType.YEAR_OF_PLENTY) yearOfPlentyCount++;
+      if (deck.drawCard(0).getType() == DevelopmentCardType.YEAR_OF_PLENTY) yearOfPlentyCount++;
     }
 
     assertEquals(expectedYearOfPlentyCount, yearOfPlentyCount);
@@ -67,7 +68,7 @@ class DevelopmentCardDeckTest {
 
     int monopolyCount = 0;
     for (int i = 0; i < DECK_SIZE; i++) {
-      if (deck.drawCard().getType() == DevelopmentCardType.MONOPOLY) monopolyCount++;
+      if (deck.drawCard(0).getType() == DevelopmentCardType.MONOPOLY) monopolyCount++;
     }
 
     assertEquals(expectedMonopolyCount, monopolyCount);
@@ -81,10 +82,26 @@ class DevelopmentCardDeckTest {
 
     int victoryPointCount = 0;
     for (int i = 0; i < DECK_SIZE; i++) {
-      if (deck.drawCard().getType() == DevelopmentCardType.VICTORY_POINT) victoryPointCount++;
+      if (deck.drawCard(0).getType() == DevelopmentCardType.VICTORY_POINT) victoryPointCount++;
     }
 
     assertEquals(expectedVictoryPointCount, victoryPointCount);
+  }
+
+  // TC7: drawCard(3) from full deck (size 25) -> card non-null with valid type, roundDrawnAt == 3, countRemaining() == 24
+  @Test
+  void drawCard_FromFullDeck_ExpectValidCardStampedWithRoundAndCountDecremented() throws EmptyDeckException {
+    final int currentRound = 3;
+    final int expectedRemaining = 24;
+
+    DevelopmentCardDeck deck = new DevelopmentCardDeck();
+    DevelopmentCard card = deck.drawCard(currentRound);
+
+    assertNotNull(card);
+    assertNotNull(card.getType());
+    
+    assertEquals(currentRound, card.getRoundDrawnAt());
+    assertEquals(expectedRemaining, deck.countRemaining());
   }
 
     @Test
@@ -92,7 +109,7 @@ class DevelopmentCardDeckTest {
         DevelopmentCardDeck deck = new DevelopmentCardDeck();
         int initialCount = deck.countRemaining();
 
-        deck.drawCard();
+        deck.drawCard(0);
 
         assertEquals(initialCount - 1, deck.countRemaining());
     }
@@ -100,7 +117,7 @@ class DevelopmentCardDeckTest {
     @Test
     void testDrawCardReturnsValidCard() throws EmptyDeckException {
         DevelopmentCardDeck deck = new DevelopmentCardDeck();
-        DevelopmentCard card = deck.drawCard();
+        DevelopmentCard card = deck.drawCard(0);
 
         assertNotNull(card);
         assertNotNull(card.getType());
@@ -112,7 +129,7 @@ class DevelopmentCardDeckTest {
 
         // Draw all 25 cards
         for (int i = 0; i < 25; i++) {
-            DevelopmentCard card = deck.drawCard();
+            DevelopmentCard card = deck.drawCard(0);
             assertNotNull(card);
         }
 
@@ -123,30 +140,27 @@ class DevelopmentCardDeckTest {
     void testDrawFromEmptyDeckThrowsException() throws EmptyDeckException {
         DevelopmentCardDeck deck = new DevelopmentCardDeck();
 
-        // Draw all 25 cards
         for (int i = 0; i < 25; i++) {
-            deck.drawCard();
+            deck.drawCard(0);
         }
 
-        // Try to draw one more
-        assertThrows(EmptyDeckException.class, () -> {
-            deck.drawCard();
-        });
+        Exception exception = assertThrows(EmptyDeckException.class, () -> deck.drawCard(0));
+        assertEquals("Cannot draw new DevelopmentCard, no cards remain.", exception.getMessage());
     }
 
     @Test
     void testCountRemainingAfterMultipleDraws() throws EmptyDeckException {
         DevelopmentCardDeck deck = new DevelopmentCardDeck();
 
-        deck.drawCard();
+        deck.drawCard(0);
         assertEquals(24, deck.countRemaining());
 
-        deck.drawCard();
-        deck.drawCard();
+        deck.drawCard(0);
+        deck.drawCard(0);
         assertEquals(22, deck.countRemaining());
 
         for (int i = 0; i < 10; i++) {
-            deck.drawCard();
+            deck.drawCard(0);
         }
         assertEquals(12, deck.countRemaining());
     }

@@ -63,4 +63,8 @@ public class DevelopmentCard {
         return this.roundDrawnAt;
     }
 
+    public void setRoundDrawnAt(int round) {
+        this.roundDrawnAt = round;
+    }
+
 }
