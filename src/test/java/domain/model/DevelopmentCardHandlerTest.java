@@ -12,6 +12,7 @@ import domain.model.resources.Resource;
 import java.util.List;
 import java.util.Map;
 
+import domain.model.board.Edge;
 import domain.model.development_cards.DevelopmentCardType;
 import domain.model.exceptions.InsufficientResourcesException;
 import domain.model.game_pieces.Robber;
@@ -864,5 +865,25 @@ class DevelopmentCardHandlerTest {
     handler.playMonopolyCard(mockPlayer, mockCard, currentRound, Resource.LUMBER, List.of(mockOpponent));
 
     EasyMock.verify(mockPlayer, mockCard, mockOpponent);
+  }
+
+  // TC33: card = null
+  //       -> IllegalArgumentException: "Development card cannot be null."
+  @Test
+  void playRoadBuildingCard_CardIsNull_ExpectIllegalArgumentException() {
+    final int currentRound = 1;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    Edge mockEdge1 = EasyMock.createMock(Edge.class);
+    Edge mockEdge2 = EasyMock.createMock(Edge.class);
+
+    EasyMock.replay(mockPlayer, mockEdge1, mockEdge2);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    Exception exception = assertThrows(IllegalArgumentException.class,
+        () -> handler.playRoadBuildingCard(mockPlayer, null, currentRound, mockEdge1, mockEdge2));
+
+    EasyMock.verify(mockPlayer, mockEdge1, mockEdge2);
+    assertEquals("Development card cannot be null.", exception.getMessage());
   }
 }

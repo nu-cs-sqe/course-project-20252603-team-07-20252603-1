@@ -247,7 +247,7 @@ Step 3:
 
 |              | System under test                                                                          | Expected output                                                             | Implemented? |
 | ------------ | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------- | ------------ |
-| Test Case 33 | card = null                                                                                | IllegalArgumentException: "Development card cannot be null."                | :x:          |
+| Test Case 33 | card = null                                                                                | IllegalArgumentException: "Development card cannot be null."                | :white_check_mark: |
 | Test Case 34 | card type = VICTORY_POINT (not ROAD_BUILDER)                                               | IllegalArgumentException: "Card is not a Road Builder card."                | :x:          |
 | Test Case 35 | card drawn this round (not playable)                                                       | IllegalStateException: "Card cannot be played the same turn it was purchased." | :x:          |
 | Test Case 36 | player already played a dev card this turn                                                 | IllegalStateException: "Already played a development card this turn."       | :x:          |

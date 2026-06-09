@@ -10,6 +10,7 @@ import domain.model.development_cards.DevelopmentCardDeck;
 import domain.model.development_cards.DevelopmentCardType;
 import domain.model.exceptions.EmptyDeckException;
 import domain.model.exceptions.InsufficientResourcesException;
+import domain.model.board.Edge;
 import domain.model.game_pieces.Robber;
 import domain.model.player.Player;
 import domain.model.resources.Resource;
@@ -66,6 +67,12 @@ public class DevelopmentCardHandler {
 
         player.removeDevelopmentCard(card);
         player.setHasPlayedDevCardThisTurn(true);
+    }
+
+    public void playRoadBuildingCard(Player player, DevelopmentCard card, int currentRound, Edge edge1, Edge edge2) {
+        if (card == null) {
+            throw new IllegalArgumentException("Development card cannot be null.");
+        }
     }
 
     public void playKnightCard(Player player, DevelopmentCard card, int currentRound, Robber robber, int targetHexId, Player victim) {
