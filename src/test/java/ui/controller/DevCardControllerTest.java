@@ -9,6 +9,7 @@ import domain.model.GameModel;
 import domain.model.development_cards.DevelopmentCard;
 import domain.model.development_cards.DevelopmentCardDeck;
 import domain.model.exceptions.EmptyDeckException;
+import domain.model.exceptions.InsufficientResourcesException;
 import domain.model.player.Player;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,6 +47,29 @@ class DevCardControllerTest {
 
     EasyMock.verify(mockModel, mockHandler, mockPlayer, mockDeck, mockCard);
     assertEquals(mockCard, result);
+  }
+
+  // TC2: buyDevelopmentCard(model, deck); handler throws InsufficientResourcesException
+  //      -> controller relays InsufficientResourcesException to caller
+  @Test
+  void buyDevelopmentCard_HandlerThrowsInsufficientResources_ExpectExceptionRelayed() throws EmptyDeckException {
+    final int currentRound = 2;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCardDeck mockDeck = EasyMock.createMock(DevelopmentCardDeck.class);
+
+    EasyMock.expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
+    EasyMock.expect(mockModel.getCurrentRound()).andReturn(currentRound);
+    EasyMock.expect(mockHandler.buyDevelopmentCard(mockPlayer, mockDeck, currentRound))
+        .andThrow(new InsufficientResourcesException("Not enough resources to buy a development card."));
+
+    EasyMock.replay(mockModel, mockHandler, mockPlayer, mockDeck);
+
+    Exception exception = assertThrows(InsufficientResourcesException.class,
+        () -> controller.buyDevelopmentCard(mockModel, mockDeck));
+
+    EasyMock.verify(mockModel, mockHandler, mockPlayer, mockDeck);
+    assertEquals("Not enough resources to buy a development card.", exception.getMessage());
   }
 
 }
