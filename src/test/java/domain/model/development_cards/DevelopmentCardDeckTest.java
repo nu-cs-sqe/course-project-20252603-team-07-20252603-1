@@ -166,6 +166,16 @@ class DevelopmentCardDeckTest {
     assertNotNull(deck.drawCard(0));
   }
 
+  // TC12: shuffle() on empty deck (0) -> deck remains empty; no error
+  @Test
+  void shuffle_OnEmptyDeck_ExpectNoErrorAndCountZero() throws EmptyDeckException {
+    DevelopmentCardDeck deck = new DevelopmentCardDeck();
+    for (int i = 0; i < DECK_SIZE; i++) deck.drawCard(0);
+
+    assertDoesNotThrow(deck::shuffle);
+    assertEquals(0, deck.countRemaining());
+  }
+
     @Test
     void testDrawCardReducesCount() throws EmptyDeckException {
         DevelopmentCardDeck deck = new DevelopmentCardDeck();
