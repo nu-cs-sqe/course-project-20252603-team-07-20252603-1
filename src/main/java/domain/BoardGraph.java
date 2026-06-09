@@ -160,7 +160,29 @@ public class BoardGraph {
   }
 
   PlayerColor calculateLongestRoad(List<Player> activePlayers, PlayerColor previousWinner) {
-    return PlayerColor.SETUP;
+    int longestRoad = 4;
+    PlayerColor longestRoadOwner = previousWinner;
+
+    for (Player player : activePlayers) {
+      PlayerColor color = player.getPlayerColor();
+      int roadLength = 0;
+
+      for (Set<GraphEdge> edges : nodeIDToConnectingEdges.values()) {
+        for (GraphEdge edge : edges) {
+          if (edge.checkOwningColor() == color) {
+            roadLength++;
+          }
+        }
+      }
+      // divide by 2 because each edge is stored twice (once per node)
+      roadLength = roadLength / 2;
+
+      if (roadLength > longestRoad) {
+        longestRoad = roadLength;
+        longestRoadOwner = color;
+      }
+    }
+    return longestRoadOwner;
   }
 
   void buildBoard() {
