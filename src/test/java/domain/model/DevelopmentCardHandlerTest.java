@@ -594,4 +594,25 @@ class DevelopmentCardHandlerTest {
     EasyMock.verify(mockPlayer);
     assertEquals("Development card cannot be null.", exception.getMessage());
   }
+
+  // TC22: card type = KNIGHT (not MONOPOLY)
+  //       -> IllegalArgumentException: "Card is not a Monopoly card."
+  @Test
+  void playMonopolyCard_CardTypeIsNotMonopoly_ExpectIllegalArgumentException() {
+    final int currentRound = 1;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.KNIGHT);
+
+    EasyMock.replay(mockPlayer, mockCard);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    Exception exception = assertThrows(IllegalArgumentException.class,
+        () -> handler.playMonopolyCard(mockPlayer, mockCard, currentRound, Resource.ORE, List.of()));
+
+    EasyMock.verify(mockPlayer, mockCard);
+    assertEquals("Card is not a Monopoly card.", exception.getMessage());
+  }
 }

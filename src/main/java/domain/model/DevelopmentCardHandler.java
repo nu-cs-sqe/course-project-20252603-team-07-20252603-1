@@ -37,6 +37,9 @@ public class DevelopmentCardHandler {
         if (card == null) {
             throw new IllegalArgumentException("Development card cannot be null.");
         }
+        if (card.getType() != DevelopmentCardType.MONOPOLY) {
+            throw new IllegalArgumentException("Card is not a Monopoly card.");
+        }
     }
 
     public void playKnightCard(Player player, DevelopmentCard card, int currentRound, Robber robber, int targetHexId, Player victim) {
