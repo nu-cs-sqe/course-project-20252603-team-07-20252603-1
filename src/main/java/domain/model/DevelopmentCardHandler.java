@@ -43,6 +43,9 @@ public class DevelopmentCardHandler {
         if (!card.isPlayable(currentRound)) {
             throw new IllegalStateException("Card cannot be played the same turn it was purchased.");
         }
+        if (player.hasPlayedDevCardThisTurn()) {
+            throw new IllegalStateException("Already played a development card this turn.");
+        }
     }
 
     public void playKnightCard(Player player, DevelopmentCard card, int currentRound, Robber robber, int targetHexId, Player victim) {

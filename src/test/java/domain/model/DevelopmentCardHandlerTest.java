@@ -637,4 +637,27 @@ class DevelopmentCardHandlerTest {
     EasyMock.verify(mockPlayer, mockCard);
     assertEquals("Card cannot be played the same turn it was purchased.", exception.getMessage());
   }
+
+  // TC24: player already played a dev card this turn
+  //       -> IllegalStateException: "Already played a development card this turn."
+  @Test
+  void playMonopolyCard_AlreadyPlayedDevCardThisTurn_ExpectIllegalStateException() {
+    final int currentRound = 1;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.MONOPOLY);
+    EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
+    EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(true);
+
+    EasyMock.replay(mockPlayer, mockCard);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    Exception exception = assertThrows(IllegalStateException.class,
+        () -> handler.playMonopolyCard(mockPlayer, mockCard, currentRound, Resource.ORE, List.of()));
+
+    EasyMock.verify(mockPlayer, mockCard);
+    assertEquals("Already played a development card this turn.", exception.getMessage());
+  }
 }
