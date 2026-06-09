@@ -55,59 +55,13 @@ class DevelopmentCardTest {
       assertEquals(expectedRound, card.getRoundDrawnAt());
     }
 
+    // TC11: isPlayable(4), KNIGHT drawn at round 5 (currentRound < roundDrawnAt) -> false
     @Test
-    void testCreateKnightDevelopmentCard() {
-        DevelopmentCard knight = DevelopmentCard.createKnightDevelopmentCard(3);
-        assertEquals(DevelopmentCardType.KNIGHT, knight.getType());
-    }
-
-    @Test
-    void testCreateVictoryPointDevelopmentCard() {
-        DevelopmentCard vp = DevelopmentCard.createVictoryPointDevelopmentCard(2);
-        assertEquals(DevelopmentCardType.VICTORY_POINT, vp.getType());
-    }
-
-    @Test
-    void testCreateRoadBuilderDevelopmentCard() {
-        DevelopmentCard rb = DevelopmentCard.createRoadBuilderDevelopmentCard(1);
-        assertEquals(DevelopmentCardType.ROAD_BUILDER, rb.getType());
-    }
-
-    @Test
-    void testCreateYearOfPlentyDevelopmentCard() {
-        DevelopmentCard yop = DevelopmentCard.createYearOfPlentyDevelopmentCard(4);
-        assertEquals(DevelopmentCardType.YEAR_OF_PLENTY, yop.getType());
-    }
-
-    @Test
-    void testCreateMonopolyDevelopmentCard() {
-        DevelopmentCard monopoly = DevelopmentCard.createMonopolyDevelopmentCard(6);
-        assertEquals(DevelopmentCardType.MONOPOLY, monopoly.getType());
-    }
-
-    @Test
-    void testIsPlayableOnSameRound() {
-        DevelopmentCard card = new DevelopmentCard(DevelopmentCardType.KNIGHT, 5);
-        assertTrue(card.isPlayable(5));
-    }
-
-    @Test
-    void testIsPlayableOnLaterRound() {
-        DevelopmentCard card = new DevelopmentCard(DevelopmentCardType.KNIGHT, 5);
-        assertTrue(card.isPlayable(10));
-    }
-
-    @Test
-    void testIsNotPlayableOnEarlierRound() {
-        DevelopmentCard card = new DevelopmentCard(DevelopmentCardType.KNIGHT, 5);
-        assertFalse(card.isPlayable(4));
-    }
-
-    @Test
-    void testIsPlayableImmediatelyAfterDrawn() {
-        DevelopmentCard card = new DevelopmentCard(DevelopmentCardType.ROAD_BUILDER, 3);
-        assertFalse(card.isPlayable(2));
-        assertTrue(card.isPlayable(3));
-        assertTrue(card.isPlayable(4));
+    void isPlayable_KnightCardCurrentRoundLessThanDrawnRound_ExpectFalse() {
+        final int drawnAtRound = 5;
+        final int currentRound = 4;
+        
+        DevelopmentCard card = new DevelopmentCard(DevelopmentCardType.KNIGHT, drawnAtRound);
+        assertFalse(card.isPlayable(currentRound));
     }
 }

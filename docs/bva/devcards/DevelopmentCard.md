@@ -98,7 +98,7 @@ Step 3:
 
 |              | System under test                                                                  | Expected output | Implemented? |
 | ------------ | ---------------------------------------------------------------------------------- | --------------- | ------------ |
-| Test Case 11 | isPlayable(4), KNIGHT card drawn at round 5 (currentRound < roundDrawnAt)          | false           | :x:          |
+| Test Case 11 | isPlayable(4), KNIGHT card drawn at round 5 (currentRound < roundDrawnAt)          | false           | :white_check_mark: |
 | Test Case 12 | isPlayable(5), KNIGHT card drawn at round 5 (currentRound == roundDrawnAt)         | false           | :x:          |
 | Test Case 13 | isPlayable(6), KNIGHT card drawn at round 5 (currentRound > roundDrawnAt)          | true            | :x:          |
 | Test Case 14 | isPlayable(0), MONOPOLY card drawn at round 0 (both at LOW boundary)               | false           | :x:          |
