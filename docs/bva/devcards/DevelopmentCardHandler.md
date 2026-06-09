@@ -155,7 +155,7 @@ Step 3:
 | Test Case 17 | targetHexId valid, victim = null (no adjacent opponent)                               | robber moves; no resource stolen; knight count incremented                  | :white_check_mark: |
 | Test Case 18 | targetHexId valid, victim adjacent with 0 resource cards                              | robber moves; no resource stolen; knight count incremented                  | :white_check_mark: |
 | Test Case 19 | targetHexId valid, victim adjacent with exactly 1 resource card                       | robber moves; that 1 resource transferred; knight count incremented         | :white_check_mark: |
-| Test Case 20 | targetHexId valid, victim not adjacent to targetHexId                                 | IllegalArgumentException: "Victim must be adjacent to the robber's new hex." | :x:          |
+| Test Case 20 | targetHexId valid, victim not adjacent to targetHexId                                 | IllegalArgumentException: "Victim must be adjacent to the robber's new hex." | :white_check_mark: |
 
 
 ---

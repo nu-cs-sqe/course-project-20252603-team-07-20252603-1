@@ -342,6 +342,7 @@ class DevelopmentCardHandlerTest {
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
     EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
     EasyMock.expect(mockRobber.getRobberLocation()).andReturn(3);
+    EasyMock.expect(mockVictim.isAdjacentToHex(targetHexId)).andReturn(true);
     mockRobber.moveRobber(targetHexId);
     EasyMock.expect(mockVictim.getTotalResourceCount()).andReturn(3);
     EasyMock.expect(mockVictim.getResources()).andReturn(Map.of(Resource.ORE, 3));
@@ -375,6 +376,7 @@ class DevelopmentCardHandlerTest {
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
     EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
     EasyMock.expect(mockRobber.getRobberLocation()).andReturn(5);
+    EasyMock.expect(mockVictim.isAdjacentToHex(targetHexId)).andReturn(true);
     mockRobber.moveRobber(targetHexId);
     EasyMock.expect(mockVictim.getTotalResourceCount()).andReturn(1);
     EasyMock.expect(mockVictim.getResources()).andReturn(Map.of(Resource.WOOL, 1));
@@ -408,6 +410,7 @@ class DevelopmentCardHandlerTest {
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
     EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
     EasyMock.expect(mockRobber.getRobberLocation()).andReturn(5);
+    EasyMock.expect(mockVictim.isAdjacentToHex(targetHexId)).andReturn(true);
     mockRobber.moveRobber(targetHexId);
     EasyMock.expect(mockVictim.getTotalResourceCount()).andReturn(2);
     EasyMock.expect(mockVictim.getResources()).andReturn(Map.of(Resource.GRAIN, 2));
@@ -496,6 +499,7 @@ class DevelopmentCardHandlerTest {
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
     EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
     EasyMock.expect(mockRobber.getRobberLocation()).andReturn(3);
+    EasyMock.expect(mockVictim.isAdjacentToHex(targetHexId)).andReturn(true);
     mockRobber.moveRobber(targetHexId);
     EasyMock.expect(mockVictim.getTotalResourceCount()).andReturn(0);
     mockPlayer.incrementKnightCount();
@@ -526,6 +530,7 @@ class DevelopmentCardHandlerTest {
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
     EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
     EasyMock.expect(mockRobber.getRobberLocation()).andReturn(3);
+    EasyMock.expect(mockVictim.isAdjacentToHex(targetHexId)).andReturn(true);
     mockRobber.moveRobber(targetHexId);
     EasyMock.expect(mockVictim.getTotalResourceCount()).andReturn(1);
     EasyMock.expect(mockVictim.getResources()).andReturn(Map.of(Resource.BRICK, 1));
@@ -541,5 +546,33 @@ class DevelopmentCardHandlerTest {
     handler.playKnightCard(mockPlayer, mockCard, currentRound, mockRobber, targetHexId, mockVictim);
 
     EasyMock.verify(mockPlayer, mockCard, mockRobber, mockVictim);
+  }
+
+  // TC20: targetHexId valid, victim not adjacent to targetHexId
+  //       -> IllegalArgumentException: "Victim must be adjacent to the robber's new hex."
+  @Test
+  void playKnightCard_VictimNotAdjacentToTargetHex_ExpectIllegalArgumentException() {
+    final int currentRound = 2;
+    final int targetHexId = 5;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+    Robber mockRobber = EasyMock.createMock(Robber.class);
+    Player mockVictim = EasyMock.createMock(Player.class);
+
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.KNIGHT);
+    EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
+    EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(3);
+    EasyMock.expect(mockVictim.isAdjacentToHex(targetHexId)).andReturn(false);
+
+    EasyMock.replay(mockPlayer, mockCard, mockRobber, mockVictim);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    Exception exception = assertThrows(IllegalArgumentException.class,
+        () -> handler.playKnightCard(mockPlayer, mockCard, currentRound, mockRobber, targetHexId, mockVictim));
+
+    EasyMock.verify(mockPlayer, mockCard, mockRobber, mockVictim);
+    assertEquals("Victim must be adjacent to the robber's new hex.", exception.getMessage());
   }
 }

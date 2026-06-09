@@ -154,6 +154,10 @@ public class Player {
         hasPlayedDevCardThisTurn = played;
     }
 
+    public boolean isAdjacentToHex(int hexId) {
+        return false;
+    }
+
     public void removeDevelopmentCard(DevelopmentCard card) {
         developmentCards.remove(card);
     }

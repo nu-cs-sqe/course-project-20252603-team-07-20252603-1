@@ -52,6 +52,9 @@ public class DevelopmentCardHandler {
         if (targetHexId == robber.getRobberLocation()) {
             throw new IllegalArgumentException("Must move robber to a different hex.");
         }
+        if (victim != null && !victim.isAdjacentToHex(targetHexId)) {
+            throw new IllegalArgumentException("Victim must be adjacent to the robber's new hex.");
+        }
 
         robber.moveRobber(targetHexId);
 
