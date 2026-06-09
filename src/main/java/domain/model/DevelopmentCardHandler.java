@@ -41,6 +41,9 @@ public class DevelopmentCardHandler {
         if (player.hasPlayedDevCardThisTurn()) {
             throw new IllegalStateException("Already played a development card this turn.");
         }
+        if (robber == null) {
+            throw new IllegalArgumentException("Robber cannot be null.");
+        }
     }
 
 }

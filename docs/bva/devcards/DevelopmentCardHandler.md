@@ -147,7 +147,7 @@ Step 3:
 | Test Case 9  | card type = MONOPOLY (not KNIGHT)                                                    | IllegalArgumentException: "Card is not a Knight card."                      | :white_check_mark: |
 | Test Case 10 | card drawn this round (not playable, same turn)                                      | IllegalStateException: "Card cannot be played the same turn it was purchased." | :white_check_mark: |
 | Test Case 11 | player already played a dev card this turn                                           | IllegalStateException: "Already played a development card this turn."       | :white_check_mark: |
-| Test Case 12 | robber = null                                                                        | IllegalArgumentException: "Robber cannot be null."                          | :x:          |
+| Test Case 12 | robber = null                                                                        | IllegalArgumentException: "Robber cannot be null."                          | :white_check_mark: |
 | Test Case 13 | targetHexId = 5 (valid, different from current), victim adjacent with 3 resources    | robber moves to hex 5; 1 random resource transferred from victim to player; knight count incremented; card removed from hand | :x:          |
 | Test Case 14 | targetHexId = 0 (LOW boundary), victim adjacent with resources                       | robber moves to hex 0; 1 random resource transferred                       | :x:          |
 | Test Case 15 | targetHexId = 18 (HIGH boundary), victim adjacent with resources                     | robber moves to hex 18; 1 random resource transferred                      | :x:          |
