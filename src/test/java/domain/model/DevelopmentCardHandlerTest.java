@@ -1500,4 +1500,28 @@ class DevelopmentCardHandlerTest {
 
     EasyMock.verify(mockVP1, mockVP2, mockVP3, mockVP4, mockVP5);
   }
+
+  // TC60: hand contains 3 KNIGHT, 1 MONOPOLY, 0 VICTORY_POINT cards -> 0
+  @Test
+  void countVictoryPointCards_NonVPCardsOnly_ExpectZero() {
+    final int expectedCount = 0;
+
+    DevelopmentCard mockKnight1 = EasyMock.createMock(DevelopmentCard.class);
+    DevelopmentCard mockKnight2 = EasyMock.createMock(DevelopmentCard.class);
+    DevelopmentCard mockKnight3 = EasyMock.createMock(DevelopmentCard.class);
+    DevelopmentCard mockMonopoly = EasyMock.createMock(DevelopmentCard.class);
+
+    EasyMock.expect(mockKnight1.getType()).andReturn(DevelopmentCardType.KNIGHT);
+    EasyMock.expect(mockKnight2.getType()).andReturn(DevelopmentCardType.KNIGHT);
+    EasyMock.expect(mockKnight3.getType()).andReturn(DevelopmentCardType.KNIGHT);
+    EasyMock.expect(mockMonopoly.getType()).andReturn(DevelopmentCardType.MONOPOLY);
+
+    EasyMock.replay(mockKnight1, mockKnight2, mockKnight3, mockMonopoly);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    assertEquals(expectedCount, handler.countVictoryPointCards(
+        List.of(mockKnight1, mockKnight2, mockKnight3, mockMonopoly)));
+
+    EasyMock.verify(mockKnight1, mockKnight2, mockKnight3, mockMonopoly);
+  }
 }
