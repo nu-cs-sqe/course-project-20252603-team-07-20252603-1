@@ -779,4 +779,29 @@ class DevelopmentCardHandlerTest {
 
     EasyMock.verify(mockPlayer, mockCard, mockOpponent);
   }
+
+  // TC30: resource = WOOL, 1 opponent has 0 WOOL
+  //       -> no WOOL transferred; card removed from hand
+  @Test
+  void playMonopolyCard_OneOpponentHasZeroWool_ExpectNoTransferAndCardRemoved() {
+    final int currentRound = 2;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+    Player mockOpponent = EasyMock.createMock(Player.class);
+
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.MONOPOLY);
+    EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
+    EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
+    EasyMock.expect(mockOpponent.getResourceCount(Resource.WOOL)).andReturn(0);
+    mockPlayer.removeDevelopmentCard(mockCard);
+    mockPlayer.setHasPlayedDevCardThisTurn(true);
+
+    EasyMock.replay(mockPlayer, mockCard, mockOpponent);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    handler.playMonopolyCard(mockPlayer, mockCard, currentRound, Resource.WOOL, List.of(mockOpponent));
+
+    EasyMock.verify(mockPlayer, mockCard, mockOpponent);
+  }
 }
