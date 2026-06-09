@@ -35,6 +35,9 @@ public class DevelopmentCardHandler {
         if (card.getType() != DevelopmentCardType.KNIGHT) {
             throw new IllegalArgumentException("Card is not a Knight card.");
         }
+        if (!card.isPlayable(currentRound)) {
+            throw new IllegalStateException("Card cannot be played the same turn it was purchased.");
+        }
     }
 
 }

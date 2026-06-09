@@ -250,4 +250,28 @@ class DevelopmentCardHandlerTest {
     EasyMock.verify(mockPlayer, mockCard, mockRobber, mockVictim);
     assertEquals("Card is not a Knight card.", exception.getMessage());
   }
+
+  // TC10: card drawn this round (not playable, same turn)
+  //       -> IllegalStateException: "Card cannot be played the same turn it was purchased."
+  @Test
+  void playKnightCard_CardNotPlayableSameTurn_ExpectIllegalStateException() {
+    final int currentRound = 1;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+    Robber mockRobber = EasyMock.createMock(Robber.class);
+    Player mockVictim = EasyMock.createMock(Player.class);
+
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.KNIGHT);
+    EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(false);
+
+    EasyMock.replay(mockPlayer, mockCard, mockRobber, mockVictim);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    Exception exception = assertThrows(IllegalStateException.class,
+        () -> handler.playKnightCard(mockPlayer, mockCard, currentRound, mockRobber, 5, mockVictim));
+
+    EasyMock.verify(mockPlayer, mockCard, mockRobber, mockVictim);
+    assertEquals("Card cannot be played the same turn it was purchased.", exception.getMessage());
+  }
 }
