@@ -85,6 +85,11 @@ public class DevelopmentCardHandler {
         if (edge1 == null) {
             throw new IllegalArgumentException("Edge cannot be null.");
         }
+
+        player.placeRoad(edge1);
+        player.placeRoad(edge2);
+        player.removeDevelopmentCard(card);
+        player.setHasPlayedDevCardThisTurn(true);
     }
 
     public void playKnightCard(Player player, DevelopmentCard card, int currentRound, Robber robber, int targetHexId, Player victim) {
