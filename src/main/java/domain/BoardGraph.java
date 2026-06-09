@@ -161,6 +161,10 @@ public class BoardGraph {
         return false;
     }
 
+    PlayerColor calculateLongestRoad(){
+        return PlayerColor.SETUP;
+    }
+
     void buildBoard() {
         // add all the graphNodes
         for (int i = 0; i < 54; i++) {
