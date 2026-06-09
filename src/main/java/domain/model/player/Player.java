@@ -22,6 +22,7 @@ public class Player {
     private String name;
     private int numSettlement;
     private boolean hasPlayedDevCardThisTurn = false;
+    private int knightCount = 0;
 
     public Player(String name, PlayerColor color) {
         this.settlements = new ArrayList<>();
@@ -151,6 +152,18 @@ public class Player {
 
     public void setHasPlayedDevCardThisTurn(boolean played) {
         hasPlayedDevCardThisTurn = played;
+    }
+
+    public void removeDevelopmentCard(DevelopmentCard card) {
+        developmentCards.remove(card);
+    }
+
+    public void incrementKnightCount() {
+        knightCount++;
+    }
+
+    public int getKnightCount() {
+        return knightCount;
     }
 
 } 

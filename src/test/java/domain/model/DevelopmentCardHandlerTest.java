@@ -9,6 +9,8 @@ import domain.model.exceptions.EmptyDeckException;
 import domain.model.player.Player;
 import domain.model.resources.Resource;
 
+import java.util.Map;
+
 import domain.model.development_cards.DevelopmentCardType;
 import domain.model.exceptions.InsufficientResourcesException;
 import domain.model.game_pieces.Robber;
@@ -322,5 +324,48 @@ class DevelopmentCardHandlerTest {
 
     EasyMock.verify(mockPlayer, mockCard, mockVictim);
     assertEquals("Robber cannot be null.", exception.getMessage());
+  }
+
+  // TC13: targetHexId = 5 (valid, different from current hex 3), victim adjacent with 3 resources
+  //       -> robber moves to hex 5; 1 resource transferred from victim to player; knight count incremented; card removed
+  @Test
+  void playKnightCard_ValidMoveVictimHasResources_ExpectRobberMovedAndResourceStolen() {
+    final int currentRound = 2;
+    final int targetHexId = 5;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+    Robber mockRobber = EasyMock.createMock(Robber.class);
+    Player mockVictim = EasyMock.createMock(Player.class);
+
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.KNIGHT);
+    EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
+    EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
+    mockRobber.moveRobber(targetHexId);
+    EasyMock.expectLastCall();
+    
+    EasyMock.expect(mockVictim.getTotalResourceCount()).andReturn(3);
+    EasyMock.expect(mockVictim.getResources()).andReturn(Map.of(Resource.ORE, 3));
+    mockVictim.updateResources(Resource.ORE, -1);
+    EasyMock.expectLastCall();
+    
+    mockPlayer.updateResources(Resource.ORE, 1);
+    EasyMock.expectLastCall();
+    
+    mockPlayer.incrementKnightCount();
+    EasyMock.expectLastCall();
+    
+    mockPlayer.removeDevelopmentCard(mockCard);
+    EasyMock.expectLastCall();
+    
+    mockPlayer.setHasPlayedDevCardThisTurn(true);
+    EasyMock.expectLastCall();
+
+    EasyMock.replay(mockPlayer, mockCard, mockRobber, mockVictim);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    handler.playKnightCard(mockPlayer, mockCard, currentRound, mockRobber, targetHexId, mockVictim);
+
+    EasyMock.verify(mockPlayer, mockCard, mockRobber, mockVictim);
   }
 }
