@@ -8,9 +8,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DevelopmentCardDeckTest {
 
+    // TC1, TC13: new DevelopmentCardDeck() -> countRemaining() == 25
     @Test
-    void testConstructorInitializesWithCorrectCardCount() {
+    void constructDeck_OnNewDeck_ExpectTwentyFiveCards() {
         DevelopmentCardDeck deck = new DevelopmentCardDeck();
+
         assertEquals(25, deck.countRemaining());
     }
 
