@@ -1142,4 +1142,32 @@ class DevelopmentCardHandlerTest {
     EasyMock.verify(mockPlayer, mockCard, mockEdge1, mockEdge2);
     assertEquals("Road must connect to player's existing network.", exception.getMessage());
   }
+
+  // TC44: edge1 valid, edge2 is already occupied, roads placed = 0
+  //       -> IllegalArgumentException: "Edge is already occupied."
+  @Test
+  void playRoadBuildingCard_Edge2AlreadyOccupied_ExpectIllegalArgumentException() {
+    final int currentRound = 2;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+    Edge mockEdge1 = EasyMock.createMock(Edge.class);
+    Edge mockEdge2 = EasyMock.createMock(Edge.class);
+
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.ROAD_BUILDER);
+    EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
+    EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
+    mockPlayer.placeRoad(mockEdge1);
+    mockPlayer.placeRoad(mockEdge2);
+    EasyMock.expectLastCall().andThrow(new IllegalArgumentException("Edge is already occupied."));
+
+    EasyMock.replay(mockPlayer, mockCard, mockEdge1, mockEdge2);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    Exception exception = assertThrows(IllegalArgumentException.class,
+        () -> handler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockEdge1, mockEdge2));
+
+    EasyMock.verify(mockPlayer, mockCard, mockEdge1, mockEdge2);
+    assertEquals("Edge is already occupied.", exception.getMessage());
+  }
 }
