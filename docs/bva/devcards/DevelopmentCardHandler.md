@@ -301,7 +301,7 @@ Step 3:
 | Test Case 47 | card type = KNIGHT (not YEAR_OF_PLENTY)                                                   | IllegalArgumentException: "Card is not a Year of Plenty card."               | :white_check_mark: |
 | Test Case 48 | card drawn this round (not playable)                                                      | IllegalStateException: "Card cannot be played the same turn it was purchased." | :white_check_mark: |
 | Test Case 49 | player already played a dev card this turn                                                | IllegalStateException: "Already played a development card this turn."        | :white_check_mark: |
-| Test Case 50 | resource1 = null, resource2 = BRICK                                                      | IllegalArgumentException: "Resource cannot be null."                         | :x:          |
+| Test Case 50 | resource1 = null, resource2 = BRICK                                                      | IllegalArgumentException: "Resource cannot be null."                         | :white_check_mark: |
 | Test Case 51 | resource1 = BRICK, resource2 = null                                                      | IllegalArgumentException: "Resource cannot be null."                         | :x:          |
 | Test Case 52 | resource1 = DESERT, resource2 = ORE                                                      | IllegalArgumentException: "Cannot take DESERT as a resource."                | :x:          |
 | Test Case 53 | resource1 = LUMBER, resource2 = DESERT                                                   | IllegalArgumentException: "Cannot take DESERT as a resource."                | :x:          |

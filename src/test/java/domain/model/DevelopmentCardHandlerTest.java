@@ -1282,4 +1282,27 @@ class DevelopmentCardHandlerTest {
     EasyMock.verify(mockPlayer, mockCard);
     assertEquals("Already played a development card this turn.", exception.getMessage());
   }
+
+  // TC50: resource1 = null, resource2 = BRICK
+  //       -> IllegalArgumentException: "Resource cannot be null."
+  @Test
+  void playYearOfPlentyCard_Resource1IsNull_ExpectIllegalArgumentException() {
+    final int currentRound = 3;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.YEAR_OF_PLENTY);
+    EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
+    EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
+
+    EasyMock.replay(mockPlayer, mockCard);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    Exception exception = assertThrows(IllegalArgumentException.class,
+        () -> handler.playYearOfPlentyCard(mockPlayer, mockCard, currentRound, null, Resource.BRICK));
+
+    EasyMock.verify(mockPlayer, mockCard);
+    assertEquals("Resource cannot be null.", exception.getMessage());
+  }
 }

@@ -147,6 +147,9 @@ public class DevelopmentCardHandler {
         if (player.hasPlayedDevCardThisTurn()) {
             throw new IllegalStateException("Already played a development card this turn.");
         }
+        if (resource1 == null) {
+            throw new IllegalArgumentException("Resource cannot be null.");
+        }
     }
 
 }
