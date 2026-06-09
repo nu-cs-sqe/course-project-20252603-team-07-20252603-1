@@ -45,6 +45,20 @@ class DevelopmentCardDeckTest {
     assertEquals(expectedRoadBuilderCount, roadBuilderCount);
   }
 
+  // TC4: new DevelopmentCardDeck() -> deck contains exactly 2 YEAR_OF_PLENTY cards
+  @Test
+  void constructDeck_OnNewDeck_ExpectTwoYearOfPlentyCards() throws EmptyDeckException {
+    DevelopmentCardDeck deck = new DevelopmentCardDeck();
+    final int expectedYearOfPlentyCount = 2;
+
+    int yearOfPlentyCount = 0;
+    for (int i = 0; i < DECK_SIZE; i++) {
+      if (deck.drawCard().getType() == DevelopmentCardType.YEAR_OF_PLENTY) yearOfPlentyCount++;
+    }
+
+    assertEquals(expectedYearOfPlentyCount, yearOfPlentyCount);
+  }
+
     @Test
     void testDrawCardReducesCount() throws EmptyDeckException {
         DevelopmentCardDeck deck = new DevelopmentCardDeck();
