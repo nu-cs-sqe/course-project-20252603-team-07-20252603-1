@@ -4,6 +4,7 @@ import domain.model.development_cards.DevelopmentCard;
 import domain.model.development_cards.DevelopmentCardDeck;
 import domain.model.exceptions.EmptyDeckException;
 import domain.model.exceptions.InsufficientResourcesException;
+import domain.model.game_pieces.Robber;
 import domain.model.player.Player;
 import domain.model.resources.Resource;
 
@@ -24,6 +25,12 @@ public class DevelopmentCardHandler {
         buyer.addDevelopmentCard(card);
 
         return card;
+    }
+
+    public void playKnightCard(Player player, DevelopmentCard card, int currentRound, Robber robber, int targetHexId, Player victim) {
+        if (card == null) {
+            throw new IllegalArgumentException("Development card cannot be null.");
+        }
     }
 
 }

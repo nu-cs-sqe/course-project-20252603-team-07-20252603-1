@@ -10,6 +10,7 @@ import domain.model.player.Player;
 import domain.model.resources.Resource;
 
 import domain.model.exceptions.InsufficientResourcesException;
+import domain.model.game_pieces.Robber;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -204,5 +205,25 @@ class DevelopmentCardHandlerTest {
 
     EasyMock.verify(mockBuyer, mockDeck, mockCard);
     assertEquals(mockCard, result);
+  }
+
+  // TC8: card = null
+  //      -> IllegalArgumentException: "Development card cannot be null."
+  @Test
+  void playKnightCard_CardIsNull_ExpectIllegalArgumentException() {
+    final int currentRound = 1;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    Robber mockRobber = EasyMock.createMock(Robber.class);
+    Player mockVictim = EasyMock.createMock(Player.class);
+
+    EasyMock.replay(mockPlayer, mockRobber, mockVictim);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    Exception exception = assertThrows(IllegalArgumentException.class,
+        () -> handler.playKnightCard(mockPlayer, null, currentRound, mockRobber, 5, mockVictim));
+
+    EasyMock.verify(mockPlayer, mockRobber, mockVictim);
+    assertEquals("Development card cannot be null.", exception.getMessage());
   }
 }
