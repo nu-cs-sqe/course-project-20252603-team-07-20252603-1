@@ -958,4 +958,28 @@ class DevelopmentCardHandlerTest {
     EasyMock.verify(mockPlayer, mockCard, mockEdge1, mockEdge2);
     assertEquals("Already played a development card this turn.", exception.getMessage());
   }
+
+  // TC37: edge1 = null, roads placed = 0
+  //       -> IllegalArgumentException: "Edge cannot be null."
+  @Test
+  void playRoadBuildingCard_Edge1IsNull_ExpectIllegalArgumentException() {
+    final int currentRound = 2;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+    Edge mockEdge2 = EasyMock.createMock(Edge.class);
+
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.ROAD_BUILDER);
+    EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
+    EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
+
+    EasyMock.replay(mockPlayer, mockCard, mockEdge2);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    Exception exception = assertThrows(IllegalArgumentException.class,
+        () -> handler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, null, mockEdge2));
+
+    EasyMock.verify(mockPlayer, mockCard, mockEdge2);
+    assertEquals("Edge cannot be null.", exception.getMessage());
+  }
 }

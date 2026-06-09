@@ -251,7 +251,7 @@ Step 3:
 | Test Case 34 | card type = VICTORY_POINT (not ROAD_BUILDER)                                               | IllegalArgumentException: "Card is not a Road Builder card."                | :white_check_mark: |
 | Test Case 35 | card drawn this round (not playable)                                                       | IllegalStateException: "Card cannot be played the same turn it was purchased." | :white_check_mark: |
 | Test Case 36 | player already played a dev card this turn                                                 | IllegalStateException: "Already played a development card this turn."       | :white_check_mark: |
-| Test Case 37 | edge1 = null, roads placed = 0                                                             | IllegalArgumentException: "Edge cannot be null."                            | :x:          |
+| Test Case 37 | edge1 = null, roads placed = 0                                                             | IllegalArgumentException: "Edge cannot be null."                            | :white_check_mark: |
 | Test Case 38 | edge1 valid, edge2 valid, roads placed = 0 (15 remaining)                                  | 2 roads placed; player road count increases by 2; card removed from hand    | :x:          |
 | Test Case 39 | edge1 valid, edge2 valid, roads placed = 13 (2 remaining — last pair that fits)            | 2 roads placed; player road count is 15; card removed                       | :x:          |
 | Test Case 40 | edge1 valid, edge2 = null, roads placed = 14 (only 1 remaining)                            | 1 road placed; player road count is 15; card removed                        | :x:          |
