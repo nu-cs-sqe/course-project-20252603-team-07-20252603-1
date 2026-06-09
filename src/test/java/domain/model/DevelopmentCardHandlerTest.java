@@ -1399,4 +1399,29 @@ class DevelopmentCardHandlerTest {
 
     EasyMock.verify(mockPlayer, mockCard);
   }
+
+  // TC55: resource1 = BRICK, resource2 = WOOL (different types)
+  //       -> player gains 1 BRICK and 1 WOOL; card removed from hand
+  @Test
+  void playYearOfPlentyCard_DifferentResourceTypes_ExpectBothTransferred() {
+    final int currentRound = 3;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.YEAR_OF_PLENTY);
+    EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
+    EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
+    mockPlayer.updateResources(Resource.BRICK, 1);
+    mockPlayer.updateResources(Resource.WOOL, 1);
+    mockPlayer.removeDevelopmentCard(mockCard);
+    mockPlayer.setHasPlayedDevCardThisTurn(true);
+
+    EasyMock.replay(mockPlayer, mockCard);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    handler.playYearOfPlentyCard(mockPlayer, mockCard, currentRound, Resource.BRICK, Resource.WOOL);
+
+    EasyMock.verify(mockPlayer, mockCard);
+  }
 }
