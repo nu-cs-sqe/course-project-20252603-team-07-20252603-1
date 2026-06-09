@@ -55,5 +55,9 @@ public class DevelopmentCard {
     public DevelopmentCardType getType() {
         return this.type;
     }
-    
+
+    public int getRoundDrawnAt() {
+        return this.roundDrawnAt;
+    }
+
 }

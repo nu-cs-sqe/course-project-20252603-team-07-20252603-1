@@ -5,10 +5,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DevelopmentCardTest {
 
+    // TC1: new DevelopmentCard(KNIGHT, 0) -> getType() == KNIGHT, roundDrawnAt == 0
     @Test
-    void testConstructorAndGetter() {
-        DevelopmentCard card = new DevelopmentCard(DevelopmentCardType.KNIGHT, 5);
+    void constructKnightCard_AtRoundZero_ExpectKnightTypeAndRoundZero() {
+        DevelopmentCard card = new DevelopmentCard(DevelopmentCardType.KNIGHT, 0);
+        
         assertEquals(DevelopmentCardType.KNIGHT, card.getType());
+        assertEquals(0, card.getRoundDrawnAt());
     }
 
     @Test
