@@ -338,7 +338,7 @@ Step 3:
 |              | System under test                                                    | Expected output | Implemented? |
 | ------------ | -------------------------------------------------------------------- | --------------- | ------------ |
 | Test Case 56 | hand is empty                                                        | 0               | :white_check_mark: |
-| Test Case 57 | hand contains 1 VICTORY_POINT card only                              | 1               | :x:          |
+| Test Case 57 | hand contains 1 VICTORY_POINT card only                              | 1               | :white_check_mark: |
 | Test Case 58 | hand contains 3 KNIGHT and 2 VICTORY_POINT cards                     | 2               | :x:          |
 | Test Case 59 | hand contains 5 VICTORY_POINT cards (maximum)                        | 5               | :x:          |
 | Test Case 60 | hand contains 3 KNIGHT, 1 MONOPOLY, 0 VICTORY_POINT cards           | 0               | :x:          |

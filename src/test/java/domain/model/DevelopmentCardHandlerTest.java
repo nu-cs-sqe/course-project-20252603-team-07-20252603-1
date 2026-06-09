@@ -1428,7 +1428,24 @@ class DevelopmentCardHandlerTest {
   // TC56: hand is empty -> 0
   @Test
   void countVictoryPointCards_EmptyHand_ExpectZero() {
+    final int expectedCount = 0;
+
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
-    assertEquals(0, handler.countVictoryPointCards(List.of()));
+    assertEquals(expectedCount, handler.countVictoryPointCards(List.of()));
+  }
+
+  // TC57: hand contains 1 VICTORY_POINT card only -> 1
+  @Test
+  void countVictoryPointCards_OneVictoryPointCard_ExpectOne() {
+    final int expectedCount = 1;
+
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.VICTORY_POINT);
+    EasyMock.replay(mockCard);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    assertEquals(expectedCount, handler.countVictoryPointCards(List.of(mockCard)));
+
+    EasyMock.verify(mockCard);
   }
 }
