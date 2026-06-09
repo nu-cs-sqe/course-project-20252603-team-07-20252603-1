@@ -290,7 +290,7 @@ Step 3:
 |              | System under test         | Expected output                                | Implemented?       |
 |--------------|---------------------------|------------------------------------------------|--------------------|
 | Test Case 53 | RED holds longest road    | calculateLongestRoad is called, returns RED    | :white_check_mark: |
-| Test Case 54 | ORANGE holds longest road | calculateLongestRoad is called, returns ORANGE | x                  |
+| Test Case 54 | ORANGE holds longest road | calculateLongestRoad is called, returns ORANGE | :white_check_mark: |
 | Test Case 55 | WHITE holds longest road  | calculateLongestRoad is called, returns WHITE  | x                  |
 | Test Case 56 | BLUE holds longest road   | calculateLongestRoad is called, returns BLUE   | x                  |
 | Test Case 57 | SETUP holds longest road  | calculateLongestRoad is called, returns SETUP  | x                  |
