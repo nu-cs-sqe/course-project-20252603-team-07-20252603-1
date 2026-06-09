@@ -125,4 +125,4 @@ Step 3:
 | ------------ | -------------------------------------- | --------------- | ------------ |
 | Test Case 13 | countRemaining() on new deck           | 25              | :white_check_mark: (covered by TC1) |
 | Test Case 14 | countRemaining() after drawing 1 card  | 24              | :white_check_mark: |
-| Test Case 15 | countRemaining() after drawing all 25  | 0               | :x:          |
+| Test Case 15 | countRemaining() after drawing all 25  | 0               | :white_check_mark: |

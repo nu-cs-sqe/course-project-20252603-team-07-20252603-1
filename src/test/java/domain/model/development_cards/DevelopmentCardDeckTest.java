@@ -10,13 +10,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class DevelopmentCardDeckTest {
   final int DECK_SIZE = 25;
 
-    // TC1, TC13: new DevelopmentCardDeck() -> countRemaining() == 25
-    @Test
-    void constructDeck_OnNewDeck_ExpectTwentyFiveCards() {
-        DevelopmentCardDeck deck = new DevelopmentCardDeck();
+  // TC1, TC13: new DevelopmentCardDeck() -> countRemaining() == 25
+  @Test
+  void constructDeck_OnNewDeck_ExpectTwentyFiveCards() {
+      DevelopmentCardDeck deck = new DevelopmentCardDeck();
 
-        assertEquals(DECK_SIZE, deck.countRemaining());
-    }
+      assertEquals(DECK_SIZE, deck.countRemaining());
+  }
 
   // TC2: new DevelopmentCardDeck() -> deck contains exactly 14 KNIGHT cards
   @Test
@@ -187,42 +187,14 @@ class DevelopmentCardDeckTest {
     assertEquals(expectedRemaining, deck.countRemaining());
   }
 
-    @Test
-    void testDrawCardReturnsValidCard() throws EmptyDeckException {
-        DevelopmentCardDeck deck = new DevelopmentCardDeck();
-        DevelopmentCard card = deck.drawCard(0);
+  // TC15: countRemaining() after drawing all 25 -> 0
+  @Test
+  void countRemaining_AfterDrawingAllCards_ExpectZero() throws EmptyDeckException {
+    DevelopmentCardDeck deck = new DevelopmentCardDeck();
+    final int expectedRemaining = 0;
 
-        assertNotNull(card);
-        assertNotNull(card.getType());
-    }
+    for (int i = 0; i < DECK_SIZE; i++) deck.drawCard(0);
 
-    @Test
-    void testDrawAllCardsFromDeck() throws EmptyDeckException {
-        DevelopmentCardDeck deck = new DevelopmentCardDeck();
-
-        // Draw all 25 cards
-        for (int i = 0; i < 25; i++) {
-            DevelopmentCard card = deck.drawCard(0);
-            assertNotNull(card);
-        }
-
-        assertEquals(0, deck.countRemaining());
-    }
-
-    @Test
-    void testCountRemainingAfterMultipleDraws() throws EmptyDeckException {
-        DevelopmentCardDeck deck = new DevelopmentCardDeck();
-
-        deck.drawCard(0);
-        assertEquals(24, deck.countRemaining());
-
-        deck.drawCard(0);
-        deck.drawCard(0);
-        assertEquals(22, deck.countRemaining());
-
-        for (int i = 0; i < 10; i++) {
-            deck.drawCard(0);
-        }
-        assertEquals(12, deck.countRemaining());
-    }
+    assertEquals(expectedRemaining, deck.countRemaining());
+  }
 }
