@@ -752,4 +752,31 @@ class DevelopmentCardHandlerTest {
 
     EasyMock.verify(mockPlayer, mockCard);
   }
+
+  // TC29: resource = ORE, 1 opponent has 5 ORE
+  //       -> opponent loses 5 ORE; player gains 5 ORE; card removed from hand
+  @Test
+  void playMonopolyCard_OneOpponentHasFiveOre_ExpectAllOreTransferred() {
+    final int currentRound = 2;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+    Player mockOpponent = EasyMock.createMock(Player.class);
+
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.MONOPOLY);
+    EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
+    EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
+    EasyMock.expect(mockOpponent.getResourceCount(Resource.ORE)).andReturn(5);
+    mockOpponent.updateResources(Resource.ORE, -5);
+    mockPlayer.updateResources(Resource.ORE, 5);
+    mockPlayer.removeDevelopmentCard(mockCard);
+    mockPlayer.setHasPlayedDevCardThisTurn(true);
+
+    EasyMock.replay(mockPlayer, mockCard, mockOpponent);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    handler.playMonopolyCard(mockPlayer, mockCard, currentRound, Resource.ORE, List.of(mockOpponent));
+
+    EasyMock.verify(mockPlayer, mockCard, mockOpponent);
+  }
 }
