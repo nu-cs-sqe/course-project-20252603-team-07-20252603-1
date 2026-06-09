@@ -94,4 +94,14 @@ class DevelopmentCardTest {
         DevelopmentCard card = new DevelopmentCard(DevelopmentCardType.MONOPOLY, drawnAtRound);
         assertFalse(card.isPlayable(currentRound));
     }
+
+    // TC15: isPlayable(1), ROAD_BUILDER drawn at round 0 (LOW + ε vs LOW) -> true
+    @Test
+    void isPlayable_RoadBuilderCardCurrentRoundOneAboveLowBoundary_ExpectTrue() {
+        final int drawnAtRound = 0;
+        final int currentRound = 1;
+
+        DevelopmentCard card = new DevelopmentCard(DevelopmentCardType.ROAD_BUILDER, drawnAtRound);
+        assertTrue(card.isPlayable(currentRound));
+    }
 }

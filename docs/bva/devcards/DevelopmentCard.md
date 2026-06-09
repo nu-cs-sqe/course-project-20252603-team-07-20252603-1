@@ -102,6 +102,6 @@ Step 3:
 | Test Case 12 | isPlayable(5), KNIGHT card drawn at round 5 (currentRound == roundDrawnAt)         | false           | :white_check_mark: |
 | Test Case 13 | isPlayable(6), KNIGHT card drawn at round 5 (currentRound > roundDrawnAt)          | true            | :white_check_mark: |
 | Test Case 14 | isPlayable(0), MONOPOLY card drawn at round 0 (both at LOW boundary)               | false           | :white_check_mark: |
-| Test Case 15 | isPlayable(1), ROAD_BUILDER card drawn at round 0 (LOW + ε vs LOW)                 | true            | :x:          |
+| Test Case 15 | isPlayable(1), ROAD_BUILDER card drawn at round 0 (LOW + ε vs LOW)                 | true            | :white_check_mark: |
 | Test Case 16 | isPlayable(5), VICTORY_POINT card drawn at round 5 (same turn — VP exception)      | true            | :x:          |
 | Test Case 17 | isPlayable(0), VICTORY_POINT card drawn at round 0 (LOW boundary — VP exception)   | true            | :x:          |
