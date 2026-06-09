@@ -259,7 +259,7 @@ Step 3:
 | Test Case 42 | edge1 is already occupied, roads placed = 0                                                | IllegalArgumentException: "Edge is already occupied."                       | :white_check_mark: |
 | Test Case 43 | edge1 not connected to player's network, roads placed = 0                                  | IllegalArgumentException: "Road must connect to player's existing network." | :white_check_mark: |
 | Test Case 44 | edge1 valid, edge2 is already occupied, roads placed = 0                                   | IllegalArgumentException: "Edge is already occupied."                       | :white_check_mark: |
-| Test Case 45 | edge1 valid, edge2 not connected to player's network (including edge1), roads placed = 0   | IllegalArgumentException: "Road must connect to player's existing network." | :x:          |
+| Test Case 45 | edge1 valid, edge2 not connected to player's network (including edge1), roads placed = 0   | IllegalArgumentException: "Road must connect to player's existing network." | :white_check_mark: |
 
 
 ---
