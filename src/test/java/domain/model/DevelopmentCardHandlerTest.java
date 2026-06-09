@@ -9,6 +9,7 @@ import domain.model.exceptions.EmptyDeckException;
 import domain.model.player.Player;
 import domain.model.resources.Resource;
 
+import java.util.List;
 import java.util.Map;
 
 import domain.model.development_cards.DevelopmentCardType;
@@ -574,5 +575,23 @@ class DevelopmentCardHandlerTest {
 
     EasyMock.verify(mockPlayer, mockCard, mockRobber, mockVictim);
     assertEquals("Victim must be adjacent to the robber's new hex.", exception.getMessage());
+  }
+
+  // TC21: card = null
+  //       -> IllegalArgumentException: "Development card cannot be null."
+  @Test
+  void playMonopolyCard_CardIsNull_ExpectIllegalArgumentException() {
+    final int currentRound = 1;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+
+    EasyMock.replay(mockPlayer);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    Exception exception = assertThrows(IllegalArgumentException.class,
+        () -> handler.playMonopolyCard(mockPlayer, null, currentRound, Resource.ORE, List.of()));
+
+    EasyMock.verify(mockPlayer);
+    assertEquals("Development card cannot be null.", exception.getMessage());
   }
 }

@@ -33,6 +33,12 @@ public class DevelopmentCardHandler {
         return card;
     }
 
+    public void playMonopolyCard(Player player, DevelopmentCard card, int currentRound, Resource resource, List<Player> otherPlayers) {
+        if (card == null) {
+            throw new IllegalArgumentException("Development card cannot be null.");
+        }
+    }
+
     public void playKnightCard(Player player, DevelopmentCard card, int currentRound, Robber robber, int targetHexId, Player victim) {
         if (card == null) {
             throw new IllegalArgumentException("Development card cannot be null.");
