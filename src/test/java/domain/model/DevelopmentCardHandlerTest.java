@@ -146,4 +146,29 @@ class DevelopmentCardHandlerTest {
     EasyMock.verify(mockBuyer, mockDeck);
     assertEquals("Not enough resources to buy a development card.", exception.getMessage());
   }
+
+  // TC6: buyer has 1 ORE, 1 WOOL, 1 GRAIN; deck empty (0)
+  //      -> EmptyDeckException: "Cannot draw new DevelopmentCard, no cards remain."
+  @Test
+  void buyDevelopmentCard_DeckEmpty_ExpectEmptyDeckException() throws EmptyDeckException {
+    final int currentRound = 1;
+
+    Player mockBuyer = EasyMock.createMock(Player.class);
+    DevelopmentCardDeck mockDeck = EasyMock.createMock(DevelopmentCardDeck.class);
+
+    EasyMock.expect(mockBuyer.getResourceCount(Resource.ORE)).andReturn(1);
+    EasyMock.expect(mockBuyer.getResourceCount(Resource.WOOL)).andReturn(1);
+    EasyMock.expect(mockBuyer.getResourceCount(Resource.GRAIN)).andReturn(1);
+    EasyMock.expect(mockDeck.drawCard(currentRound))
+        .andThrow(new EmptyDeckException("Cannot draw new DevelopmentCard, no cards remain."));
+
+    EasyMock.replay(mockBuyer, mockDeck);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    Exception exception = assertThrows(EmptyDeckException.class,
+        () -> handler.buyDevelopmentCard(mockBuyer, mockDeck, currentRound));
+
+    EasyMock.verify(mockBuyer, mockDeck);
+    assertEquals("Cannot draw new DevelopmentCard, no cards remain.", exception.getMessage());
+  }
 }
