@@ -49,7 +49,10 @@ public class DevelopmentCard {
     }
 
     public boolean isPlayable(int currentRoundNumber) {
-        return currentRoundNumber >= this.roundDrawnAt;
+        if (this.type == DevelopmentCardType.VICTORY_POINT) {
+            return true;
+        }
+        return currentRoundNumber > this.roundDrawnAt;
     }
 
     public DevelopmentCardType getType() {
