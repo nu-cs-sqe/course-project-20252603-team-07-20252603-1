@@ -1216,4 +1216,25 @@ class DevelopmentCardHandlerTest {
     EasyMock.verify(mockPlayer);
     assertEquals("Development card cannot be null.", exception.getMessage());
   }
+
+  // TC47: card type = KNIGHT (not YEAR_OF_PLENTY)
+  //       -> IllegalArgumentException: "Card is not a Year of Plenty card."
+  @Test
+  void playYearOfPlentyCard_CardTypeIsKnight_ExpectIllegalArgumentException() {
+    final int currentRound = 3;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.KNIGHT);
+
+    EasyMock.replay(mockPlayer, mockCard);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    Exception exception = assertThrows(IllegalArgumentException.class,
+        () -> handler.playYearOfPlentyCard(mockPlayer, mockCard, currentRound, Resource.BRICK, Resource.WOOL));
+
+    EasyMock.verify(mockPlayer, mockCard);
+    assertEquals("Card is not a Year of Plenty card.", exception.getMessage());
+  }
 }

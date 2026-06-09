@@ -138,6 +138,9 @@ public class DevelopmentCardHandler {
         if (card == null) {
             throw new IllegalArgumentException("Development card cannot be null.");
         }
+        if (card.getType() != DevelopmentCardType.YEAR_OF_PLENTY) {
+            throw new IllegalArgumentException("Card is not a Year of Plenty card.");
+        }
     }
 
 }
