@@ -73,7 +73,7 @@ Step 3:
 |              | System under test                                        | Expected output                                                                          | Implemented? |
 | ------------ | -------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ------------ |
 | Test Case 7  | drawCard(3) from full deck (size 25)                     | card returned (non-null with valid type, roundDrawnAt == 3); countRemaining() is 24      | :white_check_mark: |
-| Test Case 8  | drawCard(7) from deck with 1 card remaining              | card returned (roundDrawnAt == 7); countRemaining() is 0                                 | :x:          |
+| Test Case 8  | drawCard(7) from deck with 1 card remaining              | card returned (roundDrawnAt == 7); countRemaining() is 0                                 | :white_check_mark: |
 | Test Case 9  | drawCard(1) from empty deck (size 0)                     | EmptyDeckException: "Cannot draw new DevelopmentCard, no cards remain."                  | :x:          |
 
 

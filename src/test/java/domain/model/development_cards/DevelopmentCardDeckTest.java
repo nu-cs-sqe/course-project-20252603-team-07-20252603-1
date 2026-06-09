@@ -104,6 +104,22 @@ class DevelopmentCardDeckTest {
     assertEquals(expectedRemaining, deck.countRemaining());
   }
 
+  // TC8: drawCard(7) from deck with 1 card remaining -> card returned (roundDrawnAt == 7), countRemaining() == 0
+  @Test
+  void drawCard_FromDeckWithOneCardRemaining_ExpectCardStampedWithRoundAndCountZero() throws EmptyDeckException {
+    final int currentRound = 7;
+    final int expectedRemaining = 0;
+
+    DevelopmentCardDeck deck = new DevelopmentCardDeck();
+    for (int i = 0; i < 24; i++) deck.drawCard(0);
+
+    DevelopmentCard card = deck.drawCard(currentRound);
+
+    assertNotNull(card);
+    assertEquals(currentRound, card.getRoundDrawnAt());
+    assertEquals(expectedRemaining, deck.countRemaining());
+  }
+
     @Test
     void testDrawCardReducesCount() throws EmptyDeckException {
         DevelopmentCardDeck deck = new DevelopmentCardDeck();
