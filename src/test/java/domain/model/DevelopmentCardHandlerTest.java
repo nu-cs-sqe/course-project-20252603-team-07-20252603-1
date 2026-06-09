@@ -683,4 +683,27 @@ class DevelopmentCardHandlerTest {
     EasyMock.verify(mockPlayer, mockCard);
     assertEquals("Resource cannot be null.", exception.getMessage());
   }
+
+  // TC26: resource = DESERT
+  //       -> IllegalArgumentException: "Cannot monopolize DESERT."
+  @Test
+  void playMonopolyCard_ResourceIsDesert_ExpectIllegalArgumentException() {
+    final int currentRound = 1;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.MONOPOLY);
+    EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
+    EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
+
+    EasyMock.replay(mockPlayer, mockCard);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    Exception exception = assertThrows(IllegalArgumentException.class,
+        () -> handler.playMonopolyCard(mockPlayer, mockCard, currentRound, Resource.DESERT, List.of()));
+
+    EasyMock.verify(mockPlayer, mockCard);
+    assertEquals("Cannot monopolize DESERT.", exception.getMessage());
+  }
 }

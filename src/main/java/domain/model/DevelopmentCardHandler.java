@@ -49,6 +49,9 @@ public class DevelopmentCardHandler {
         if (resource == null) {
             throw new IllegalArgumentException("Resource cannot be null.");
         }
+        if (resource == Resource.DESERT) {
+            throw new IllegalArgumentException("Cannot monopolize DESERT.");
+        }
     }
 
     public void playKnightCard(Player player, DevelopmentCard card, int currentRound, Robber robber, int targetHexId, Player victim) {
