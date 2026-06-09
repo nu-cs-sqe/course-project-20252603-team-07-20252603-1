@@ -1448,4 +1448,30 @@ class DevelopmentCardHandlerTest {
 
     EasyMock.verify(mockCard);
   }
+
+  // TC58: hand contains 3 KNIGHT and 2 VICTORY_POINT cards -> 2
+  @Test
+  void countVictoryPointCards_MixedCardsWithTwoVP_ExpectTwo() {
+    final int expectedCount = 2;
+
+    DevelopmentCard mockKnight1 = EasyMock.createMock(DevelopmentCard.class);
+    DevelopmentCard mockKnight2 = EasyMock.createMock(DevelopmentCard.class);
+    DevelopmentCard mockKnight3 = EasyMock.createMock(DevelopmentCard.class);
+    DevelopmentCard mockVP1 = EasyMock.createMock(DevelopmentCard.class);
+    DevelopmentCard mockVP2 = EasyMock.createMock(DevelopmentCard.class);
+
+    EasyMock.expect(mockKnight1.getType()).andReturn(DevelopmentCardType.KNIGHT);
+    EasyMock.expect(mockKnight2.getType()).andReturn(DevelopmentCardType.KNIGHT);
+    EasyMock.expect(mockKnight3.getType()).andReturn(DevelopmentCardType.KNIGHT);
+    EasyMock.expect(mockVP1.getType()).andReturn(DevelopmentCardType.VICTORY_POINT);
+    EasyMock.expect(mockVP2.getType()).andReturn(DevelopmentCardType.VICTORY_POINT);
+
+    EasyMock.replay(mockKnight1, mockKnight2, mockKnight3, mockVP1, mockVP2);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    assertEquals(expectedCount, handler.countVictoryPointCards(
+        List.of(mockKnight1, mockKnight2, mockKnight3, mockVP1, mockVP2)));
+
+    EasyMock.verify(mockKnight1, mockKnight2, mockKnight3, mockVP1, mockVP2);
+  }
 }
