@@ -151,7 +151,7 @@ Step 3:
 | Test Case 13 | targetHexId = 5 (valid, different from current), victim adjacent with 3 resources    | robber moves to hex 5; 1 random resource transferred from victim to player; knight count incremented; card removed from hand | :white_check_mark: |
 | Test Case 14 | targetHexId = 0 (LOW boundary), victim adjacent with resources                       | robber moves to hex 0; 1 random resource transferred                       | :white_check_mark: |
 | Test Case 15 | targetHexId = 18 (HIGH boundary), victim adjacent with resources                     | robber moves to hex 18; 1 random resource transferred                      | :white_check_mark: |
-| Test Case 16 | targetHexId = robber's current hex (same hex)                                        | IllegalArgumentException: "Must move robber to a different hex."            | :x:          |
+| Test Case 16 | targetHexId = robber's current hex (same hex)                                        | IllegalArgumentException: "Must move robber to a different hex."            | :white_check_mark: |
 | Test Case 17 | targetHexId valid, victim = null (no adjacent opponent)                               | robber moves; no resource stolen; knight count incremented                  | :x:          |
 | Test Case 18 | targetHexId valid, victim adjacent with 0 resource cards                              | robber moves; no resource stolen; knight count incremented                  | :x:          |
 | Test Case 19 | targetHexId valid, victim adjacent with exactly 1 resource card                       | robber moves; that 1 resource transferred; knight count incremented         | :x:          |

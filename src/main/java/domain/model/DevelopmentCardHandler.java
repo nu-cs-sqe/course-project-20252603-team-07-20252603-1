@@ -49,6 +49,9 @@ public class DevelopmentCardHandler {
         if (robber == null) {
             throw new IllegalArgumentException("Robber cannot be null.");
         }
+        if (targetHexId == robber.getRobberLocation()) {
+            throw new IllegalArgumentException("Must move robber to a different hex.");
+        }
 
         robber.moveRobber(targetHexId);
 

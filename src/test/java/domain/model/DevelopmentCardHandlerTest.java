@@ -341,6 +341,7 @@ class DevelopmentCardHandlerTest {
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.KNIGHT);
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
     EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(3);
     mockRobber.moveRobber(targetHexId);
     EasyMock.expect(mockVictim.getTotalResourceCount()).andReturn(3);
     EasyMock.expect(mockVictim.getResources()).andReturn(Map.of(Resource.ORE, 3));
@@ -373,6 +374,7 @@ class DevelopmentCardHandlerTest {
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.KNIGHT);
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
     EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(5);
     mockRobber.moveRobber(targetHexId);
     EasyMock.expect(mockVictim.getTotalResourceCount()).andReturn(1);
     EasyMock.expect(mockVictim.getResources()).andReturn(Map.of(Resource.WOOL, 1));
@@ -405,6 +407,7 @@ class DevelopmentCardHandlerTest {
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.KNIGHT);
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
     EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(5);
     mockRobber.moveRobber(targetHexId);
     EasyMock.expect(mockVictim.getTotalResourceCount()).andReturn(2);
     EasyMock.expect(mockVictim.getResources()).andReturn(Map.of(Resource.GRAIN, 2));
@@ -420,5 +423,32 @@ class DevelopmentCardHandlerTest {
     handler.playKnightCard(mockPlayer, mockCard, currentRound, mockRobber, targetHexId, mockVictim);
 
     EasyMock.verify(mockPlayer, mockCard, mockRobber, mockVictim);
+  }
+
+  // TC16: targetHexId = robber's current hex (same hex)
+  //       -> IllegalArgumentException: "Must move robber to a different hex."
+  @Test
+  void playKnightCard_TargetHexIsSameAsCurrentHex_ExpectIllegalArgumentException() {
+    final int currentRound = 2;
+    final int targetHexId = 5;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+    Robber mockRobber = EasyMock.createMock(Robber.class);
+    Player mockVictim = EasyMock.createMock(Player.class);
+
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.KNIGHT);
+    EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
+    EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(5);
+
+    EasyMock.replay(mockPlayer, mockCard, mockRobber, mockVictim);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    Exception exception = assertThrows(IllegalArgumentException.class,
+        () -> handler.playKnightCard(mockPlayer, mockCard, currentRound, mockRobber, targetHexId, mockVictim));
+
+    EasyMock.verify(mockPlayer, mockCard, mockRobber, mockVictim);
+    assertEquals("Must move robber to a different hex.", exception.getMessage());
   }
 }
