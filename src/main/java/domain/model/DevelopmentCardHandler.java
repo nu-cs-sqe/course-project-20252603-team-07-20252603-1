@@ -2,6 +2,7 @@ package domain.model;
 
 import domain.model.development_cards.DevelopmentCard;
 import domain.model.development_cards.DevelopmentCardDeck;
+import domain.model.development_cards.DevelopmentCardType;
 import domain.model.exceptions.EmptyDeckException;
 import domain.model.exceptions.InsufficientResourcesException;
 import domain.model.game_pieces.Robber;
@@ -30,6 +31,9 @@ public class DevelopmentCardHandler {
     public void playKnightCard(Player player, DevelopmentCard card, int currentRound, Robber robber, int targetHexId, Player victim) {
         if (card == null) {
             throw new IllegalArgumentException("Development card cannot be null.");
+        }
+        if (card.getType() != DevelopmentCardType.KNIGHT) {
+            throw new IllegalArgumentException("Card is not a Knight card.");
         }
     }
 

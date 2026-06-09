@@ -9,6 +9,7 @@ import domain.model.exceptions.EmptyDeckException;
 import domain.model.player.Player;
 import domain.model.resources.Resource;
 
+import domain.model.development_cards.DevelopmentCardType;
 import domain.model.exceptions.InsufficientResourcesException;
 import domain.model.game_pieces.Robber;
 
@@ -225,5 +226,28 @@ class DevelopmentCardHandlerTest {
 
     EasyMock.verify(mockPlayer, mockRobber, mockVictim);
     assertEquals("Development card cannot be null.", exception.getMessage());
+  }
+
+  // TC9: card type = MONOPOLY (not KNIGHT)
+  //      -> IllegalArgumentException: "Card is not a Knight card."
+  @Test
+  void playKnightCard_CardTypeIsNotKnight_ExpectIllegalArgumentException() {
+    final int currentRound = 1;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+    Robber mockRobber = EasyMock.createMock(Robber.class);
+    Player mockVictim = EasyMock.createMock(Player.class);
+
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.MONOPOLY);
+
+    EasyMock.replay(mockPlayer, mockCard, mockRobber, mockVictim);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    Exception exception = assertThrows(IllegalArgumentException.class,
+        () -> handler.playKnightCard(mockPlayer, mockCard, currentRound, mockRobber, 5, mockVictim));
+
+    EasyMock.verify(mockPlayer, mockCard, mockRobber, mockVictim);
+    assertEquals("Card is not a Knight card.", exception.getMessage());
   }
 }
