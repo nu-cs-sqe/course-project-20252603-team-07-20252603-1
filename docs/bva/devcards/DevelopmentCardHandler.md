@@ -201,7 +201,7 @@ Step 3:
 | Test Case 24 | player already played a dev card this turn                                         | IllegalStateException: "Already played a development card this turn." | :white_check_mark: |
 | Test Case 25 | resource = null                                                                    | IllegalArgumentException: "Resource cannot be null."             | :white_check_mark: |
 | Test Case 26 | resource = DESERT                                                                  | IllegalArgumentException: "Cannot monopolize DESERT."            | :white_check_mark: |
-| Test Case 27 | otherPlayers = null                                                                | IllegalArgumentException: "Other players list cannot be null."   | :x:          |
+| Test Case 27 | otherPlayers = null                                                                | IllegalArgumentException: "Other players list cannot be null."   | :white_check_mark: |
 | Test Case 28 | resource = BRICK, otherPlayers = [] (empty list)                                   | no resources transferred; card removed from hand                 | :x:          |
 | Test Case 29 | resource = ORE, 1 opponent has 5 ORE                                               | opponent loses 5 ORE; player gains 5 ORE; card removed from hand | :x:          |
 | Test Case 30 | resource = WOOL, 1 opponent has 0 WOOL                                             | no WOOL transferred; card removed from hand                      | :x:          |
