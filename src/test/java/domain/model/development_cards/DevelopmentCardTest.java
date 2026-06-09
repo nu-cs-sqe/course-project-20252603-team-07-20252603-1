@@ -35,6 +35,16 @@ class DevelopmentCardTest {
       assertEquals(expectedRound, card.getRoundDrawnAt());
     }
 
+    // TC4: new DevelopmentCard(YEAR_OF_PLENTY, 10) -> getType() == YEAR_OF_PLENTY, roundDrawnAt == 10
+    @Test
+    void constructYearOfPlentyCard_AtRoundTen_ExpectYearOfPlentyTypeAndRoundTen() {
+      final int expectedRound = 10;
+      DevelopmentCard card = new DevelopmentCard(DevelopmentCardType.YEAR_OF_PLENTY, 10);
+
+      assertEquals(DevelopmentCardType.YEAR_OF_PLENTY, card.getType());
+      assertEquals(expectedRound, card.getRoundDrawnAt());
+    }
+
     @Test
     void testCreateKnightDevelopmentCard() {
         DevelopmentCard knight = DevelopmentCard.createKnightDevelopmentCard(3);
