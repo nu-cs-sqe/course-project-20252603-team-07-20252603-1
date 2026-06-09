@@ -804,4 +804,38 @@ class DevelopmentCardHandlerTest {
 
     EasyMock.verify(mockPlayer, mockCard, mockOpponent);
   }
+
+  // TC31: resource = GRAIN, 3 opponents have 2, 0, and 4 GRAIN respectively
+  //       -> opponents lose 2, 0, 4; player gains 6 GRAIN total; card removed
+  @Test
+  void playMonopolyCard_ThreeOpponentsWithVaryingGrain_ExpectAllGrainTransferred() {
+    final int currentRound = 2;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+    Player mockOpponent1 = EasyMock.createMock(Player.class);
+    Player mockOpponent2 = EasyMock.createMock(Player.class);
+    Player mockOpponent3 = EasyMock.createMock(Player.class);
+
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.MONOPOLY);
+    EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
+    EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
+    EasyMock.expect(mockOpponent1.getResourceCount(Resource.GRAIN)).andReturn(2);
+    mockOpponent1.updateResources(Resource.GRAIN, -2);
+    mockPlayer.updateResources(Resource.GRAIN, 2);
+    EasyMock.expect(mockOpponent2.getResourceCount(Resource.GRAIN)).andReturn(0);
+    EasyMock.expect(mockOpponent3.getResourceCount(Resource.GRAIN)).andReturn(4);
+    mockOpponent3.updateResources(Resource.GRAIN, -4);
+    mockPlayer.updateResources(Resource.GRAIN, 4);
+    mockPlayer.removeDevelopmentCard(mockCard);
+    mockPlayer.setHasPlayedDevCardThisTurn(true);
+
+    EasyMock.replay(mockPlayer, mockCard, mockOpponent1, mockOpponent2, mockOpponent3);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    handler.playMonopolyCard(mockPlayer, mockCard, currentRound, Resource.GRAIN,
+        List.of(mockOpponent1, mockOpponent2, mockOpponent3));
+
+    EasyMock.verify(mockPlayer, mockCard, mockOpponent1, mockOpponent2, mockOpponent3);
+  }
 }

@@ -205,7 +205,7 @@ Step 3:
 | Test Case 28 | resource = BRICK, otherPlayers = [] (empty list)                                   | no resources transferred; card removed from hand                 | :white_check_mark: |
 | Test Case 29 | resource = ORE, 1 opponent has 5 ORE                                               | opponent loses 5 ORE; player gains 5 ORE; card removed from hand | :white_check_mark: |
 | Test Case 30 | resource = WOOL, 1 opponent has 0 WOOL                                             | no WOOL transferred; card removed from hand                      | :white_check_mark: |
-| Test Case 31 | resource = GRAIN, 3 opponents have 2, 0, and 4 GRAIN respectively                 | opponents lose 2, 0, 4; player gains 6 GRAIN; card removed       | :x:          |
+| Test Case 31 | resource = GRAIN, 3 opponents have 2, 0, and 4 GRAIN respectively                 | opponents lose 2, 0, 4; player gains 6 GRAIN; card removed       | :white_check_mark: |
 | Test Case 32 | resource = LUMBER, 1 opponent has 1 LUMBER (minimum transferable)                  | opponent loses 1 LUMBER; player gains 1 LUMBER; card removed     | :x:          |
 
 
