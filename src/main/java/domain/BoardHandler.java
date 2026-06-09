@@ -175,6 +175,7 @@ public class BoardHandler {
     boardGraphController.playerClaimStoredEdgeSetupPhase(claimingColor, claimedNodeId, nodeId1, nodeId2);
   }
 
+  // Note: Returns SETUP PlayerColor if nobody has achieved longest road yet
   PlayerColor calculateLongestRoad() {
     return longestRoadCalc.calculateLongestRoad();
   }
