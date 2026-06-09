@@ -163,6 +163,14 @@ public class BoardGraph {
     int longestRoad = 4;
     PlayerColor longestRoadOwner = previousWinner;
 
+    for (Set<GraphEdge> edges : nodeIDToConnectingEdges.values()) {
+      for (GraphEdge edge : edges) {
+        if (edge.checkOwningColor() == previousWinner) {
+          longestRoad++;
+        }
+      }
+    }
+
     for (Player player : activePlayers) {
       PlayerColor color = player.getPlayerColor();
       int roadLength = 0;

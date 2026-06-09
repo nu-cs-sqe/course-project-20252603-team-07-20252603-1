@@ -1263,4 +1263,139 @@ public class BoardGraphTests {
             mockRedPlayer, mockBluePlayer, mockOrangePlayer, mockWhitePlayer);
   }
 
+  // Test Case 4
+  @Test
+  void WhiteAndBlueHaveFiveRoads_WhiteIsPreviousWinner_ReturnsWhite() {
+    BoardGraph b = new BoardGraph();
+
+    Player mockRedPlayer = EasyMock.createMock(Player.class);
+    Player mockWhitePlayer = EasyMock.createMock(Player.class);
+    Player mockBluePlayer = EasyMock.createMock(Player.class);
+    Player mockOrangePlayer = EasyMock.createMock(Player.class);
+
+    List<Player> players = List.of(mockRedPlayer, mockBluePlayer, mockOrangePlayer, mockWhitePlayer);
+
+    GraphNode mockNode0 = EasyMock.createMock(GraphNode.class);
+    GraphNode mockNode4 = EasyMock.createMock(GraphNode.class);
+    GraphNode mockNode8 = EasyMock.createMock(GraphNode.class);
+    GraphNode mockNode12 = EasyMock.createMock(GraphNode.class);
+    GraphNode mockNode17 = EasyMock.createMock(GraphNode.class);
+    GraphNode mockNode22 = EasyMock.createMock(GraphNode.class);
+    GraphNode mockNode2 = EasyMock.createMock(GraphNode.class);
+    GraphNode mockNode5 = EasyMock.createMock(GraphNode.class);
+    GraphNode mockNode9 = EasyMock.createMock(GraphNode.class);
+    GraphNode mockNode13 = EasyMock.createMock(GraphNode.class);
+    GraphNode mockNode18 = EasyMock.createMock(GraphNode.class);
+    GraphNode mockNode23 = EasyMock.createMock(GraphNode.class);
+
+    GraphEdge mockEdge0To4 = EasyMock.createMock(GraphEdge.class);
+    GraphEdge mockEdge4To8 = EasyMock.createMock(GraphEdge.class);
+    GraphEdge mockEdge8To12 = EasyMock.createMock(GraphEdge.class);
+    GraphEdge mockEdge12To17 = EasyMock.createMock(GraphEdge.class);
+    GraphEdge mockEdge17To22 = EasyMock.createMock(GraphEdge.class);
+    GraphEdge mockEdge2To5 = EasyMock.createMock(GraphEdge.class);
+    GraphEdge mockEdge5To9 = EasyMock.createMock(GraphEdge.class);
+    GraphEdge mockEdge9To13 = EasyMock.createMock(GraphEdge.class);
+    GraphEdge mockEdge13To18 = EasyMock.createMock(GraphEdge.class);
+    GraphEdge mockEdge18To23 = EasyMock.createMock(GraphEdge.class);
+
+    EasyMock.expect(mockNode0.getNodeID()).andReturn(0);
+    EasyMock.expect(mockNode4.getNodeID()).andReturn(4);
+    EasyMock.expect(mockNode8.getNodeID()).andReturn(8);
+    EasyMock.expect(mockNode12.getNodeID()).andReturn(12);
+    EasyMock.expect(mockNode17.getNodeID()).andReturn(17);
+    EasyMock.expect(mockNode22.getNodeID()).andReturn(22);
+    EasyMock.expect(mockNode2.getNodeID()).andReturn(2);
+    EasyMock.expect(mockNode5.getNodeID()).andReturn(5);
+    EasyMock.expect(mockNode9.getNodeID()).andReturn(9);
+    EasyMock.expect(mockNode13.getNodeID()).andReturn(13);
+    EasyMock.expect(mockNode18.getNodeID()).andReturn(18);
+    EasyMock.expect(mockNode23.getNodeID()).andReturn(23);
+
+    EasyMock.expect(mockEdge0To4.getStartingNodeID()).andReturn(0).anyTimes();
+    EasyMock.expect(mockEdge0To4.getEndingNodeID()).andReturn(4).anyTimes();
+    EasyMock.expect(mockEdge4To8.getStartingNodeID()).andReturn(4).anyTimes();
+    EasyMock.expect(mockEdge4To8.getEndingNodeID()).andReturn(8).anyTimes();
+    EasyMock.expect(mockEdge8To12.getStartingNodeID()).andReturn(8).anyTimes();
+    EasyMock.expect(mockEdge8To12.getEndingNodeID()).andReturn(12).anyTimes();
+    EasyMock.expect(mockEdge12To17.getStartingNodeID()).andReturn(12).anyTimes();
+    EasyMock.expect(mockEdge12To17.getEndingNodeID()).andReturn(17).anyTimes();
+    EasyMock.expect(mockEdge17To22.getStartingNodeID()).andReturn(17).anyTimes();
+    EasyMock.expect(mockEdge17To22.getEndingNodeID()).andReturn(22).anyTimes();
+    EasyMock.expect(mockEdge2To5.getStartingNodeID()).andReturn(2).anyTimes();
+    EasyMock.expect(mockEdge2To5.getEndingNodeID()).andReturn(5).anyTimes();
+    EasyMock.expect(mockEdge5To9.getStartingNodeID()).andReturn(5).anyTimes();
+    EasyMock.expect(mockEdge5To9.getEndingNodeID()).andReturn(9).anyTimes();
+    EasyMock.expect(mockEdge9To13.getStartingNodeID()).andReturn(9).anyTimes();
+    EasyMock.expect(mockEdge9To13.getEndingNodeID()).andReturn(13).anyTimes();
+    EasyMock.expect(mockEdge13To18.getStartingNodeID()).andReturn(13).anyTimes();
+    EasyMock.expect(mockEdge13To18.getEndingNodeID()).andReturn(18).anyTimes();
+    EasyMock.expect(mockEdge18To23.getStartingNodeID()).andReturn(18).anyTimes();
+    EasyMock.expect(mockEdge18To23.getEndingNodeID()).andReturn(23).anyTimes();
+
+    EasyMock.expect(mockEdge0To4.checkOwningColor()).andReturn(PlayerColor.WHITE).anyTimes();
+    EasyMock.expect(mockEdge4To8.checkOwningColor()).andReturn(PlayerColor.WHITE).anyTimes();
+    EasyMock.expect(mockEdge8To12.checkOwningColor()).andReturn(PlayerColor.WHITE).anyTimes();
+    EasyMock.expect(mockEdge12To17.checkOwningColor()).andReturn(PlayerColor.WHITE).anyTimes();
+    EasyMock.expect(mockEdge17To22.checkOwningColor()).andReturn(PlayerColor.WHITE).anyTimes();
+    EasyMock.expect(mockEdge2To5.checkOwningColor()).andReturn(PlayerColor.BLUE).anyTimes();
+    EasyMock.expect(mockEdge5To9.checkOwningColor()).andReturn(PlayerColor.BLUE).anyTimes();
+    EasyMock.expect(mockEdge9To13.checkOwningColor()).andReturn(PlayerColor.BLUE).anyTimes();
+    EasyMock.expect(mockEdge13To18.checkOwningColor()).andReturn(PlayerColor.BLUE).anyTimes();
+    EasyMock.expect(mockEdge18To23.checkOwningColor()).andReturn(PlayerColor.BLUE).anyTimes();
+
+    EasyMock.expect(mockRedPlayer.getPlayerColor()).andReturn(PlayerColor.RED).anyTimes();
+    EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE).anyTimes();
+    EasyMock.expect(mockOrangePlayer.getPlayerColor()).andReturn(PlayerColor.ORANGE).anyTimes();
+    EasyMock.expect(mockWhitePlayer.getPlayerColor()).andReturn(PlayerColor.WHITE).anyTimes();
+
+    EasyMock.replay(mockNode0, mockNode4, mockNode8, mockNode12, mockNode17, mockNode22,
+            mockNode2, mockNode5, mockNode9, mockNode13, mockNode18, mockNode23,
+            mockEdge0To4, mockEdge4To8, mockEdge8To12, mockEdge12To17, mockEdge17To22,
+            mockEdge2To5, mockEdge5To9, mockEdge9To13, mockEdge13To18, mockEdge18To23,
+            mockRedPlayer, mockBluePlayer, mockOrangePlayer, mockWhitePlayer);
+
+    b.addGraphNodeObject(mockNode0);
+    b.addGraphNodeObject(mockNode4);
+    b.addGraphNodeObject(mockNode8);
+    b.addGraphNodeObject(mockNode12);
+    b.addGraphNodeObject(mockNode17);
+    b.addGraphNodeObject(mockNode22);
+    b.addGraphNodeObject(mockNode2);
+    b.addGraphNodeObject(mockNode5);
+    b.addGraphNodeObject(mockNode9);
+    b.addGraphNodeObject(mockNode13);
+    b.addGraphNodeObject(mockNode18);
+    b.addGraphNodeObject(mockNode23);
+
+    b.addGraphNodeConnection(0, mockEdge0To4);
+    b.addGraphNodeConnection(4, mockEdge0To4);
+    b.addGraphNodeConnection(4, mockEdge4To8);
+    b.addGraphNodeConnection(8, mockEdge4To8);
+    b.addGraphNodeConnection(8, mockEdge8To12);
+    b.addGraphNodeConnection(12, mockEdge8To12);
+    b.addGraphNodeConnection(12, mockEdge12To17);
+    b.addGraphNodeConnection(17, mockEdge12To17);
+    b.addGraphNodeConnection(17, mockEdge17To22);
+    b.addGraphNodeConnection(22, mockEdge17To22);
+    b.addGraphNodeConnection(2, mockEdge2To5);
+    b.addGraphNodeConnection(5, mockEdge2To5);
+    b.addGraphNodeConnection(5, mockEdge5To9);
+    b.addGraphNodeConnection(9, mockEdge5To9);
+    b.addGraphNodeConnection(9, mockEdge9To13);
+    b.addGraphNodeConnection(13, mockEdge9To13);
+    b.addGraphNodeConnection(13, mockEdge13To18);
+    b.addGraphNodeConnection(18, mockEdge13To18);
+    b.addGraphNodeConnection(18, mockEdge18To23);
+    b.addGraphNodeConnection(23, mockEdge18To23);
+
+    assertEquals(PlayerColor.WHITE, b.calculateLongestRoad(players, PlayerColor.WHITE));
+
+    EasyMock.verify(mockNode0, mockNode4, mockNode8, mockNode12, mockNode17, mockNode22,
+            mockNode2, mockNode5, mockNode9, mockNode13, mockNode18, mockNode23,
+            mockEdge0To4, mockEdge4To8, mockEdge8To12, mockEdge12To17, mockEdge17To22,
+            mockEdge2To5, mockEdge5To9, mockEdge9To13, mockEdge13To18, mockEdge18To23,
+            mockRedPlayer, mockBluePlayer, mockOrangePlayer, mockWhitePlayer);
+  }
+
 }
