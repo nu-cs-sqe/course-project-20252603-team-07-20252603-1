@@ -73,6 +73,20 @@ class DevelopmentCardDeckTest {
     assertEquals(expectedMonopolyCount, monopolyCount);
   }
 
+  // TC6: new DevelopmentCardDeck() -> deck contains exactly 5 VICTORY_POINT cards
+  @Test
+  void constructDeck_OnNewDeck_ExpectFiveVictoryPointCards() throws EmptyDeckException {
+    DevelopmentCardDeck deck = new DevelopmentCardDeck();
+    final int expectedVictoryPointCount = 5;
+
+    int victoryPointCount = 0;
+    for (int i = 0; i < DECK_SIZE; i++) {
+      if (deck.drawCard().getType() == DevelopmentCardType.VICTORY_POINT) victoryPointCount++;
+    }
+
+    assertEquals(expectedVictoryPointCount, victoryPointCount);
+  }
+
     @Test
     void testDrawCardReducesCount() throws EmptyDeckException {
         DevelopmentCardDeck deck = new DevelopmentCardDeck();

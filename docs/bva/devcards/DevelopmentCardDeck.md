@@ -36,7 +36,7 @@ Step 3:
 | Test Case 3 | new DevelopmentCardDeck()  | deck contains exactly 2 ROAD_BUILDER cards         | :white_check_mark: |
 | Test Case 4 | new DevelopmentCardDeck()  | deck contains exactly 2 YEAR_OF_PLENTY cards       | :white_check_mark: |
 | Test Case 5 | new DevelopmentCardDeck()  | deck contains exactly 2 MONOPOLY cards             | :white_check_mark: |
-| Test Case 6 | new DevelopmentCardDeck()  | deck contains exactly 5 VICTORY_POINT cards        | :x:          |
+| Test Case 6 | new DevelopmentCardDeck()  | deck contains exactly 5 VICTORY_POINT cards        | :white_check_mark: |
 
 
 ---
