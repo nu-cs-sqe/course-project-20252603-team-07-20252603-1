@@ -32,13 +32,13 @@ Step 3:
 - Input currentRoundNumber (Interval [0, ∞)): 0 (LOW); 1 (LOW + ε); large value (e.g. 100)
 
 
-|             | System under test                                        | Expected output                                     | Implemented? |
-| ----------- | -------------------------------------------------------- | --------------------------------------------------- | ------------ |
-| Test Case 1 | new DevelopmentCard(KNIGHT, 0)                           | card.getType() == KNIGHT, roundDrawnAt == 0         | :x:          |
-| Test Case 2 | new DevelopmentCard(VICTORY_POINT, 5)                    | card.getType() == VICTORY_POINT, roundDrawnAt == 5  | :x:          |
-| Test Case 3 | new DevelopmentCard(ROAD_BUILDER, 1)                     | card.getType() == ROAD_BUILDER, roundDrawnAt == 1   | :x:          |
-| Test Case 4 | new DevelopmentCard(YEAR_OF_PLENTY, 10)                  | card.getType() == YEAR_OF_PLENTY, roundDrawnAt == 10| :x:          |
-| Test Case 5 | new DevelopmentCard(MONOPOLY, 3)                         | card.getType() == MONOPOLY, roundDrawnAt == 3       | :x:          |
+|             | System under test                                        | Expected output                                     | Implemented?                    |
+| ----------- | -------------------------------------------------------- | --------------------------------------------------- |---------------------------------|
+| Test Case 1 | new DevelopmentCard(KNIGHT, 0)                           | card.getType() == KNIGHT, roundDrawnAt == 0         | :white_check_mark:              |
+| Test Case 2 | new DevelopmentCard(VICTORY_POINT, 5)                    | card.getType() == VICTORY_POINT, roundDrawnAt == 5  | :white_check_mark:              |
+| Test Case 3 | new DevelopmentCard(ROAD_BUILDER, 1)                     | card.getType() == ROAD_BUILDER, roundDrawnAt == 1   | :white_check_mark:              |
+| Test Case 4 | new DevelopmentCard(YEAR_OF_PLENTY, 10)                  | card.getType() == YEAR_OF_PLENTY, roundDrawnAt == 10| :white_check_mark:                              |
+| Test Case 5 | new DevelopmentCard(MONOPOLY, 3)                         | card.getType() == MONOPOLY, roundDrawnAt == 3       | :white_check_mark:                              |
 
 
 ---
@@ -58,13 +58,13 @@ Step 3:
 
 - Each Case value is tested via the constructor tests above (Test Cases 1–5).
 
-| | System under test | Expected output | Implemented? |
-| ----------- | ----------------------------------------------- | --------------- | ---------------------- |
-| Test Case 6 | getType() on KNIGHT card | KNIGHT | Implemented in TC 1 |
-| Test Case 7 | getType() on VICTORY_POINT card | VICTORY_POINT | Implemented in TC 2 |
-| Test Case 8 | getType() on ROAD_BUILDER card | ROAD_BUILDER | Implemented in TC 3 |
-| Test Case 9 | getType() on YEAR_OF_PLENTY card | YEAR_OF_PLENTY | Implemented in TC 4 |
-| Test Case 10 | getType() on MONOPOLY card | MONOPOLY | Implemented in TC 5 |
+| | System under test | Expected output | Implemented?        |
+| ----------- | ----------------------------------------------- | --------------- |---------------------|
+| Test Case 6 | getType() on KNIGHT card | KNIGHT | :x:                 |
+| Test Case 7 | getType() on VICTORY_POINT card | VICTORY_POINT | :x: |
+| Test Case 8 | getType() on ROAD_BUILDER card | ROAD_BUILDER | :x: |
+| Test Case 9 | getType() on YEAR_OF_PLENTY card | YEAR_OF_PLENTY | :x: |
+| Test Case 10 | getType() on MONOPOLY card | MONOPOLY | :x: |
 
 
 ---
