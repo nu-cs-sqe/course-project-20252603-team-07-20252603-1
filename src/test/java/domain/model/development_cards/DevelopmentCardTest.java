@@ -23,6 +23,15 @@ class DevelopmentCardTest {
         assertEquals(5, card.getRoundDrawnAt());
     }
 
+    // TC3: new DevelopmentCard(ROAD_BUILDER, 1) -> getType() == ROAD_BUILDER, roundDrawnAt == 1
+    @Test
+    void constructRoadBuilderCard_AtRoundOne_ExpectRoadBuilderTypeAndRoundOne() {
+        DevelopmentCard card = new DevelopmentCard(DevelopmentCardType.ROAD_BUILDER, 1);
+
+        assertEquals(DevelopmentCardType.ROAD_BUILDER, card.getType());
+        assertEquals(1, card.getRoundDrawnAt());
+    }
+
     @Test
     void testCreateKnightDevelopmentCard() {
         DevelopmentCard knight = DevelopmentCard.createKnightDevelopmentCard(3);
