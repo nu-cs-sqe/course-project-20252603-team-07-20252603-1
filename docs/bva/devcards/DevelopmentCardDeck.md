@@ -97,7 +97,7 @@ Step 3:
 
 |              | System under test              | Expected output                              | Implemented? |
 | ------------ | ------------------------------ | -------------------------------------------- | ------------ |
-| Test Case 10 | shuffle() on full deck (25)    | card order is randomized; countRemaining() still 25 | :x:          |
+| Test Case 10 | shuffle() on full deck (25)    | card order is randomized; countRemaining() still 25 | :white_check_mark: |
 | Test Case 11 | shuffle() on deck with 1 card  | deck unchanged; countRemaining() still 1     | :x:          |
 | Test Case 12 | shuffle() on empty deck (0)    | deck remains empty; no error                 | :x:          |
 

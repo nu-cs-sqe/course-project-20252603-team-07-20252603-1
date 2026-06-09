@@ -130,6 +130,30 @@ class DevelopmentCardDeckTest {
     assertEquals("Cannot draw new DevelopmentCard, no cards remain.", exception.getMessage());
   }
 
+  // TC10: shuffle() on full deck (25) -> card order is randomized; countRemaining() still 25
+  // Note: probabilistic — compares two independently shuffled sequences; failure probability is 1/25! ≈ 10^-25
+  @Test
+  void shuffle_OnFullDeck_ExpectRandomizedOrderAndCountUnchanged() throws EmptyDeckException {
+    DevelopmentCardDeck deck1 = new DevelopmentCardDeck();
+    DevelopmentCardDeck deck2 = new DevelopmentCardDeck();
+    deck2.shuffle();
+
+    assertEquals(DECK_SIZE, deck2.countRemaining());
+
+    DevelopmentCardType[] order1 = new DevelopmentCardType[DECK_SIZE];
+    DevelopmentCardType[] order2 = new DevelopmentCardType[DECK_SIZE];
+    for (int i = 0; i < DECK_SIZE; i++) {
+      order1[i] = deck1.drawCard(0).getType();
+      order2[i] = deck2.drawCard(0).getType();
+    }
+
+    boolean isDifferent = false;
+    for (int i = 0; i < DECK_SIZE; i++) {
+      if (order1[i] != order2[i]) { isDifferent = true; break; }
+    }
+    assertTrue(isDifferent);
+  }
+
     @Test
     void testDrawCardReducesCount() throws EmptyDeckException {
         DevelopmentCardDeck deck = new DevelopmentCardDeck();
