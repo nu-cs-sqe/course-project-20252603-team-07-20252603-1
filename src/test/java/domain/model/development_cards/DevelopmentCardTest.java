@@ -74,4 +74,14 @@ class DevelopmentCardTest {
         DevelopmentCard card = new DevelopmentCard(DevelopmentCardType.KNIGHT, drawnAtRound);
         assertFalse(card.isPlayable(currentRound));
     }
+
+    // TC13: isPlayable(6), KNIGHT drawn at round 5 (currentRound > roundDrawnAt) -> true
+    @Test
+    void isPlayable_KnightCardCurrentRoundGreaterThanDrawnRound_ExpectTrue() {
+        final int drawnAtRound = 5;
+        final int currentRound = 6;
+
+        DevelopmentCard card = new DevelopmentCard(DevelopmentCardType.KNIGHT, drawnAtRound);
+        assertTrue(card.isPlayable(currentRound));
+    }
 }
