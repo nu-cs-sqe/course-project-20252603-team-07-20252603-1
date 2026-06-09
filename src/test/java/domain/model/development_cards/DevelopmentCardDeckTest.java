@@ -154,6 +154,18 @@ class DevelopmentCardDeckTest {
     assertTrue(isDifferent);
   }
 
+  // TC11: shuffle() on deck with 1 card -> deck unchanged; countRemaining() still 1
+  @Test
+  void shuffle_OnDeckWithOneCard_ExpectCountUnchanged() throws EmptyDeckException {
+    DevelopmentCardDeck deck = new DevelopmentCardDeck();
+    for (int i = 0; i < 24; i++) deck.drawCard(0);
+
+    deck.shuffle();
+
+    assertEquals(1, deck.countRemaining());
+    assertNotNull(deck.drawCard(0));
+  }
+
     @Test
     void testDrawCardReducesCount() throws EmptyDeckException {
         DevelopmentCardDeck deck = new DevelopmentCardDeck();
