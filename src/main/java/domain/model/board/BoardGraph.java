@@ -1,9 +1,11 @@
-package domain;
+package domain.model.board;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import domain.model.player.PlayerColor;
 
 public class BoardGraph {
     // map that connects Nodes to the edges connected

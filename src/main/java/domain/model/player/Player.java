@@ -1,10 +1,15 @@
-package domain;
+package domain.model.player;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import domain.model.resources.*;
+import domain.Settlement;
+import domain.model.board.Vertex;
+import domain.model.board.Edge;
 
 public class Player {
     private final List<Settlement> settlements;
@@ -80,11 +85,11 @@ public class Player {
     }
 
     // TODO: BVA analysis and implementation
-    void updateResources(Resource resource, int amount){
+    public void updateResources(Resource resource, int amount){
 
     }
 
-    int getResourceCount(Resource resource) {
+    public int getResourceCount(Resource resource) {
         return 0;
     }
 }

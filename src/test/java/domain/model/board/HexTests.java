@@ -1,6 +1,9 @@
-package domain;
+package domain.model.board;
 
 import org.junit.jupiter.api.Test;
+
+import domain.model.player.Player;
+import domain.model.resources.Resource;
 
 import org.easymock.EasyMock;
 

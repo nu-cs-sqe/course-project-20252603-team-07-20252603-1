@@ -1,4 +1,4 @@
-package domain;
+package domain.model.board;
 
 public class Edge {
     public boolean isOccupied() {

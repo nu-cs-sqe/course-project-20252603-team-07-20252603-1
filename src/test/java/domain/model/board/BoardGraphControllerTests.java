@@ -1,7 +1,13 @@
-package domain;
+package domain.model.board;
 
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
+
+import domain.model.board.*;
+import domain.model.exceptions.AdjacentNodeAlreadyClaimed;
+import domain.model.exceptions.EdgeAlreadyClaimedException;
+import domain.model.exceptions.IllegalEdgeClaim;
+import domain.model.player.PlayerColor;
 
 import java.util.HashSet;
 

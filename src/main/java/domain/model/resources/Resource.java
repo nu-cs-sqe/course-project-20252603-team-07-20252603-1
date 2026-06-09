@@ -1,4 +1,4 @@
-package domain;
+package domain.model.resources;
 
 public enum Resource {
   BRICK,

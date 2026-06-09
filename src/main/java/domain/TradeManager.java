@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import domain.model.player.Player;
+import domain.model.resources.Resource;
+import domain.model.resources.ResourceQuantity;
+
 public class TradeManager {
     private final List<TradeOffer> offers = new ArrayList<>();
 

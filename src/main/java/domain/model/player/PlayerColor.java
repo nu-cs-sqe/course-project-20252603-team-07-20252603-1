@@ -1,4 +1,4 @@
-package domain;
+package domain.model.player;
 
 public enum PlayerColor {
     SETUP,

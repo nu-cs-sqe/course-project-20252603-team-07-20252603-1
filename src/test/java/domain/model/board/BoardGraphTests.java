@@ -1,7 +1,11 @@
-package domain;
+package domain.model.board;
 
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
+
+import domain.model.board.BoardGraph;
+import domain.model.exceptions.EdgeAlreadyClaimedException;
+import domain.model.player.PlayerColor;
 
 import java.util.Set;
 

@@ -1,4 +1,7 @@
-package domain;
+package domain.model.board;
+
+import domain.model.exceptions.IllegalNodeIDException;
+import domain.model.player.PlayerColor;
 
 public class GraphNode {
     // Graph node represents vertexes of hexagons on board
