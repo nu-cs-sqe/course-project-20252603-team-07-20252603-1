@@ -1424,4 +1424,11 @@ class DevelopmentCardHandlerTest {
 
     EasyMock.verify(mockPlayer, mockCard);
   }
+
+  // TC56: hand is empty -> 0
+  @Test
+  void countVictoryPointCards_EmptyHand_ExpectZero() {
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    assertEquals(0, handler.countVictoryPointCards(List.of()));
+  }
 }

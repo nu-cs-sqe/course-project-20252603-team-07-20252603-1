@@ -166,4 +166,14 @@ public class DevelopmentCardHandler {
         player.setHasPlayedDevCardThisTurn(true);
     }
 
+    public int countVictoryPointCards(List<DevelopmentCard> hand) {
+        int count = 0;
+        for (DevelopmentCard c : hand) {
+            if (c.getType() == DevelopmentCardType.VICTORY_POINT) {
+                count++;
+            }
+        }
+        return count;
+    }
+
 }
