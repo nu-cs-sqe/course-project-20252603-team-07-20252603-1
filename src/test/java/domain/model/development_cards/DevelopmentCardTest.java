@@ -104,4 +104,14 @@ class DevelopmentCardTest {
         DevelopmentCard card = new DevelopmentCard(DevelopmentCardType.ROAD_BUILDER, drawnAtRound);
         assertTrue(card.isPlayable(currentRound));
     }
+
+    // TC16: isPlayable(5), VICTORY_POINT drawn at round 5 (same turn — VP exception) -> true
+    @Test
+    void isPlayable_VictoryPointCardCurrentRoundEqualsDrawnRound_ExpectTrue() {
+        final int drawnAtRound = 5;
+        final int currentRound = 5;
+
+        DevelopmentCard card = new DevelopmentCard(DevelopmentCardType.VICTORY_POINT, drawnAtRound);
+        assertTrue(card.isPlayable(currentRound));
+    }
 }
