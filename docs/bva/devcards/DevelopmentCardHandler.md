@@ -199,7 +199,7 @@ Step 3:
 | Test Case 22 | card type = KNIGHT (not MONOPOLY)                                                  | IllegalArgumentException: "Card is not a Monopoly card."         | :white_check_mark: |
 | Test Case 23 | card drawn this round (not playable)                                               | IllegalStateException: "Card cannot be played the same turn it was purchased." | :white_check_mark: |
 | Test Case 24 | player already played a dev card this turn                                         | IllegalStateException: "Already played a development card this turn." | :white_check_mark: |
-| Test Case 25 | resource = null                                                                    | IllegalArgumentException: "Resource cannot be null."             | :x:          |
+| Test Case 25 | resource = null                                                                    | IllegalArgumentException: "Resource cannot be null."             | :white_check_mark: |
 | Test Case 26 | resource = DESERT                                                                  | IllegalArgumentException: "Cannot monopolize DESERT."            | :x:          |
 | Test Case 27 | otherPlayers = null                                                                | IllegalArgumentException: "Other players list cannot be null."   | :x:          |
 | Test Case 28 | resource = BRICK, otherPlayers = [] (empty list)                                   | no resources transferred; card removed from hand                 | :x:          |

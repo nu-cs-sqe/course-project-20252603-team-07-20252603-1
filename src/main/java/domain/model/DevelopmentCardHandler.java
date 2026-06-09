@@ -46,6 +46,9 @@ public class DevelopmentCardHandler {
         if (player.hasPlayedDevCardThisTurn()) {
             throw new IllegalStateException("Already played a development card this turn.");
         }
+        if (resource == null) {
+            throw new IllegalArgumentException("Resource cannot be null.");
+        }
     }
 
     public void playKnightCard(Player player, DevelopmentCard card, int currentRound, Robber robber, int targetHexId, Player victim) {
