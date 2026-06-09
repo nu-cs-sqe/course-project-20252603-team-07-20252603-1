@@ -159,6 +159,11 @@ public class DevelopmentCardHandler {
         if (resource2 == Resource.DESERT) {
             throw new IllegalArgumentException("Cannot take DESERT as a resource.");
         }
+
+        player.updateResources(resource1, 1);
+        player.updateResources(resource2, 1);
+        player.removeDevelopmentCard(card);
+        player.setHasPlayedDevCardThisTurn(true);
     }
 
 }

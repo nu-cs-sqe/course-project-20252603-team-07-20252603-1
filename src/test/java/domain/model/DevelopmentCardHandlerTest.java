@@ -1374,4 +1374,29 @@ class DevelopmentCardHandlerTest {
     EasyMock.verify(mockPlayer, mockCard);
     assertEquals("Cannot take DESERT as a resource.", exception.getMessage());
   }
+
+  // TC54: resource1 = ORE, resource2 = ORE (same type)
+  //       -> player gains 2 ORE; card removed from hand
+  @Test
+  void playYearOfPlentyCard_SameResourceType_ExpectBothTransferred() {
+    final int currentRound = 3;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.YEAR_OF_PLENTY);
+    EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
+    EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
+    mockPlayer.updateResources(Resource.ORE, 1);
+    mockPlayer.updateResources(Resource.ORE, 1);
+    mockPlayer.removeDevelopmentCard(mockCard);
+    mockPlayer.setHasPlayedDevCardThisTurn(true);
+
+    EasyMock.replay(mockPlayer, mockCard);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    handler.playYearOfPlentyCard(mockPlayer, mockCard, currentRound, Resource.ORE, Resource.ORE);
+
+    EasyMock.verify(mockPlayer, mockCard);
+  }
 }
