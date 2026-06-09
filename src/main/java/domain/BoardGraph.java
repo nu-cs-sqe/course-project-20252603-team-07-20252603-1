@@ -176,23 +176,51 @@ public class BoardGraph {
 
     for (Player player : activePlayers) {
       PlayerColor color = player.getPlayerColor();
-      int roadLength = 0;
+      if (color == previousWinner) continue;
 
-      for (Set<GraphEdge> edges : nodeIDToConnectingEdges.values()) {
-        for (GraphEdge edge : edges) {
-          if (edge.checkOwningColor() == color) {
-            roadLength++;
-          }
-        }
-      }
-      roadLength = roadLength / 2;
+      int playerLongest = calculatePlayerLongestRoad(color);
 
-      if (roadLength > longestRoad && roadLength >= 5) {
-        longestRoad = roadLength;
+      if (playerLongest > longestRoad && playerLongest >= 5) {
+        longestRoad = playerLongest;
         longestRoadOwner = color;
       }
     }
     return longestRoadOwner;
+  }
+
+  private int calculatePlayerLongestRoad(PlayerColor color) {
+    Set<GraphEdge> playerEdges = new HashSet<>();
+    for (Set<GraphEdge> edges : nodeIDToConnectingEdges.values()) {
+      for (GraphEdge edge : edges) {
+        if (edge.checkOwningColor() == color) {
+          playerEdges.add(edge);
+        }
+      }
+    }
+
+    int longest = 0;
+    for (GraphEdge startEdge : playerEdges) {
+      int length = dfs(startEdge, new HashSet<>(), color);
+      longest = Math.max(longest, length);
+    }
+    return longest;
+  }
+
+  private int dfs(GraphEdge current, Set<GraphEdge> visited, PlayerColor color) {
+    visited.add(current);
+    int longest = visited.size();
+
+    int[] nodes = {current.getStartingNodeID(), current.getEndingNodeID()};
+    for (int nodeId : nodes) {
+      Set<GraphEdge> connecting = getConnectingEdgesByID(nodeId);
+      for (GraphEdge neighbor : connecting) {
+        if (!visited.contains(neighbor) && neighbor.checkOwningColor() == color) {
+          int length = dfs(neighbor, new HashSet<>(visited), color);
+          longest = Math.max(longest, length);
+        }
+      }
+    }
+    return longest;
   }
 
   void buildBoard() {

@@ -1094,7 +1094,7 @@ public class BoardGraphTests {
 
   // calculateLongestRoad() tests
   @Test
-  void noPlayerRoads_NoPreviousWinner_ReturnSetup(){
+  void noPlayerRoads_NoPreviousWinner_ReturnSetup() {
     BoardGraph b = new BoardGraph();
 
     Player mockRedPlayer = EasyMock.createMock(Player.class);
@@ -1674,6 +1674,163 @@ public class BoardGraphTests {
             mockNode2, mockNode5, mockNode9, mockNode13, mockNode18, mockNode23, mockNode29,
             mockEdge0To4, mockEdge4To8, mockEdge8To12, mockEdge12To17, mockEdge17To22,
             mockEdge2To5, mockEdge5To9, mockEdge9To13, mockEdge13To18, mockEdge18To23, mockEdge23To29,
+            mockRedPlayer, mockBluePlayer, mockOrangePlayer, mockWhitePlayer);
+  }
+
+  // Test Case 7
+  @Test
+  void BlueHasSixRoadsBranching_LongestPathIsFour_RedIsPreviousWinner_ReturnsRed() {
+    BoardGraph b = new BoardGraph();
+
+    Player mockRedPlayer = EasyMock.createMock(Player.class);
+    Player mockWhitePlayer = EasyMock.createMock(Player.class);
+    Player mockBluePlayer = EasyMock.createMock(Player.class);
+    Player mockOrangePlayer = EasyMock.createMock(Player.class);
+
+    List<Player> players = List.of(mockRedPlayer, mockBluePlayer, mockOrangePlayer, mockWhitePlayer);
+
+    // BLUE nodes - main line 0-4-8-12-17 plus disconnected segment 49-53-50
+    GraphNode mockNode0 = EasyMock.createMock(GraphNode.class);
+    GraphNode mockNode4 = EasyMock.createMock(GraphNode.class);
+    GraphNode mockNode7 = EasyMock.createMock(GraphNode.class);
+    GraphNode mockNode8 = EasyMock.createMock(GraphNode.class);
+    GraphNode mockNode12 = EasyMock.createMock(GraphNode.class);
+    GraphNode mockNode49 = EasyMock.createMock(GraphNode.class);
+    GraphNode mockNode50 = EasyMock.createMock(GraphNode.class);
+    GraphNode mockNode53 = EasyMock.createMock(GraphNode.class);
+
+    // RED nodes - straight line of 5
+    GraphNode mockNode2 = EasyMock.createMock(GraphNode.class);
+    GraphNode mockNode6 = EasyMock.createMock(GraphNode.class);
+    GraphNode mockNode10 = EasyMock.createMock(GraphNode.class);
+    GraphNode mockNode14 = EasyMock.createMock(GraphNode.class);
+    GraphNode mockNode19 = EasyMock.createMock(GraphNode.class);
+    GraphNode mockNode25 = EasyMock.createMock(GraphNode.class);
+
+    // BLUE edges - 4 in main line, 2 disconnected
+    GraphEdge mockEdge0To4 = EasyMock.createMock(GraphEdge.class);
+    GraphEdge mockEdge4To8 = EasyMock.createMock(GraphEdge.class);
+    GraphEdge mockEdge7To12 = EasyMock.createMock(GraphEdge.class);
+    GraphEdge mockEdge8To12 = EasyMock.createMock(GraphEdge.class);
+    GraphEdge mockEdge49To53 = EasyMock.createMock(GraphEdge.class);
+    GraphEdge mockEdge50To53 = EasyMock.createMock(GraphEdge.class);
+
+    // RED edges - straight line of 5
+    GraphEdge mockEdge2To6 = EasyMock.createMock(GraphEdge.class);
+    GraphEdge mockEdge6To10 = EasyMock.createMock(GraphEdge.class);
+    GraphEdge mockEdge10To14 = EasyMock.createMock(GraphEdge.class);
+    GraphEdge mockEdge14To19 = EasyMock.createMock(GraphEdge.class);
+    GraphEdge mockEdge19To25 = EasyMock.createMock(GraphEdge.class);
+
+    EasyMock.expect(mockNode0.getNodeID()).andReturn(0);
+    EasyMock.expect(mockNode4.getNodeID()).andReturn(4);
+    EasyMock.expect(mockNode7.getNodeID()).andReturn(7);
+    EasyMock.expect(mockNode8.getNodeID()).andReturn(8);
+    EasyMock.expect(mockNode12.getNodeID()).andReturn(12);
+    EasyMock.expect(mockNode49.getNodeID()).andReturn(49);
+    EasyMock.expect(mockNode50.getNodeID()).andReturn(50);
+    EasyMock.expect(mockNode53.getNodeID()).andReturn(53);
+    EasyMock.expect(mockNode2.getNodeID()).andReturn(2);
+    EasyMock.expect(mockNode6.getNodeID()).andReturn(6);
+    EasyMock.expect(mockNode10.getNodeID()).andReturn(10);
+    EasyMock.expect(mockNode14.getNodeID()).andReturn(14);
+    EasyMock.expect(mockNode19.getNodeID()).andReturn(19);
+    EasyMock.expect(mockNode25.getNodeID()).andReturn(25);
+
+    EasyMock.expect(mockEdge0To4.getStartingNodeID()).andReturn(0).anyTimes();
+    EasyMock.expect(mockEdge0To4.getEndingNodeID()).andReturn(4).anyTimes();
+    EasyMock.expect(mockEdge4To8.getStartingNodeID()).andReturn(4).anyTimes();
+    EasyMock.expect(mockEdge4To8.getEndingNodeID()).andReturn(8).anyTimes();
+    EasyMock.expect(mockEdge7To12.getStartingNodeID()).andReturn(7).anyTimes();
+    EasyMock.expect(mockEdge7To12.getEndingNodeID()).andReturn(12).anyTimes();
+    EasyMock.expect(mockEdge8To12.getStartingNodeID()).andReturn(8).anyTimes();
+    EasyMock.expect(mockEdge8To12.getEndingNodeID()).andReturn(12).anyTimes();
+    EasyMock.expect(mockEdge49To53.getStartingNodeID()).andReturn(49).anyTimes();
+    EasyMock.expect(mockEdge49To53.getEndingNodeID()).andReturn(53).anyTimes();
+    EasyMock.expect(mockEdge50To53.getStartingNodeID()).andReturn(50).anyTimes();
+    EasyMock.expect(mockEdge50To53.getEndingNodeID()).andReturn(53).anyTimes();
+    EasyMock.expect(mockEdge2To6.getStartingNodeID()).andReturn(2).anyTimes();
+    EasyMock.expect(mockEdge2To6.getEndingNodeID()).andReturn(6).anyTimes();
+    EasyMock.expect(mockEdge6To10.getStartingNodeID()).andReturn(6).anyTimes();
+    EasyMock.expect(mockEdge6To10.getEndingNodeID()).andReturn(10).anyTimes();
+    EasyMock.expect(mockEdge10To14.getStartingNodeID()).andReturn(10).anyTimes();
+    EasyMock.expect(mockEdge10To14.getEndingNodeID()).andReturn(14).anyTimes();
+    EasyMock.expect(mockEdge14To19.getStartingNodeID()).andReturn(14).anyTimes();
+    EasyMock.expect(mockEdge14To19.getEndingNodeID()).andReturn(19).anyTimes();
+    EasyMock.expect(mockEdge19To25.getStartingNodeID()).andReturn(19).anyTimes();
+    EasyMock.expect(mockEdge19To25.getEndingNodeID()).andReturn(25).anyTimes();
+
+    EasyMock.expect(mockEdge0To4.checkOwningColor()).andReturn(PlayerColor.BLUE).anyTimes();
+    EasyMock.expect(mockEdge4To8.checkOwningColor()).andReturn(PlayerColor.BLUE).anyTimes();
+    EasyMock.expect(mockEdge7To12.checkOwningColor()).andReturn(PlayerColor.BLUE).anyTimes();
+    EasyMock.expect(mockEdge8To12.checkOwningColor()).andReturn(PlayerColor.BLUE).anyTimes();
+    EasyMock.expect(mockEdge49To53.checkOwningColor()).andReturn(PlayerColor.BLUE).anyTimes();
+    EasyMock.expect(mockEdge50To53.checkOwningColor()).andReturn(PlayerColor.BLUE).anyTimes();
+    EasyMock.expect(mockEdge2To6.checkOwningColor()).andReturn(PlayerColor.RED).anyTimes();
+    EasyMock.expect(mockEdge6To10.checkOwningColor()).andReturn(PlayerColor.RED).anyTimes();
+    EasyMock.expect(mockEdge10To14.checkOwningColor()).andReturn(PlayerColor.RED).anyTimes();
+    EasyMock.expect(mockEdge14To19.checkOwningColor()).andReturn(PlayerColor.RED).anyTimes();
+    EasyMock.expect(mockEdge19To25.checkOwningColor()).andReturn(PlayerColor.RED).anyTimes();
+
+    EasyMock.expect(mockRedPlayer.getPlayerColor()).andReturn(PlayerColor.RED).anyTimes();
+    EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE).anyTimes();
+    EasyMock.expect(mockOrangePlayer.getPlayerColor()).andReturn(PlayerColor.ORANGE).anyTimes();
+    EasyMock.expect(mockWhitePlayer.getPlayerColor()).andReturn(PlayerColor.WHITE).anyTimes();
+
+    EasyMock.replay(mockNode0, mockNode4, mockNode7, mockNode8, mockNode12,
+            mockNode49, mockNode50, mockNode53,
+            mockNode2, mockNode6, mockNode10, mockNode14, mockNode19, mockNode25,
+            mockEdge0To4, mockEdge4To8, mockEdge7To12, mockEdge8To12,
+            mockEdge49To53, mockEdge50To53,
+            mockEdge2To6, mockEdge6To10, mockEdge10To14, mockEdge14To19, mockEdge19To25,
+            mockRedPlayer, mockBluePlayer, mockOrangePlayer, mockWhitePlayer);
+
+    b.addGraphNodeObject(mockNode0);
+    b.addGraphNodeObject(mockNode4);
+    b.addGraphNodeObject(mockNode7);
+    b.addGraphNodeObject(mockNode8);
+    b.addGraphNodeObject(mockNode12);
+    b.addGraphNodeObject(mockNode49);
+    b.addGraphNodeObject(mockNode50);
+    b.addGraphNodeObject(mockNode53);
+    b.addGraphNodeObject(mockNode2);
+    b.addGraphNodeObject(mockNode6);
+    b.addGraphNodeObject(mockNode10);
+    b.addGraphNodeObject(mockNode14);
+    b.addGraphNodeObject(mockNode19);
+    b.addGraphNodeObject(mockNode25);
+
+    b.addGraphNodeConnection(0, mockEdge0To4);
+    b.addGraphNodeConnection(4, mockEdge0To4);
+    b.addGraphNodeConnection(4, mockEdge4To8);
+    b.addGraphNodeConnection(8, mockEdge4To8);
+    b.addGraphNodeConnection(7, mockEdge7To12);
+    b.addGraphNodeConnection(12, mockEdge7To12);
+    b.addGraphNodeConnection(8, mockEdge8To12);
+    b.addGraphNodeConnection(12, mockEdge8To12);
+    b.addGraphNodeConnection(49, mockEdge49To53);
+    b.addGraphNodeConnection(53, mockEdge49To53);
+    b.addGraphNodeConnection(50, mockEdge50To53);
+    b.addGraphNodeConnection(53, mockEdge50To53);
+    b.addGraphNodeConnection(2, mockEdge2To6);
+    b.addGraphNodeConnection(6, mockEdge2To6);
+    b.addGraphNodeConnection(6, mockEdge6To10);
+    b.addGraphNodeConnection(10, mockEdge6To10);
+    b.addGraphNodeConnection(10, mockEdge10To14);
+    b.addGraphNodeConnection(14, mockEdge10To14);
+    b.addGraphNodeConnection(14, mockEdge14To19);
+    b.addGraphNodeConnection(19, mockEdge14To19);
+    b.addGraphNodeConnection(19, mockEdge19To25);
+    b.addGraphNodeConnection(25, mockEdge19To25);
+
+    assertEquals(PlayerColor.RED, b.calculateLongestRoad(players, PlayerColor.RED));
+
+    EasyMock.verify(mockNode0, mockNode4, mockNode7, mockNode8, mockNode12,
+            mockNode49, mockNode50, mockNode53,
+            mockNode2, mockNode6, mockNode10, mockNode14, mockNode19, mockNode25,
+            mockEdge0To4, mockEdge4To8, mockEdge7To12, mockEdge8To12,
+            mockEdge49To53, mockEdge50To53,
+            mockEdge2To6, mockEdge6To10, mockEdge10To14, mockEdge14To19, mockEdge19To25,
             mockRedPlayer, mockBluePlayer, mockOrangePlayer, mockWhitePlayer);
   }
 
