@@ -176,15 +176,16 @@ class DevelopmentCardDeckTest {
     assertEquals(0, deck.countRemaining());
   }
 
-    @Test
-    void testDrawCardReducesCount() throws EmptyDeckException {
-        DevelopmentCardDeck deck = new DevelopmentCardDeck();
-        int initialCount = deck.countRemaining();
+  // TC14: countRemaining() after drawing 1 card -> 24
+  @Test
+  void countRemaining_AfterDrawingOneCard_ExpectTwentyFour() throws EmptyDeckException {
+    DevelopmentCardDeck deck = new DevelopmentCardDeck();
+    final int expectedRemaining = 24;
 
-        deck.drawCard(0);
+    deck.drawCard(0);
 
-        assertEquals(initialCount - 1, deck.countRemaining());
-    }
+    assertEquals(expectedRemaining, deck.countRemaining());
+  }
 
     @Test
     void testDrawCardReturnsValidCard() throws EmptyDeckException {
