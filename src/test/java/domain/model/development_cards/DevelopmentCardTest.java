@@ -45,6 +45,16 @@ class DevelopmentCardTest {
       assertEquals(expectedRound, card.getRoundDrawnAt());
     }
 
+    // TC5: new DevelopmentCard(MONOPOLY, 3) -> getType() == MONOPOLY, roundDrawnAt == 3
+    @Test
+    void constructMonopolyCard_AtRoundThree_ExpectMonopolyTypeAndRoundThree() {
+      final int expectedRound = 3;
+      DevelopmentCard card = new DevelopmentCard(DevelopmentCardType.MONOPOLY, 3);
+
+      assertEquals(DevelopmentCardType.MONOPOLY, card.getType());
+      assertEquals(expectedRound, card.getRoundDrawnAt());
+    }
+
     @Test
     void testCreateKnightDevelopmentCard() {
         DevelopmentCard knight = DevelopmentCard.createKnightDevelopmentCard(3);
