@@ -114,4 +114,14 @@ class DevelopmentCardTest {
         DevelopmentCard card = new DevelopmentCard(DevelopmentCardType.VICTORY_POINT, drawnAtRound);
         assertTrue(card.isPlayable(currentRound));
     }
+
+    // TC17: isPlayable(0), VICTORY_POINT drawn at round 0 (LOW boundary — VP exception) -> true
+    @Test
+    void isPlayable_VictoryPointCardBothRoundsAtLowBoundary_ExpectTrue() {
+        final int drawnAtRound = 0;
+        final int currentRound = 0;
+
+        DevelopmentCard card = new DevelopmentCard(DevelopmentCardType.VICTORY_POINT, drawnAtRound);
+        assertTrue(card.isPlayable(currentRound));
+    }
 }
