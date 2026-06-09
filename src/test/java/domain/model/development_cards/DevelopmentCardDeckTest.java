@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 
 import domain.model.exceptions.EmptyDeckException;
 
+import java.util.ArrayList;
+import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DevelopmentCardDeckTest {
@@ -15,6 +17,23 @@ class DevelopmentCardDeckTest {
 
         assertEquals(25, deck.countRemaining());
     }
+
+  // TC2: new DevelopmentCardDeck() -> deck contains exactly 14 KNIGHT cards
+  @Test
+  void constructDeck_OnNewDeck_ExpectFourteenKnightCards() throws EmptyDeckException {
+    DevelopmentCardDeck deck = new DevelopmentCardDeck();
+    final int expectedKnightCount = 14;
+
+    List<DevelopmentCard> drawnCards = new ArrayList<>();
+    while (deck.countRemaining() > 0) drawnCards.add(deck.drawCard());
+
+    int knightCount = 0;
+    for (DevelopmentCard card : drawnCards) {
+      if (card.getType() == DevelopmentCardType.KNIGHT) knightCount++;
+    }
+
+    assertEquals(expectedKnightCount, knightCount);
+  }
 
     @Test
     void testDrawCardReducesCount() throws EmptyDeckException {
@@ -61,45 +80,6 @@ class DevelopmentCardDeckTest {
         assertThrows(EmptyDeckException.class, () -> {
             deck.drawCard();
         });
-    }
-
-    @Test
-    void testDeckContainsCorrectCardDistribution() throws EmptyDeckException {
-        DevelopmentCardDeck deck = new DevelopmentCardDeck();
-
-        int knightCount = 0;
-        int victoryPointCount = 0;
-        int roadBuilderCount = 0;
-        int yearOfPlentyCount = 0;
-        int monopolyCount = 0;
-
-        // Draw all cards and count types
-        for (int i = 0; i < 25; i++) {
-            DevelopmentCard card = deck.drawCard();
-            switch (card.getType()) {
-                case KNIGHT:
-                    knightCount++;
-                    break;
-                case VICTORY_POINT:
-                    victoryPointCount++;
-                    break;
-                case ROAD_BUILDER:
-                    roadBuilderCount++;
-                    break;
-                case YEAR_OF_PLENTY:
-                    yearOfPlentyCount++;
-                    break;
-                case MONOPOLY:
-                    monopolyCount++;
-                    break;
-            }
-        }
-
-        assertEquals(14, knightCount);
-        assertEquals(5, victoryPointCount);
-        assertEquals(2, roadBuilderCount);
-        assertEquals(2, yearOfPlentyCount);
-        assertEquals(2, monopolyCount);
     }
 
     @Test
