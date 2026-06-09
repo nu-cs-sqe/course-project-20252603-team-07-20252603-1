@@ -615,4 +615,26 @@ class DevelopmentCardHandlerTest {
     EasyMock.verify(mockPlayer, mockCard);
     assertEquals("Card is not a Monopoly card.", exception.getMessage());
   }
+
+  // TC23: card drawn this round (not playable)
+  //       -> IllegalStateException: "Card cannot be played the same turn it was purchased."
+  @Test
+  void playMonopolyCard_CardNotPlayableSameTurn_ExpectIllegalStateException() {
+    final int currentRound = 1;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.MONOPOLY);
+    EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(false);
+
+    EasyMock.replay(mockPlayer, mockCard);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    Exception exception = assertThrows(IllegalStateException.class,
+        () -> handler.playMonopolyCard(mockPlayer, mockCard, currentRound, Resource.ORE, List.of()));
+
+    EasyMock.verify(mockPlayer, mockCard);
+    assertEquals("Card cannot be played the same turn it was purchased.", exception.getMessage());
+  }
 }

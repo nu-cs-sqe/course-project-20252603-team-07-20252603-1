@@ -40,6 +40,9 @@ public class DevelopmentCardHandler {
         if (card.getType() != DevelopmentCardType.MONOPOLY) {
             throw new IllegalArgumentException("Card is not a Monopoly card.");
         }
+        if (!card.isPlayable(currentRound)) {
+            throw new IllegalStateException("Card cannot be played the same turn it was purchased.");
+        }
     }
 
     public void playKnightCard(Player player, DevelopmentCard card, int currentRound, Robber robber, int targetHexId, Player victim) {
