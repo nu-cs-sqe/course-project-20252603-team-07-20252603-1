@@ -8,28 +8,31 @@ class DevelopmentCardTest {
     // TC1: new DevelopmentCard(KNIGHT, 0) -> getType() == KNIGHT, roundDrawnAt == 0
     @Test
     void constructKnightCard_AtRoundZero_ExpectKnightTypeAndRoundZero() {
-        DevelopmentCard card = new DevelopmentCard(DevelopmentCardType.KNIGHT, 0);
+      final int expectedRound = 0;
+      DevelopmentCard card = new DevelopmentCard(DevelopmentCardType.KNIGHT, 0);
 
-        assertEquals(DevelopmentCardType.KNIGHT, card.getType());
-        assertEquals(0, card.getRoundDrawnAt());
+      assertEquals(DevelopmentCardType.KNIGHT, card.getType());
+      assertEquals(expectedRound, card.getRoundDrawnAt());
     }
 
     // TC2: new DevelopmentCard(VICTORY_POINT, 5) -> getType() == VICTORY_POINT, roundDrawnAt == 5
     @Test
     void constructVictoryPointCard_AtRoundFive_ExpectVictoryPointTypeAndRoundFive() {
-        DevelopmentCard card = new DevelopmentCard(DevelopmentCardType.VICTORY_POINT, 5);
+      final int expectedRound = 5;
+      DevelopmentCard card = new DevelopmentCard(DevelopmentCardType.VICTORY_POINT, 5);
 
-        assertEquals(DevelopmentCardType.VICTORY_POINT, card.getType());
-        assertEquals(5, card.getRoundDrawnAt());
+      assertEquals(DevelopmentCardType.VICTORY_POINT, card.getType());
+      assertEquals(expectedRound, card.getRoundDrawnAt());
     }
 
     // TC3: new DevelopmentCard(ROAD_BUILDER, 1) -> getType() == ROAD_BUILDER, roundDrawnAt == 1
     @Test
     void constructRoadBuilderCard_AtRoundOne_ExpectRoadBuilderTypeAndRoundOne() {
-        DevelopmentCard card = new DevelopmentCard(DevelopmentCardType.ROAD_BUILDER, 1);
+      final int expectedRound = 1;
+      DevelopmentCard card = new DevelopmentCard(DevelopmentCardType.ROAD_BUILDER, 1);
 
-        assertEquals(DevelopmentCardType.ROAD_BUILDER, card.getType());
-        assertEquals(1, card.getRoundDrawnAt());
+      assertEquals(DevelopmentCardType.ROAD_BUILDER, card.getType());
+      assertEquals(expectedRound, card.getRoundDrawnAt());
     }
 
     @Test
