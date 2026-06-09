@@ -1244,4 +1244,22 @@ public class BoardHandlerTests {
         assertEquals(expectedColor, actualColor);
     }
 
+    // Test Case 55
+    @Test
+    void WhiteHoldsLongestRoad_ReturnsWhite(){
+        EasyMock.expect(mockLongestRoadCalc.calculateLongestRoad()).andReturn(PlayerColor.WHITE);
+
+        PlayerColor expectedColor = PlayerColor.WHITE;
+
+        EasyMock.replay(mockLongestRoadCalc);
+
+        BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, mockLongestRoadCalc);
+
+        PlayerColor actualColor = b.calculateLongestRoad();
+
+        EasyMock.verify(mockLongestRoadCalc);
+
+        assertEquals(expectedColor, actualColor);
+    }
+
 }
