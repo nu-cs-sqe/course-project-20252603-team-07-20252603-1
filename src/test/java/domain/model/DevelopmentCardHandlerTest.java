@@ -342,24 +342,45 @@ class DevelopmentCardHandlerTest {
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
     EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
     mockRobber.moveRobber(targetHexId);
-    EasyMock.expectLastCall();
-    
     EasyMock.expect(mockVictim.getTotalResourceCount()).andReturn(3);
     EasyMock.expect(mockVictim.getResources()).andReturn(Map.of(Resource.ORE, 3));
     mockVictim.updateResources(Resource.ORE, -1);
-    EasyMock.expectLastCall();
-    
     mockPlayer.updateResources(Resource.ORE, 1);
-    EasyMock.expectLastCall();
-    
     mockPlayer.incrementKnightCount();
-    EasyMock.expectLastCall();
-    
     mockPlayer.removeDevelopmentCard(mockCard);
-    EasyMock.expectLastCall();
-    
     mockPlayer.setHasPlayedDevCardThisTurn(true);
-    EasyMock.expectLastCall();
+
+    EasyMock.replay(mockPlayer, mockCard, mockRobber, mockVictim);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    handler.playKnightCard(mockPlayer, mockCard, currentRound, mockRobber, targetHexId, mockVictim);
+
+    EasyMock.verify(mockPlayer, mockCard, mockRobber, mockVictim);
+  }
+
+  // TC14: targetHexId = 0 (LOW boundary), victim adjacent with resources
+  //       -> robber moves to hex 0; 1 resource transferred from victim to player
+  @Test
+  void playKnightCard_TargetHexIdAtLowBoundary_ExpectRobberMovedAndResourceStolen() {
+    final int currentRound = 2;
+    final int targetHexId = 0;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+    Robber mockRobber = EasyMock.createMock(Robber.class);
+    Player mockVictim = EasyMock.createMock(Player.class);
+
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.KNIGHT);
+    EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
+    EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
+    mockRobber.moveRobber(targetHexId);
+    EasyMock.expect(mockVictim.getTotalResourceCount()).andReturn(1);
+    EasyMock.expect(mockVictim.getResources()).andReturn(Map.of(Resource.WOOL, 1));
+    mockVictim.updateResources(Resource.WOOL, -1);
+    mockPlayer.updateResources(Resource.WOOL, 1);
+    mockPlayer.incrementKnightCount();
+    mockPlayer.removeDevelopmentCard(mockCard);
+    mockPlayer.setHasPlayedDevCardThisTurn(true);
 
     EasyMock.replay(mockPlayer, mockCard, mockRobber, mockVictim);
 
