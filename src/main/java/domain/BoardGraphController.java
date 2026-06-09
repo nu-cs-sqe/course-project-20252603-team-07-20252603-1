@@ -1,5 +1,6 @@
 package domain;
 
+import java.util.List;
 import java.util.Set;
 
 public class BoardGraphController {
@@ -80,6 +81,10 @@ public class BoardGraphController {
         if(!boardGraph.edgeCheckPlayerOwnsNeighboringEdge(color, startingNodeID, endingNodeID)) {
             throw new IllegalEdgeClaim("Edge must be adjacent to an owned structure");
         }
+    }
+
+    PlayerColor calculateLongestRoad(List<Player> players, PlayerColor previousWinner) {
+        return boardGraph.calculateLongestRoad(players, previousWinner);
     }
 
 }

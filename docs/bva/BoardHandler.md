@@ -274,13 +274,17 @@ Step 3:
 | Test Case 51 | BLUE tries to claim edge [53, 54]             | "Edge nodeId out of bounds. Must be within [0, 53]." | :white_check_mark: |
 | Test Case 52 | BLUE tries to claim edge [54, 53]             | "Edge nodeId out of bounds. Must be within [0, 53]." | :white_check_mark: |
 
-### Method under test: `calculateLongestRoad()`
+### Method under test: `calculateLongestRoad(List<Players> players, PlayerColor previousWinner)`
 
 Step 1:
+- Input: Active players
+- Input: Previous winner
 - Input: state of the board
 - Output: Player
 
 Step 2:
+- Input - Collection - Not used here, passed down to BoardGraph
+- Input - PlayerColor - Not used here, passed down to BoardGraph
 - Input - Interval - cases (verified by LongestRoadCalculator)
 - Output - Player
 

@@ -27,7 +27,6 @@ public class BoardHandler {
   private int[] nodeBuildingLevels;
   private PlayerColor[] nodeOwners;
   private Robber robber;
-  private LongestRoadCalculator longestRoadCalc;
 
   /**
    * Creates a new BoardHandler with a fresh board state.
@@ -41,15 +40,13 @@ public class BoardHandler {
     this.nodeOwners = new PlayerColor[NUM_NODES];
     Arrays.fill(this.nodeOwners, PlayerColor.SETUP);
     this.robber = new Robber(9);
-    this.longestRoadCalc = new LongestRoadCalculator();
   }
 
   // private constructor for testing
   private BoardHandler(BoardGraphController boardGraphController,
                        List<Hex> hexes, Map<Integer,
                        List<Integer>> nodeIdToHexes,
-                       Robber robber,
-                       LongestRoadCalculator longestRoadCalc) {
+                       Robber robber) {
     this.boardGraphController = boardGraphController;
     this.hexes = hexes;
     this.nodeIdToHexes = nodeIdToHexes;
@@ -57,7 +54,6 @@ public class BoardHandler {
     this.nodeOwners = new PlayerColor[NUM_NODES];
     Arrays.fill(this.nodeOwners, PlayerColor.SETUP);
     this.robber = robber;
-    this.longestRoadCalc = longestRoadCalc;
   }
 
   /**
@@ -73,9 +69,8 @@ public class BoardHandler {
   public static BoardHandler createForTesting(BoardGraphController boardGraphController,
                                               List<Hex> hexes, Map<Integer,
                                               List<Integer>> nodeIdToHexes,
-                                              Robber robber,
-                                              LongestRoadCalculator longestRoadCalc) {
-    return new BoardHandler(boardGraphController, hexes, nodeIdToHexes, robber, longestRoadCalc);
+                                              Robber robber) {
+    return new BoardHandler(boardGraphController, hexes, nodeIdToHexes, robber);
   }
 
   void buildSettlement(Player player, int nodeId) {
@@ -199,8 +194,8 @@ public class BoardHandler {
   }
 
   // Note: Returns SETUP PlayerColor if nobody has achieved longest road yet
-  PlayerColor calculateLongestRoad() {
-    return longestRoadCalc.calculateLongestRoad();
+  PlayerColor calculateLongestRoad(List<Player> players, PlayerColor previousWinner) {
+    return boardGraphController.calculateLongestRoad(players, previousWinner);
   }
 
   private List<Hex> initHexes() {
