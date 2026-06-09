@@ -9,9 +9,18 @@ class DevelopmentCardTest {
     @Test
     void constructKnightCard_AtRoundZero_ExpectKnightTypeAndRoundZero() {
         DevelopmentCard card = new DevelopmentCard(DevelopmentCardType.KNIGHT, 0);
-        
+
         assertEquals(DevelopmentCardType.KNIGHT, card.getType());
         assertEquals(0, card.getRoundDrawnAt());
+    }
+
+    // TC2: new DevelopmentCard(VICTORY_POINT, 5) -> getType() == VICTORY_POINT, roundDrawnAt == 5
+    @Test
+    void constructVictoryPointCard_AtRoundFive_ExpectVictoryPointTypeAndRoundFive() {
+        DevelopmentCard card = new DevelopmentCard(DevelopmentCardType.VICTORY_POINT, 5);
+
+        assertEquals(DevelopmentCardType.VICTORY_POINT, card.getType());
+        assertEquals(5, card.getRoundDrawnAt());
     }
 
     @Test
