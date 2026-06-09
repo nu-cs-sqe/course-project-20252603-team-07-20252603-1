@@ -123,4 +123,27 @@ class DevelopmentCardHandlerTest {
     EasyMock.verify(mockBuyer, mockDeck);
     assertEquals("Not enough resources to buy a development card.", exception.getMessage());
   }
+
+  // TC5: buyer has 1 ORE, 1 WOOL, 0 GRAIN (insufficient GRAIN)
+  //      -> InsufficientResourcesException: "Not enough resources to buy a development card."
+  @Test
+  void buyDevelopmentCard_BuyerHasInsufficientGrain_ExpectInsufficientResourcesException() {
+    final int currentRound = 1;
+
+    Player mockBuyer = EasyMock.createMock(Player.class);
+    DevelopmentCardDeck mockDeck = EasyMock.createMock(DevelopmentCardDeck.class);
+
+    EasyMock.expect(mockBuyer.getResourceCount(Resource.ORE)).andReturn(1);
+    EasyMock.expect(mockBuyer.getResourceCount(Resource.WOOL)).andReturn(1);
+    EasyMock.expect(mockBuyer.getResourceCount(Resource.GRAIN)).andReturn(0);
+
+    EasyMock.replay(mockBuyer, mockDeck);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    Exception exception = assertThrows(InsufficientResourcesException.class,
+        () -> handler.buyDevelopmentCard(mockBuyer, mockDeck, currentRound));
+
+    EasyMock.verify(mockBuyer, mockDeck);
+    assertEquals("Not enough resources to buy a development card.", exception.getMessage());
+  }
 }
