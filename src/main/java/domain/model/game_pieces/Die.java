@@ -1,4 +1,4 @@
-package domain;
+package domain.model.game_pieces;
 
 import java.util.Random;
 

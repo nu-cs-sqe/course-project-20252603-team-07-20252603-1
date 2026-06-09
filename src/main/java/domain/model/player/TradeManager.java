@@ -1,10 +1,9 @@
-package domain;
+package domain.model.player;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import domain.model.player.Player;
 import domain.model.resources.Resource;
 import domain.model.resources.ResourceQuantity;
 

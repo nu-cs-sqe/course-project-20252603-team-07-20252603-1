@@ -7,6 +7,7 @@ import domain.model.board.*;
 import domain.model.exceptions.AdjacentNodeAlreadyClaimed;
 import domain.model.exceptions.EdgeAlreadyClaimedException;
 import domain.model.exceptions.IllegalEdgeClaim;
+import domain.model.exceptions.IllegalSettlementPlacementException;
 import domain.model.player.PlayerColor;
 
 import java.util.HashSet;

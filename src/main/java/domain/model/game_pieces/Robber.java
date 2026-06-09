@@ -1,4 +1,4 @@
-package domain;
+package domain.model.game_pieces;
 
 public class Robber {
     private static final int MIN_HEX_ID = 0;

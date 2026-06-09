@@ -4,6 +4,7 @@ import java.util.Set;
 
 import domain.model.exceptions.AdjacentNodeAlreadyClaimed;
 import domain.model.exceptions.IllegalEdgeClaim;
+import domain.model.exceptions.IllegalSettlementPlacementException;
 import domain.model.player.PlayerColor;
 
 public class BoardGraphController {
