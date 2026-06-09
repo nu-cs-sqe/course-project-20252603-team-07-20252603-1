@@ -141,6 +141,9 @@ public class DevelopmentCardHandler {
         if (card.getType() != DevelopmentCardType.YEAR_OF_PLENTY) {
             throw new IllegalArgumentException("Card is not a Year of Plenty card.");
         }
+        if (!card.isPlayable(currentRound)) {
+            throw new IllegalStateException("Card cannot be played the same turn it was purchased.");
+        }
     }
 
 }

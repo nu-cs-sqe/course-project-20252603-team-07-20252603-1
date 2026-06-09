@@ -1237,4 +1237,26 @@ class DevelopmentCardHandlerTest {
     EasyMock.verify(mockPlayer, mockCard);
     assertEquals("Card is not a Year of Plenty card.", exception.getMessage());
   }
+
+  // TC48: card drawn this round (not playable, same turn)
+  //       -> IllegalStateException: "Card cannot be played the same turn it was purchased."
+  @Test
+  void playYearOfPlentyCard_CardDrawnThisRound_ExpectIllegalStateException() {
+    final int currentRound = 3;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.YEAR_OF_PLENTY);
+    EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(false);
+
+    EasyMock.replay(mockPlayer, mockCard);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    Exception exception = assertThrows(IllegalStateException.class,
+        () -> handler.playYearOfPlentyCard(mockPlayer, mockCard, currentRound, Resource.BRICK, Resource.WOOL));
+
+    EasyMock.verify(mockPlayer, mockCard);
+    assertEquals("Card cannot be played the same turn it was purchased.", exception.getMessage());
+  }
 }
