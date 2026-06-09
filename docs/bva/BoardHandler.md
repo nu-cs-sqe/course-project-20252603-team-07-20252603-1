@@ -273,3 +273,24 @@ Step 3:
 | Test Case 50 | WHITE tries to claim edge [0, -1]             | "Edge nodeId out of bounds. Must be within [0, 53]." | :white_check_mark: |
 | Test Case 51 | BLUE tries to claim edge [53, 54]             | "Edge nodeId out of bounds. Must be within [0, 53]." | :white_check_mark: |
 | Test Case 52 | BLUE tries to claim edge [54, 53]             | "Edge nodeId out of bounds. Must be within [0, 53]." | :white_check_mark: |
+
+### Method under test: `calculateLongestRoad()`
+
+Step 1:
+- Input: state of the board
+- Output: Player
+
+Step 2:
+- Input - Interval - cases (verified by LongestRoadCalculator)
+- Output - Player
+
+Step 3:
+- Output: RED, ORANGE, WHITE, BLUE, SETUP
+
+|              | System under test         | Expected output                                | Implemented?       |
+|--------------|---------------------------|------------------------------------------------|--------------------|
+| Test Case 53 | RED holds longest road    | calculateLongestRoad is called, returns RED    | :white_check_mark: |
+| Test Case 54 | ORANGE holds longest road | calculateLongestRoad is called, returns ORANGE | x                  |
+| Test Case 55 | WHITE holds longest road  | calculateLongestRoad is called, returns WHITE  | x                  |
+| Test Case 56 | BLUE holds longest road   | calculateLongestRoad is called, returns BLUE   | x                  |
+| Test Case 57 | SETUP holds longest road  | calculateLongestRoad is called, returns SETUP  | x                  |
