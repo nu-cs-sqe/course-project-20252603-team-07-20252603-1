@@ -1351,4 +1351,27 @@ class DevelopmentCardHandlerTest {
     EasyMock.verify(mockPlayer, mockCard);
     assertEquals("Cannot take DESERT as a resource.", exception.getMessage());
   }
+
+  // TC53: resource1 = LUMBER, resource2 = DESERT
+  //       -> IllegalArgumentException: "Cannot take DESERT as a resource."
+  @Test
+  void playYearOfPlentyCard_Resource2IsDesert_ExpectIllegalArgumentException() {
+    final int currentRound = 3;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.YEAR_OF_PLENTY);
+    EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
+    EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
+
+    EasyMock.replay(mockPlayer, mockCard);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    Exception exception = assertThrows(IllegalArgumentException.class,
+        () -> handler.playYearOfPlentyCard(mockPlayer, mockCard, currentRound, Resource.LUMBER, Resource.DESERT));
+
+    EasyMock.verify(mockPlayer, mockCard);
+    assertEquals("Cannot take DESERT as a resource.", exception.getMessage());
+  }
 }

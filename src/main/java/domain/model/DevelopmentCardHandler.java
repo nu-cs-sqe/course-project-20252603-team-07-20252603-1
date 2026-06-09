@@ -156,6 +156,9 @@ public class DevelopmentCardHandler {
         if (resource1 == Resource.DESERT) {
             throw new IllegalArgumentException("Cannot take DESERT as a resource.");
         }
+        if (resource2 == Resource.DESERT) {
+            throw new IllegalArgumentException("Cannot take DESERT as a resource.");
+        }
     }
 
 }
