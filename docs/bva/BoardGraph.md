@@ -268,12 +268,12 @@
   - Returns the max owning player's color if they have 5+ roads 
   - In case of tie -> returns previous owner of longest road
 
-|             | State of the System                                                | Expected output    | Implemented? |
-|-------------|--------------------------------------------------------------------|--------------------|--------------|
-| Test Case 1 | No player has any roads, no previous winner                        | PlayerColor.SETUP  | x            |
-| Test Case 2 | RED has exactly 4 roads, no previous winner                        | PlayerColor.SETUP  | x            |
-| Test Case 3 | ORANGE has exactly 5 roads, no previous winner                     | PlayerColor.ORANGE | x            |
-| Test Case 4 | WHITE and BLUE both have exactly 5 roads, WHITE is previous winner | PlayerColor.WHITE  | x            |
-| Test Case 5 | RED and BLUE both have exactly 5 roads, BLUE is previous winner    | PlayerColor.BLUE   | x            |
-| Test Case 6 | RED is previous winner with 5 roads, BLUE builds to 6              | PlayerColor.BLUE   | x            |
-| Test Case 7 | BLUE has 6 roads but branching, RED was previous winner            | PlayerColor.RED    | x            |
+|             | State of the System                                                | Expected output    | Implemented?       |
+|-------------|--------------------------------------------------------------------|--------------------|--------------------|
+| Test Case 1 | No player has any roads, no previous winner                        | PlayerColor.SETUP  | :white_check_mark: |
+| Test Case 2 | RED has exactly 4 roads, no previous winner                        | PlayerColor.SETUP  | x                  |
+| Test Case 3 | ORANGE has exactly 5 roads, no previous winner                     | PlayerColor.ORANGE | x                  |
+| Test Case 4 | WHITE and BLUE both have exactly 5 roads, WHITE is previous winner | PlayerColor.WHITE  | x                  |
+| Test Case 5 | RED and BLUE both have exactly 5 roads, BLUE is previous winner    | PlayerColor.BLUE   | x                  |
+| Test Case 6 | RED is previous winner with 5 roads, BLUE builds to 6              | PlayerColor.BLUE   | x                  |
+| Test Case 7 | BLUE has 6 roads but branching, RED was previous winner            | PlayerColor.RED    | x                  |
