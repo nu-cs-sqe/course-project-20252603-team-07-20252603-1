@@ -297,7 +297,7 @@ Step 3:
 
 |              | System under test                                                                         | Expected output                                                              | Implemented? |
 | ------------ | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ------------ |
-| Test Case 46 | card = null                                                                               | IllegalArgumentException: "Development card cannot be null."                 | :x:          |
+| Test Case 46 | card = null                                                                               | IllegalArgumentException: "Development card cannot be null."                 | :white_check_mark: |
 | Test Case 47 | card type = KNIGHT (not YEAR_OF_PLENTY)                                                   | IllegalArgumentException: "Card is not a Year of Plenty card."               | :x:          |
 | Test Case 48 | card drawn this round (not playable)                                                      | IllegalStateException: "Card cannot be played the same turn it was purchased." | :x:          |
 | Test Case 49 | player already played a dev card this turn                                                | IllegalStateException: "Already played a development card this turn."        | :x:          |

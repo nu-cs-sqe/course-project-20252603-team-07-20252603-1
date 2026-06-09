@@ -1198,4 +1198,22 @@ class DevelopmentCardHandlerTest {
     EasyMock.verify(mockPlayer, mockCard, mockEdge1, mockEdge2);
     assertEquals("Road must connect to player's existing network.", exception.getMessage());
   }
+
+  // TC46: card = null
+  //       -> IllegalArgumentException: "Development card cannot be null."
+  @Test
+  void playYearOfPlentyCard_CardIsNull_ExpectIllegalArgumentException() {
+    final int currentRound = 3;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+
+    EasyMock.replay(mockPlayer);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    Exception exception = assertThrows(IllegalArgumentException.class,
+        () -> handler.playYearOfPlentyCard(mockPlayer, null, currentRound, Resource.BRICK, Resource.WOOL));
+
+    EasyMock.verify(mockPlayer);
+    assertEquals("Development card cannot be null.", exception.getMessage());
+  }
 }

@@ -134,4 +134,10 @@ public class DevelopmentCardHandler {
         player.setHasPlayedDevCardThisTurn(true);
     }
 
+    public void playYearOfPlentyCard(Player player, DevelopmentCard card, int currentRound, Resource resource1, Resource resource2) {
+        if (card == null) {
+            throw new IllegalArgumentException("Development card cannot be null.");
+        }
+    }
+
 }
