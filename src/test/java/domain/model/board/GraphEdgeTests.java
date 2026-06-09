@@ -1,0 +1,67 @@
+package domain.model.board;
+
+import domain.model.exceptions.EdgeAlreadyClaimedException;
+import domain.model.exceptions.IllegalNodeOrderingInEdgeException;
+import domain.model.board.GraphEdge;
+import domain.model.player.PlayerColor;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class GraphEdgeTests {
+    @ParameterizedTest
+    @EnumSource(value = PlayerColor.class, names = {"RED", "WHITE", "ORANGE", "BLUE"})
+    void claimGraphEdge_NodeUnoccupied_ExpectTrue(PlayerColor color) {
+        GraphEdge e1 = new GraphEdge(0, 1);
+        assertTrue(e1.claimGraphEdge(color));
+        assertTrue(e1.checkRoadExists());
+        assertEquals(color, e1.checkOwningColor());
+
+    }
+
+    @Test
+    void claimGraphEdge_EdgeUnoccupied_ExpectError() {
+        GraphEdge e1 = new GraphEdge(52, 53);
+        e1.claimGraphEdge((PlayerColor.BLUE));
+
+        Exception exception = assertThrows(EdgeAlreadyClaimedException.class,
+                () -> e1.claimGraphEdge(PlayerColor.RED));
+
+        assertEquals("Edge already claimed", exception.getMessage());
+        assertTrue(e1.checkRoadExists());
+        assertEquals(PlayerColor.BLUE, e1.checkOwningColor());
+
+    }
+
+    @Test
+    void assertValidNodeIDsOrdering_test01_ValidInput_ExpectSuccess() {
+        GraphEdge e1 = new GraphEdge(0, 3);
+        assertNotNull(e1);
+    }
+
+    @Test
+    void assertValidNodeIDsOrdering_test02_ValidInput_ExpectSuccess() {
+        GraphEdge e1 = new GraphEdge(50, 53);
+        assertNotNull(e1);
+    }
+
+    @Test
+    void assertValidNodeIDsOrdering_test03_EqualNodeIDs_ExpectError() {
+        Exception exception = assertThrows(IllegalNodeOrderingInEdgeException.class,
+                () -> new GraphEdge(0, 0));
+
+        assertEquals("Starting nodeID must be lower than ending nodeID",
+                exception.getMessage());
+    }
+
+    @Test
+    void assertValidNodeIDsOrdering_test04_startingNodeID_GreaterThan_endingNodeID_ExpectError() {
+        Exception exception = assertThrows(IllegalNodeOrderingInEdgeException.class,
+                () -> new GraphEdge(53, 52));
+
+        assertEquals("Starting nodeID must be lower than ending nodeID",
+                exception.getMessage());
+    }
+}
