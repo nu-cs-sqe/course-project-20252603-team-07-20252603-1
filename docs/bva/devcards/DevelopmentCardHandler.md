@@ -254,7 +254,7 @@ Step 3:
 | Test Case 37 | edge1 = null, roads placed = 0                                                             | IllegalArgumentException: "Edge cannot be null."                            | :white_check_mark: |
 | Test Case 38 | edge1 valid, edge2 valid, roads placed = 0 (15 remaining)                                  | 2 roads placed; player road count increases by 2; card removed from hand    | :white_check_mark: |
 | Test Case 39 | edge1 valid, edge2 valid, roads placed = 13 (2 remaining — last pair that fits)            | 2 roads placed; player road count is 15; card removed                       | :white_check_mark: |
-| Test Case 40 | edge1 valid, edge2 = null, roads placed = 14 (only 1 remaining)                            | 1 road placed; player road count is 15; card removed                        | :x:          |
+| Test Case 40 | edge1 valid, edge2 = null, roads placed = 14 (only 1 remaining)                            | 1 road placed; player road count is 15; card removed                        | :white_check_mark: |
 | Test Case 41 | roads placed = 15 (no roads remaining)                                                     | IllegalStateException: "No roads remaining."                                | :x:          |
 | Test Case 42 | edge1 is already occupied, roads placed = 0                                                | IllegalArgumentException: "Edge is already occupied."                       | :x:          |
 | Test Case 43 | edge1 not connected to player's network, roads placed = 0                                  | IllegalArgumentException: "Road must connect to player's existing network." | :x:          |

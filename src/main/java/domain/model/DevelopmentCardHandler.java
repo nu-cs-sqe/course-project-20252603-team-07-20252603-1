@@ -87,7 +87,9 @@ public class DevelopmentCardHandler {
         }
 
         player.placeRoad(edge1);
-        player.placeRoad(edge2);
+        if (edge2 != null) {
+            player.placeRoad(edge2);
+        }
         player.removeDevelopmentCard(card);
         player.setHasPlayedDevCardThisTurn(true);
     }

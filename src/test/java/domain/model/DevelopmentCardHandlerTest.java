@@ -1036,4 +1036,29 @@ class DevelopmentCardHandlerTest {
 
     EasyMock.verify(mockPlayer, mockCard, mockEdge1, mockEdge2);
   }
+
+  // TC40: edge1 valid, edge2 = null, roads placed = 14 (only 1 remaining)
+  //       -> 1 road placed; player road count is 15; card removed
+  @Test
+  void playRoadBuildingCard_Edge2NullOnlyOneRoadRemaining_ExpectOneRoadPlacedAndCardRemoved() {
+    final int currentRound = 2;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+    Edge mockEdge1 = EasyMock.createMock(Edge.class);
+
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.ROAD_BUILDER);
+    EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
+    EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
+    mockPlayer.placeRoad(mockEdge1);
+    mockPlayer.removeDevelopmentCard(mockCard);
+    mockPlayer.setHasPlayedDevCardThisTurn(true);
+
+    EasyMock.replay(mockPlayer, mockCard, mockEdge1);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    handler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockEdge1, null);
+
+    EasyMock.verify(mockPlayer, mockCard, mockEdge1);
+  }
 }
