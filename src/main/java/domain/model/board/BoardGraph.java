@@ -68,6 +68,17 @@ public class BoardGraph {
         }
     }
 
+    public boolean checkNodeOccupied(int nodeID) {
+        GraphNode nodeOfInterest = getGraphNodeByID(nodeID);
+        return nodeOfInterest.checkOccupied();
+    }
+
+    public boolean checkEdgeOccupied(int startingNodeID, int endingNodeID) {
+        Set<GraphEdge> setWithRelevantEdge = getConnectingEdgesByID(startingNodeID);
+        GraphEdge edgeToCheck = getMatchingEdgeFromSet(setWithRelevantEdge, startingNodeID, endingNodeID);
+        return edgeToCheck.checkRoadExists();
+    }
+
     boolean checkPlayerOwnsGraphNodeObject(PlayerColor color, int nodeID) {
         GraphNode nodeOfInterest = getGraphNodeByID(nodeID);
         PlayerColor nodeColor = nodeOfInterest.checkColor();
@@ -140,6 +151,16 @@ public class BoardGraph {
         GraphNode startingNode = getGraphNodeByID(startingNodeID);
         GraphNode endingNode = getGraphNodeByID(endingNodeID);
         return startingNode.checkColor() == color || endingNode.checkColor() == color;
+    }
+
+    public boolean nodeCheckPlayerOwnsNeighboringEdge(PlayerColor color, int nodeID) {
+        Set<GraphEdge> relevantEdgeSet = getConnectingEdgesByID(nodeID);
+        for (GraphEdge edge : relevantEdgeSet) {
+            if (edge.checkOwningColor() == color) {
+                return true;
+            }
+        }
+        return false;
     }
 
     void buildBoard() {
@@ -236,6 +257,4 @@ public class BoardGraph {
     protected int checkAmountOfNodesInEdgeMapForTesting() {
         return this.nodeIDToConnectingEdges.size();
     }
-
-
 }

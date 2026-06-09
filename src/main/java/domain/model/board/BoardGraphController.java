@@ -42,14 +42,50 @@ public class BoardGraphController {
         }
     }
 
-/*
-// TODO for the non-setup phase
 
-    boolean playerClaimStoredNode(PlayerColor color, int nodeID) {
-        //Node must be next to a built road, and not adjacent to any other claimed nodes
-        return false;
+    void playerClaimStoredNode(PlayerColor color, int nodeID) {
+        handleCheckNodeIsUnoccupied(nodeID);
+        handleCheckAdjacentNodesNotClaimed(nodeID);
+        nodeHandleCheckPlayerOwnsNeighboringEdge(color, nodeID);
+        boardGraph.claimGraphNodeObject(color, nodeID);
     }
- */
+
+    private void handleCheckNodeIsUnoccupied(int nodeID) {
+        if (boardGraph.checkNodeOccupied(nodeID)) {
+            throw new IllegalSettlementPlacementException("Node already claimed");
+        }
+    }
+
+    private void nodeHandleCheckPlayerOwnsNeighboringEdge(PlayerColor color, int nodeID) {
+        if (!boardGraph.nodeCheckPlayerOwnsNeighboringEdge(color, nodeID)) {
+            throw new IllegalSettlementPlacementException("Must own an adjacent road to claim node");
+        }
+    }
+
+    private void handleCheckAdjacentNodesNotClaimed(int nodeID) {
+        if (!boardGraph.checkIfAdjacentNodesNotClaimed(nodeID)) {
+            throw new IllegalSettlementPlacementException("Can not claim node adjacent to node already claimed");
+        }
+    }
+
+    void playerClaimStoredEdge(PlayerColor color, int startingNodeID, int endingNodeID){
+        handleCheckEdgeIsUnoccupied(startingNodeID, endingNodeID);
+        edgeHandleCheckPlayerOwnsNeighboringEdge(color, startingNodeID, endingNodeID);
+        boardGraph.claimGraphEdgeObject(color, startingNodeID, endingNodeID);
+    }
+
+    private void handleCheckEdgeIsUnoccupied(int startingNodeID, int endingNodeID) {
+        if (boardGraph.checkEdgeOccupied(startingNodeID, endingNodeID)) {
+            throw new IllegalEdgeClaim("Edge already claimed");
+        }
+    }
+
+    private void edgeHandleCheckPlayerOwnsNeighboringEdge(PlayerColor color, int startingNodeID, int endingNodeID){
+        if(!boardGraph.edgeCheckPlayerOwnsNeighboringEdge(color, startingNodeID, endingNodeID)) {
+            throw new IllegalEdgeClaim("Edge must be adjacent to an owned structure");
+        }
+    }
+
 }
 
 
