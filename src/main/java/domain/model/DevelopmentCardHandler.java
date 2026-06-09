@@ -150,6 +150,9 @@ public class DevelopmentCardHandler {
         if (resource1 == null) {
             throw new IllegalArgumentException("Resource cannot be null.");
         }
+        if (resource2 == null) {
+            throw new IllegalArgumentException("Resource cannot be null.");
+        }
     }
 
 }
