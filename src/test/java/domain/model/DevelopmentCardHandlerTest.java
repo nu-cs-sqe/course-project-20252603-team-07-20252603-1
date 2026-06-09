@@ -171,4 +171,38 @@ class DevelopmentCardHandlerTest {
     EasyMock.verify(mockBuyer, mockDeck);
     assertEquals("Cannot draw new DevelopmentCard, no cards remain.", exception.getMessage());
   }
+
+  // TC7: buyer has 1 ORE, 1 WOOL, 1 GRAIN; deck has 1 card remaining (last card)
+  //      -> card returned; deck countRemaining() is 0
+  @Test
+  void buyDevelopmentCard_DeckHasOneCardRemaining_ExpectLastCardDrawnAndResourcesDecremented() throws EmptyDeckException {
+    final int currentRound = 1;
+
+    Player mockBuyer = EasyMock.createMock(Player.class);
+    DevelopmentCardDeck mockDeck = EasyMock.createMock(DevelopmentCardDeck.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+
+    EasyMock.expect(mockBuyer.getResourceCount(Resource.ORE)).andReturn(1);
+    EasyMock.expect(mockBuyer.getResourceCount(Resource.WOOL)).andReturn(1);
+    EasyMock.expect(mockBuyer.getResourceCount(Resource.GRAIN)).andReturn(1);
+    EasyMock.expect(mockDeck.drawCard(currentRound)).andReturn(mockCard);
+    
+    mockBuyer.updateResources(Resource.ORE, -1);
+    EasyMock.expectLastCall();
+    mockBuyer.updateResources(Resource.WOOL, -1);
+    EasyMock.expectLastCall();
+    mockBuyer.updateResources(Resource.GRAIN, -1);
+    EasyMock.expectLastCall();
+    
+    mockBuyer.addDevelopmentCard(mockCard);
+    EasyMock.expectLastCall();
+
+    EasyMock.replay(mockBuyer, mockDeck, mockCard);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    DevelopmentCard result = handler.buyDevelopmentCard(mockBuyer, mockDeck, currentRound);
+
+    EasyMock.verify(mockBuyer, mockDeck, mockCard);
+    assertEquals(mockCard, result);
+  }
 }
