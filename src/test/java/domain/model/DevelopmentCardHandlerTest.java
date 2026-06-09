@@ -451,4 +451,32 @@ class DevelopmentCardHandlerTest {
     EasyMock.verify(mockPlayer, mockCard, mockRobber, mockVictim);
     assertEquals("Must move robber to a different hex.", exception.getMessage());
   }
+
+  // TC17: targetHexId valid, victim = null (no adjacent opponent)
+  //       -> robber moves; no resource stolen; knight count incremented; card removed
+  @Test
+  void playKnightCard_VictimIsNull_ExpectRobberMovedNoResourceStolen() {
+    final int currentRound = 2;
+    final int targetHexId = 5;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+    Robber mockRobber = EasyMock.createMock(Robber.class);
+
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.KNIGHT);
+    EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
+    EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(3);
+    mockRobber.moveRobber(targetHexId);
+    mockPlayer.incrementKnightCount();
+    mockPlayer.removeDevelopmentCard(mockCard);
+    mockPlayer.setHasPlayedDevCardThisTurn(true);
+
+    EasyMock.replay(mockPlayer, mockCard, mockRobber);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    handler.playKnightCard(mockPlayer, mockCard, currentRound, mockRobber, targetHexId, null);
+
+    EasyMock.verify(mockPlayer, mockCard, mockRobber);
+  }
 }
