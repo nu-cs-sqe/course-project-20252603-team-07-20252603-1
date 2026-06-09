@@ -24,6 +24,7 @@ public class GameModel {
 
     private GamePhase currentGamePhase;
     private int currentPlayerIndex;
+    private int currentRound = 0;
     private List<PlayerColor> playerColors;
     private PlayerColor currentPlayerColor;
     private Map<PlayerColor, Player> playerColorToPlayerObject = new HashMap<>();
@@ -111,6 +112,10 @@ public class GameModel {
 
     public Player getCurrentPlayer() {
         return playerColorToPlayerObject.get(currentPlayerColor);
+    }
+
+    public int getCurrentRound() {
+        return currentRound;
     }
 
     public void setCurrentPlayerColor(PlayerColor color) {

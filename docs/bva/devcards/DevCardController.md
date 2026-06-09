@@ -54,7 +54,7 @@ Step 3:
 
 |             | System under test                                                                         | Expected output                                                                                          | Implemented? |
 | ----------- | ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ------------ |
-| Test Case 1 | buyDevelopmentCard(model, deck); handler returns a card                                   | controller returns the same DevelopmentCard; verify handler was called with current player, deck, and round | :x:          |
+| Test Case 1 | buyDevelopmentCard(model, deck); handler returns a card                                   | controller returns the same DevelopmentCard; verify handler was called with current player, deck, and round | :white_check_mark: |
 | Test Case 2 | buyDevelopmentCard(model, deck); handler throws IllegalStateException (insufficient resources) | controller relays IllegalStateException to caller                                                        | :x:          |
 | Test Case 3 | buyDevelopmentCard(model, deck); handler throws EmptyDeckException (deck empty)            | controller relays EmptyDeckException to caller                                                           | :x:          |
 
