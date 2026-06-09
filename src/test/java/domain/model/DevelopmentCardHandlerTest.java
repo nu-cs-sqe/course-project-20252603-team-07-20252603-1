@@ -729,4 +729,27 @@ class DevelopmentCardHandlerTest {
     EasyMock.verify(mockPlayer, mockCard);
     assertEquals("Other players list cannot be null.", exception.getMessage());
   }
+
+  // TC28: resource = BRICK, otherPlayers = [] (empty list)
+  //       -> no resources transferred; card removed from hand
+  @Test
+  void playMonopolyCard_EmptyOtherPlayersList_ExpectNoTransferAndCardRemoved() {
+    final int currentRound = 2;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.MONOPOLY);
+    EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
+    EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
+    mockPlayer.removeDevelopmentCard(mockCard);
+    mockPlayer.setHasPlayedDevCardThisTurn(true);
+
+    EasyMock.replay(mockPlayer, mockCard);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    handler.playMonopolyCard(mockPlayer, mockCard, currentRound, Resource.BRICK, List.of());
+
+    EasyMock.verify(mockPlayer, mockCard);
+  }
 }

@@ -55,6 +55,17 @@ public class DevelopmentCardHandler {
         if (otherPlayers == null) {
             throw new IllegalArgumentException("Other players list cannot be null.");
         }
+
+        for (Player other : otherPlayers) {
+            int amount = other.getResourceCount(resource);
+            if (amount > 0) {
+                other.updateResources(resource, -amount);
+                player.updateResources(resource, amount);
+            }
+        }
+
+        player.removeDevelopmentCard(card);
+        player.setHasPlayedDevCardThisTurn(true);
     }
 
     public void playKnightCard(Player player, DevelopmentCard card, int currentRound, Robber robber, int targetHexId, Player victim) {

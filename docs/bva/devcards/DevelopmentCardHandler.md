@@ -202,7 +202,7 @@ Step 3:
 | Test Case 25 | resource = null                                                                    | IllegalArgumentException: "Resource cannot be null."             | :white_check_mark: |
 | Test Case 26 | resource = DESERT                                                                  | IllegalArgumentException: "Cannot monopolize DESERT."            | :white_check_mark: |
 | Test Case 27 | otherPlayers = null                                                                | IllegalArgumentException: "Other players list cannot be null."   | :white_check_mark: |
-| Test Case 28 | resource = BRICK, otherPlayers = [] (empty list)                                   | no resources transferred; card removed from hand                 | :x:          |
+| Test Case 28 | resource = BRICK, otherPlayers = [] (empty list)                                   | no resources transferred; card removed from hand                 | :white_check_mark: |
 | Test Case 29 | resource = ORE, 1 opponent has 5 ORE                                               | opponent loses 5 ORE; player gains 5 ORE; card removed from hand | :x:          |
 | Test Case 30 | resource = WOOL, 1 opponent has 0 WOOL                                             | no WOOL transferred; card removed from hand                      | :x:          |
 | Test Case 31 | resource = GRAIN, 3 opponents have 2, 0, and 4 GRAIN respectively                 | opponents lose 2, 0, 4; player gains 6 GRAIN; card removed       | :x:          |
