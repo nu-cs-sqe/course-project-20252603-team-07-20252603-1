@@ -316,4 +316,25 @@ class DevCardControllerTest {
     assertEquals("Edge cannot be null.", exception.getMessage());
   }
 
+  // TC13: playRoadBuildingCard(model, card, edge1, null); handler succeeds (1 road remaining)
+  //       -> verify handler called; 1 road placed
+  @Test
+  void playRoadBuildingCard_Edge2IsNull_ExpectDelegation() {
+    final int currentRound = 2;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+    Edge mockEdge1 = EasyMock.createMock(Edge.class);
+
+    EasyMock.expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
+    EasyMock.expect(mockModel.getCurrentRound()).andReturn(currentRound);
+    mockHandler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockEdge1, null);
+
+    EasyMock.replay(mockModel, mockHandler, mockPlayer, mockCard, mockEdge1);
+
+    controller.playRoadBuildingCard(mockModel, mockCard, mockEdge1, null);
+
+    EasyMock.verify(mockModel, mockHandler, mockPlayer, mockCard, mockEdge1);
+  }
+
 }
