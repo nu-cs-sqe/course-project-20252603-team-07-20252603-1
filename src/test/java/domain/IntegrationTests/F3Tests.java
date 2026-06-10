@@ -4,6 +4,7 @@ package domain.IntegrationTests;
 // Ability to place initial settlements and roads during the setup phase according to setup rules
 
 import domain.model.board.BoardHandler;
+import domain.model.exceptions.AdjacentNodeAlreadyClaimed;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 import org.junit.jupiter.api.Test;
@@ -88,5 +89,20 @@ public class F3Tests {
     assertEquals(1, b.getNodeBuildingLevel(4));
     assertTrue(b.getPlayersOnHex(0).contains(bluePlayer));
     assertTrue(b.getPlayersOnHex(1).contains(bluePlayer));
+  }
+
+  // Test Case 7
+  @Test
+  void RedClaimsNodeZero_BlueClaimsNodeOne_ThrowsAdjacentNodeAlreadyClaimed() {
+    BoardHandler b = new BoardHandler();
+    Player redPlayer = new Player("connor", PlayerColor.RED);
+    Player bluePlayer = new Player("ben", PlayerColor.BLUE);
+
+    b.buildSetupSettlement(redPlayer, 0);
+
+    Exception exception = assertThrows(AdjacentNodeAlreadyClaimed.class, () ->
+            b.buildSetupSettlement(bluePlayer, 1));
+
+    assertEquals("Can not claim node adjacent to node already claimed", exception.getMessage());
   }
 }
