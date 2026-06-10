@@ -244,4 +244,29 @@ class DevCardControllerTest {
     assertEquals("Resource cannot be null.", exception.getMessage());
   }
 
+  // TC10: playMonopolyCard(model, null, BRICK); handler throws IllegalArgumentException
+  //       -> controller relays IllegalArgumentException: "Development card cannot be null."
+  @Test
+  void playMonopolyCard_CardIsNull_ExpectExceptionRelayed() {
+    final int currentRound = 2;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    Player mockOther = EasyMock.createMock(Player.class);
+    List<Player> otherPlayers = List.of(mockOther);
+
+    EasyMock.expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
+    EasyMock.expect(mockModel.getCurrentRound()).andReturn(currentRound);
+    EasyMock.expect(mockModel.getOtherPlayers()).andReturn(otherPlayers);
+    mockHandler.playMonopolyCard(mockPlayer, null, currentRound, Resource.BRICK, otherPlayers);
+    EasyMock.expectLastCall().andThrow(new IllegalArgumentException("Development card cannot be null."));
+
+    EasyMock.replay(mockModel, mockHandler, mockPlayer, mockOther);
+
+    Exception exception = assertThrows(IllegalArgumentException.class,
+        () -> controller.playMonopolyCard(mockModel, null, Resource.BRICK));
+
+    EasyMock.verify(mockModel, mockHandler, mockPlayer, mockOther);
+    assertEquals("Development card cannot be null.", exception.getMessage());
+  }
+
 }

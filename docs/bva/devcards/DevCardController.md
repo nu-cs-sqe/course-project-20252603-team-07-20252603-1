@@ -127,7 +127,7 @@ Step 3:
 | ------------ | --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------ |
 | Test Case 8  | playMonopolyCard(model, card, BRICK); handler succeeds                            | verify handler called with current player, card, currentRound, BRICK, and other players; no exception | :white_check_mark: |
 | Test Case 9  | playMonopolyCard(model, card, null); handler throws IllegalArgumentException      | controller relays IllegalArgumentException: "Resource cannot be null."             | :white_check_mark: |
-| Test Case 10 | playMonopolyCard(model, null, BRICK); handler throws IllegalArgumentException     | controller relays IllegalArgumentException: "Development card cannot be null."     | :x:          |
+| Test Case 10 | playMonopolyCard(model, null, BRICK); handler throws IllegalArgumentException     | controller relays IllegalArgumentException: "Development card cannot be null."     | :white_check_mark: |
 
 
 ---
