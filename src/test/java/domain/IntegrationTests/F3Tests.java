@@ -288,6 +288,82 @@ public class F3Tests {
     assertTrue(b.getPlayersOnHex(13).contains(orangePlayer));
     assertTrue(b.getPlayersOnHex(18).contains(whitePlayer));
   }
+
+  // Test Case 19
+  @Test
+  void FullRoundOneAndTwo_AllFourPlayers_AllSettlementsAndRoadsPlaced() {
+    BoardHandler b = new BoardHandler();
+    Player redPlayer = new Player("Dummy", PlayerColor.RED);
+    Player bluePlayer = new Player("Dummy", PlayerColor.BLUE);
+    Player orangePlayer = new Player("Dummy", PlayerColor.ORANGE);
+    Player whitePlayer = new Player("Dummy", PlayerColor.WHITE);
+
+    // Round 1
+    b.buildSetupSettlement(redPlayer, 0);
+    b.buildSetupRoad(redPlayer, 0, 0, 4);
+
+    b.buildSetupSettlement(bluePlayer, 20);
+    b.buildSetupRoad(bluePlayer, 20, 20, 25);
+
+    b.buildSetupSettlement(orangePlayer, 40);
+    b.buildSetupRoad(orangePlayer, 40, 40, 45);
+
+    b.buildSetupSettlement(whitePlayer, 53);
+    b.buildSetupRoad(whitePlayer, 53, 49, 53);
+
+    // Round 2 - reverse order
+    b.buildSetupSettlement(whitePlayer, 10);
+    b.buildSetupRoad(whitePlayer, 10, 10, 14);
+
+    b.buildSetupSettlement(orangePlayer, 30);
+    b.buildSetupRoad(orangePlayer, 30, 30, 35);
+
+    b.buildSetupSettlement(bluePlayer, 17);
+    b.buildSetupRoad(bluePlayer, 17, 17, 22);
+
+    b.buildSetupSettlement(redPlayer, 47);
+    b.buildSetupRoad(redPlayer, 47, 47, 51);
+
+    // verify all nodes
+    assertTrue(b.checkPlayerOwnsNode(PlayerColor.RED, 0));
+    assertTrue(b.checkPlayerOwnsNode(PlayerColor.RED, 47));
+    assertTrue(b.checkPlayerOwnsNode(PlayerColor.BLUE, 20));
+    assertTrue(b.checkPlayerOwnsNode(PlayerColor.BLUE, 17));
+    assertTrue(b.checkPlayerOwnsNode(PlayerColor.ORANGE, 40));
+    assertTrue(b.checkPlayerOwnsNode(PlayerColor.ORANGE, 30));
+    assertTrue(b.checkPlayerOwnsNode(PlayerColor.WHITE, 53));
+    assertTrue(b.checkPlayerOwnsNode(PlayerColor.WHITE, 10));
+
+    // verify all edges
+    assertTrue(b.checkEdgeOccupied(0, 4));
+    assertTrue(b.checkEdgeOccupied(20, 25));
+    assertTrue(b.checkEdgeOccupied(40, 45));
+    assertTrue(b.checkEdgeOccupied(49, 53));
+    assertTrue(b.checkEdgeOccupied(10, 14));
+    assertTrue(b.checkEdgeOccupied(30, 35));
+    assertTrue(b.checkEdgeOccupied(17, 22));
+    assertTrue(b.checkEdgeOccupied(47, 51));
+
+    // verify all building levels
+    assertEquals(1, b.getNodeBuildingLevel(0));
+    assertEquals(1, b.getNodeBuildingLevel(47));
+    assertEquals(1, b.getNodeBuildingLevel(20));
+    assertEquals(1, b.getNodeBuildingLevel(17));
+    assertEquals(1, b.getNodeBuildingLevel(40));
+    assertEquals(1, b.getNodeBuildingLevel(30));
+    assertEquals(1, b.getNodeBuildingLevel(53));
+    assertEquals(1, b.getNodeBuildingLevel(10));
+
+    // verify hex settlement lists
+    assertTrue(b.getPlayersOnHex(0).contains(redPlayer));
+    assertTrue(b.getPlayersOnHex(16).contains(redPlayer));
+    assertTrue(b.getPlayersOnHex(6).contains(bluePlayer));
+    assertTrue(b.getPlayersOnHex(3).contains(bluePlayer));
+    assertTrue(b.getPlayersOnHex(13).contains(orangePlayer));
+    assertTrue(b.getPlayersOnHex(9).contains(orangePlayer));
+    assertTrue(b.getPlayersOnHex(18).contains(whitePlayer));
+    assertTrue(b.getPlayersOnHex(2).contains(whitePlayer));
+  }
 }
 
 
