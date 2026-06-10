@@ -60,4 +60,19 @@ public class F3Tests {
 
     assertEquals("Invalid NodeID - must be within [0, 53].", exception.getMessage());
   }
+
+  // Test Case 5
+  @Test
+  void OrangeClaimsNodeEight_NodeOwnedByOrange_ThreeHexesUpdated() {
+    BoardHandler b = new BoardHandler();
+    Player orangePlayer = new Player("theo", PlayerColor.ORANGE);
+
+    b.buildSetupSettlement(orangePlayer, 8);
+
+    assertTrue(b.checkPlayerOwnsNode(PlayerColor.ORANGE, 8));
+    assertEquals(1, b.getNodeBuildingLevel(8));
+    assertTrue(b.getPlayersOnHex(0).contains(orangePlayer));
+    assertTrue(b.getPlayersOnHex(1).contains(orangePlayer));
+    assertTrue(b.getPlayersOnHex(4).contains(orangePlayer));
+  }
 }
