@@ -28,14 +28,16 @@ public class BoardHandlerTest {
 
     @Test
     void buildSettlement_nodeIdNegativeOne_throws() {
-        assertThrows(IllegalArgumentException.class,
+        Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> boardHandler.buildSettlement(redPlayer, -1));
+        assertEquals("Invalid NodeID - must be within [0, 53].", exception.getMessage());
     }
 
     @Test
     void buildSettlement_nodeIdFiftyFour_throws() {
-        assertThrows(IllegalArgumentException.class,
+        Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> boardHandler.buildSettlement(redPlayer, 54));
+        assertEquals("Invalid NodeID - must be within [0, 53].", exception.getMessage());
     }
 
     // --- buildSetupSettlement: node ownership ---
@@ -56,36 +58,41 @@ public class BoardHandlerTest {
     void buildSetupSettlement_adjacentNodeAlreadyClaimed_throwsAdjacentNodeAlreadyClaimed() {
         // nodes 7 and 12 are adjacent via edge (7,12)
         boardHandler.buildSetupSettlement(redPlayer, 7);
-        assertThrows(AdjacentNodeAlreadyClaimed.class,
+        Exception exception = assertThrows(AdjacentNodeAlreadyClaimed.class,
                 () -> boardHandler.buildSetupSettlement(bluePlayer, 12));
+        assertEquals("Can not claim node adjacent to node already claimed", exception.getMessage());
     }
 
     // --- addRoad: BVA node id boundary ---
 
     @Test
     void addRoad_startNodeIdNegativeOne_throws() {
-        assertThrows(IllegalArgumentException.class,
+        Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> boardHandler.addRoad(redPlayer, -1, 0));
+        assertEquals("Edge nodeId out of bounds. Must be within [0, 53].", exception.getMessage());
     }
 
     @Test
     void addRoad_endNodeIdFiftyFour_throws() {
-        assertThrows(IllegalArgumentException.class,
+        Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> boardHandler.addRoad(redPlayer, 0, 54));
+        assertEquals("Edge nodeId out of bounds. Must be within [0, 53].", exception.getMessage());
     }
 
     // --- addRoad: non-existent edge ---
 
     @Test
     void addRoad_sameStartAndEnd_throwsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class,
+        Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> boardHandler.addRoad(redPlayer, 5, 5));
+        assertEquals("Edge does not exist", exception.getMessage());
     }
 
     @Test
     void addRoad_reversedEdgeOrder_throwsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class,
+        Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> boardHandler.addRoad(redPlayer, 3, 0));
+        assertEquals("Edge does not exist", exception.getMessage());
     }
 
     // --- buildSetupRoad: road placement ---
@@ -100,7 +107,8 @@ public class BoardHandlerTest {
     void addRoad_alreadyClaimedEdge_throwsIllegalEdgeClaim() {
         boardHandler.buildSetupSettlement(redPlayer, 0);
         boardHandler.buildSetupRoad(redPlayer, 0, 0, 1);
-        assertThrows(IllegalEdgeClaim.class,
+        Exception exception = assertThrows(IllegalEdgeClaim.class,
                 () -> boardHandler.addRoad(bluePlayer, 0, 1));
+        assertEquals("Edge already claimed", exception.getMessage());
     }
 }

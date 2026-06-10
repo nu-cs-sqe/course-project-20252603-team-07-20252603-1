@@ -50,18 +50,6 @@ class GameLoopControllerTest {
         verify(mockModel);
     }
 
-//    @Test
-//    void testGetResourceCountDelegatesThroughPlayerState() {
-//        PlayerState mockPlayerState = createMock(PlayerState.class);
-//        expect(mockModel.getPlayerState(PlayerColor.RED)).andReturn(mockPlayerState);
-//        expect(mockPlayerState.getResourceCount(Resource.GRAIN)).andReturn(3);
-//        replay(mockModel, mockPlayerState);
-//
-//        assertEquals(3, controller.getResourceCount(mockModel, PlayerColor.RED, Resource.GRAIN));
-//
-//        verify(mockModel, mockPlayerState);
-//    }
-
     @Test
     void testEndTurnDelegatesToModel() {
         mockModel.endTurn();

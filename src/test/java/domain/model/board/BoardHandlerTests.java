@@ -1367,9 +1367,10 @@ public class BoardHandlerTests {
 
     BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
 
-    assertThrows(IllegalSettlementPlacementException.class, () ->
+    Exception exception = assertThrows(IllegalSettlementPlacementException.class, () ->
         b.buildSettlement(mockRedPlayer, 0)
     );
+    assertEquals("Node already claimed", exception.getMessage());
 
     EasyMock.verify(mockBoardGraphController, mockRedPlayer);
   }
@@ -1388,9 +1389,10 @@ public class BoardHandlerTests {
 
     BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
 
-    assertThrows(IllegalSettlementPlacementException.class, () ->
+    Exception exception = assertThrows(IllegalSettlementPlacementException.class, () ->
         b.buildSettlement(mockRedPlayer, 0)
     );
+    assertEquals("Can not claim node adjacent to node already claimed", exception.getMessage());
 
     EasyMock.verify(mockBoardGraphController, mockRedPlayer);
   }
@@ -1407,9 +1409,10 @@ public class BoardHandlerTests {
 
     BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
 
-    assertThrows(IllegalEdgeClaim.class, () ->
+    Exception exception = assertThrows(IllegalEdgeClaim.class, () ->
         b.addRoad(mockRedPlayer, 0, 1)
     );
+    assertEquals("Edge already claimed", exception.getMessage());
 
     EasyMock.verify(mockBoardGraphController, mockRedPlayer);
   }
@@ -1426,9 +1429,10 @@ public class BoardHandlerTests {
 
     BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
 
-    assertThrows(IllegalEdgeClaim.class, () ->
+    Exception exception = assertThrows(IllegalEdgeClaim.class, () ->
         b.addRoad(mockRedPlayer, 0, 1)
     );
+    assertEquals("Edge must be adjacent to an owned structure", exception.getMessage());
 
     EasyMock.verify(mockBoardGraphController, mockRedPlayer);
   }

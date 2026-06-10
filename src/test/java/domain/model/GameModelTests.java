@@ -589,7 +589,8 @@ public class GameModelTests {
                 oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
-        assertThrows(IllegalGamePhaseException.class, () -> model.attemptBuildRoad(0, 1));
+        Exception exception = assertThrows(IllegalGamePhaseException.class, () -> model.attemptBuildRoad(0, 1));
+        assertEquals("Not proper phase for that action", exception.getMessage());
         EasyMock.verify(playerMock, boardMock, lumberDeckMock, brickDeckMock,
                 grainDeckMock, oreDeckMock, woolDeckMock);
     }
@@ -604,7 +605,8 @@ public class GameModelTests {
                 oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
-        assertThrows(IllegalGamePhaseException.class, () -> model.attemptBuildSettlement(0));
+        Exception exception = assertThrows(IllegalGamePhaseException.class, () -> model.attemptBuildSettlement(0));
+        assertEquals("Not proper phase for that action", exception.getMessage());
         EasyMock.verify(playerMock, boardMock, lumberDeckMock, brickDeckMock,
                 grainDeckMock, oreDeckMock, woolDeckMock);
     }
@@ -619,7 +621,8 @@ public class GameModelTests {
                 oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
         model.setCurrentPlayerColor(PlayerColor.ORANGE);
         model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
-        assertThrows(IllegalGamePhaseException.class, () -> model.attemptBuildCity(0));
+        Exception exception = assertThrows(IllegalGamePhaseException.class, () -> model.attemptBuildCity(0));
+        assertEquals("Not proper phase for that action", exception.getMessage());
         EasyMock.verify(playerMock, boardMock, lumberDeckMock, brickDeckMock,
                 grainDeckMock, oreDeckMock, woolDeckMock);
     }
@@ -631,7 +634,8 @@ public class GameModelTests {
         GameModel model = new GameModel(List.of(new Player("Alice", PlayerColor.RED)), board);
         model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
         model.performTurn(6);
-        assertThrows(IllegalGamePhaseException.class, () -> model.performTurn(6));
+        Exception exception = assertThrows(IllegalGamePhaseException.class, () -> model.performTurn(6));
+        assertEquals("Not proper phase for that action", exception.getMessage());
         EasyMock.verify(board);
     }
 
@@ -654,7 +658,8 @@ public class GameModelTests {
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
                 oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
         model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
-        assertThrows(IllegalGamePhaseException.class, () -> model.endTurn());
+        Exception exception = assertThrows(IllegalGamePhaseException.class, () -> model.endTurn());
+        assertEquals("Not proper phase for that action", exception.getMessage());
     }
 
     @Test
@@ -662,7 +667,8 @@ public class GameModelTests {
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
                 oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
         model.setCurrentGamePhase(GamePhase.MOVE_ROBBER);
-        assertThrows(IllegalGamePhaseException.class, () -> model.endTurn());
+        Exception exception = assertThrows(IllegalGamePhaseException.class, () -> model.endTurn());
+        assertEquals("Not proper phase for that action", exception.getMessage());
     }
 
     // --- BVA: resource amount boundaries for attemptBuildSettlement ---
@@ -680,7 +686,8 @@ public class GameModelTests {
                 oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
         model.setCurrentPlayerColor(PlayerColor.ORANGE);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
-        assertThrows(InsufficientResourcesException.class, () -> model.attemptBuildSettlement(0));
+        Exception exception = assertThrows(InsufficientResourcesException.class, () -> model.attemptBuildSettlement(0));
+        assertEquals("Insufficient resources", exception.getMessage());
         EasyMock.verify(playerMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, woolDeckMock);
     }
 
@@ -697,7 +704,8 @@ public class GameModelTests {
                 oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
         model.setCurrentPlayerColor(PlayerColor.BLUE);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
-        assertThrows(InsufficientResourcesException.class, () -> model.attemptBuildSettlement(0));
+        Exception exception = assertThrows(InsufficientResourcesException.class, () -> model.attemptBuildSettlement(0));
+        assertEquals("Insufficient resources", exception.getMessage());
         EasyMock.verify(playerMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, woolDeckMock);
     }
 
@@ -715,7 +723,8 @@ public class GameModelTests {
                 oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
         model.setCurrentPlayerColor(PlayerColor.WHITE);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
-        assertThrows(InsufficientResourcesException.class, () -> model.attemptBuildSettlement(0));
+        Exception exception = assertThrows(InsufficientResourcesException.class, () -> model.attemptBuildSettlement(0));
+        assertEquals("Insufficient resources", exception.getMessage());
         EasyMock.verify(playerMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, woolDeckMock);
     }
 
@@ -759,7 +768,8 @@ public class GameModelTests {
                 oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
-        assertThrows(InsufficientResourcesException.class, () -> model.attemptBuildRoad(0, 1));
+        Exception exception = assertThrows(InsufficientResourcesException.class, () -> model.attemptBuildRoad(0, 1));
+        assertEquals("Insufficient resources", exception.getMessage());
         EasyMock.verify(playerMock, lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock, woolDeckMock, boardMock);
     }
 
@@ -799,7 +809,8 @@ public class GameModelTests {
                 oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
-        assertThrows(InsufficientResourcesException.class, () -> model.attemptBuildCity(0));
+        Exception exception = assertThrows(InsufficientResourcesException.class, () -> model.attemptBuildCity(0));
+        assertEquals("Insufficient resources", exception.getMessage());
         EasyMock.verify(playerMock);
     }
 
@@ -814,7 +825,8 @@ public class GameModelTests {
                 oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
         model.setCurrentPlayerColor(PlayerColor.BLUE);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
-        assertThrows(InsufficientResourcesException.class, () -> model.attemptBuildCity(0));
+        Exception exception = assertThrows(InsufficientResourcesException.class, () -> model.attemptBuildCity(0));
+        assertEquals("Insufficient resources", exception.getMessage());
         EasyMock.verify(playerMock);
     }
 
