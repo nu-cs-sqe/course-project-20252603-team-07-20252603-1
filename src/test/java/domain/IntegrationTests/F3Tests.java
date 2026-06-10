@@ -117,6 +117,18 @@ public class F3Tests {
 
     assertTrue(b.checkEdgeOccupied(0, 4));
   }
+
+  // Test Case 9
+  @Test
+  void OrangeClaimsNodeFiftyThree_ThenClaimsEdgeFourtyNineToFiftyThree_EdgeIsClaimed() {
+    BoardHandler b = new BoardHandler();
+    Player orangePlayer = new Player("Dummy", PlayerColor.ORANGE);
+
+    b.buildSetupSettlement(orangePlayer, 53);
+    b.buildSetupRoad(orangePlayer, 53, 49, 53);
+
+    assertTrue(b.checkEdgeOccupied(49, 53));
+  }
 }
 
 
