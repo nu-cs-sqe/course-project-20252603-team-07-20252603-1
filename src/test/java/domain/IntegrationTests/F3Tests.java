@@ -211,6 +211,20 @@ public class F3Tests {
 
     assertEquals("Edge must be adjacent to just placed settlement", exception.getMessage());
   }
+
+  // Test Case 16
+  @Test
+  void BlueClaimsNodeEight_TriesToClaimEdgeZeroToFour_ThrowsNotAdjacent() {
+    BoardHandler b = new BoardHandler();
+    Player bluePlayer = new Player("Dummy", PlayerColor.BLUE);
+
+    b.buildSetupSettlement(bluePlayer, 8);
+
+    Exception exception = assertThrows(IllegalEdgeClaim.class, () ->
+            b.buildSetupRoad(bluePlayer, 8, 0, 4));
+
+    assertEquals("Edge must be adjacent to just placed settlement", exception.getMessage());
+  }
 }
 
 
