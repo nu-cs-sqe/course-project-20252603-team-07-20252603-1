@@ -225,6 +225,27 @@ public class F3Tests {
 
     assertEquals("Edge must be adjacent to just placed settlement", exception.getMessage());
   }
+
+  // Test Case 17
+  @Test
+  void RedClaimsNodeZeroAndRoad_ThenNodeFortyAndRoad_BothSucceed() {
+    BoardHandler b = new BoardHandler();
+    Player redPlayer = new Player("Dummy", PlayerColor.RED);
+
+    b.buildSetupSettlement(redPlayer, 0);
+    b.buildSetupRoad(redPlayer, 0, 0, 4);
+    b.buildSetupSettlement(redPlayer, 40);
+    b.buildSetupRoad(redPlayer, 40, 40, 45);
+
+    assertTrue(b.checkPlayerOwnsNode(PlayerColor.RED, 0));
+    assertTrue(b.checkPlayerOwnsNode(PlayerColor.RED, 40));
+    assertTrue(b.checkEdgeOccupied(0, 4));
+    assertTrue(b.checkEdgeOccupied(40, 45));
+    assertEquals(1, b.getNodeBuildingLevel(0));
+    assertEquals(1, b.getNodeBuildingLevel(40));
+    assertTrue(b.getPlayersOnHex(0).contains(redPlayer));
+    assertTrue(b.getPlayersOnHex(13).contains(redPlayer));
+  }
 }
 
 
