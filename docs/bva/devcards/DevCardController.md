@@ -226,4 +226,4 @@ Step 3:
 | ------------ | -------------------------------------------------------------- | ------------------------------------------------------------------------ | ------------ |
 | Test Case 18 | getVictoryPointCount(model); handler returns 0                 | controller returns 0; verify handler called with current player's hand   | :white_check_mark: |
 | Test Case 19 | getVictoryPointCount(model); handler returns 3                 | controller returns 3; verify handler called with current player's hand   | :white_check_mark: |
-| Test Case 20 | getVictoryPointCount(model); handler returns 5 (maximum)       | controller returns 5; verify handler called                              | :x:          |
+| Test Case 20 | getVictoryPointCount(model); handler returns 5 (maximum)       | controller returns 5; verify handler called                              | :white_check_mark: |
