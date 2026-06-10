@@ -50,4 +50,11 @@ public class DevCardController {
         handler.playRoadBuildingCard(currentPlayer, card, currentRound, edge1, edge2);
     }
 
+    public void playYearOfPlentyCard(GameModel model, DevelopmentCard card, Resource resource1, Resource resource2) {
+        Player currentPlayer = model.getCurrentPlayer();
+        int currentRound = model.getCurrentRound();
+        
+        handler.playYearOfPlentyCard(currentPlayer, card, currentRound, resource1, resource2);
+    }
+
 }

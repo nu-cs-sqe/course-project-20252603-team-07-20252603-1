@@ -361,4 +361,24 @@ class DevCardControllerTest {
     assertEquals("Development card cannot be null.", exception.getMessage());
   }
 
+  // TC15: playYearOfPlentyCard(model, card, ORE, ORE); handler succeeds
+  //       -> verify handler called with current player, card, currentRound, ORE, ORE; no exception
+  @Test
+  void playYearOfPlentyCard_HandlerSucceeds_ExpectDelegation() {
+    final int currentRound = 2;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+
+    EasyMock.expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
+    EasyMock.expect(mockModel.getCurrentRound()).andReturn(currentRound);
+    mockHandler.playYearOfPlentyCard(mockPlayer, mockCard, currentRound, Resource.ORE, Resource.ORE);
+
+    EasyMock.replay(mockModel, mockHandler, mockPlayer, mockCard);
+
+    controller.playYearOfPlentyCard(mockModel, mockCard, Resource.ORE, Resource.ORE);
+
+    EasyMock.verify(mockModel, mockHandler, mockPlayer, mockCard);
+  }
+
 }
