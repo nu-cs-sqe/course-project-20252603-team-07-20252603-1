@@ -2,7 +2,7 @@ package domain.model.game_pieces;
 
 import java.util.Random;
 
-public class Die {
+class Die {
     private static final int DIE_SIDES_NUMBER = 6;
 
     private final Random randomizer;

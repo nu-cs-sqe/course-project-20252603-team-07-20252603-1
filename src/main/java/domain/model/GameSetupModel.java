@@ -1,6 +1,5 @@
 package domain.model;
 
-import domain.model.board.Board;
 import domain.model.board.BoardHandler;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;

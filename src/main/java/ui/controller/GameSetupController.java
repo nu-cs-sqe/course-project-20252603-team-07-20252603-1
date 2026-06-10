@@ -1,7 +1,6 @@
 package ui.controller;
 
 import domain.model.GameSetupModel;
-import domain.model.board.Board;
 import domain.model.board.BoardHandler;
 import domain.model.development_cards.DevelopmentCardDeck;
 import domain.model.player.Player;

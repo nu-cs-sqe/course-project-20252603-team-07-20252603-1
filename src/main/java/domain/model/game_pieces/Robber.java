@@ -14,7 +14,7 @@ public class Robber {
         return currentHexId;
     }
 
-    public void moveRobber(int hexId){ // maybe package-private? but we need to be able to test it?
+    public void moveRobber(int hexId){
         if (hexId < MIN_HEX_ID || hexId > MAX_HEX_ID){
             throw new IllegalArgumentException("Cannot move Robber to invalid HexId");
         }

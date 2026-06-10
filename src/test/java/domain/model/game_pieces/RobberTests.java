@@ -1,5 +1,6 @@
-package domain;
+package domain.model.game_pieces;
 
+import domain.model.game_pieces.Robber;
 import org.junit.jupiter.api.Test;
 
 import domain.model.game_pieces.Robber;

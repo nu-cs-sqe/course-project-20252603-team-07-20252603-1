@@ -9,7 +9,7 @@ public class GraphEdge {
     // unique Edge_id
     final private int startingNodeID;
     final private int endingNodeID;
-    // keep track of the
+
     private boolean roadBuilt;
     private PlayerColor owningPlayerColor;
 

@@ -64,7 +64,8 @@ public class GameModelTests {
             EasyMock.expect(redStateMock.getResourceCount(r)).andReturn(1);
         }
 
-        EasyMock.expect(boardMock.buildSettlement(PlayerColor.RED, 0)).andReturn(true);
+        boardMock.buildSettlement(redStateMock, 0);
+        EasyMock.expectLastCall();
 
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER, Resource.WOOL, Resource.GRAIN)) {
             redStateMock.updateResources(r, -1);
@@ -103,8 +104,8 @@ public class GameModelTests {
             EasyMock.expect(whiteStateMock.getResourceCount(r)).andReturn(1);
         }
 
-        EasyMock.expect(boardMock.buildSettlement(PlayerColor.WHITE, 0))
-                .andThrow(new IllegalSettlementPlacementException("Can not place a settlement at this node"));
+        boardMock.buildSettlement(whiteStateMock, 0);
+        EasyMock.expectLastCall().andThrow(new IllegalSettlementPlacementException("Can not place a settlement at this node"));
 
         EasyMock.replay(whiteStateMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock,
                 woolDeckMock);
@@ -190,7 +191,8 @@ public class GameModelTests {
             EasyMock.expect(blueStateMock.getResourceCount(r)).andReturn(1);
         }
 
-        EasyMock.expect(boardMock.buildSettlement(PlayerColor.BLUE, 0)).andReturn(true);
+        boardMock.buildSettlement(blueStateMock, 0);
+        EasyMock.expectLastCall();
 
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER, Resource.WOOL, Resource.GRAIN)) {
             blueStateMock.updateResources(r, -1);
@@ -251,7 +253,7 @@ public class GameModelTests {
             EasyMock.expect(redStateMock.getResourceCount(r)).andReturn(1);
         }
 
-        boardMock.addRoad(PlayerColor.RED, 0, 1);
+        boardMock.addRoad(redStateMock, 0, 1);
         EasyMock.expectLastCall();
 
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER)) {
@@ -289,7 +291,7 @@ public class GameModelTests {
             EasyMock.expect(whiteStateMock.getResourceCount(r)).andReturn(1);
         }
 
-        boardMock.addRoad(PlayerColor.WHITE, 0, 1);
+        boardMock.addRoad(whiteStateMock, 0, 1);
         EasyMock.expectLastCall().andThrow(new IllegalRoadPlacementException("Can not place road at this edge"));
 
 
@@ -375,7 +377,7 @@ public class GameModelTests {
         EasyMock.expect(redStateMock.getResourceCount(Resource.ORE)).andReturn(3);
         EasyMock.expect(redStateMock.getResourceCount(Resource.GRAIN)).andReturn(2);
 
-        boardMock.buildCity(PlayerColor.RED, 0);
+        boardMock.buildCity(redStateMock, 0);
         EasyMock.expectLastCall();
 
         redStateMock.updateResources(Resource.ORE, -3);
@@ -459,7 +461,7 @@ public class GameModelTests {
         EasyMock.expect(orangeStateMock.getResourceCount(Resource.ORE)).andReturn(3);
         EasyMock.expect(orangeStateMock.getResourceCount(Resource.GRAIN)).andReturn(2);
 
-        boardMock.buildCity(PlayerColor.ORANGE, 0);
+        boardMock.buildCity(orangeStateMock, 0);
         EasyMock.expectLastCall().andThrow(new IllegalArgumentException());
 
         EasyMock.replay(orangeStateMock, boardMock);

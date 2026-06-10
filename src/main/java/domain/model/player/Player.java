@@ -1,5 +1,10 @@
 package domain.model.player;
 
+import domain.model.resources.Resource;
+import domain.model.board.Edge;
+import domain.model.board.Vertex;
+import domain.model.game_pieces.Settlement;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
