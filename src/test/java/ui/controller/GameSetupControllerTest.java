@@ -246,36 +246,6 @@ class GameSetupControllerTest {
         verify(mockBoard);
     }
 
-    @Test
-    void testInitializeBoardCreatesBoard() {
-        // Arrange
-        expect(mockModel.getBoard()).andReturn(mockBoard).times(2);
-        expect(mockBoard.getHexCount()).andReturn(19);
-        replay(mockModel, mockBoard);
-
-        // Act
-        controller.initializeBoard(mockModel);
-        int hexCount = controller.getBoardHexCount(mockModel.getBoard());
-
-        // Assert
-        assertEquals(19, hexCount);
-        verify(mockModel, mockBoard);
-    }
-
-    @Test
-    void testBoardIsNotNull() {
-        // Arrange
-        expect(mockModel.getBoard()).andReturn(mockBoard);
-        replay(mockModel);
-
-        // Act
-        BoardHandler board = controller.getBoard(mockModel);
-
-        // Assert
-        assertNotNull(board);
-        verify(mockModel);
-    }
-
     // ========== Hex Order Determination Tests ==========
 
     @Test
@@ -549,31 +519,25 @@ class GameSetupControllerTest {
         );
 
         expect(mockModel.getPlayerCount()).andReturn(3);
-        expect(mockModel.getBoard()).andReturn(mockBoard);
         expect(mockModel.getResourceDeck()).andReturn(mockResourceDeck);
         expect(mockModel.getDevelopmentCardDeck()).andReturn(mockDevDeck);
         expect(mockModel.getTurnOrder()).andReturn(mockPlayers);
-        expect(mockBoard.getHexCount()).andReturn(19);
 
-        replay(mockModel, mockBoard);
+        replay(mockModel);
 
         // Act
         boolean validPlayerCount = controller.validatePlayerCount(mockModel);
-        BoardHandler board = controller.getBoard(mockModel);
         ResourceDeck resourceDeck = controller.getResourceDeck(mockModel);
         DevelopmentCardDeck devDeck = controller.getDevelopmentCardDeck(mockModel);
         List<Player> turnOrder = controller.getTurnOrder(mockModel);
-        int hexCount = controller.getBoardHexCount(board);
 
         // Assert
         assertTrue(validPlayerCount);
-        assertNotNull(board);
         assertNotNull(resourceDeck);
         assertNotNull(devDeck);
         assertNotNull(turnOrder);
-        assertEquals(19, hexCount);
         assertEquals(3, turnOrder.size());
-        verify(mockModel, mockBoard);
+        verify(mockModel);
     }
 
     @Test

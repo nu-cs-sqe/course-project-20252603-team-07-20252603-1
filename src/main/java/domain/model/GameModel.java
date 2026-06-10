@@ -6,7 +6,7 @@ import domain.model.exceptions.IllegalGamePhaseException;
 import domain.model.exceptions.IllegalSettlementPlacementException;
 import domain.model.player.PlayerColor;
 import domain.model.resources.ResourceDeck;
-// import domain.model.game_pieces.DiceHandler;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import domain.model.player.Player;
 import domain.model.resources.Resource;
 
@@ -16,7 +16,9 @@ import java.util.stream.Collectors;
 
 public class GameModel {
 
-    private BoardHandler board;
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2",
+            justification = "BoardHandler is intentionally shared between GameSetupModel and GameModel as it represents the single game board state")
+    private final BoardHandler board;
 
     //private final List<PlayerState> playerStates; // figure out how to initialize proper
     // private final DiceHandler diceHandler = initializeDiceHandler();
