@@ -1,9 +1,9 @@
 package domain.model.board;
 
-import org.junit.jupiter.api.Test;
-
+import domain.model.board.Hex;
 import domain.model.player.Player;
 import domain.model.resources.Resource;
+import org.junit.jupiter.api.Test;
 
 import org.easymock.EasyMock;
 

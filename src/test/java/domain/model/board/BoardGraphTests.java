@@ -1,11 +1,12 @@
 package domain.model.board;
 
+import domain.model.exceptions.EdgeAlreadyClaimedException;
+import domain.model.board.BoardGraph;
+import domain.model.board.GraphEdge;
+import domain.model.board.GraphNode;
+import domain.model.player.PlayerColor;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
-
-import domain.model.board.BoardGraph;
-import domain.model.exceptions.EdgeAlreadyClaimedException;
-import domain.model.player.PlayerColor;
 
 import java.util.Set;
 

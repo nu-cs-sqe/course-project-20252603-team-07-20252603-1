@@ -1,11 +1,13 @@
 package domain.model.board;
 
+import domain.model.player.Player;
+import domain.model.player.PlayerColor;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import domain.model.player.PlayerColor;
+import java.util.List;
 
 public class BoardGraph {
     // map that connects Nodes to the edges connected
@@ -161,6 +163,10 @@ public class BoardGraph {
             }
         }
         return false;
+    }
+
+    PlayerColor calculateLongestRoad(List<Player> players, PlayerColor previousWinner){
+        return PlayerColor.SETUP;
     }
 
     void buildBoard() {

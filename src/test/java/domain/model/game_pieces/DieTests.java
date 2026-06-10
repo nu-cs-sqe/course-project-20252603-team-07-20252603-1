@@ -3,8 +3,6 @@ package domain.model.game_pieces;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
-import domain.model.game_pieces.Die;
-
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

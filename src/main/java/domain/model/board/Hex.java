@@ -1,12 +1,12 @@
 package domain.model.board;
 
+import domain.model.player.Player;
+import domain.model.resources.Resource;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import domain.model.player.*;
-import domain.model.resources.*;
-
-public final class Hex {
+public class Hex {
   private static final int MIN_HEX_ID = 0;
   private static final int MAX_HEX_ID = 18;
 
@@ -130,5 +130,18 @@ public final class Hex {
 
   public boolean isPlayerCityOnHex(Player player) {
     return playerCities.contains(player);
+  }
+
+  public List<Player> getHexSettlementPlayers(){
+    return List.of();
+  };
+
+  public List<Player> getHexCityPlayers(){
+    return List.of();
+  };
+
+  @Override
+  protected final void finalize() {
+    // intentionally empty — blocks finalizer attacks
   }
 }

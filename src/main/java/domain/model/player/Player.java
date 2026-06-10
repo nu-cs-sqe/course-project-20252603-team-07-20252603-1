@@ -1,15 +1,15 @@
 package domain.model.player;
 
+import domain.model.resources.Resource;
+import domain.model.board.Edge;
+import domain.model.board.Vertex;
+import domain.model.game_pieces.Settlement;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import domain.model.resources.*;
-import domain.model.board.Vertex;
-import domain.model.game_pieces.Settlement;
-import domain.model.board.Edge;
 
 public class Player {
     private final List<Settlement> settlements;
@@ -91,5 +91,10 @@ public class Player {
 
     public int getResourceCount(Resource resource) {
         return 0;
+    }
+
+    // TODO: Implement player color
+    public PlayerColor getPlayerColor(){
+        return PlayerColor.SETUP;
     }
 }

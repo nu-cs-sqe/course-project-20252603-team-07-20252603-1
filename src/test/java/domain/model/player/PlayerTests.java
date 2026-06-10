@@ -1,11 +1,11 @@
 package domain.model.player;
 
-import org.easymock.EasyMock;
-import org.junit.jupiter.api.Test;
-
 import domain.model.board.Edge;
 import domain.model.board.Vertex;
+import domain.model.player.Player;
 import domain.model.resources.Resource;
+import org.easymock.EasyMock;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;

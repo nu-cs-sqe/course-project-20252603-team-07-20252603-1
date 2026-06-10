@@ -1,11 +1,13 @@
 package domain.model.board;
 
-import java.util.Set;
-
 import domain.model.exceptions.AdjacentNodeAlreadyClaimed;
 import domain.model.exceptions.IllegalEdgeClaim;
 import domain.model.exceptions.IllegalSettlementPlacementException;
+import domain.model.player.Player;
 import domain.model.player.PlayerColor;
+
+import java.util.List;
+import java.util.Set;
 
 public class BoardGraphController {
     private BoardGraph boardGraph;
@@ -85,6 +87,10 @@ public class BoardGraphController {
         if(!boardGraph.edgeCheckPlayerOwnsNeighboringEdge(color, startingNodeID, endingNodeID)) {
             throw new IllegalEdgeClaim("Edge must be adjacent to an owned structure");
         }
+    }
+
+    PlayerColor calculateLongestRoad(List<Player> players, PlayerColor previousWinner) {
+        return boardGraph.calculateLongestRoad(players, previousWinner);
     }
 
 }
