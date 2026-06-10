@@ -364,6 +364,21 @@ public class F3Tests {
     assertTrue(b.getPlayersOnHex(18).contains(whitePlayer));
     assertTrue(b.getPlayersOnHex(2).contains(whitePlayer));
   }
+
+  // Test Case 20
+  @Test
+  void RedClaimsNodeZeroAndRoad_TriesToClaimAdjacentNodeThree_ThrowsAdjacentNodeAlreadyClaimed() {
+    BoardHandler b = new BoardHandler();
+    Player redPlayer = new Player("Dummy", PlayerColor.RED);
+
+    b.buildSetupSettlement(redPlayer, 0);
+    b.buildSetupRoad(redPlayer, 0, 0, 4);
+
+    Exception exception = assertThrows(AdjacentNodeAlreadyClaimed.class, () ->
+            b.buildSetupSettlement(redPlayer, 3));
+
+    assertEquals("Can not claim node adjacent to node already claimed", exception.getMessage());
+  }
 }
 
 
