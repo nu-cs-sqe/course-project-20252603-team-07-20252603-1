@@ -16,14 +16,12 @@ import java.util.stream.Collectors;
 
 public class GameModel {
 
+    private static final int ROBBER_ROLL_VALUE = 7;
+    private static final int MAX_AMOUNT_SETTLEMENTS = 5;
+
     @SuppressFBWarnings(value = "EI_EXPOSE_REP2",
             justification = "BoardHandler is intentionally shared between GameSetupModel and GameModel as it represents the single game board state")
     private final BoardHandler board;
-
-
-
-
-
     private GamePhase currentGamePhase;
     private int currentPlayerIndex;
     private List<PlayerColor> playerColors;
@@ -60,10 +58,6 @@ public class GameModel {
         this.board = board;
     }
 
-
-
-    
-
     public GameModel(List<Player> players, BoardHandler board) {
         this.board = board;
         this.lumberDeck = new ResourceDeck(Resource.LUMBER);
@@ -90,16 +84,6 @@ public class GameModel {
         this.currentPlayerColor = playerColors.get(0);
         this.currentGamePhase = GamePhase.BEFORE_ROLL;
     }
-
-
-    // private DiceHandler initializeDiceHandler() { // shouldn't this be a method of DiceHandler?
-    //     Random r = new Random();
-    //     Die d1 = new Die(r);
-    //     Die d2 = new Die(r);
-
-    //     return new DiceHandler(d1, d2);
-
-    // }
 
     public List<Player> getTurnOrder() {
         return playerColors.stream()
@@ -131,7 +115,7 @@ public class GameModel {
     public void performTurn(int roll) {
         checkCurrentGamePhaseMatches(GamePhase.BEFORE_ROLL);
 
-        if (roll == 7) {
+        if (roll == ROBBER_ROLL_VALUE) {
             currentGamePhase = GamePhase.MOVE_ROBBER;
             return;
         }
@@ -155,13 +139,11 @@ public class GameModel {
         return Resource.WOOL;
     }
 
-    // SPENCER METHODS
-
     public void attemptBuildSettlement(int nodeID){
         checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY);
         checkIfPlayerAtMaxSettlements(currentPlayerColor);
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER, Resource.WOOL, Resource.GRAIN)) {
-            checkPlayerOwnsEnoughResources(currentPlayerColor, r, 1);
+            checkPlayerOwnsEnoughResources(currentPlayerColor, r, 1); // 1s are not magic numbers?
         }
         board.buildSettlement(getCurrentPlayer(), nodeID);
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER, Resource.WOOL, Resource.GRAIN)) {
@@ -216,7 +198,7 @@ public class GameModel {
     private void checkIfPlayerAtMaxSettlements(PlayerColor playerColorOfInterest) {
         Player relevantPlayer = getArbitraryPlayer(playerColorOfInterest);
         int currentAmountSettlements = relevantPlayer.getSettlementCount();
-        if (currentAmountSettlements >= 5) {
+        if (currentAmountSettlements >= MAX_AMOUNT_SETTLEMENTS) {
             throw new IllegalSettlementPlacementException("Can not have more than 5 settlements");
         }
     }
@@ -249,7 +231,6 @@ public class GameModel {
         reducePlayerResources(currentPlayerColor, Resource.GRAIN, 2);
         grainDeck.replenish(2);
     };
-
 
     public void attemptTrade(){};
 
