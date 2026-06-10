@@ -48,4 +48,16 @@ public class F3Tests {
 
     assertEquals("Invalid NodeID - must be within [0, 53].", exception.getMessage());
   }
+
+  // Test Case 4
+  @Test
+  void WhiteClaimsNodeFiftyFour_ThrowsInvalidNodeID() {
+    BoardHandler b = new BoardHandler();
+    Player whitePlayer = new Player("Spencer", PlayerColor.WHITE);
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () ->
+            b.buildSetupSettlement(whitePlayer, 54));
+
+    assertEquals("Invalid NodeID - must be within [0, 53].", exception.getMessage());
+  }
 }
