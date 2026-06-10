@@ -93,6 +93,7 @@ public class BoardHandler {
 
     nodeOwners[nodeId] = claimingColor;
     nodeBuildingLevels[nodeId] = SETTLEMENT_LEVEL;
+    player.placeSettlement();
   }
 
   boolean checkPlayerOwnsNode(PlayerColor playerColor, Integer nodeId) {
@@ -132,6 +133,7 @@ public class BoardHandler {
     }
     PlayerColor claimingColor = player.getColor();
     boardGraphController.playerClaimStoredEdge(claimingColor, nodeId1, nodeId2);
+    player.placeRoad();
   }
 
   void awardResources(int rollNum) {
@@ -186,6 +188,7 @@ public class BoardHandler {
     }
     nodeOwners[nodeId] = claimingColor;
     nodeBuildingLevels[nodeId] = SETTLEMENT_LEVEL;
+    player.placeSettlement();
   }
 
   void buildSetupRoad(Player player, int claimedNodeId, int nodeId1, int nodeId2) {
@@ -196,6 +199,7 @@ public class BoardHandler {
     PlayerColor claimingColor = player.getColor();
     boardGraphController.playerClaimStoredEdgeSetupPhase(claimingColor,
             claimedNodeId, nodeId1, nodeId2);
+    player.placeRoad();
   }
 
   // Note: Returns SETUP PlayerColor if nobody has achieved longest road yet
