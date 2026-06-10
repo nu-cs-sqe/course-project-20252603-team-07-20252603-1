@@ -74,27 +74,6 @@ public class GameSetupController {
     }
 
     /**
-     * Initializes the game board.
-     *
-     * @param model the game setup model
-     */
-    public void initializeBoard(GameSetupModel model) {
-        // Board initialization is handled by the model
-        // Controller just triggers the initialization
-        model.getBoard();
-    }
-
-    /**
-     * Gets the game board.
-     *
-     * @param model the game setup model
-     * @return the game board
-     */
-    public BoardHandler getBoard(GameSetupModel model) {
-        return model.getBoard();
-    }
-
-    /**
      * Gets the number of hexes on the board.
      *
      * @param board the game board
