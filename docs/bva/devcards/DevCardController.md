@@ -91,7 +91,7 @@ Step 3:
 |             | System under test                                                                    | Expected output                                                                                   | Implemented? |
 | ----------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- | ------------ |
 | Test Case 4 | playKnightCard(model, card, robber, 5, victim); handler succeeds                    | verify handler called with current player, card, currentRound, robber, 5, victim; no exception    | :white_check_mark: |
-| Test Case 5 | playKnightCard(model, card, null, 5, victim); handler throws IllegalArgumentException | controller relays IllegalArgumentException: "Robber cannot be null."                             | :x:          |
+| Test Case 5 | playKnightCard(model, card, null, 5, victim); handler throws IllegalArgumentException | controller relays IllegalArgumentException: "Robber cannot be null."                             | :white_check_mark: |
 | Test Case 6 | playKnightCard(model, card, robber, 5, null); handler succeeds (no victim)           | verify handler called; no resource stolen; no exception                                           | :x:          |
 | Test Case 7 | playKnightCard(model, null, robber, 5, victim); handler throws IllegalArgumentException | controller relays IllegalArgumentException: "Development card cannot be null."                  | :x:          |
 

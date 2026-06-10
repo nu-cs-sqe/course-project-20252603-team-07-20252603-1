@@ -120,4 +120,29 @@ class DevCardControllerTest {
     EasyMock.verify(mockModel, mockHandler, mockPlayer, mockVictim, mockCard, mockRobber);
   }
 
+  // TC5: playKnightCard(model, card, null, 5, victim); handler throws IllegalArgumentException
+  //      -> controller relays IllegalArgumentException: "Robber cannot be null."
+  @Test
+  void playKnightCard_RobberIsNull_ExpectExceptionRelayed() {
+    final int currentRound = 2;
+    final int targetHexId = 5;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    Player mockVictim = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+
+    EasyMock.expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
+    EasyMock.expect(mockModel.getCurrentRound()).andReturn(currentRound);
+    mockHandler.playKnightCard(mockPlayer, mockCard, currentRound, null, targetHexId, mockVictim);
+    EasyMock.expectLastCall().andThrow(new IllegalArgumentException("Robber cannot be null."));
+
+    EasyMock.replay(mockModel, mockHandler, mockPlayer, mockVictim, mockCard);
+
+    Exception exception = assertThrows(IllegalArgumentException.class,
+        () -> controller.playKnightCard(mockModel, mockCard, null, targetHexId, mockVictim));
+
+    EasyMock.verify(mockModel, mockHandler, mockPlayer, mockVictim, mockCard);
+    assertEquals("Robber cannot be null.", exception.getMessage());
+  }
+
 }
