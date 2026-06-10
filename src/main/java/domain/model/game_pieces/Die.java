@@ -7,12 +7,12 @@ class Die {
 
     private final Random randomizer;
 
-    public Die(Random randomizer) {
+    Die(Random randomizer) {
         this.randomizer = randomizer;
     }
 
     // Need to add 1 to result of nextInt, returns in range of [0, bound)
-    public int rollOneDie(){
+    int rollOneDie(){
         return randomizer.nextInt(DIE_SIDES_NUMBER) + 1;
     }
 }

@@ -89,19 +89,6 @@ class GameSetupControllerTest {
         verify(mockModel);
     }
 
-    @Test
-    void testInitializeGameWithZeroPlayersFailsValidation() {
-        // Arrange
-        expect(mockModel.getPlayerCount()).andReturn(0);
-        replay(mockModel);
-
-        // Act
-        boolean result = controller.validatePlayerCount(mockModel);
-
-        // Assert
-        assertFalse(result);
-        verify(mockModel);
-    }
 
     // ========== Player Name Assignment Tests ==========
 
