@@ -195,7 +195,7 @@ Step 3:
 |              | System under test                                                                         | Expected output                                                                     | Implemented? |
 | ------------ | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ------------ |
 | Test Case 15 | playYearOfPlentyCard(model, card, ORE, ORE); handler succeeds                             | verify handler called with current player, card, currentRound, ORE, ORE; no exception | :white_check_mark: |
-| Test Case 16 | playYearOfPlentyCard(model, card, null, BRICK); handler throws IllegalArgumentException   | controller relays IllegalArgumentException: "Resource cannot be null."              | :x:          |
+| Test Case 16 | playYearOfPlentyCard(model, card, null, BRICK); handler throws IllegalArgumentException   | controller relays IllegalArgumentException: "Resource cannot be null."              | :white_check_mark: |
 | Test Case 17 | playYearOfPlentyCard(model, null, ORE, ORE); handler throws IllegalArgumentException      | controller relays IllegalArgumentException: "Development card cannot be null."      | :x:          |
 
 

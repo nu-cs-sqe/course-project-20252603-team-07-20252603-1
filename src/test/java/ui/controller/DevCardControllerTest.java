@@ -381,4 +381,27 @@ class DevCardControllerTest {
     EasyMock.verify(mockModel, mockHandler, mockPlayer, mockCard);
   }
 
+  // TC16: playYearOfPlentyCard(model, card, null, BRICK); handler throws IllegalArgumentException
+  //       -> controller relays IllegalArgumentException: "Resource cannot be null."
+  @Test
+  void playYearOfPlentyCard_Resource1IsNull_ExpectExceptionRelayed() {
+    final int currentRound = 2;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+
+    EasyMock.expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
+    EasyMock.expect(mockModel.getCurrentRound()).andReturn(currentRound);
+    mockHandler.playYearOfPlentyCard(mockPlayer, mockCard, currentRound, null, Resource.BRICK);
+    EasyMock.expectLastCall().andThrow(new IllegalArgumentException("Resource cannot be null."));
+
+    EasyMock.replay(mockModel, mockHandler, mockPlayer, mockCard);
+
+    Exception exception = assertThrows(IllegalArgumentException.class,
+        () -> controller.playYearOfPlentyCard(mockModel, mockCard, null, Resource.BRICK));
+
+    EasyMock.verify(mockModel, mockHandler, mockPlayer, mockCard);
+    assertEquals("Resource cannot be null.", exception.getMessage());
+  }
+
 }
