@@ -642,4 +642,182 @@ public class GameModelTests {
         model.setCurrentGamePhase(GamePhase.MOVE_ROBBER);
         assertThrows(IllegalGamePhaseException.class, () -> model.endTurn());
     }
+
+    // --- BVA: resource amount boundaries for attemptBuildSettlement ---
+    // Resource check order (EnumSet natural order): BRICK, GRAIN, LUMBER, WOOL
+
+    @Test
+    void attemptBuildSettlement_zeroGrain_insufficientResources() {
+        Player playerMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.ORANGE, playerMock);
+        EasyMock.expect(playerMock.getSettlementCount()).andReturn(0);
+        EasyMock.expect(playerMock.getResourceCount(Resource.BRICK)).andReturn(1);
+        EasyMock.expect(playerMock.getResourceCount(Resource.GRAIN)).andReturn(0);
+        EasyMock.replay(playerMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, woolDeckMock);
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentPlayerColor(PlayerColor.ORANGE);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        assertThrows(InsufficientResourcesException.class, () -> model.attemptBuildSettlement(0));
+        EasyMock.verify(playerMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, woolDeckMock);
+    }
+
+    @Test
+    void attemptBuildSettlement_zeroLumber_insufficientResources() {
+        Player playerMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.BLUE, playerMock);
+        EasyMock.expect(playerMock.getSettlementCount()).andReturn(0);
+        EasyMock.expect(playerMock.getResourceCount(Resource.BRICK)).andReturn(1);
+        EasyMock.expect(playerMock.getResourceCount(Resource.GRAIN)).andReturn(1);
+        EasyMock.expect(playerMock.getResourceCount(Resource.LUMBER)).andReturn(0);
+        EasyMock.replay(playerMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, woolDeckMock);
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentPlayerColor(PlayerColor.BLUE);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        assertThrows(InsufficientResourcesException.class, () -> model.attemptBuildSettlement(0));
+        EasyMock.verify(playerMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, woolDeckMock);
+    }
+
+    @Test
+    void attemptBuildSettlement_zeroWool_insufficientResources() {
+        Player playerMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.WHITE, playerMock);
+        EasyMock.expect(playerMock.getSettlementCount()).andReturn(0);
+        EasyMock.expect(playerMock.getResourceCount(Resource.BRICK)).andReturn(1);
+        EasyMock.expect(playerMock.getResourceCount(Resource.GRAIN)).andReturn(1);
+        EasyMock.expect(playerMock.getResourceCount(Resource.LUMBER)).andReturn(1);
+        EasyMock.expect(playerMock.getResourceCount(Resource.WOOL)).andReturn(0);
+        EasyMock.replay(playerMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, woolDeckMock);
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentPlayerColor(PlayerColor.WHITE);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        assertThrows(InsufficientResourcesException.class, () -> model.attemptBuildSettlement(0));
+        EasyMock.verify(playerMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, woolDeckMock);
+    }
+
+    @Test
+    void attemptBuildSettlement_surplusResources_succeeds() {
+        Player playerMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.RED, playerMock);
+        EasyMock.expect(playerMock.getSettlementCount()).andReturn(0);
+        for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER, Resource.WOOL, Resource.GRAIN)) {
+            EasyMock.expect(playerMock.getResourceCount(r)).andReturn(2);
+        }
+        boardMock.buildSettlement(playerMock, 0);
+        EasyMock.expectLastCall();
+        for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER, Resource.WOOL, Resource.GRAIN)) {
+            playerMock.updateResources(r, -1);
+            EasyMock.expectLastCall();
+            decks.get(r).replenish();
+            EasyMock.expectLastCall();
+        }
+        playerMock.increaseSettlementCount();
+        EasyMock.expectLastCall();
+        EasyMock.replay(playerMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, woolDeckMock);
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        model.attemptBuildSettlement(0);
+        EasyMock.verify(playerMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, woolDeckMock);
+    }
+
+    // --- BVA: resource amount boundaries for attemptBuildRoad ---
+
+    @Test
+    void attemptBuildRoad_zeroLumber_insufficientResources() {
+        Player playerMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.RED, playerMock);
+        EasyMock.expect(playerMock.getResourceCount(Resource.BRICK)).andReturn(1);
+        EasyMock.expect(playerMock.getResourceCount(Resource.LUMBER)).andReturn(0);
+        EasyMock.replay(playerMock, lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock, woolDeckMock, boardMock);
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        assertThrows(InsufficientResourcesException.class, () -> model.attemptBuildRoad(0, 1));
+        EasyMock.verify(playerMock, lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock, woolDeckMock, boardMock);
+    }
+
+    @Test
+    void attemptBuildRoad_surplusResources_succeeds() {
+        Player playerMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.BLUE, playerMock);
+        for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER)) {
+            EasyMock.expect(playerMock.getResourceCount(r)).andReturn(2);
+        }
+        boardMock.addRoad(playerMock, 0, 1);
+        EasyMock.expectLastCall();
+        for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER)) {
+            playerMock.updateResources(r, -1);
+            EasyMock.expectLastCall();
+            decks.get(r).replenish();
+            EasyMock.expectLastCall();
+        }
+        EasyMock.replay(playerMock, lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock, woolDeckMock, boardMock);
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentPlayerColor(PlayerColor.BLUE);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        model.attemptBuildRoad(0, 1);
+        EasyMock.verify(playerMock, lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock, woolDeckMock, boardMock);
+    }
+
+    // --- BVA: resource amount boundaries for attemptBuildCity ---
+
+    @Test
+    void attemptBuildCity_zeroOre_insufficientResources() {
+        Player playerMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.RED, playerMock);
+        EasyMock.expect(playerMock.getResourceCount(Resource.ORE)).andReturn(0);
+        EasyMock.replay(playerMock);
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        assertThrows(InsufficientResourcesException.class, () -> model.attemptBuildCity(0));
+        EasyMock.verify(playerMock);
+    }
+
+    @Test
+    void attemptBuildCity_zeroGrain_insufficientResources() {
+        Player playerMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.BLUE, playerMock);
+        EasyMock.expect(playerMock.getResourceCount(Resource.ORE)).andReturn(3);
+        EasyMock.expect(playerMock.getResourceCount(Resource.GRAIN)).andReturn(0);
+        EasyMock.replay(playerMock);
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentPlayerColor(PlayerColor.BLUE);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        assertThrows(InsufficientResourcesException.class, () -> model.attemptBuildCity(0));
+        EasyMock.verify(playerMock);
+    }
+
+    @Test
+    void attemptBuildCity_surplusResources_succeeds() {
+        Player playerMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.WHITE, playerMock);
+        EasyMock.expect(playerMock.getResourceCount(Resource.ORE)).andReturn(4);
+        EasyMock.expect(playerMock.getResourceCount(Resource.GRAIN)).andReturn(3);
+        boardMock.buildCity(playerMock, 0);
+        EasyMock.expectLastCall();
+        playerMock.updateResources(Resource.ORE, -3);
+        EasyMock.expectLastCall();
+        oreDeckMock.replenish(3);
+        EasyMock.expectLastCall();
+        playerMock.updateResources(Resource.GRAIN, -2);
+        EasyMock.expectLastCall();
+        grainDeckMock.replenish(2);
+        EasyMock.expectLastCall();
+        EasyMock.replay(playerMock, boardMock, oreDeckMock, grainDeckMock);
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentPlayerColor(PlayerColor.WHITE);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        model.attemptBuildCity(0);
+        EasyMock.verify(playerMock, boardMock, oreDeckMock, grainDeckMock);
+    }
 }
