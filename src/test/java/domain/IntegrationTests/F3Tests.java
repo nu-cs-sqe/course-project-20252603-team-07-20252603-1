@@ -129,6 +129,18 @@ public class F3Tests {
 
     assertTrue(b.checkEdgeOccupied(49, 53));
   }
+
+  // Test Case 10
+  @Test
+  void WhiteTriesToClaimEdgeNegativeOneToZero_ThrowsOutOfBounds() {
+    BoardHandler b = new BoardHandler();
+    Player whitePlayer = new Player("Dummy", PlayerColor.WHITE);
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () ->
+            b.buildSetupRoad(whitePlayer, 0, -1, 0));
+
+    assertEquals("Edge nodeId out of bounds. Must be within [0, 53].", exception.getMessage());
+  }
 }
 
 
