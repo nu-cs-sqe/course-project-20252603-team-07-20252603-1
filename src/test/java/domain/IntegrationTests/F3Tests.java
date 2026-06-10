@@ -246,6 +246,48 @@ public class F3Tests {
     assertTrue(b.getPlayersOnHex(0).contains(redPlayer));
     assertTrue(b.getPlayersOnHex(13).contains(redPlayer));
   }
+
+  // Test Case 18
+  @Test
+  void FullRoundOne_AllFourPlayers_AllSettlementsAndRoadsPlaced() {
+    BoardHandler b = new BoardHandler();
+    Player redPlayer = new Player("Dummy", PlayerColor.RED);
+    Player bluePlayer = new Player("Dummy", PlayerColor.BLUE);
+    Player orangePlayer = new Player("Dummy", PlayerColor.ORANGE);
+    Player whitePlayer = new Player("Dummy", PlayerColor.WHITE);
+
+    b.buildSetupSettlement(redPlayer, 0);
+    b.buildSetupRoad(redPlayer, 0, 0, 4);
+
+    b.buildSetupSettlement(bluePlayer, 20);
+    b.buildSetupRoad(bluePlayer, 20, 20, 25);
+
+    b.buildSetupSettlement(orangePlayer, 40);
+    b.buildSetupRoad(orangePlayer, 40, 40, 45);
+
+    b.buildSetupSettlement(whitePlayer, 53);
+    b.buildSetupRoad(whitePlayer, 53, 49, 53);
+
+    assertTrue(b.checkPlayerOwnsNode(PlayerColor.RED, 0));
+    assertTrue(b.checkPlayerOwnsNode(PlayerColor.BLUE, 20));
+    assertTrue(b.checkPlayerOwnsNode(PlayerColor.ORANGE, 40));
+    assertTrue(b.checkPlayerOwnsNode(PlayerColor.WHITE, 53));
+
+    assertTrue(b.checkEdgeOccupied(0, 4));
+    assertTrue(b.checkEdgeOccupied(20, 25));
+    assertTrue(b.checkEdgeOccupied(40, 45));
+    assertTrue(b.checkEdgeOccupied(49, 53));
+
+    assertEquals(1, b.getNodeBuildingLevel(0));
+    assertEquals(1, b.getNodeBuildingLevel(20));
+    assertEquals(1, b.getNodeBuildingLevel(40));
+    assertEquals(1, b.getNodeBuildingLevel(53));
+
+    assertTrue(b.getPlayersOnHex(0).contains(redPlayer));
+    assertTrue(b.getPlayersOnHex(6).contains(bluePlayer));
+    assertTrue(b.getPlayersOnHex(13).contains(orangePlayer));
+    assertTrue(b.getPlayersOnHex(18).contains(whitePlayer));
+  }
 }
 
 
