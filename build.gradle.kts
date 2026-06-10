@@ -64,6 +64,7 @@ spotbugs {
 }
 
 tasks.spotbugsMain {
+    excludeFilter = file("config/spotbugs/exclude.xml")
     reports.create("html") {
         required = true
         outputLocation = layout.buildDirectory.file("reports/spotbugs/spotbugs.html")
