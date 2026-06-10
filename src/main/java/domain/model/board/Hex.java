@@ -132,13 +132,13 @@ public class Hex {
     return playerCities.contains(player);
   }
 
-  public List<Player> getHexSettlementPlayers(){
-    return List.of();
-  };
+  public List<Player> getHexSettlementPlayers() {
+    return List.copyOf(playerSettlements);
+  }
 
-  public List<Player> getHexCityPlayers(){
-    return List.of();
-  };
+  public List<Player> getHexCityPlayers() {
+    return List.copyOf(playerCities);
+  }
 
   @Override
   protected final void finalize() {

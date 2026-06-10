@@ -38,6 +38,7 @@ public class BoardHandler {
    */
   public BoardHandler() {
     BoardGraph constructorGraph = new BoardGraph();
+    constructorGraph.buildBoard();
     this.boardGraphController = new BoardGraphController(constructorGraph);
     this.hexes = initHexes();
     this.nodeIdToHexes = initNodeHexMap();
@@ -77,7 +78,7 @@ public class BoardHandler {
     return new BoardHandler(boardGraphController, hexes, nodeIdToHexes, robber);
   }
 
-  void buildSettlement(Player player, int nodeId) {
+  public void buildSettlement(Player player, int nodeId) {
     if (nodeId < MIN_NODE_ID || nodeId > MAX_NODE_ID) {
       throw new IllegalArgumentException("Invalid NodeID - must be within [0, 53].");
     }
@@ -94,15 +95,15 @@ public class BoardHandler {
     nodeBuildingLevels[nodeId] = SETTLEMENT_LEVEL;
   }
 
-  boolean checkPlayerOwnsNode(PlayerColor playerColor, Integer nodeId) {
+  public boolean checkPlayerOwnsNode(PlayerColor playerColor, Integer nodeId) {
     return nodeOwners[nodeId] == playerColor;
   }
 
-  Integer getNodeBuildingLevel(Integer nodeId) {
+  public Integer getNodeBuildingLevel(Integer nodeId) {
     return nodeBuildingLevels[nodeId];
   }
 
-  void buildCity(Player player, int nodeId) {
+  public void buildCity(Player player, int nodeId) {
     if (nodeId < MIN_NODE_ID || nodeId > MAX_NODE_ID) {
       throw new IllegalArgumentException("Invalid NodeID - must be within [0, 53].");
     }
@@ -124,7 +125,7 @@ public class BoardHandler {
     nodeBuildingLevels[nodeId] = CITY_LEVEL;
   }
 
-  void addRoad(Player player, int nodeId1, int nodeId2) {
+  public void addRoad(Player player, int nodeId1, int nodeId2) {
     if (nodeId1 < MIN_NODE_ID || nodeId2 < MIN_NODE_ID
             || nodeId1 > MAX_NODE_ID || nodeId2 > MAX_NODE_ID) {
       throw new IllegalArgumentException("Edge nodeId out of bounds. Must be within [0, 53].");
@@ -133,7 +134,7 @@ public class BoardHandler {
     boardGraphController.playerClaimStoredEdge(claimingColor, nodeId1, nodeId2);
   }
 
-  void awardResources(int rollNum) {
+  public void awardResources(int rollNum) {
     int robberLocation = robber.getRobberLocation();
 
     for (Hex hex : hexes) {
@@ -145,7 +146,7 @@ public class BoardHandler {
     }
   }
 
-  void moveRobber(int hexId) {
+  public void moveRobber(int hexId) {
     if (hexId < MIN_HEX_ID || hexId > MAX_HEX_ID) {
       throw new IllegalArgumentException("Cannot move Robber to invalid Hex ID");
     }
@@ -158,7 +159,7 @@ public class BoardHandler {
     robber.moveRobber(hexId);
   }
 
-  Set<Player> getPlayersOnHex(int hexId) {
+  public Set<Player> getPlayersOnHex(int hexId) {
     if (hexId < MIN_HEX_ID || hexId > MAX_HEX_ID) {
       throw new IllegalArgumentException("Invalid Hex ID, must be within [0,18]");
     }
@@ -171,7 +172,7 @@ public class BoardHandler {
     return playersOnHex;
   }
 
-  void buildSetupSettlement(Player player, int nodeId) {
+  public void buildSetupSettlement(Player player, int nodeId) {
     if (nodeId < MIN_NODE_ID || nodeId > MAX_NODE_ID) {
       throw new IllegalArgumentException("Invalid NodeID - must be within [0, 53].");
     }
@@ -187,7 +188,7 @@ public class BoardHandler {
     nodeBuildingLevels[nodeId] = SETTLEMENT_LEVEL;
   }
 
-  void buildSetupRoad(Player player, int claimedNodeId, int nodeId1, int nodeId2) {
+  public void buildSetupRoad(Player player, int claimedNodeId, int nodeId1, int nodeId2) {
     if (nodeId1 < MIN_NODE_ID || nodeId2 < MIN_NODE_ID
             || nodeId1 > MAX_NODE_ID || nodeId2 > MAX_NODE_ID) {
       throw new IllegalArgumentException("Edge nodeId out of bounds. Must be within [0, 53].");
@@ -198,7 +199,7 @@ public class BoardHandler {
   }
 
   // Note: Returns SETUP PlayerColor if nobody has achieved longest road yet
-  PlayerColor calculateLongestRoad(List<Player> players, PlayerColor previousWinner) {
+  public PlayerColor calculateLongestRoad(List<Player> players, PlayerColor previousWinner) {
     return boardGraphController.calculateLongestRoad(players, previousWinner);
   }
 

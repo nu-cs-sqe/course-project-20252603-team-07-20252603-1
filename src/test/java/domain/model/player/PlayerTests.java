@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class PlayerTests {
     @Test // test case 1
     public void PlaceEmptySettlement_OnNullVertex_ExpectError() {
-        Player player = new Player();
+        Player player = new Player("Dummy", PlayerColor.RED);
         Vertex vertex = null;
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -36,7 +36,7 @@ public class PlayerTests {
         EasyMock.replay(vertex);
 
         // create player
-        Player player = new Player();
+        Player player = new Player("Dummy", PlayerColor.RED);
         player.placeSettlement(vertex);
 
         assertEquals(
@@ -59,7 +59,7 @@ public class PlayerTests {
         EasyMock.replay(setupVertex);
 
         // create player, append settlements to mocked vertices
-        Player player = new Player();
+        Player player = new Player("Dummy", PlayerColor.RED);
         for (int i = 0; i < 4; i++) {
             player.placeSettlement(setupVertex);
         }
@@ -90,7 +90,7 @@ public class PlayerTests {
         EasyMock.replay(setupVertex);
 
         // create player, append settlements to mocked vertices
-        Player player = new Player();
+        Player player = new Player("Dummy", PlayerColor.RED);
         for (int i = 0; i < 5; i++) {
             player.placeSettlement(setupVertex);
         }
@@ -115,7 +115,7 @@ public class PlayerTests {
         EasyMock.replay(vertex);
 
         // create new player
-        Player player = new Player();
+        Player player = new Player("Dummy", PlayerColor.RED);
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             player.placeSettlement(vertex);
@@ -133,7 +133,7 @@ public class PlayerTests {
         EasyMock.replay(vertex);
 
         // create new player
-        Player player = new Player();
+        Player player = new Player("Dummy", PlayerColor.RED);
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             player.placeSettlement(vertex);
@@ -144,7 +144,7 @@ public class PlayerTests {
 
     @Test // test case 7
     public void PlaceRoad_OnNullEdge_ExpectError() {
-        Player player = new Player();
+        Player player = new Player("Dummy", PlayerColor.RED);
         Edge edge = null;
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -164,7 +164,7 @@ public class PlayerTests {
         EasyMock.replay(edge);
 
         // create player
-        Player player = new Player();
+        Player player = new Player("Dummy", PlayerColor.RED);
         player.placeRoad(edge);
 
         assertEquals(expectedNumRoadsAfterPlace, player.getRoads().size());
@@ -188,7 +188,7 @@ public class PlayerTests {
         EasyMock.replay(edge);
 
         // initialize player and add edges
-        Player player = new Player();
+        Player player = new Player("Dummy", PlayerColor.RED);
         for (int i = 0; i < 14; i++) {
             player.placeRoad(setupEdge);
         }
@@ -218,7 +218,7 @@ public class PlayerTests {
         EasyMock.replay(edge);
 
         // create player, append first 15 roads to mocked edges
-        Player player = new Player();
+        Player player = new Player("Dummy", PlayerColor.RED);
         for (int i = 0; i < 15; i++) {
             player.placeRoad(setupEdge);
         }
@@ -240,7 +240,7 @@ public class PlayerTests {
         EasyMock.replay(edge);
 
         // create player
-        Player player = new Player();
+        Player player = new Player("Dummy", PlayerColor.RED);
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
             player.placeRoad(edge)
@@ -258,7 +258,7 @@ public class PlayerTests {
         EasyMock.replay(edge);
 
         // create player
-        Player player = new Player();
+        Player player = new Player("Dummy", PlayerColor.RED);
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
                 player.placeRoad(edge)
@@ -269,7 +269,7 @@ public class PlayerTests {
 
     @Test // test case 13
     public void ReceiveResources_NullResources_ExpectError() {
-        Player player = new Player();
+        Player player = new Player("Dummy", PlayerColor.RED);
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
                 player.receiveResources(null)
@@ -283,7 +283,7 @@ public class PlayerTests {
         Map<Resource, Integer> emptyResources = new HashMap<>();
 
         // create player and receive resources
-        Player player = new Player();
+        Player player = new Player("Dummy", PlayerColor.RED);
         player.receiveResources(emptyResources);
 
         // assert data
@@ -299,7 +299,7 @@ public class PlayerTests {
         resources.put(Resource.LUMBER, 1);
 
         // instantiate player to test receiving resource
-        Player player = new Player();
+        Player player = new Player("Dummy", PlayerColor.RED);
         player.receiveResources(resources);
 
         // assert correct value received
@@ -316,7 +316,7 @@ public class PlayerTests {
         resources.put(Resource.BRICK, 19);
 
         // instantiate player to test receiving resource
-        Player player = new Player();
+        Player player = new Player("Dummy", PlayerColor.RED);
         player.receiveResources(resources);
 
         // assert correct value received
@@ -331,7 +331,7 @@ public class PlayerTests {
         resources.put(Resource.WOOL, 0);
 
         // initialize player
-        Player player = new Player();
+        Player player = new Player("Dummy", PlayerColor.RED);
 
         // assert data validation
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
@@ -351,7 +351,7 @@ public class PlayerTests {
         resources.put(Resource.BRICK, expectedBrickCount);
 
         // instantiate player and receive resources
-        Player player = new Player();
+        Player player = new Player("Dummy", PlayerColor.RED);
         player.receiveResources(resources);
 
         // assert both resource counts were merged correctly
@@ -367,7 +367,7 @@ public class PlayerTests {
         resources.put(Resource.DESERT, 1);
 
         // instantiate player
-        Player player = new Player();
+        Player player = new Player("Dummy", PlayerColor.RED);
 
         // validate that desert cannot be received as a resource
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->

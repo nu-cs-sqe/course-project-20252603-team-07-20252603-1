@@ -15,11 +15,13 @@ public class Player {
     private final List<Settlement> settlements;
     private final List<Edge> roads;
     private final Map<Resource, Integer> resources;
+    private PlayerColor color;
 
-    public Player() {
+    public Player(String name, PlayerColor color){
         this.settlements = new ArrayList<>();
         this.roads = new ArrayList<>();
         this.resources = new HashMap<>();
+        this.color = color;
     }
 
     public Map<Resource, Integer> getResources() {
@@ -95,6 +97,6 @@ public class Player {
 
     // TODO: Implement player color
     public PlayerColor getPlayerColor(){
-        return PlayerColor.SETUP;
+        return this.color;
     }
 }
