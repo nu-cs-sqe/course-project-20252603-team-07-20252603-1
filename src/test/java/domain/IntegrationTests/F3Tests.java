@@ -379,6 +379,21 @@ public class F3Tests {
 
     assertEquals("Can not claim node adjacent to node already claimed", exception.getMessage());
   }
+
+  // Test Case 21
+  @Test
+  void RedClaimsNodeZeroAndRoad_TriesToClaimRoadBeforeSecondSettlement_ThrowsNotAdjacent() {
+    BoardHandler b = new BoardHandler();
+    Player redPlayer = new Player("Dummy", PlayerColor.RED);
+
+    b.buildSetupSettlement(redPlayer, 0);
+    b.buildSetupRoad(redPlayer, 0, 0, 4);
+
+    Exception exception = assertThrows(IllegalEdgeClaim.class, () ->
+            b.buildSetupRoad(redPlayer, 35, 35, 40));
+
+    assertEquals("During setup phase, player must own node next to edge they want to claim", exception.getMessage());
+  }
 }
 
 
