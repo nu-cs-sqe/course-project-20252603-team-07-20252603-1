@@ -337,4 +337,28 @@ class DevCardControllerTest {
     EasyMock.verify(mockModel, mockHandler, mockPlayer, mockCard, mockEdge1);
   }
 
+  // TC14: playRoadBuildingCard(model, null, edge1, edge2); handler throws IllegalArgumentException
+  //       -> controller relays IllegalArgumentException: "Development card cannot be null."
+  @Test
+  void playRoadBuildingCard_CardIsNull_ExpectExceptionRelayed() {
+    final int currentRound = 2;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    Edge mockEdge1 = EasyMock.createMock(Edge.class);
+    Edge mockEdge2 = EasyMock.createMock(Edge.class);
+
+    EasyMock.expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
+    EasyMock.expect(mockModel.getCurrentRound()).andReturn(currentRound);
+    mockHandler.playRoadBuildingCard(mockPlayer, null, currentRound, mockEdge1, mockEdge2);
+    EasyMock.expectLastCall().andThrow(new IllegalArgumentException("Development card cannot be null."));
+
+    EasyMock.replay(mockModel, mockHandler, mockPlayer, mockEdge1, mockEdge2);
+
+    Exception exception = assertThrows(IllegalArgumentException.class,
+        () -> controller.playRoadBuildingCard(mockModel, null, mockEdge1, mockEdge2));
+
+    EasyMock.verify(mockModel, mockHandler, mockPlayer, mockEdge1, mockEdge2);
+    assertEquals("Development card cannot be null.", exception.getMessage());
+  }
+
 }

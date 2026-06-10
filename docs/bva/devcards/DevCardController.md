@@ -162,7 +162,7 @@ Step 3:
 | Test Case 11 | playRoadBuildingCard(model, card, edge1, edge2); handler succeeds               | verify handler called with current player, card, currentRound, edge1, edge2; no exception | :white_check_mark: |
 | Test Case 12 | playRoadBuildingCard(model, card, null, edge2); handler throws IllegalArgumentException | controller relays IllegalArgumentException: "Edge cannot be null."          | :white_check_mark: |
 | Test Case 13 | playRoadBuildingCard(model, card, edge1, null); handler succeeds (1 road remaining) | verify handler called; 1 road placed                                        | :white_check_mark: |
-| Test Case 14 | playRoadBuildingCard(model, null, edge1, edge2); handler throws IllegalArgumentException | controller relays IllegalArgumentException: "Development card cannot be null." | :x:          |
+| Test Case 14 | playRoadBuildingCard(model, null, edge1, edge2); handler throws IllegalArgumentException | controller relays IllegalArgumentException: "Development card cannot be null." | :white_check_mark: |
 
 
 ---
