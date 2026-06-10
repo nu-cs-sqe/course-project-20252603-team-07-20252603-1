@@ -5,6 +5,7 @@ package domain.IntegrationTests;
 
 import domain.model.board.BoardHandler;
 import domain.model.exceptions.AdjacentNodeAlreadyClaimed;
+import domain.model.exceptions.IllegalEdgeClaim;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 import org.junit.jupiter.api.Test;
@@ -176,6 +177,20 @@ public class F3Tests {
             b.buildSetupRoad(bluePlayer, 53, 54, 53));
 
     assertEquals("Edge nodeId out of bounds. Must be within [0, 53].", exception.getMessage());
+  }
+
+  // Test Case 14
+  @Test
+  void RedTriesToClaimEdgeZeroToOne_ThrowsEdgeDoesNotExist() {
+    BoardHandler b = new BoardHandler();
+    Player redPlayer = new Player("Dummy", PlayerColor.RED);
+
+    b.buildSetupSettlement(redPlayer, 0);
+
+    Exception exception = assertThrows(IllegalEdgeClaim.class, () ->
+            b.buildSetupRoad(redPlayer, 0, 0, 1));
+
+    assertEquals("Edge must be adjacent to just placed settlement", exception.getMessage());
   }
 }
 
