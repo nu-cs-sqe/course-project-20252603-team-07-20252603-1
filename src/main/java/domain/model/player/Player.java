@@ -89,7 +89,7 @@ public class Player {
 
     }
 
-    int getResourceCount(Resource resource) {
+    public int getResourceCount(Resource resource) {
         return 0;
     }
 

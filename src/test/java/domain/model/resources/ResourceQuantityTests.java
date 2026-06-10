@@ -1,7 +1,5 @@
 package domain.model.resources;
 
-import domain.model.resources.Resource;
-import domain.model.resources.ResourceQuantity;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
