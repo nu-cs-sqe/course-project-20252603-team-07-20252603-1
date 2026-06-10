@@ -216,8 +216,8 @@ public class BoardGraph {
       addGraphNodeObject(newNode);
     }
 
-    addGraphEdge(0, 1);
     addGraphEdge(0, 3);
+    addGraphEdge(0, 4);
     addGraphEdge(1, 4);
     addGraphEdge(1, 5);
     addGraphEdge(2, 5);

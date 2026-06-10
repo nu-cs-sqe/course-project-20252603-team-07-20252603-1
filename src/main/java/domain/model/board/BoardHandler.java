@@ -287,5 +287,7 @@ public class BoardHandler {
     return nodeHexMap;
   }
 
-
+  public boolean checkEdgeOccupied(int nodeId1, int nodeId2) {
+    return boardGraphController.checkEdgeOccupied(nodeId1, nodeId2);
+  }
 }

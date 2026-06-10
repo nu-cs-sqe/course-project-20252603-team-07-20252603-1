@@ -105,4 +105,18 @@ public class F3Tests {
 
     assertEquals("Can not claim node adjacent to node already claimed", exception.getMessage());
   }
+
+  // Test Case 8
+  @Test
+  void RedClaimsNodeZero_ThenClaimsEdgeZeroToFour_EdgeIsClaimed() {
+    BoardHandler b = new BoardHandler();
+    Player redPlayer = new Player("Dummy", PlayerColor.RED);
+
+    b.buildSetupSettlement(redPlayer, 0);
+    b.buildSetupRoad(redPlayer, 0, 0, 4);
+
+    assertTrue(b.checkEdgeOccupied(0, 4));
+  }
 }
+
+
