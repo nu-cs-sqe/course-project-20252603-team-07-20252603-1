@@ -13,6 +13,9 @@ import domain.model.exceptions.EmptyDeckException;
 import domain.model.exceptions.InsufficientResourcesException;
 import domain.model.game_pieces.Robber;
 import domain.model.player.Player;
+import domain.model.resources.Resource;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -190,6 +193,29 @@ class DevCardControllerTest {
 
     EasyMock.verify(mockModel, mockHandler, mockPlayer, mockVictim, mockRobber);
     assertEquals("Development card cannot be null.", exception.getMessage());
+  }
+
+  // TC8: playMonopolyCard(model, card, BRICK); handler succeeds
+  //      -> verify handler called with current player, card, currentRound, BRICK, and other players; no exception
+  @Test
+  void playMonopolyCard_HandlerSucceeds_ExpectDelegation() {
+    final int currentRound = 2;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    Player mockOther = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+    List<Player> otherPlayers = List.of(mockOther);
+
+    EasyMock.expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
+    EasyMock.expect(mockModel.getCurrentRound()).andReturn(currentRound);
+    EasyMock.expect(mockModel.getOtherPlayers()).andReturn(otherPlayers);
+    mockHandler.playMonopolyCard(mockPlayer, mockCard, currentRound, Resource.BRICK, otherPlayers);
+
+    EasyMock.replay(mockModel, mockHandler, mockPlayer, mockOther, mockCard);
+
+    controller.playMonopolyCard(mockModel, mockCard, Resource.BRICK);
+
+    EasyMock.verify(mockModel, mockHandler, mockPlayer, mockOther, mockCard);
   }
 
 }
