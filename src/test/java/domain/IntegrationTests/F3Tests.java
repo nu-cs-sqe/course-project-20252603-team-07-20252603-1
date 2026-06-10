@@ -8,8 +8,7 @@ import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class F3Tests {
   // Test Case 1
@@ -36,5 +35,17 @@ public class F3Tests {
     assertTrue(b.checkPlayerOwnsNode(PlayerColor.BLUE, 53));
     assertEquals(1, b.getNodeBuildingLevel(53));
     assertTrue(b.getPlayersOnHex(18).contains(bluePlayer));
+  }
+
+  // Test Case 3
+  @Test
+  void OrangeClaimsNodeNegativeOne_ThrowsInvalidNodeID() {
+    BoardHandler b = new BoardHandler();
+    Player orangePlayer = new Player("Ben", PlayerColor.ORANGE);
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () ->
+            b.buildSetupSettlement(orangePlayer, -1));
+
+    assertEquals("Invalid NodeID - must be within [0, 53].", exception.getMessage());
   }
 }
