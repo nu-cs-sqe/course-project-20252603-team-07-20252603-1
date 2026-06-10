@@ -24,4 +24,17 @@ public class F3Tests {
     assertEquals(1, b.getNodeBuildingLevel(0));
     assertTrue(b.getPlayersOnHex(0).contains(redPlayer));
   }
+
+  // Test Case 2
+  @Test
+  void BlueClaimsNodeFiftyThree_NodeOwnedByBlue_HexEighteenUpdated() {
+    BoardHandler b = new BoardHandler();
+    Player bluePlayer = new Player("Dummy", PlayerColor.BLUE);
+
+    b.buildSetupSettlement(bluePlayer, 53);
+
+    assertTrue(b.checkPlayerOwnsNode(PlayerColor.BLUE, 53));
+    assertEquals(1, b.getNodeBuildingLevel(53));
+    assertTrue(b.getPlayersOnHex(18).contains(bluePlayer));
+  }
 }
