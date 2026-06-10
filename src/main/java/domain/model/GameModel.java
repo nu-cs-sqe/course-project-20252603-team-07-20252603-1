@@ -20,8 +20,9 @@ public class GameModel {
             justification = "BoardHandler is intentionally shared between GameSetupModel and GameModel as it represents the single game board state")
     private final BoardHandler board;
 
-    //private final List<PlayerState> playerStates; // figure out how to initialize proper
-    // private final DiceHandler diceHandler = initializeDiceHandler();
+
+
+
 
     private GamePhase currentGamePhase;
     private int currentPlayerIndex;
@@ -80,7 +81,7 @@ public class GameModel {
 
         playerColors = new ArrayList<>();
         for (Player player : players) {
-            //PlayerState newState = new PlayerState(player);
+
             PlayerColor currentColor = player.getColor();
             this.playerColorToPlayerObject.put(currentColor, player);
             playerColors.add(currentColor);

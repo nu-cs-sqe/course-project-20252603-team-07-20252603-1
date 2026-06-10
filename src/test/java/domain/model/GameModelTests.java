@@ -367,6 +367,39 @@ public class GameModelTests {
 
     }
 
+    @Test // BVA TC8 — ROAD_BUILDING_DEV_CARD is an alternate valid phase for road building
+    void attemptBuildRoad_roadBuildingDevCard_succeeds() {
+        Player playerMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.RED, playerMock);
+
+        for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER)) {
+            EasyMock.expect(playerMock.getResourceCount(r)).andReturn(1);
+        }
+
+        boardMock.addRoad(playerMock, 0, 1);
+        EasyMock.expectLastCall();
+
+        for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER)) {
+            playerMock.updateResources(r, -1);
+            EasyMock.expectLastCall();
+            decks.get(r).replenish();
+            EasyMock.expectLastCall();
+        }
+
+        EasyMock.replay(playerMock, lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, boardMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.ROAD_BUILDING_DEV_CARD);
+        model.attemptBuildRoad(0, 1);
+
+        EasyMock.verify(playerMock, lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, boardMock);
+    }
+
     @Test
     void attemptBuildCity_test01_EnoughResources_BoardSucceeds_ExpectSuccess(){
         Player redStateMock = EasyMock.createMock(Player.class);
@@ -508,17 +541,6 @@ public class GameModelTests {
         EasyMock.replay(board);
         GameModel model = new GameModel(List.of(new Player("Alice", PlayerColor.RED)), board);
         assertEquals(GamePhase.BEFORE_ROLL, model.getCurrentPhase());
-        EasyMock.verify(board);
-    }
-
-    @Test
-    void performTurn_rollSix_nonSeven_transitionsToGeneralPlay() {
-        BoardHandler board = EasyMock.createMock(BoardHandler.class);
-        EasyMock.replay(board);
-        GameModel model = new GameModel(List.of(new Player("Alice", PlayerColor.RED)), board);
-        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
-        model.performTurn(6);
-        assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
         EasyMock.verify(board);
     }
 

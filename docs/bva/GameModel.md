@@ -6,6 +6,72 @@ mutations to `BoardHandler`, and deducts resources from the current player.
 
 ---
 
+### Constructor initial state: `GameModel(List<Player>, BoardHandler)`
+
+|             | State of the System       | Expected output            | Implemented?       |
+|-------------|---------------------------|----------------------------|--------------------|
+| Test Case 1 | new model, one player     | getCurrentPhase() = BEFORE_ROLL | :white_check_mark: |
+
+---
+
+### Method under test: `performTurn(int roll)`
+
+Transitions phase from `BEFORE_ROLL` to `GENERAL_PLAY` (non-7) or `MOVE_ROBBER` (7).
+Throws `IllegalGamePhaseException` if called outside `BEFORE_ROLL`.
+
+Step 1:
+
+- Input: roll (int)
+- State: current game phase
+- Output: phase transitions to GENERAL_PLAY (roll ≠ 7) or MOVE_ROBBER (roll = 7)
+- Output: exception when current phase is not BEFORE_ROLL
+
+Step 2:
+
+- roll: Interval [2, 12]; special value 7
+- Game phase: BEFORE_ROLL (valid); any other (invalid)
+
+Step 3:
+
+- roll: 2 (LOW), 7 (robber trigger), 12 (HIGH)
+- phase: BEFORE_ROLL (valid); GENERAL_PLAY (already rolled — invalid)
+
+|             | State of the System                             | Expected output                              | Implemented?       |
+|-------------|-------------------------------------------------|----------------------------------------------|--------------------|
+| Test Case 2 | BEFORE_ROLL, roll = 2 (minimum)                 | phase transitions to GENERAL_PLAY            | :white_check_mark: |
+| Test Case 3 | BEFORE_ROLL, roll = 12 (maximum)                | phase transitions to GENERAL_PLAY            | :white_check_mark: |
+| Test Case 4 | BEFORE_ROLL, roll = 7 (robber trigger)          | phase transitions to MOVE_ROBBER             | :white_check_mark: |
+| Test Case 5 | GENERAL_PLAY (already rolled), roll = 6         | IllegalGamePhaseException                    | :white_check_mark: |
+
+---
+
+### Method under test: `endTurn()`
+
+Advances to the next player and resets phase to `BEFORE_ROLL`. Throws `IllegalGamePhaseException`
+if called outside `GENERAL_PLAY`.
+
+Step 1:
+
+- State: current game phase, player turn order
+- Output: phase resets to BEFORE_ROLL; next player becomes current
+- Output: exception when current phase is not GENERAL_PLAY
+
+Step 2:
+
+- Game phase: GENERAL_PLAY (valid); BEFORE_ROLL (invalid); MOVE_ROBBER (invalid)
+
+Step 3:
+
+- phase: GENERAL_PLAY; BEFORE_ROLL (invalid); MOVE_ROBBER (invalid)
+
+|             | State of the System                                             | Expected output                                          | Implemented?       |
+|-------------|-----------------------------------------------------------------|----------------------------------------------------------|--------------------|
+| Test Case 6 | GENERAL_PLAY, two players (Alice → Bob)                        | phase = BEFORE_ROLL; current player advances to Bob      | :white_check_mark: |
+| Test Case 7 | BEFORE_ROLL                                                     | IllegalGamePhaseException                                | :white_check_mark: |
+| Test Case 8 | MOVE_ROBBER                                                     | IllegalGamePhaseException                                | :white_check_mark: |
+
+---
+
 ### Method under test: `attemptBuildSettlement(nodeID)`
 
 Cost: 1 brick + 1 grain + 1 lumber + 1 wool. Max 5 settlements per player.
@@ -53,6 +119,7 @@ Step 3:
 ### Method under test: `attemptBuildRoad(startNodeID, endNodeID)`
 
 Cost: 1 brick + 1 lumber. Resource check order: BRICK → LUMBER.
+Valid phases: GENERAL_PLAY and ROAD_BUILDING_DEV_CARD.
 
 Step 1:
 
@@ -69,7 +136,7 @@ Step 2:
 
 Step 3:
 
-- Game phase: GENERAL_PLAY; BEFORE_ROLL (invalid)
+- Game phase: GENERAL_PLAY; ROAD_BUILDING_DEV_CARD (alternate valid); BEFORE_ROLL (invalid); RESOURCE_PRODUCTION (invalid)
 - Brick (first checked): 0 (below cost); 1 (at cost); 2 (surplus)
 - Lumber (second checked): 0 (below cost, brick already ≥ 1); 1 (at cost)
 
@@ -82,6 +149,7 @@ Step 3:
 | Test Case 5 | RESOURCE_PRODUCTION (invalid phase)                                   | IllegalGamePhaseException                    | :white_check_mark: |
 | Test Case 6 | GENERAL_PLAY, brick=1, lumber=0 (second resource below cost boundary) | InsufficientResourcesException               | :white_check_mark: |
 | Test Case 7 | GENERAL_PLAY, brick=2, lumber=2 (surplus), board succeeds             | success (surplus does not prevent building)  | :white_check_mark: |
+| Test Case 8 | ROAD_BUILDING_DEV_CARD, brick=1, lumber=1, board succeeds             | success (alternate valid phase)              | :white_check_mark: |
 
 ---
 
@@ -119,4 +187,3 @@ Step 3:
 | Test Case 7 | GENERAL_PLAY, ore=0 (zero, well below boundary)              | InsufficientResourcesException                     | :white_check_mark: |
 | Test Case 8 | GENERAL_PLAY, ore=3, grain=0 (zero, well below boundary)     | InsufficientResourcesException                     | :white_check_mark: |
 | Test Case 9 | GENERAL_PLAY, ore=4 (surplus), grain=3 (surplus), board succeeds | success (surplus does not prevent building)    | :white_check_mark: |
-
