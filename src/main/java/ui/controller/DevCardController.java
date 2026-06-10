@@ -5,6 +5,7 @@ import domain.model.GameModel;
 import domain.model.development_cards.DevelopmentCard;
 import domain.model.development_cards.DevelopmentCardDeck;
 import domain.model.exceptions.EmptyDeckException;
+import domain.model.board.Edge;
 import domain.model.game_pieces.Robber;
 import domain.model.player.Player;
 import domain.model.resources.Resource;
@@ -40,6 +41,13 @@ public class DevCardController {
         List<Player> otherPlayers = model.getOtherPlayers();
         
         handler.playMonopolyCard(currentPlayer, card, currentRound, resource, otherPlayers);
+    }
+
+    public void playRoadBuildingCard(GameModel model, DevelopmentCard card, Edge edge1, Edge edge2) {
+        Player currentPlayer = model.getCurrentPlayer();
+        int currentRound = model.getCurrentRound();
+        
+        handler.playRoadBuildingCard(currentPlayer, card, currentRound, edge1, edge2);
     }
 
 }
