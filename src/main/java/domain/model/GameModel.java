@@ -137,15 +137,22 @@ public class GameModel {
 
     private void distributeResources(int roll) {
         Map<Resource, Map<Player, Integer>> demand = board.computeResourceDemand(roll);
+        
+        // not just clamp to as many left in deck, if not enough to satisfy all people, no one gets anything. if one person requesting, vcan get partial
         for (Map.Entry<Resource, Map<Player, Integer>> entry : demand.entrySet()) {
+
             Resource resource = entry.getKey();
             Map<Player, Integer> playerAmounts = entry.getValue();
-            int total = playerAmounts.values().stream().mapToInt(Integer::intValue).sum();
+
             ResourceDeck deck = decks.get(resource);
-            if (deck.getTotalCards() >= total) {
-                deck.drawMultiple(total);
-                for (Map.Entry<Player, Integer> pe : playerAmounts.entrySet()) {
-                    pe.getKey().updateResources(resource, pe.getValue());
+            if (playerAmounts.size() > 1) {
+                int total = playerAmounts.values().stream().mapToInt(Integer::intValue).sum();
+                if (deck.getTotalCards() < total) continue;
+            }
+            for (Map.Entry<Player, Integer> pe : playerAmounts.entrySet()) {
+                int drawn = deck.drawMultiple(pe.getValue());
+                if (drawn > 0) {
+                    pe.getKey().updateResources(resource, drawn);
                 }
             }
         }

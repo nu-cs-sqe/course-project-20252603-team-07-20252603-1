@@ -4,6 +4,7 @@ import domain.model.game_pieces.Robber;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 import domain.model.resources.Resource;
+import domain.model.board.Hex;
 
 import java.util.ArrayList;
 import java.util.Arrays;

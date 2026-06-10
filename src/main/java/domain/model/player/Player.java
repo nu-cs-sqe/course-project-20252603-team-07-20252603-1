@@ -11,11 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import domain.model.board.Edge;
-import domain.model.board.Vertex;
 import domain.model.exceptions.InsufficientResourcesException;
-import domain.model.game_pieces.Settlement;
-import domain.model.resources.Resource;
+
 
 public class Player {
     private final List<Settlement> settlements;

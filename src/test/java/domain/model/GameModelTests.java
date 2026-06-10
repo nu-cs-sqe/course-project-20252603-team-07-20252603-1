@@ -833,7 +833,6 @@ public class GameModelTests {
         ColorToPlayerObjMock = Map.of(PlayerColor.RED, redMock);
         EasyMock.expect(boardMock.computeResourceDemand(6))
                 .andReturn(Map.of(Resource.WOOL, new HashMap<>(Map.of(redMock, 1))));
-        EasyMock.expect(woolDeckMock.getTotalCards()).andReturn(5);
         EasyMock.expect(woolDeckMock.drawMultiple(1)).andReturn(1);
         redMock.updateResources(Resource.WOOL, 1);
         EasyMock.expectLastCall();
@@ -855,7 +854,7 @@ public class GameModelTests {
         ColorToPlayerObjMock = Map.of(PlayerColor.RED, redMock);
         EasyMock.expect(boardMock.computeResourceDemand(6))
                 .andReturn(Map.of(Resource.WOOL, new HashMap<>(Map.of(redMock, 1))));
-        EasyMock.expect(woolDeckMock.getTotalCards()).andReturn(0);
+        EasyMock.expect(woolDeckMock.drawMultiple(1)).andReturn(0);
         EasyMock.replay(redMock, boardMock, woolDeckMock, lumberDeckMock, brickDeckMock,
                 grainDeckMock, oreDeckMock);
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
@@ -902,7 +901,8 @@ public class GameModelTests {
         EasyMock.expect(boardMock.computeResourceDemand(6))
                 .andReturn(Map.of(Resource.WOOL, playerAmounts));
         EasyMock.expect(woolDeckMock.getTotalCards()).andReturn(2);
-        EasyMock.expect(woolDeckMock.drawMultiple(2)).andReturn(2);
+        EasyMock.expect(woolDeckMock.drawMultiple(1)).andReturn(1);
+        EasyMock.expect(woolDeckMock.drawMultiple(1)).andReturn(1);
         redMock.updateResources(Resource.WOOL, 1);
         EasyMock.expectLastCall();
         blueMock.updateResources(Resource.WOOL, 1);
@@ -925,7 +925,6 @@ public class GameModelTests {
         ColorToPlayerObjMock = Map.of(PlayerColor.RED, redMock);
         EasyMock.expect(boardMock.computeResourceDemand(8))
                 .andReturn(Map.of(Resource.ORE, new HashMap<>(Map.of(redMock, 2))));
-        EasyMock.expect(oreDeckMock.getTotalCards()).andReturn(10);
         EasyMock.expect(oreDeckMock.drawMultiple(2)).andReturn(2);
         redMock.updateResources(Resource.ORE, 2);
         EasyMock.expectLastCall();
@@ -936,6 +935,27 @@ public class GameModelTests {
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
         model.performTurn(8);
+        assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+        EasyMock.verify(redMock, boardMock, woolDeckMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock);
+    }
+
+    @Test
+    void performTurn_singlePlayerBankShort_receivesPartial() {
+        Player redMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.RED, redMock);
+        EasyMock.expect(boardMock.computeResourceDemand(6))
+                .andReturn(Map.of(Resource.WOOL, new HashMap<>(Map.of(redMock, 3))));
+        EasyMock.expect(woolDeckMock.drawMultiple(3)).andReturn(2);
+        redMock.updateResources(Resource.WOOL, 2);
+        EasyMock.expectLastCall();
+        EasyMock.replay(redMock, boardMock, woolDeckMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock);
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+        model.performTurn(6);
         assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
         EasyMock.verify(redMock, boardMock, woolDeckMock, lumberDeckMock, brickDeckMock,
                 grainDeckMock, oreDeckMock);
@@ -968,7 +988,6 @@ public class GameModelTests {
         demand.put(Resource.WOOL, new HashMap<>(Map.of(redMock, 1)));
         demand.put(Resource.ORE, oreAmounts);
         EasyMock.expect(boardMock.computeResourceDemand(6)).andReturn(demand);
-        EasyMock.expect(woolDeckMock.getTotalCards()).andReturn(5);
         EasyMock.expect(woolDeckMock.drawMultiple(1)).andReturn(1);
         redMock.updateResources(Resource.WOOL, 1);
         EasyMock.expectLastCall();
