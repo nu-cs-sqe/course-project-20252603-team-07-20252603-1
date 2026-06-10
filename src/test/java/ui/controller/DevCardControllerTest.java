@@ -8,8 +8,10 @@ import domain.model.DevelopmentCardHandler;
 import domain.model.GameModel;
 import domain.model.development_cards.DevelopmentCard;
 import domain.model.development_cards.DevelopmentCardDeck;
+import domain.model.development_cards.DevelopmentCardType;
 import domain.model.exceptions.EmptyDeckException;
 import domain.model.exceptions.InsufficientResourcesException;
+import domain.model.game_pieces.Robber;
 import domain.model.player.Player;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -93,6 +95,29 @@ class DevCardControllerTest {
 
     EasyMock.verify(mockModel, mockHandler, mockPlayer, mockDeck);
     assertEquals("Cannot draw new DevelopmentCard, no cards remain.", exception.getMessage());
+  }
+
+  // TC4: playKnightCard(model, card, robber, 5, victim); handler succeeds
+  //      -> verify handler called with current player, card, currentRound, robber, 5, victim; no exception
+  @Test
+  void playKnightCard_HandlerSucceeds_ExpectDelegation() {
+    final int currentRound = 2;
+    final int targetHexId = 5;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    Player mockVictim = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+    Robber mockRobber = EasyMock.createMock(Robber.class);
+
+    EasyMock.expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
+    EasyMock.expect(mockModel.getCurrentRound()).andReturn(currentRound);
+    mockHandler.playKnightCard(mockPlayer, mockCard, currentRound, mockRobber, targetHexId, mockVictim);
+
+    EasyMock.replay(mockModel, mockHandler, mockPlayer, mockVictim, mockCard, mockRobber);
+
+    controller.playKnightCard(mockModel, mockCard, mockRobber, targetHexId, mockVictim);
+
+    EasyMock.verify(mockModel, mockHandler, mockPlayer, mockVictim, mockCard, mockRobber);
   }
 
 }

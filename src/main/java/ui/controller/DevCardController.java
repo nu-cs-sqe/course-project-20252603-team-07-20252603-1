@@ -5,6 +5,7 @@ import domain.model.GameModel;
 import domain.model.development_cards.DevelopmentCard;
 import domain.model.development_cards.DevelopmentCardDeck;
 import domain.model.exceptions.EmptyDeckException;
+import domain.model.game_pieces.Robber;
 import domain.model.player.Player;
 
 public class DevCardController {
@@ -19,6 +20,12 @@ public class DevCardController {
         Player currentPlayer = model.getCurrentPlayer();
         int currentRound = model.getCurrentRound();
         return handler.buyDevelopmentCard(currentPlayer, deck, currentRound);
+    }
+
+    public void playKnightCard(GameModel model, DevelopmentCard card, Robber robber, int targetHexId, Player victim) {
+        Player currentPlayer = model.getCurrentPlayer();
+        int currentRound = model.getCurrentRound();
+        handler.playKnightCard(currentPlayer, card, currentRound, robber, targetHexId, victim);
     }
 
 }
