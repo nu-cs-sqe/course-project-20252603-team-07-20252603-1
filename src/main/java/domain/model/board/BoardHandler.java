@@ -172,6 +172,24 @@ public class BoardHandler {
     return playersOnHex;
   }
 
+  public Map<Resource, Map<Player, Integer>> computeResourceDemand(int rollNum) {
+    Map<Resource, Map<Player, Integer>> demand = new HashMap<>();
+    int robberLocation = robber.getRobberLocation();
+    for (Hex hex : hexes) {
+      if (hex.getHexRollNum() == rollNum && hex.getHexId() != robberLocation) {
+        Resource resource = hex.getHexResource();
+        if (resource == Resource.DESERT) continue;
+        for (Player p : hex.getHexSettlementPlayers()) {
+          demand.computeIfAbsent(resource, k -> new HashMap<>()).merge(p, 1, Integer::sum);
+        }
+        for (Player p : hex.getHexCityPlayers()) {
+          demand.computeIfAbsent(resource, k -> new HashMap<>()).merge(p, 2, Integer::sum);
+        }
+      }
+    }
+    return demand;
+  }
+
   void buildSetupSettlement(Player player, int nodeId) {
     if (nodeId < MIN_NODE_ID || nodeId > MAX_NODE_ID) {
       throw new IllegalArgumentException("Invalid NodeID - must be within [0, 53].");

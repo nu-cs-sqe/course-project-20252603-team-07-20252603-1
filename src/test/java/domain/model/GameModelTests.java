@@ -514,6 +514,7 @@ public class GameModelTests {
     @Test
     void performTurn_rollSix_nonSeven_transitionsToGeneralPlay() {
         BoardHandler board = EasyMock.createMock(BoardHandler.class);
+        EasyMock.expect(board.computeResourceDemand(6)).andReturn(new HashMap<>());
         EasyMock.replay(board);
         GameModel model = new GameModel(List.of(new Player("Alice", PlayerColor.RED)), board);
         model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
@@ -526,6 +527,7 @@ public class GameModelTests {
     @Test
     void performTurn_rollTwo_BVAMin_transitionsToGeneralPlay() {
         BoardHandler board = EasyMock.createMock(BoardHandler.class);
+        EasyMock.expect(board.computeResourceDemand(2)).andReturn(new HashMap<>());
         EasyMock.replay(board);
         GameModel model = new GameModel(List.of(new Player("Alice", PlayerColor.RED)), board);
         model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
@@ -538,6 +540,7 @@ public class GameModelTests {
     @Test
     void performTurn_rollTwelve_BVAMax_transitionsToGeneralPlay() {
         BoardHandler board = EasyMock.createMock(BoardHandler.class);
+        EasyMock.expect(board.computeResourceDemand(12)).andReturn(new HashMap<>());
         EasyMock.replay(board);
         GameModel model = new GameModel(List.of(new Player("Alice", PlayerColor.RED)), board);
         model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
@@ -605,6 +608,7 @@ public class GameModelTests {
     @Test
     void performTurn_rollingTwiceInOneTurn_expectError() {
         BoardHandler board = EasyMock.createMock(BoardHandler.class);
+        EasyMock.expect(board.computeResourceDemand(6)).andReturn(new HashMap<>());
         EasyMock.replay(board);
         GameModel model = new GameModel(List.of(new Player("Alice", PlayerColor.RED)), board);
         model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
@@ -819,5 +823,165 @@ public class GameModelTests {
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
         model.attemptBuildCity(0);
         EasyMock.verify(playerMock, boardMock, oreDeckMock, grainDeckMock);
+    }
+
+    // --- distributeResources (via performTurn) ---
+
+    @Test
+    void performTurn_bankHasEnough_playerReceivesResource() {
+        Player redMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.RED, redMock);
+        EasyMock.expect(boardMock.computeResourceDemand(6))
+                .andReturn(Map.of(Resource.WOOL, new HashMap<>(Map.of(redMock, 1))));
+        EasyMock.expect(woolDeckMock.getTotalCards()).andReturn(5);
+        EasyMock.expect(woolDeckMock.drawMultiple(1)).andReturn(1);
+        redMock.updateResources(Resource.WOOL, 1);
+        EasyMock.expectLastCall();
+        EasyMock.replay(redMock, boardMock, woolDeckMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock);
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+        model.performTurn(6);
+        assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+        EasyMock.verify(redMock, boardMock, woolDeckMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock);
+    }
+
+    @Test
+    void performTurn_bankEmpty_playerReceivesNothing() {
+        Player redMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.RED, redMock);
+        EasyMock.expect(boardMock.computeResourceDemand(6))
+                .andReturn(Map.of(Resource.WOOL, new HashMap<>(Map.of(redMock, 1))));
+        EasyMock.expect(woolDeckMock.getTotalCards()).andReturn(0);
+        EasyMock.replay(redMock, boardMock, woolDeckMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock);
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+        model.performTurn(6);
+        assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+        EasyMock.verify(redMock, boardMock, woolDeckMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock);
+    }
+
+    @Test
+    void performTurn_bankLessThanTotalDemand_nobodyReceivesResource() {
+        Player redMock = EasyMock.createMock(Player.class);
+        Player blueMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.RED, redMock, PlayerColor.BLUE, blueMock);
+        Map<Player, Integer> playerAmounts = new HashMap<>();
+        playerAmounts.put(redMock, 1);
+        playerAmounts.put(blueMock, 1);
+        EasyMock.expect(boardMock.computeResourceDemand(6))
+                .andReturn(Map.of(Resource.WOOL, playerAmounts));
+        EasyMock.expect(woolDeckMock.getTotalCards()).andReturn(1);
+        EasyMock.replay(redMock, blueMock, boardMock, woolDeckMock, lumberDeckMock,
+                brickDeckMock, grainDeckMock, oreDeckMock);
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+        model.performTurn(6);
+        assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+        EasyMock.verify(redMock, blueMock, boardMock, woolDeckMock, lumberDeckMock,
+                brickDeckMock, grainDeckMock, oreDeckMock);
+    }
+
+    @Test
+    void performTurn_bankExactlyEnough_allPlayersReceive() {
+        Player redMock = EasyMock.createMock(Player.class);
+        Player blueMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.RED, redMock, PlayerColor.BLUE, blueMock);
+        Map<Player, Integer> playerAmounts = new HashMap<>();
+        playerAmounts.put(redMock, 1);
+        playerAmounts.put(blueMock, 1);
+        EasyMock.expect(boardMock.computeResourceDemand(6))
+                .andReturn(Map.of(Resource.WOOL, playerAmounts));
+        EasyMock.expect(woolDeckMock.getTotalCards()).andReturn(2);
+        EasyMock.expect(woolDeckMock.drawMultiple(2)).andReturn(2);
+        redMock.updateResources(Resource.WOOL, 1);
+        EasyMock.expectLastCall();
+        blueMock.updateResources(Resource.WOOL, 1);
+        EasyMock.expectLastCall();
+        EasyMock.replay(redMock, blueMock, boardMock, woolDeckMock, lumberDeckMock,
+                brickDeckMock, grainDeckMock, oreDeckMock);
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+        model.performTurn(6);
+        assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+        EasyMock.verify(redMock, blueMock, boardMock, woolDeckMock, lumberDeckMock,
+                brickDeckMock, grainDeckMock, oreDeckMock);
+    }
+
+    @Test
+    void performTurn_cityPlayer_receivesTwo() {
+        Player redMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.RED, redMock);
+        EasyMock.expect(boardMock.computeResourceDemand(8))
+                .andReturn(Map.of(Resource.ORE, new HashMap<>(Map.of(redMock, 2))));
+        EasyMock.expect(oreDeckMock.getTotalCards()).andReturn(10);
+        EasyMock.expect(oreDeckMock.drawMultiple(2)).andReturn(2);
+        redMock.updateResources(Resource.ORE, 2);
+        EasyMock.expectLastCall();
+        EasyMock.replay(redMock, boardMock, woolDeckMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock);
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+        model.performTurn(8);
+        assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+        EasyMock.verify(redMock, boardMock, woolDeckMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock);
+    }
+
+    @Test
+    void performTurn_emptyDemandMap_noInteractionsWithDecksOrPlayers() {
+        ColorToPlayerObjMock = new HashMap<>();
+        EasyMock.expect(boardMock.computeResourceDemand(6)).andReturn(new HashMap<>());
+        EasyMock.replay(boardMock, woolDeckMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock);
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+        model.performTurn(6);
+        assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+        EasyMock.verify(boardMock, woolDeckMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock);
+    }
+
+    @Test
+    void performTurn_oneResourceCovered_otherNot_onlyCoveredDistributed() {
+        Player redMock = EasyMock.createMock(Player.class);
+        Player blueMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.RED, redMock, PlayerColor.BLUE, blueMock);
+        Map<Player, Integer> oreAmounts = new HashMap<>();
+        oreAmounts.put(redMock, 1);
+        oreAmounts.put(blueMock, 1);
+        Map<Resource, Map<Player, Integer>> demand = new HashMap<>();
+        demand.put(Resource.WOOL, new HashMap<>(Map.of(redMock, 1)));
+        demand.put(Resource.ORE, oreAmounts);
+        EasyMock.expect(boardMock.computeResourceDemand(6)).andReturn(demand);
+        EasyMock.expect(woolDeckMock.getTotalCards()).andReturn(5);
+        EasyMock.expect(woolDeckMock.drawMultiple(1)).andReturn(1);
+        redMock.updateResources(Resource.WOOL, 1);
+        EasyMock.expectLastCall();
+        EasyMock.expect(oreDeckMock.getTotalCards()).andReturn(1);
+        EasyMock.replay(redMock, blueMock, boardMock, woolDeckMock, lumberDeckMock,
+                brickDeckMock, grainDeckMock, oreDeckMock);
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+        model.performTurn(6);
+        assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+        EasyMock.verify(redMock, blueMock, boardMock, woolDeckMock, lumberDeckMock,
+                brickDeckMock, grainDeckMock, oreDeckMock);
     }
 }

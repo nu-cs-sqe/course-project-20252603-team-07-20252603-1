@@ -4,6 +4,7 @@ import domain.model.player.Player;
 import domain.model.resources.Resource;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Hex {
@@ -132,13 +133,13 @@ public class Hex {
     return playerCities.contains(player);
   }
 
-  public List<Player> getHexSettlementPlayers(){
-    return List.of();
-  };
+  public List<Player> getHexSettlementPlayers() {
+    return Collections.unmodifiableList(playerSettlements);
+  }
 
-  public List<Player> getHexCityPlayers(){
-    return List.of();
-  };
+  public List<Player> getHexCityPlayers() {
+    return Collections.unmodifiableList(playerCities);
+  }
 
   @Override
   protected final void finalize() {

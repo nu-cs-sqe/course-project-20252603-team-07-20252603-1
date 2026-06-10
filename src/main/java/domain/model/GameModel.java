@@ -127,29 +127,28 @@ public class GameModel {
 
     public void performTurn(int roll) {
         checkCurrentGamePhaseMatches(GamePhase.BEFORE_ROLL);
-
         if (roll == 7) {
             currentGamePhase = GamePhase.MOVE_ROBBER;
             return;
         }
-
-        // stub production — real distribution comes in a later part
-        Resource rslt = interpretRoll(roll);
-        try {
-            Resource card = decks.get(rslt).draw();
-            playerColorToPlayerObject.get(currentPlayerColor).updateResources(card, 1);
-        } catch (Exception e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
+        distributeResources(roll);
         currentGamePhase = GamePhase.GENERAL_PLAY;
     }
 
-    public Resource interpretRoll(int roll) {
-        // just a fakey function to make performTurn not error
-        // really this would be closer to something like Map<Hex, (Player[], Resource)>
-        // Rewarding resources on is the responsibility of the tile, just cause lowkey
-        // Ben has rewarding resources in his hex class
-        return Resource.WOOL;
+    private void distributeResources(int roll) {
+        Map<Resource, Map<Player, Integer>> demand = board.computeResourceDemand(roll);
+        for (Map.Entry<Resource, Map<Player, Integer>> entry : demand.entrySet()) {
+            Resource resource = entry.getKey();
+            Map<Player, Integer> playerAmounts = entry.getValue();
+            int total = playerAmounts.values().stream().mapToInt(Integer::intValue).sum();
+            ResourceDeck deck = decks.get(resource);
+            if (deck.getTotalCards() >= total) {
+                deck.drawMultiple(total);
+                for (Map.Entry<Player, Integer> pe : playerAmounts.entrySet()) {
+                    pe.getKey().updateResources(resource, pe.getValue());
+                }
+            }
+        }
     }
 
     // SPENCER METHODS

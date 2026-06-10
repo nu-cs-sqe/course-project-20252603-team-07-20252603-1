@@ -120,3 +120,46 @@ Step 3:
 | Test Case 8 | GENERAL_PLAY, ore=3, grain=0 (zero, well below boundary)     | InsufficientResourcesException                     | :white_check_mark: |
 | Test Case 9 | GENERAL_PLAY, ore=4 (surplus), grain=3 (surplus), board succeeds | success (surplus does not prevent building)    | :white_check_mark: |
 
+---
+
+### Method under test: `performTurn(int roll)` — resource distribution path
+
+When roll ≠ 7, `performTurn` delegates to `distributeResources`, which calls `board.computeResourceDemand(roll)` and distributes resources per the standard Catan bank rule: if the bank deck for a resource has fewer cards than the total demanded, **no player receives that resource**. Each resource is evaluated independently.
+
+Step 1:
+
+- Input: roll (die value)
+- Input: Demand map returned by `board.computeResourceDemand(roll)` (Map<Resource, Map<Player, Integer>>)
+- Input: Bank deck sizes per resource (Interval [0, 19])
+- Output: Player resource counts updated; decks drawn; game phase transitions to GENERAL_PLAY
+- Output: No change (bank insufficient, or demand map empty)
+
+Step 2:
+
+- roll: Cases {7 (robber, no distribution), non-7 (distribution path)}
+- Demand map: Cases {empty (no active hexes), non-empty}
+- Per resource: total demand vs. deck size — Interval comparison
+  - deck.total < total demand → no distribution (bank rule)
+  - deck.total == total demand → exactly enough, distribute
+  - deck.total > total demand → more than enough, distribute
+- Single-player demand amount: 1 (settlement) or 2 (city)
+- Multiple resources in demand: each evaluated independently
+
+Step 3:
+
+- roll: non-7 value (e.g. 6) for distribution path; 7 for robber path
+- Demand map: empty; one resource one player; one resource two players; two resources
+- Deck size at boundary: 0 (empty, below any demand); 1 (at demand for one player); 1 vs. demand of 2 (insufficient for two players); 2 (exactly covers two players of 1 each)
+- Demand amount: 1 (settlement); 2 (city)
+- Two resources, one covered, one not: only covered resource distributes
+
+|              | State of the System                                                                              | Expected output                                                               | Implemented?       |
+|--------------|--------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|--------------------|
+| Test Case 10 | Board returns `{WOOL: {red: 1}}`; wool deck has 5 cards                                         | `drawMultiple(1)` called; red receives 1 WOOL; phase → GENERAL_PLAY           | :white_check_mark: |
+| Test Case 11 | Board returns `{WOOL: {red: 1}}`; wool deck has 0 cards (empty)                                 | No draw, no player update; phase → GENERAL_PLAY                               | :white_check_mark: |
+| Test Case 12 | Board returns `{WOOL: {red: 1, blue: 1}}`; wool deck has 1 card (less than total demand of 2)   | No draw, neither player receives WOOL (bank rule)                             | :white_check_mark: |
+| Test Case 13 | Board returns `{WOOL: {red: 1, blue: 1}}`; wool deck has exactly 2 cards                        | `drawMultiple(2)` called; both players receive 1 WOOL each                    | :white_check_mark: |
+| Test Case 14 | Board returns `{ORE: {red: 2}}`; ore deck has 10 cards (city demand = 2)                        | `drawMultiple(2)` called; red receives 2 ORE                                  | :white_check_mark: |
+| Test Case 15 | Board returns `{}`; all decks idle                                                               | No deck interactions, no player updates; phase → GENERAL_PLAY                 | :white_check_mark: |
+| Test Case 16 | Board returns `{WOOL: {red: 1}, ORE: {red: 1, blue: 1}}`; wool deck ok, ore deck has 1 card     | WOOL distributed (drawMultiple(1), red +1); ORE skipped (bank insufficient)   | :white_check_mark: |
+

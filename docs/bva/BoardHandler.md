@@ -298,3 +298,42 @@ Step 3:
 | Test Case 55 | WHITE holds longest road  | calculateLongestRoad is called, returns WHITE  | :white_check_mark: |
 | Test Case 56 | BLUE holds longest road   | calculateLongestRoad is called, returns BLUE   | :white_check_mark: |
 | Test Case 57 | SETUP holds longest road  | calculateLongestRoad is called, returns SETUP  | :white_check_mark: |
+
+
+### Method under test: `computeResourceDemand(int rollNum)`
+
+Iterates all 19 hexes; a hex contributes when: `hex.rollNum == rollNum` AND `hex.id != robberLocation` AND `hex.resource != DESERT`. Settlements contribute 1 per player; cities contribute 2 per player. Players on multiple contributing hexes with the same resource have their amounts summed.
+
+Step 1:
+
+- Input: rollNum (the die value to match against hexes)
+- Input: Robber location (blocks a matching hex entirely)
+- Input: Settlement and city player lists on each hex
+- Output: `Map<Resource, Map<Player, Integer>>` — demand per resource per player
+
+Step 2:
+
+- rollNum: Interval [2, 12]; matches or does not match each hex's rollNum
+- Robber: Cases {on a matching hex (blocks it), not on any matching hex}
+- Hex resource: Cases {DESERT (skipped), non-DESERT (included)}
+- Settlement list per hex: Collection {empty, one player, multiple players}
+- City list per hex: Collection {empty, one player}
+- Same player on multiple matching hexes with same resource: amounts are summed
+
+Step 3:
+
+- rollNum: 2 (min valid), 12 (max valid); value that matches multiple hexes (e.g. 8 matches hex 11 ORE and hex 12 LUMBER)
+- Robber: on the only matching hex; on one of two matching hexes; not on any matching hex
+- Settlement: none on hex; 1 player; same player on 2 matching hexes same resource
+- City: 1 player on hex (produces 2 instead of 1)
+- No hexes match rollNum → empty result
+
+|              | State of the System                                                                        | Expected output                                          | Implemented?       |
+|--------------|--------------------------------------------------------------------------------------------|----------------------------------------------------------|--------------------|
+| Test Case 58 | Roll 2, hex 1 (WOOL, rollNum=2) has RED settlement; robber elsewhere                       | `{WOOL: {RED: 1}}`                                       | :white_check_mark: |
+| Test Case 59 | Roll 2, hex 1 (WOOL, rollNum=2) has RED settlement; robber on hex 1                        | `{}` (robber blocks)                                     | :white_check_mark: |
+| Test Case 60 | Roll 8, hex 11 (ORE) has RED settlement; hex 12 (LUMBER) has BLUE settlement; no robber    | `{ORE: {RED: 1}, LUMBER: {BLUE: 1}}`                     | :white_check_mark: |
+| Test Case 61 | Roll 2, hex 1 (WOOL) has RED city; robber elsewhere                                        | `{WOOL: {RED: 2}}` (city = 2x)                           | :white_check_mark: |
+| Test Case 62 | Roll 8, hex 11 (ORE) has RED settlement; hex 12 (ORE) has RED settlement; no robber        | `{ORE: {RED: 2}}` (same player, same resource, summed)   | :white_check_mark: |
+| Test Case 63 | Roll 12; all hexes configured with rollNum ≠ 12                                            | `{}` (no hexes match)                                    | :white_check_mark: |
+| Test Case 64 | Roll 8, hex 11 (ORE) RED settlement; hex 12 (LUMBER) BLUE settlement; robber on hex 12     | `{ORE: {RED: 1}}` (only unblocked hex contributes)       | :white_check_mark: |

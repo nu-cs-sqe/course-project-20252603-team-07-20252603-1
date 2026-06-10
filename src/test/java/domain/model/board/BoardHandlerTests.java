@@ -10,6 +10,8 @@ import org.easymock.EasyMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import domain.model.resources.Resource;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -1298,6 +1300,184 @@ public class BoardHandlerTests {
     EasyMock.verify(mockBoardGraphController);
 
     assertEquals(expectedColor, actualColor);
+  }
+
+  // Test Case 58
+  @Test
+  void TwoRolled_Hex1WoolSettlementRed_RobberElsewhere_ReturnsWoolOneToRed() {
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(9);
+    for (int i = 0; i < 19; i++) {
+      if (i == 1) {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(2);
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(1);
+        EasyMock.expect(mockHexes.get(i).getHexResource()).andReturn(Resource.WOOL);
+        EasyMock.expect(mockHexes.get(i).getHexSettlementPlayers()).andReturn(List.of(mockRedPlayer));
+        EasyMock.expect(mockHexes.get(i).getHexCityPlayers()).andReturn(List.of());
+      } else {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
+      }
+    }
+    EasyMock.replay(mockRobber);
+    EasyMock.replay(mockHexes.toArray());
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+    Map<Resource, Map<Player, Integer>> result = b.computeResourceDemand(2);
+    EasyMock.verify(mockRobber);
+    EasyMock.verify(mockHexes.toArray());
+    assertEquals(1, result.size());
+    assertEquals(1, (int) result.get(Resource.WOOL).get(mockRedPlayer));
+  }
+
+  // Test Case 59
+  @Test
+  void TwoRolled_Hex1Matches_RobberOnHex1_ReturnsEmptyMap() {
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(1);
+    for (int i = 0; i < 19; i++) {
+      if (i == 1) {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(2);
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(1);
+      } else {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
+      }
+    }
+    EasyMock.replay(mockRobber);
+    EasyMock.replay(mockHexes.toArray());
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+    Map<Resource, Map<Player, Integer>> result = b.computeResourceDemand(2);
+    EasyMock.verify(mockRobber);
+    EasyMock.verify(mockHexes.toArray());
+    assertEquals(0, result.size());
+  }
+
+  // Test Case 60
+  @Test
+  void EightRolled_Hex11OreRedSettlement_Hex12LumberBlueSettlement_ReturnsBothResources() {
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(9);
+    for (int i = 0; i < 19; i++) {
+      if (i == 11) {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(8);
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(11);
+        EasyMock.expect(mockHexes.get(i).getHexResource()).andReturn(Resource.ORE);
+        EasyMock.expect(mockHexes.get(i).getHexSettlementPlayers()).andReturn(List.of(mockRedPlayer));
+        EasyMock.expect(mockHexes.get(i).getHexCityPlayers()).andReturn(List.of());
+      } else if (i == 12) {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(8);
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(12);
+        EasyMock.expect(mockHexes.get(i).getHexResource()).andReturn(Resource.LUMBER);
+        EasyMock.expect(mockHexes.get(i).getHexSettlementPlayers()).andReturn(List.of(mockBluePlayer));
+        EasyMock.expect(mockHexes.get(i).getHexCityPlayers()).andReturn(List.of());
+      } else {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
+      }
+    }
+    EasyMock.replay(mockRobber);
+    EasyMock.replay(mockHexes.toArray());
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+    Map<Resource, Map<Player, Integer>> result = b.computeResourceDemand(8);
+    EasyMock.verify(mockRobber);
+    EasyMock.verify(mockHexes.toArray());
+    assertEquals(2, result.size());
+    assertEquals(1, (int) result.get(Resource.ORE).get(mockRedPlayer));
+    assertEquals(1, (int) result.get(Resource.LUMBER).get(mockBluePlayer));
+  }
+
+  // Test Case 61
+  @Test
+  void TwoRolled_Hex1WoolCityRed_ReturnsWoolTwoToRed() {
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(9);
+    for (int i = 0; i < 19; i++) {
+      if (i == 1) {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(2);
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(1);
+        EasyMock.expect(mockHexes.get(i).getHexResource()).andReturn(Resource.WOOL);
+        EasyMock.expect(mockHexes.get(i).getHexSettlementPlayers()).andReturn(List.of());
+        EasyMock.expect(mockHexes.get(i).getHexCityPlayers()).andReturn(List.of(mockRedPlayer));
+      } else {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
+      }
+    }
+    EasyMock.replay(mockRobber);
+    EasyMock.replay(mockHexes.toArray());
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+    Map<Resource, Map<Player, Integer>> result = b.computeResourceDemand(2);
+    EasyMock.verify(mockRobber);
+    EasyMock.verify(mockHexes.toArray());
+    assertEquals(1, result.size());
+    assertEquals(2, (int) result.get(Resource.WOOL).get(mockRedPlayer));
+  }
+
+  // Test Case 62
+  @Test
+  void EightRolled_TwoOreHexesRedSettlement_AmountsSummedToTwo() {
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(9);
+    for (int i = 0; i < 19; i++) {
+      if (i == 11) {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(8);
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(11);
+        EasyMock.expect(mockHexes.get(i).getHexResource()).andReturn(Resource.ORE);
+        EasyMock.expect(mockHexes.get(i).getHexSettlementPlayers()).andReturn(List.of(mockRedPlayer));
+        EasyMock.expect(mockHexes.get(i).getHexCityPlayers()).andReturn(List.of());
+      } else if (i == 12) {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(8);
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(12);
+        EasyMock.expect(mockHexes.get(i).getHexResource()).andReturn(Resource.ORE);
+        EasyMock.expect(mockHexes.get(i).getHexSettlementPlayers()).andReturn(List.of(mockRedPlayer));
+        EasyMock.expect(mockHexes.get(i).getHexCityPlayers()).andReturn(List.of());
+      } else {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
+      }
+    }
+    EasyMock.replay(mockRobber);
+    EasyMock.replay(mockHexes.toArray());
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+    Map<Resource, Map<Player, Integer>> result = b.computeResourceDemand(8);
+    EasyMock.verify(mockRobber);
+    EasyMock.verify(mockHexes.toArray());
+    assertEquals(1, result.size());
+    assertEquals(2, (int) result.get(Resource.ORE).get(mockRedPlayer));
+  }
+
+  // Test Case 63
+  @Test
+  void RollMatchesNoHexes_ReturnsEmptyMap() {
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(9);
+    for (int i = 0; i < 19; i++) {
+      EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
+    }
+    EasyMock.replay(mockRobber);
+    EasyMock.replay(mockHexes.toArray());
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+    Map<Resource, Map<Player, Integer>> result = b.computeResourceDemand(6);
+    EasyMock.verify(mockRobber);
+    EasyMock.verify(mockHexes.toArray());
+    assertEquals(0, result.size());
+  }
+
+  // Test Case 64
+  @Test
+  void EightRolled_RobberOnHex12_OnlyHex11Contributes() {
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(12);
+    for (int i = 0; i < 19; i++) {
+      if (i == 11) {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(8);
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(11);
+        EasyMock.expect(mockHexes.get(i).getHexResource()).andReturn(Resource.ORE);
+        EasyMock.expect(mockHexes.get(i).getHexSettlementPlayers()).andReturn(List.of(mockRedPlayer));
+        EasyMock.expect(mockHexes.get(i).getHexCityPlayers()).andReturn(List.of());
+      } else if (i == 12) {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(8);
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(12);
+      } else {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
+      }
+    }
+    EasyMock.replay(mockRobber);
+    EasyMock.replay(mockHexes.toArray());
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+    Map<Resource, Map<Player, Integer>> result = b.computeResourceDemand(8);
+    EasyMock.verify(mockRobber);
+    EasyMock.verify(mockHexes.toArray());
+    assertEquals(1, result.size());
+    assertEquals(1, (int) result.get(Resource.ORE).get(mockRedPlayer));
   }
 
 }
