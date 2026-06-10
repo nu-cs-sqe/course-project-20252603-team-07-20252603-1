@@ -426,4 +426,25 @@ class DevCardControllerTest {
     assertEquals("Development card cannot be null.", exception.getMessage());
   }
 
+  // TC18: getVictoryPointCount(model); handler returns 0
+  //       -> controller returns 0; verify handler called with current player's hand
+  @Test
+  void getVictoryPointCount_HandlerReturnsZero_ExpectZero() {
+    final int expectedCount = 0;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    List<DevelopmentCard> hand = List.of();
+
+    EasyMock.expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
+    EasyMock.expect(mockPlayer.getDevelopmentCards()).andReturn(hand);
+    EasyMock.expect(mockHandler.countVictoryPointCards(hand)).andReturn(expectedCount);
+
+    EasyMock.replay(mockModel, mockHandler, mockPlayer);
+
+    int result = controller.getVictoryPointCount(mockModel);
+
+    EasyMock.verify(mockModel, mockHandler, mockPlayer);
+    assertEquals(expectedCount, result);
+  }
+
 }

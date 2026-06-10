@@ -57,4 +57,10 @@ public class DevCardController {
         handler.playYearOfPlentyCard(currentPlayer, card, currentRound, resource1, resource2);
     }
 
+    public int getVictoryPointCount(GameModel model) {
+        Player currentPlayer = model.getCurrentPlayer();
+        
+        return handler.countVictoryPointCards(currentPlayer.getDevelopmentCards());
+    }
+
 }
