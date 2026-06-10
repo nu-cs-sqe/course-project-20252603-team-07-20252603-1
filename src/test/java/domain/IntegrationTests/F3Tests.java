@@ -5,6 +5,7 @@ package domain.IntegrationTests;
 
 import domain.model.board.BoardHandler;
 import domain.model.exceptions.AdjacentNodeAlreadyClaimed;
+import domain.model.exceptions.EdgeAlreadyClaimedException;
 import domain.model.exceptions.IllegalEdgeClaim;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
@@ -189,6 +190,24 @@ public class F3Tests {
 
     Exception exception = assertThrows(IllegalEdgeClaim.class, () ->
             b.buildSetupRoad(redPlayer, 0, 0, 1));
+
+    assertEquals("Edge must be adjacent to just placed settlement", exception.getMessage());
+  }
+
+  // Test Case 15
+  @Test
+  void RedClaimsEdgeZeroToFour_WhiteTriesToClaimSameEdge_ThrowsEdgeAlreadyClaimed() {
+    BoardHandler b = new BoardHandler();
+    Player redPlayer = new Player("Dummy", PlayerColor.RED);
+    Player whitePlayer = new Player("Dummy", PlayerColor.WHITE);
+
+    b.buildSetupSettlement(redPlayer, 0);
+    b.buildSetupRoad(redPlayer, 0, 0, 4);
+
+    b.buildSetupSettlement(whitePlayer, 20);
+
+    Exception exception = assertThrows(IllegalEdgeClaim.class, () ->
+            b.buildSetupRoad(whitePlayer, 20, 0, 4));
 
     assertEquals("Edge must be adjacent to just placed settlement", exception.getMessage());
   }
