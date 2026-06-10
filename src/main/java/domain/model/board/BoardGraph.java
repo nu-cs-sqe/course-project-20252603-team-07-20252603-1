@@ -167,6 +167,12 @@ public class BoardGraph {
 
     if (previousWinner != PlayerColor.SETUP) {
       longestRoad = calculatePlayerLongestRoad(previousWinner);
+      // handles case where player builds settlement to break off longest road,
+      // and no other players have 5 continuous roads
+      if (longestRoad < 5) {
+        longestRoad = 4;
+        longestRoadOwner = PlayerColor.SETUP;
+      }
     }
 
     for (Player player : activePlayers) {
@@ -195,22 +201,29 @@ public class BoardGraph {
 
     int longest = 0;
     for (GraphEdge startEdge : playerEdges) {
-      int length = dfs(startEdge, new HashSet<>(), color);
+      int length = dfs(startEdge, -1, new HashSet<>(), color);
       longest = Math.max(longest, length);
     }
     return longest;
   }
 
-  private int dfs(GraphEdge current, Set<GraphEdge> visited, PlayerColor color) {
+  private int dfs(GraphEdge current, int fromNodeId, Set<GraphEdge> visited, PlayerColor color) {
     visited.add(current);
     int longest = visited.size();
 
     int[] nodes = {current.getStartingNodeID(), current.getEndingNodeID()};
     for (int nodeId : nodes) {
+      if (nodeId == fromNodeId) continue;
+
+      GraphNode node = getGraphNodeByID(nodeId);
+      if (node.checkOccupied() && node.checkColor() != color) {
+        continue;
+      }
+
       Set<GraphEdge> connecting = getConnectingEdgesByID(nodeId);
       for (GraphEdge neighbor : connecting) {
         if (!visited.contains(neighbor) && neighbor.checkOwningColor() == color) {
-          int length = dfs(neighbor, new HashSet<>(visited), color);
+          int length = dfs(neighbor, nodeId, new HashSet<>(visited), color);
           longest = Math.max(longest, length);
         }
       }

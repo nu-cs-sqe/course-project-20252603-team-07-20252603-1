@@ -1099,6 +1099,7 @@ public class BoardGraphTests {
   }
 
   // calculateLongestRoad() tests
+  // Test Case 1
   @Test
   void noPlayerRoads_NoPreviousWinner_ReturnSetup() {
     BoardGraph b = new BoardGraph();
@@ -1113,6 +1114,7 @@ public class BoardGraphTests {
     assertEquals(PlayerColor.SETUP, b.calculateLongestRoad(players, PlayerColor.SETUP));
   }
 
+  // Test Case 2
   @Test
   void RedHasExactlyFourRoads_NoPreviousWinner_ReturnsSetup() {
     BoardGraph b = new BoardGraph();
@@ -1154,6 +1156,12 @@ public class BoardGraphTests {
     EasyMock.expect(mockEdge4To8.checkOwningColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockEdge8To12.checkOwningColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockEdge12To17.checkOwningColor()).andReturn(PlayerColor.RED).anyTimes();
+
+    EasyMock.expect(mockNode0.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode4.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode8.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode12.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode17.checkOccupied()).andReturn(false).anyTimes();
 
     EasyMock.expect(mockRedPlayer.getPlayerColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE).anyTimes();
@@ -1234,6 +1242,13 @@ public class BoardGraphTests {
     EasyMock.expect(mockEdge8To12.checkOwningColor()).andReturn(PlayerColor.ORANGE).anyTimes();
     EasyMock.expect(mockEdge12To17.checkOwningColor()).andReturn(PlayerColor.ORANGE).anyTimes();
     EasyMock.expect(mockEdge17To22.checkOwningColor()).andReturn(PlayerColor.ORANGE).anyTimes();
+
+    EasyMock.expect(mockNode0.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode4.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode8.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode12.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode17.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode22.checkOccupied()).andReturn(false).anyTimes();
 
     EasyMock.expect(mockRedPlayer.getPlayerColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE).anyTimes();
@@ -1349,6 +1364,19 @@ public class BoardGraphTests {
     EasyMock.expect(mockEdge9To13.checkOwningColor()).andReturn(PlayerColor.BLUE).anyTimes();
     EasyMock.expect(mockEdge13To18.checkOwningColor()).andReturn(PlayerColor.BLUE).anyTimes();
     EasyMock.expect(mockEdge18To23.checkOwningColor()).andReturn(PlayerColor.BLUE).anyTimes();
+
+    EasyMock.expect(mockNode0.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode4.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode8.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode12.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode17.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode22.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode2.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode5.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode9.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode13.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode18.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode23.checkOccupied()).andReturn(false).anyTimes();
 
     EasyMock.expect(mockRedPlayer.getPlayerColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE).anyTimes();
@@ -1484,6 +1512,19 @@ public class BoardGraphTests {
     EasyMock.expect(mockEdge9To13.checkOwningColor()).andReturn(PlayerColor.BLUE).anyTimes();
     EasyMock.expect(mockEdge13To18.checkOwningColor()).andReturn(PlayerColor.BLUE).anyTimes();
     EasyMock.expect(mockEdge18To23.checkOwningColor()).andReturn(PlayerColor.BLUE).anyTimes();
+
+    EasyMock.expect(mockNode0.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode4.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode8.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode12.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode17.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode22.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode2.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode5.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode9.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode13.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode18.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode23.checkOccupied()).andReturn(false).anyTimes();
 
     EasyMock.expect(mockRedPlayer.getPlayerColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE).anyTimes();
@@ -1625,6 +1666,20 @@ public class BoardGraphTests {
     EasyMock.expect(mockEdge13To18.checkOwningColor()).andReturn(PlayerColor.BLUE).anyTimes();
     EasyMock.expect(mockEdge18To23.checkOwningColor()).andReturn(PlayerColor.BLUE).anyTimes();
     EasyMock.expect(mockEdge23To29.checkOwningColor()).andReturn(PlayerColor.BLUE).anyTimes();
+
+    EasyMock.expect(mockNode0.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode4.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode8.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode12.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode17.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode22.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode2.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode5.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode9.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode13.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode18.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode23.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode29.checkOccupied()).andReturn(false).anyTimes();
 
     EasyMock.expect(mockRedPlayer.getPlayerColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE).anyTimes();
@@ -1777,6 +1832,21 @@ public class BoardGraphTests {
     EasyMock.expect(mockEdge10To14.checkOwningColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockEdge14To19.checkOwningColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockEdge19To25.checkOwningColor()).andReturn(PlayerColor.RED).anyTimes();
+
+    EasyMock.expect(mockNode0.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode4.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode7.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode8.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode12.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode49.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode50.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode53.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode2.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode6.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode10.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode14.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode19.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode25.checkOccupied()).andReturn(false).anyTimes();
 
     EasyMock.expect(mockRedPlayer.getPlayerColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE).anyTimes();
@@ -1977,6 +2047,28 @@ public class BoardGraphTests {
     EasyMock.expect(mockEdgeO32To37.checkOwningColor()).andReturn(PlayerColor.ORANGE).anyTimes();
     EasyMock.expect(mockEdgeO37To42.checkOwningColor()).andReturn(PlayerColor.ORANGE).anyTimes();
 
+    EasyMock.expect(mockNodeW0.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNodeW4.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNodeW8.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNodeW12.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNodeW17.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNodeW22.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNodeW2.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNodeW5.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNodeW9.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNodeW13.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNodeO47.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNodeO51.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNodeO48.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNodeO52.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNodeO49.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNodeO53.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNodeO50.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNodeO26.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNodeO32.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNodeO37.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNodeO42.checkOccupied()).andReturn(false).anyTimes();
+
     EasyMock.expect(mockRedPlayer.getPlayerColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE).anyTimes();
     EasyMock.expect(mockOrangePlayer.getPlayerColor()).andReturn(PlayerColor.ORANGE).anyTimes();
@@ -2061,6 +2153,88 @@ public class BoardGraphTests {
             mockEdgeO47To51, mockEdgeO48To51, mockEdgeO48To52, mockEdgeO49To52,
             mockEdgeO49To53, mockEdgeO50To53,
             mockEdgeO26To32, mockEdgeO32To37, mockEdgeO37To42,
+            mockRedPlayer, mockBluePlayer, mockOrangePlayer, mockWhitePlayer);
+  }
+
+  // Test Case 9
+  @Test
+  void RedIsPreviousWinner_BlueSettlementBreaksRoadAtNodeEight_ReturnsSetup() {
+    BoardGraph b = new BoardGraph();
+
+    Player mockRedPlayer = EasyMock.createMock(Player.class);
+    Player mockWhitePlayer = EasyMock.createMock(Player.class);
+    Player mockBluePlayer = EasyMock.createMock(Player.class);
+    Player mockOrangePlayer = EasyMock.createMock(Player.class);
+
+    List<Player> players = List.of(mockRedPlayer, mockBluePlayer, mockOrangePlayer, mockWhitePlayer);
+
+    GraphNode mockNode0 = EasyMock.createMock(GraphNode.class);
+    GraphNode mockNode4 = EasyMock.createMock(GraphNode.class);
+    GraphNode mockNode8 = EasyMock.createMock(GraphNode.class); // owned by BLUE
+    GraphNode mockNode12 = EasyMock.createMock(GraphNode.class);
+    GraphNode mockNode17 = EasyMock.createMock(GraphNode.class);
+
+    GraphEdge mockEdge0To4 = EasyMock.createMock(GraphEdge.class);
+    GraphEdge mockEdge4To8 = EasyMock.createMock(GraphEdge.class);
+    GraphEdge mockEdge8To12 = EasyMock.createMock(GraphEdge.class);
+    GraphEdge mockEdge12To17 = EasyMock.createMock(GraphEdge.class);
+
+    EasyMock.expect(mockNode0.getNodeID()).andReturn(0);
+    EasyMock.expect(mockNode4.getNodeID()).andReturn(4);
+    EasyMock.expect(mockNode8.getNodeID()).andReturn(8);
+    EasyMock.expect(mockNode12.getNodeID()).andReturn(12);
+    EasyMock.expect(mockNode17.getNodeID()).andReturn(17);
+
+    EasyMock.expect(mockEdge0To4.getStartingNodeID()).andReturn(0).anyTimes();
+    EasyMock.expect(mockEdge0To4.getEndingNodeID()).andReturn(4).anyTimes();
+    EasyMock.expect(mockEdge4To8.getStartingNodeID()).andReturn(4).anyTimes();
+    EasyMock.expect(mockEdge4To8.getEndingNodeID()).andReturn(8).anyTimes();
+    EasyMock.expect(mockEdge8To12.getStartingNodeID()).andReturn(8).anyTimes();
+    EasyMock.expect(mockEdge8To12.getEndingNodeID()).andReturn(12).anyTimes();
+    EasyMock.expect(mockEdge12To17.getStartingNodeID()).andReturn(12).anyTimes();
+    EasyMock.expect(mockEdge12To17.getEndingNodeID()).andReturn(17).anyTimes();
+
+    EasyMock.expect(mockEdge0To4.checkOwningColor()).andReturn(PlayerColor.RED).anyTimes();
+    EasyMock.expect(mockEdge4To8.checkOwningColor()).andReturn(PlayerColor.RED).anyTimes();
+    EasyMock.expect(mockEdge8To12.checkOwningColor()).andReturn(PlayerColor.RED).anyTimes();
+    EasyMock.expect(mockEdge12To17.checkOwningColor()).andReturn(PlayerColor.RED).anyTimes();
+
+    // node 8 is occupied by BLUE, breaking RED's road
+    EasyMock.expect(mockNode0.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode4.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode8.checkOccupied()).andReturn(true).anyTimes();
+    EasyMock.expect(mockNode8.checkColor()).andReturn(PlayerColor.BLUE).anyTimes();
+    EasyMock.expect(mockNode12.checkOccupied()).andReturn(false).anyTimes();
+    EasyMock.expect(mockNode17.checkOccupied()).andReturn(false).anyTimes();
+
+    EasyMock.expect(mockRedPlayer.getPlayerColor()).andReturn(PlayerColor.RED).anyTimes();
+    EasyMock.expect(mockBluePlayer.getPlayerColor()).andReturn(PlayerColor.BLUE).anyTimes();
+    EasyMock.expect(mockOrangePlayer.getPlayerColor()).andReturn(PlayerColor.ORANGE).anyTimes();
+    EasyMock.expect(mockWhitePlayer.getPlayerColor()).andReturn(PlayerColor.WHITE).anyTimes();
+
+    EasyMock.replay(mockNode0, mockNode4, mockNode8, mockNode12, mockNode17,
+            mockEdge0To4, mockEdge4To8, mockEdge8To12, mockEdge12To17,
+            mockRedPlayer, mockBluePlayer, mockOrangePlayer, mockWhitePlayer);
+
+    b.addGraphNodeObject(mockNode0);
+    b.addGraphNodeObject(mockNode4);
+    b.addGraphNodeObject(mockNode8);
+    b.addGraphNodeObject(mockNode12);
+    b.addGraphNodeObject(mockNode17);
+
+    b.addGraphNodeConnection(0, mockEdge0To4);
+    b.addGraphNodeConnection(4, mockEdge0To4);
+    b.addGraphNodeConnection(4, mockEdge4To8);
+    b.addGraphNodeConnection(8, mockEdge4To8);
+    b.addGraphNodeConnection(8, mockEdge8To12);
+    b.addGraphNodeConnection(12, mockEdge8To12);
+    b.addGraphNodeConnection(12, mockEdge12To17);
+    b.addGraphNodeConnection(17, mockEdge12To17);
+
+    assertEquals(PlayerColor.SETUP, b.calculateLongestRoad(players, PlayerColor.RED));
+
+    EasyMock.verify(mockNode0, mockNode4, mockNode8, mockNode12, mockNode17,
+            mockEdge0To4, mockEdge4To8, mockEdge8To12, mockEdge12To17,
             mockRedPlayer, mockBluePlayer, mockOrangePlayer, mockWhitePlayer);
   }
 

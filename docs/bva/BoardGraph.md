@@ -278,4 +278,4 @@
 | Test Case 6 | RED is previous winner with 5 roads, BLUE builds to 6                                          | PlayerColor.BLUE   | :white_check_mark: |
 | Test Case 7 | BLUE has 6 roads but branching, RED was previous winner                                        | PlayerColor.RED    | :white_check_mark: |
 | Test Case 8 | WHITE is the previous winner, 8 total roads, but 5 continous, ORANGE has 8 total, 6 continuous | PlayerColor.ORANGE | :white_check_mark: |
-| Test Case 9 | BLUE has longest road at 5, gets blocked to have 4, no other players at road of length 5       | PlayerColor.SETUP  | x                  |
+| Test Case 9 | BLUE has longest road at 5, gets blocked to have 4, no other players at road of length 5       | PlayerColor.SETUP  | :white_check_mark: |
