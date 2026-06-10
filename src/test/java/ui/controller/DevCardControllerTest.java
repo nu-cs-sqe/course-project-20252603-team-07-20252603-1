@@ -447,4 +447,28 @@ class DevCardControllerTest {
     assertEquals(expectedCount, result);
   }
 
+  // TC19: getVictoryPointCount(model); handler returns 3
+  //       -> controller returns 3; verify handler called with current player's hand
+  @Test
+  void getVictoryPointCount_HandlerReturnsThree_ExpectThree() {
+    final int expectedCount = 3;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockVP1 = EasyMock.createMock(DevelopmentCard.class);
+    DevelopmentCard mockVP2 = EasyMock.createMock(DevelopmentCard.class);
+    DevelopmentCard mockVP3 = EasyMock.createMock(DevelopmentCard.class);
+    List<DevelopmentCard> hand = List.of(mockVP1, mockVP2, mockVP3);
+
+    EasyMock.expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
+    EasyMock.expect(mockPlayer.getDevelopmentCards()).andReturn(hand);
+    EasyMock.expect(mockHandler.countVictoryPointCards(hand)).andReturn(expectedCount);
+
+    EasyMock.replay(mockModel, mockHandler, mockPlayer, mockVP1, mockVP2, mockVP3);
+
+    int result = controller.getVictoryPointCount(mockModel);
+
+    EasyMock.verify(mockModel, mockHandler, mockPlayer, mockVP1, mockVP2, mockVP3);
+    assertEquals(expectedCount, result);
+  }
+
 }
