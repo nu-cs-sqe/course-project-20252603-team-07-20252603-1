@@ -281,4 +281,24 @@ public class PortTests {
     EasyMock.verify(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
   }
 
+  // Test Case 13
+  @Test
+  void RedAtWoolPort_HasOneWool_TriesToGiveTwo_ThrowsException() {
+    Port port = new Port(2, Resource.WOOL, List.of(0, 4));
+
+    EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
+    EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
+    EasyMock.expect(mockPlayer.getResourceCount(Resource.WOOL)).andReturn(1);
+
+    EasyMock.replay(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
+
+    Exception exception = assertThrows(IllegalStateException.class, () ->
+            port.executePortTrade(mockPlayer, mockBoard, Resource.WOOL, Resource.ORE,
+                    mockGivingDeck, mockReceivingDeck));
+
+    assertEquals("Player has insufficient resources for this trade.", exception.getMessage());
+
+    EasyMock.verify(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
+  }
+
 }

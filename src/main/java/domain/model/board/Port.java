@@ -63,7 +63,11 @@ public class Port {
       throw new IllegalArgumentException("Cannot trade a resource for itself.");
     }
 
-    player.getResourceCount(givingResource);
+    int playerResourceCount = player.getResourceCount(givingResource);
+    if (playerResourceCount < tradeRatio) {
+      throw new IllegalStateException("Player has insufficient resources for this trade.");
+    }
+
     player.updateResources(givingResource, -tradeRatio);
     givingDeck.replenish(tradeRatio);
     receivingDeck.draw();
