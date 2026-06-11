@@ -267,6 +267,10 @@ public class GameModel {
         if (newLongestRoadColor != this.currentLongestRoadPlayerColor) {
             Player playerToAwardPoints = getArbitraryPlayer(newLongestRoadColor);
             playerToAwardPoints.updateVictoryPoints(POINTS_FOR_LONGEST_ROAD);
+            if (this.currentLongestRoadPlayerColor != PlayerColor.SETUP) {
+                Player playerToLosePoints = getArbitraryPlayer(this.currentLongestRoadPlayerColor);
+                playerToLosePoints.updateVictoryPoints(-POINTS_FOR_LONGEST_ROAD);
+            }
             this.currentLongestRoadPlayerColor = newLongestRoadColor;
         }
 

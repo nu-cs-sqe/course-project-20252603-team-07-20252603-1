@@ -1327,20 +1327,54 @@ public class GameModelTests {
                         EasyMock.<List<Player>>anyObject(),
                         EasyMock.eq(PlayerColor.SETUP)
                 )
-        ).andReturn(PlayerColor.ORANGE);
+        ).andReturn(PlayerColor.WHITE);
 
-        orangeStateMock.updateVictoryPoints(2);
+        whiteStateMock.updateVictoryPoints(2);
         EasyMock.expectLastCall();
-        EasyMock.replay(boardMock, orangeStateMock);
+        EasyMock.replay(boardMock, whiteStateMock);
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
                 oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
 
         model.handleLongestRoad();
 
-        assertEquals(PlayerColor.ORANGE, model.getCurrentLongestRoadPlayerColor());
+        assertEquals(PlayerColor.WHITE, model.getCurrentLongestRoadPlayerColor());
 
-        EasyMock.verify(boardMock, orangeStateMock);
+        EasyMock.verify(boardMock, whiteStateMock);
+    }
+
+    @Test
+    void handleLongestRoad_CurrentlyBlue_BecomesOrange_ExpectPlayerOrange_OrangeGains2Points_BlueLoses2Points() {
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        Player redStateMock = EasyMock.createMock(Player.class);
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock.put(PlayerColor.BLUE, blueStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.RED, redStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.WHITE, whiteStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.ORANGE, orangeStateMock);
+
+        EasyMock.expect(
+                boardMock.calculateLongestRoad(
+                        EasyMock.<List<Player>>anyObject(),
+                        EasyMock.eq(PlayerColor.BLUE)
+                )
+        ).andReturn(PlayerColor.WHITE);
+        whiteStateMock.updateVictoryPoints(2);
+        EasyMock.expectLastCall();
+        blueStateMock.updateVictoryPoints(-2);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(boardMock, orangeStateMock, blueStateMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentLongestRoadPlayerColor(PlayerColor.BLUE);
+        model.handleLongestRoad();
+
+        assertEquals(PlayerColor.WHITE, model.getCurrentLongestRoadPlayerColor());
+
+        EasyMock.verify(boardMock, orangeStateMock, blueStateMock);
     }
 
 
