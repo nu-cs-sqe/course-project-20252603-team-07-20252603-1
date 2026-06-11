@@ -859,6 +859,36 @@ public class GameModelTests {
         EasyMock.verify(playerMock, lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock, woolDeckMock, boardMock);
     }
 
+    @Test
+    void attemptBuildRoad_SetupPhase_ExpectSuccess_ExpectNoResourcesReduced(){
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        Player redStateMock = EasyMock.createMock(Player.class);
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock.put(PlayerColor.BLUE, blueStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.RED, redStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.WHITE, whiteStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.ORANGE, orangeStateMock);
+
+        boardMock.buildSetupSettlement(blueStateMock, 0);
+        EasyMock.expectLastCall();
+        boardMock.buildSetupRoad(blueStateMock, 0, 0, 3);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(boardMock, blueStateMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        model.setCurrentGamePhase(GamePhase.SETUP_PHASE);
+        model.setCurrentPlayerColor(PlayerColor.BLUE);
+        model.attemptBuildSettlement(0);
+        model.attemptBuildRoad(0, 3);
+
+        EasyMock.verify(boardMock, blueStateMock);
+    }
+
+
     // --- BVA: resource amount boundaries for attemptBuildCity ---
 
     @Test

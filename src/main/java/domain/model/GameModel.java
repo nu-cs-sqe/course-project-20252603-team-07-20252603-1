@@ -31,6 +31,7 @@ public class GameModel {
     private List<PlayerColor> playerColors;
     private PlayerColor currentPlayerColor;
     private Map<PlayerColor, Player> playerColorToPlayerObject = new HashMap<>();
+    private Map<PlayerColor, Integer> playerColorToLastClaimedNodeID = new HashMap<>();
     private PlayerColor currentLongestRoadPlayerColor;
 
 
@@ -83,6 +84,7 @@ public class GameModel {
         for (Player player : players) {
 
             PlayerColor currentColor = player.getColor();
+            this.playerColorToLastClaimedNodeID.put(currentColor, -1);
             this.playerColorToPlayerObject.put(currentColor, player);
             playerColors.add(currentColor);
         }
@@ -166,6 +168,7 @@ public class GameModel {
         checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY, GamePhase.SETUP_PHASE);
         if (this.currentGamePhase == GamePhase.SETUP_PHASE) {
             board.buildSetupSettlement(getCurrentPlayer(), nodeID);
+            this.playerColorToLastClaimedNodeID.put(currentPlayerColor, nodeID);
             return;
         }
         checkIfPlayerAtMaxSettlements(currentPlayerColor);
@@ -185,8 +188,15 @@ public class GameModel {
         handleLongestRoad();
     }
 
+    int getPlayerLastClaimedNode(PlayerColor color) {
+        return this.playerColorToLastClaimedNodeID.get(color);
+    }
     public void attemptBuildRoad(int startingNodeID, int endingNodeID) {
-        checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY, GamePhase.ROAD_BUILDING_DEV_CARD);
+        checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY, GamePhase.ROAD_BUILDING_DEV_CARD, GamePhase.SETUP_PHASE);
+        if (currentGamePhase == GamePhase.SETUP_PHASE) {
+            board.buildSetupRoad(getCurrentPlayer(), getPlayerLastClaimedNode(currentPlayerColor), startingNodeID, endingNodeID);
+            return;
+        }
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER)) {
             checkPlayerOwnsEnoughResources(currentPlayerColor, r, 1);
         }
