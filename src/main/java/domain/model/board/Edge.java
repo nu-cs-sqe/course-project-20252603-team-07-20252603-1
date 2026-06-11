@@ -1,11 +1,11 @@
 package domain.model.board;
 
 public class Edge {
-    public boolean isOccupied() {
+    boolean isOccupied() {
         return false;
     }
 
-    public boolean isConnectedToPlayerNetwork() {
+    boolean isConnectedToPlayerNetwork() {
         return false;
     }
 }

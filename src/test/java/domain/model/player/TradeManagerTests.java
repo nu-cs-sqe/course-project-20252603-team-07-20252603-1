@@ -1,8 +1,5 @@
 package domain.model.player;
 
-import domain.model.player.Player;
-import domain.model.player.TradeManager;
-import domain.model.player.TradeOffer;
 import domain.model.resources.Resource;
 import domain.model.resources.ResourceQuantity;
 import org.junit.jupiter.api.Test;

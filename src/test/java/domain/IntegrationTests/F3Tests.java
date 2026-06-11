@@ -394,6 +394,21 @@ public class F3Tests {
 
     assertEquals("During setup phase, player must own node next to edge they want to claim", exception.getMessage());
   }
+
+  // Test Case 22
+  @Test
+  void RedClaimsNodeZero_BlueTriesToClaimSameNode_ThrowsNodeAlreadyClaimed() {
+    BoardHandler b = new BoardHandler();
+    Player redPlayer = new Player("Dummy", PlayerColor.RED);
+    Player bluePlayer = new Player("Dummy", PlayerColor.BLUE);
+
+    b.buildSetupSettlement(redPlayer, 0);
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () ->
+            b.buildSetupSettlement(bluePlayer, 0));
+
+    assertEquals("Node Already Claimed", exception.getMessage());
+  }
 }
 
 

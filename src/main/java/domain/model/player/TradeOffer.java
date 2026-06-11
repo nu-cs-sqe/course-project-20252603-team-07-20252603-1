@@ -1,5 +1,4 @@
 package domain.model.player;
-
 import domain.model.resources.ResourceQuantity;
 
 public class TradeOffer {

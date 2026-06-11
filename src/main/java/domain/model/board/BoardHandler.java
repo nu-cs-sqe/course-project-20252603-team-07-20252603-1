@@ -83,7 +83,7 @@ public class BoardHandler {
       throw new IllegalArgumentException("Invalid NodeID - must be within [0, 53].");
     }
 
-    PlayerColor claimingColor = player.getPlayerColor();
+    PlayerColor claimingColor = player.getColor();
     boardGraphController.playerClaimStoredNode(claimingColor, nodeId);
 
     List<Integer> hexIds = nodeIdToHexes.get(nodeId);
@@ -93,6 +93,7 @@ public class BoardHandler {
 
     nodeOwners[nodeId] = claimingColor;
     nodeBuildingLevels[nodeId] = SETTLEMENT_LEVEL;
+    player.placeSettlement();
   }
 
   public boolean checkPlayerOwnsNode(PlayerColor playerColor, Integer nodeId) {
@@ -108,7 +109,7 @@ public class BoardHandler {
       throw new IllegalArgumentException("Invalid NodeID - must be within [0, 53].");
     }
 
-    PlayerColor claimingColor = player.getPlayerColor();
+    PlayerColor claimingColor = player.getColor();
     if (!checkPlayerOwnsNode(claimingColor, nodeId) && getNodeBuildingLevel(nodeId) != 0) {
       throw new IllegalStateException("Node owned by other player, cannot build here.");
     }
@@ -130,8 +131,9 @@ public class BoardHandler {
             || nodeId1 > MAX_NODE_ID || nodeId2 > MAX_NODE_ID) {
       throw new IllegalArgumentException("Edge nodeId out of bounds. Must be within [0, 53].");
     }
-    PlayerColor claimingColor = player.getPlayerColor();
+    PlayerColor claimingColor = player.getColor();
     boardGraphController.playerClaimStoredEdge(claimingColor, nodeId1, nodeId2);
+    player.placeRoad();
   }
 
   public void awardResources(int rollNum) {
@@ -177,7 +179,7 @@ public class BoardHandler {
       throw new IllegalArgumentException("Invalid NodeID - must be within [0, 53].");
     }
 
-    PlayerColor claimingColor = player.getPlayerColor();
+    PlayerColor claimingColor = player.getColor();
     boardGraphController.playerClaimStoredNodeSetupPhase(claimingColor, nodeId);
 
     List<Integer> hexIds = nodeIdToHexes.get(nodeId);
@@ -186,6 +188,7 @@ public class BoardHandler {
     }
     nodeOwners[nodeId] = claimingColor;
     nodeBuildingLevels[nodeId] = SETTLEMENT_LEVEL;
+    player.placeSettlement();
   }
 
   public void buildSetupRoad(Player player, int claimedNodeId, int nodeId1, int nodeId2) {
@@ -193,9 +196,10 @@ public class BoardHandler {
             || nodeId1 > MAX_NODE_ID || nodeId2 > MAX_NODE_ID) {
       throw new IllegalArgumentException("Edge nodeId out of bounds. Must be within [0, 53].");
     }
-    PlayerColor claimingColor = player.getPlayerColor();
+    PlayerColor claimingColor = player.getColor();
     boardGraphController.playerClaimStoredEdgeSetupPhase(claimingColor,
             claimedNodeId, nodeId1, nodeId2);
+    player.placeRoad();
   }
 
   // Note: Returns SETUP PlayerColor if nobody has achieved longest road yet
@@ -226,6 +230,18 @@ public class BoardHandler {
             new Hex(18, Resource.LUMBER, 11)
     ));
     return hexes;
+  }
+
+  public List<String> getHexOrder() {
+    List<String> order = new ArrayList<>();
+    for (Hex hex : hexes) {
+      order.add(hex.getHexResource().name());
+    }
+    return order;
+  }
+
+  public int getHexCount() {
+    return this.hexes.size();
   }
 
   static Map<Integer, List<Integer>> initNodeHexMap() {

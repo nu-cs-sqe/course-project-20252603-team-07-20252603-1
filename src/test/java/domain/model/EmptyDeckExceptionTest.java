@@ -1,0 +1,26 @@
+package domain.model;
+
+import org.junit.jupiter.api.Test;
+
+import domain.model.exceptions.EmptyDeckException;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class EmptyDeckExceptionTest {
+
+    @Test
+    void testExceptionMessageIsPreserved() {
+        String message = "Test exception message";
+        EmptyDeckException exception = new EmptyDeckException(message);
+
+        assertEquals(message, exception.getMessage());
+    }
+
+    @Test
+    void testExceptionCanBeThrown() {
+        Exception exception = assertThrows(EmptyDeckException.class, () -> {
+            throw new EmptyDeckException("Cannot draw card");
+        });
+        assertEquals("Cannot draw card", exception.getMessage());
+    }
+}
