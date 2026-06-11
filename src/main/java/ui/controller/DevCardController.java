@@ -5,7 +5,6 @@ import domain.model.GameModel;
 import domain.model.development_cards.DevelopmentCard;
 import domain.model.development_cards.DevelopmentCardDeck;
 import domain.model.exceptions.EmptyDeckException;
-import domain.model.board.Edge;
 import domain.model.game_pieces.Robber;
 import domain.model.player.Player;
 import domain.model.resources.Resource;
@@ -43,11 +42,11 @@ public class DevCardController {
         handler.playMonopolyCard(currentPlayer, card, currentRound, resource, otherPlayers);
     }
 
-    public void playRoadBuildingCard(GameModel model, DevelopmentCard card, Edge edge1, Edge edge2) {
+    public void playRoadBuildingCard(GameModel model, DevelopmentCard card, int road1Node1, int road1Node2, Integer road2Node1, Integer road2Node2) {
         Player currentPlayer = model.getCurrentPlayer();
         int currentRound = model.getCurrentRound();
-        
-        handler.playRoadBuildingCard(currentPlayer, card, currentRound, edge1, edge2);
+
+        handler.playRoadBuildingCard(currentPlayer, card, currentRound, model, road1Node1, road1Node2, road2Node1, road2Node2);
     }
 
     public void playYearOfPlentyCard(GameModel model, DevelopmentCard card, Resource resource1, Resource resource2) {

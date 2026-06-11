@@ -113,7 +113,7 @@ public class GameModel {
         return currentRound;
     }
 
-    public List<Player> getOtherPlayers() {
+public List<Player> getOtherPlayers() {
         Player current = getCurrentPlayer();
         return playerColorToPlayerObject.values().stream()
                 .filter(p -> p != current)

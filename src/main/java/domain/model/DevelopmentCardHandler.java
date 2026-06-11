@@ -10,7 +10,6 @@ import domain.model.development_cards.DevelopmentCardDeck;
 import domain.model.development_cards.DevelopmentCardType;
 import domain.model.exceptions.EmptyDeckException;
 import domain.model.exceptions.InsufficientResourcesException;
-import domain.model.board.Edge;
 import domain.model.game_pieces.Robber;
 import domain.model.player.Player;
 import domain.model.resources.Resource;
@@ -69,7 +68,7 @@ public class DevelopmentCardHandler {
         player.setHasPlayedDevCardThisTurn(true);
     }
 
-    public void playRoadBuildingCard(Player player, DevelopmentCard card, int currentRound, Edge edge1, Edge edge2) {
+    public void playRoadBuildingCard(Player player, DevelopmentCard card, int currentRound, GameModel model, int road1Node1, int road1Node2, Integer road2Node1, Integer road2Node2) {
         if (card == null) {
             throw new IllegalArgumentException("Development card cannot be null.");
         }
@@ -82,13 +81,10 @@ public class DevelopmentCardHandler {
         if (player.hasPlayedDevCardThisTurn()) {
             throw new IllegalStateException("Already played a development card this turn.");
         }
-        if (edge1 == null) {
-            throw new IllegalArgumentException("Edge cannot be null.");
-        }
 
-        player.placeRoad(edge1);
-        if (edge2 != null) {
-            player.placeRoad(edge2);
+        model.attemptBuildRoad(road1Node1, road1Node2);
+        if (road2Node1 != null && road2Node2 != null) {
+            model.attemptBuildRoad(road2Node1, road2Node2);
         }
         player.removeDevelopmentCard(card);
         player.setHasPlayedDevCardThisTurn(true);

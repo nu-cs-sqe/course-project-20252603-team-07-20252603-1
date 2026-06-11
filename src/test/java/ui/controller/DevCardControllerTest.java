@@ -11,7 +11,6 @@ import domain.model.development_cards.DevelopmentCardDeck;
 import domain.model.development_cards.DevelopmentCardType;
 import domain.model.exceptions.EmptyDeckException;
 import domain.model.exceptions.InsufficientResourcesException;
-import domain.model.board.Edge;
 import domain.model.game_pieces.Robber;
 import domain.model.player.Player;
 import domain.model.resources.Resource;
@@ -270,94 +269,88 @@ class DevCardControllerTest {
     assertEquals("Development card cannot be null.", exception.getMessage());
   }
 
-  // TC11: playRoadBuildingCard(model, card, edge1, edge2); handler succeeds
-  //       -> verify handler called with current player, card, currentRound, edge1, edge2; no exception
+  // TC11: playRoadBuildingCard(model, card, 0, 1, 1, 2); handler succeeds
+  //       -> verify handler called with current player, card, currentRound, boardHandler, 0, 1, 1, 2; no exception
   @Test
   void playRoadBuildingCard_HandlerSucceeds_ExpectDelegation() {
     final int currentRound = 2;
 
     Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    Edge mockEdge1 = EasyMock.createMock(Edge.class);
-    Edge mockEdge2 = EasyMock.createMock(Edge.class);
 
     EasyMock.expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
     EasyMock.expect(mockModel.getCurrentRound()).andReturn(currentRound);
-    mockHandler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockEdge1, mockEdge2);
+    mockHandler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockModel, 0, 1, 1, 2);
 
-    EasyMock.replay(mockModel, mockHandler, mockPlayer, mockCard, mockEdge1, mockEdge2);
+    EasyMock.replay(mockModel, mockHandler, mockPlayer, mockCard);
 
-    controller.playRoadBuildingCard(mockModel, mockCard, mockEdge1, mockEdge2);
+    controller.playRoadBuildingCard(mockModel, mockCard, 0, 1, 1, 2);
 
-    EasyMock.verify(mockModel, mockHandler, mockPlayer, mockCard, mockEdge1, mockEdge2);
+    EasyMock.verify(mockModel, mockHandler, mockPlayer, mockCard);
   }
 
-  // TC12: playRoadBuildingCard(model, card, null, edge2); handler throws IllegalArgumentException
-  //       -> controller relays IllegalArgumentException: "Edge cannot be null."
+  // TC12: playRoadBuildingCard(model, card, 0, 1, 1, 2); handler throws IllegalArgumentException
+  //       -> controller relays IllegalArgumentException: "Edge nodeId out of bounds."
   @Test
-  void playRoadBuildingCard_Edge1IsNull_ExpectExceptionRelayed() {
+  void playRoadBuildingCard_HandlerThrowsIllegalArgument_ExpectExceptionRelayed() {
     final int currentRound = 2;
 
     Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    Edge mockEdge2 = EasyMock.createMock(Edge.class);
 
     EasyMock.expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
     EasyMock.expect(mockModel.getCurrentRound()).andReturn(currentRound);
-    mockHandler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, null, mockEdge2);
-    EasyMock.expectLastCall().andThrow(new IllegalArgumentException("Edge cannot be null."));
+    mockHandler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockModel, -1, 1, 1, 2);
+    EasyMock.expectLastCall().andThrow(new IllegalArgumentException("Edge nodeId out of bounds. Must be within [0, 53]."));
 
-    EasyMock.replay(mockModel, mockHandler, mockPlayer, mockCard, mockEdge2);
+    EasyMock.replay(mockModel, mockHandler, mockPlayer, mockCard);
 
     Exception exception = assertThrows(IllegalArgumentException.class,
-        () -> controller.playRoadBuildingCard(mockModel, mockCard, null, mockEdge2));
+        () -> controller.playRoadBuildingCard(mockModel, mockCard, -1, 1, 1, 2));
 
-    EasyMock.verify(mockModel, mockHandler, mockPlayer, mockCard, mockEdge2);
-    assertEquals("Edge cannot be null.", exception.getMessage());
+    EasyMock.verify(mockModel, mockHandler, mockPlayer, mockCard);
+    assertEquals("Edge nodeId out of bounds. Must be within [0, 53].", exception.getMessage());
   }
 
-  // TC13: playRoadBuildingCard(model, card, edge1, null); handler succeeds (1 road remaining)
-  //       -> verify handler called; 1 road placed
+  // TC13: playRoadBuildingCard(model, card, 0, 1, null, null); handler succeeds (1 road remaining)
+  //       -> verify handler called with null road2 node IDs; 1 road placed
   @Test
-  void playRoadBuildingCard_Edge2IsNull_ExpectDelegation() {
+  void playRoadBuildingCard_Road2Null_ExpectDelegation() {
     final int currentRound = 2;
 
     Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    Edge mockEdge1 = EasyMock.createMock(Edge.class);
 
     EasyMock.expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
     EasyMock.expect(mockModel.getCurrentRound()).andReturn(currentRound);
-    mockHandler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockEdge1, null);
+    mockHandler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockModel, 0, 1, null, null);
 
-    EasyMock.replay(mockModel, mockHandler, mockPlayer, mockCard, mockEdge1);
+    EasyMock.replay(mockModel, mockHandler, mockPlayer, mockCard);
 
-    controller.playRoadBuildingCard(mockModel, mockCard, mockEdge1, null);
+    controller.playRoadBuildingCard(mockModel, mockCard, 0, 1, null, null);
 
-    EasyMock.verify(mockModel, mockHandler, mockPlayer, mockCard, mockEdge1);
+    EasyMock.verify(mockModel, mockHandler, mockPlayer, mockCard);
   }
 
-  // TC14: playRoadBuildingCard(model, null, edge1, edge2); handler throws IllegalArgumentException
+  // TC14: playRoadBuildingCard(model, null, 0, 1, 1, 2); handler throws IllegalArgumentException
   //       -> controller relays IllegalArgumentException: "Development card cannot be null."
   @Test
   void playRoadBuildingCard_CardIsNull_ExpectExceptionRelayed() {
     final int currentRound = 2;
 
     Player mockPlayer = EasyMock.createMock(Player.class);
-    Edge mockEdge1 = EasyMock.createMock(Edge.class);
-    Edge mockEdge2 = EasyMock.createMock(Edge.class);
 
     EasyMock.expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
     EasyMock.expect(mockModel.getCurrentRound()).andReturn(currentRound);
-    mockHandler.playRoadBuildingCard(mockPlayer, null, currentRound, mockEdge1, mockEdge2);
+    mockHandler.playRoadBuildingCard(mockPlayer, null, currentRound, mockModel, 0, 1, 1, 2);
     EasyMock.expectLastCall().andThrow(new IllegalArgumentException("Development card cannot be null."));
 
-    EasyMock.replay(mockModel, mockHandler, mockPlayer, mockEdge1, mockEdge2);
+    EasyMock.replay(mockModel, mockHandler, mockPlayer);
 
     Exception exception = assertThrows(IllegalArgumentException.class,
-        () -> controller.playRoadBuildingCard(mockModel, null, mockEdge1, mockEdge2));
+        () -> controller.playRoadBuildingCard(mockModel, null, 0, 1, 1, 2));
 
-    EasyMock.verify(mockModel, mockHandler, mockPlayer, mockEdge1, mockEdge2);
+    EasyMock.verify(mockModel, mockHandler, mockPlayer);
     assertEquals("Development card cannot be null.", exception.getMessage());
   }
 
