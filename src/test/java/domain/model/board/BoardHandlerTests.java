@@ -1516,4 +1516,31 @@ public class BoardHandlerTests {
             mockPort5, mockPort6, mockPort7, mockPort8, mockPort9);
   }
 
+  // Test Case 60
+  @Test
+  void WhiteHasSettlementsOnMaxPossiblePortNodes_ReturnsSevenPorts() {
+    EasyMock.expect(mockPort1.playerCanUsePort(EasyMock.anyObject(), EasyMock.eq(mockWhitePlayer))).andReturn(true);
+    EasyMock.expect(mockPort2.playerCanUsePort(EasyMock.anyObject(), EasyMock.eq(mockWhitePlayer))).andReturn(true);
+    EasyMock.expect(mockPort3.playerCanUsePort(EasyMock.anyObject(), EasyMock.eq(mockWhitePlayer))).andReturn(true);
+    EasyMock.expect(mockPort4.playerCanUsePort(EasyMock.anyObject(), EasyMock.eq(mockWhitePlayer))).andReturn(true);
+    EasyMock.expect(mockPort5.playerCanUsePort(EasyMock.anyObject(), EasyMock.eq(mockWhitePlayer))).andReturn(true);
+    EasyMock.expect(mockPort6.playerCanUsePort(EasyMock.anyObject(), EasyMock.eq(mockWhitePlayer))).andReturn(true);
+    EasyMock.expect(mockPort7.playerCanUsePort(EasyMock.anyObject(), EasyMock.eq(mockWhitePlayer))).andReturn(true);
+    EasyMock.expect(mockPort8.playerCanUsePort(EasyMock.anyObject(), EasyMock.eq(mockWhitePlayer))).andReturn(false);
+    EasyMock.expect(mockPort9.playerCanUsePort(EasyMock.anyObject(), EasyMock.eq(mockWhitePlayer))).andReturn(false);
+
+    EasyMock.replay(mockWhitePlayer, mockPort1, mockPort2, mockPort3, mockPort4,
+            mockPort5, mockPort6, mockPort7, mockPort8, mockPort9);
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes,
+            nodeIdToHexes, mockRobber, ports);
+
+    List<Port> availablePorts = b.getAvailablePorts(mockWhitePlayer);
+
+    assertEquals(7, availablePorts.size());
+
+    EasyMock.verify(mockWhitePlayer, mockPort1, mockPort2, mockPort3, mockPort4,
+            mockPort5, mockPort6, mockPort7, mockPort8, mockPort9);
+  }
+
 }

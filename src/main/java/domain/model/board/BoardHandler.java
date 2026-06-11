@@ -322,6 +322,13 @@ public class BoardHandler {
     );
   }
 
+  /**
+   * Returns a list of ports that the given player can use
+   * based on their settlements and cities on the board.
+   *
+   * @param player the player to check port access for
+   * @return a list of ports the player has access to, or an empty list if none
+   */
   public List<Port> getAvailablePorts(Player player) {
     List<Port> availablePorts = new ArrayList<>();
     for (Port port : ports) {
