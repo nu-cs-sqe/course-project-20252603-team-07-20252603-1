@@ -54,9 +54,13 @@ public class Port {
       }
     }
 
-    if (givingResource != resource) {
+    if (givingResource != resource && resource != Resource.ANY) {
       throw new IllegalArgumentException(
-              "This port only accepts " + resource + " for 2:1 trades.");
+              "This port only accepts " + resource + " for " + tradeRatio +":1 trades.");
+    }
+
+    if (givingResource == receivingResource){
+      throw new IllegalArgumentException("Cannot trade a resource for itself.");
     }
 
     player.getResourceCount(givingResource);

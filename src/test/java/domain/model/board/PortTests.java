@@ -262,4 +262,23 @@ public class PortTests {
     EasyMock.verify(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
   }
 
+  // Test Case 12
+  @Test
+  void RedAtAnyPort_TradesWoolForWool_ThrowsException() {
+    Port port = new Port(3, Resource.ANY, List.of(0, 3));
+
+    EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
+    EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
+
+    EasyMock.replay(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () ->
+            port.executePortTrade(mockPlayer, mockBoard, Resource.WOOL, Resource.WOOL,
+                    mockGivingDeck, mockReceivingDeck));
+
+    assertEquals("Cannot trade a resource for itself.", exception.getMessage());
+
+    EasyMock.verify(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
+  }
+
 }
