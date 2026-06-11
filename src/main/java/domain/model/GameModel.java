@@ -163,7 +163,11 @@ public class GameModel {
     }
 
     public void attemptBuildSettlement(int nodeID){
-        checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY);
+        checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY, GamePhase.SETUP_PHASE);
+        if (this.currentGamePhase == GamePhase.SETUP_PHASE) {
+            board.buildSetupSettlement(getCurrentPlayer(), nodeID);
+            return;
+        }
         checkIfPlayerAtMaxSettlements(currentPlayerColor);
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER, Resource.WOOL, Resource.GRAIN)) {
             checkPlayerOwnsEnoughResources(currentPlayerColor, r, 1); // 1s are not magic numbers?

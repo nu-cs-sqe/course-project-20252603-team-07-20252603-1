@@ -100,19 +100,20 @@ Step 3:
 - Lumber (third checked): 0 (below cost, brick & grain already ≥ 1); 1 (at cost)
 - Wool (fourth checked): 0 (below cost, brick/grain/lumber already ≥ 1); 1 (at cost)
 
-|              | State of the System                                                              | Expected output                                       | Implemented?       |
-|--------------|----------------------------------------------------------------------------------|-------------------------------------------------------|--------------------|
-| Test Case 1  | GENERAL_PLAY, count=0, all resources=1 (at cost boundary), board succeeds        | success                                               | :white_check_mark: |
-| Test Case 2  | GENERAL_PLAY, count=0, all resources=1, board throws                             | IllegalSettlementPlacementException, no deduction     | :white_check_mark: |
-| Test Case 3  | GENERAL_PLAY, count=0, brick=0 (below cost boundary)                             | InsufficientResourcesException                        | :white_check_mark: |
-| Test Case 4  | GENERAL_PLAY, count=5 (at max)                                                   | IllegalSettlementPlacementException                   | :white_check_mark: |
-| Test Case 5  | GENERAL_PLAY, count=4 (one below max), all resources=1, board succeeds           | success                                               | :white_check_mark: |
-| Test Case 6  | RESOURCE_PRODUCTION (invalid phase)                                              | IllegalGamePhaseException                             | :white_check_mark: |
-| Test Case 7  | BEFORE_ROLL (invalid phase)                                                      | IllegalGamePhaseException                             | :white_check_mark: |
-| Test Case 8  | GENERAL_PLAY, count=0, brick=1, grain=0 (second resource below cost boundary)    | InsufficientResourcesException                        | :white_check_mark: |
-| Test Case 9  | GENERAL_PLAY, count=0, brick=1, grain=1, lumber=0 (third resource below cost)    | InsufficientResourcesException                        | :white_check_mark: |
-| Test Case 10 | GENERAL_PLAY, count=0, brick=1, grain=1, lumber=1, wool=0 (fourth below cost)    | InsufficientResourcesException                        | :white_check_mark: |
-| Test Case 11 | GENERAL_PLAY, count=0, all resources=2 (surplus), board succeeds                 | success (surplus does not prevent building)           | :white_check_mark: |
+|              | State of the System                                                           | Expected output                                   | Implemented?       |
+|--------------|-------------------------------------------------------------------------------|---------------------------------------------------|--------------------|
+| Test Case 1  | GENERAL_PLAY, count=0, all resources=1 (at cost boundary), board succeeds     | success                                           | :white_check_mark: |
+| Test Case 2  | GENERAL_PLAY, count=0, all resources=1, board throws                          | IllegalSettlementPlacementException, no deduction | :white_check_mark: |
+| Test Case 3  | GENERAL_PLAY, count=0, brick=0 (below cost boundary)                          | InsufficientResourcesException                    | :white_check_mark: |
+| Test Case 4  | GENERAL_PLAY, count=5 (at max)                                                | IllegalSettlementPlacementException               | :white_check_mark: |
+| Test Case 5  | GENERAL_PLAY, count=4 (one below max), all resources=1, board succeeds        | success                                           | :white_check_mark: |
+| Test Case 6  | RESOURCE_PRODUCTION (invalid phase)                                           | IllegalGamePhaseException                         | :white_check_mark: |
+| Test Case 7  | BEFORE_ROLL (invalid phase)                                                   | IllegalGamePhaseException                         | :white_check_mark: |
+| Test Case 8  | GENERAL_PLAY, count=0, brick=1, grain=0 (second resource below cost boundary) | InsufficientResourcesException                    | :white_check_mark: |
+| Test Case 9  | GENERAL_PLAY, count=0, brick=1, grain=1, lumber=0 (third resource below cost) | InsufficientResourcesException                    | :white_check_mark: |
+| Test Case 10 | GENERAL_PLAY, count=0, brick=1, grain=1, lumber=1, wool=0 (fourth below cost) | InsufficientResourcesException                    | :white_check_mark: |
+| Test Case 11 | GENERAL_PLAY, count=0, all resources=2 (surplus), board succeeds              | success (surplus does not prevent building)       | :white_check_mark: |
+| Test Case 12 | SETUP_PHASE, board succeeds, correct SetupPhase method is called              | success (resources not reduced)                   | :white_check_mark: |
 
 ---
 

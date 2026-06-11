@@ -174,7 +174,7 @@ public class BoardHandler {
     return playersOnHex;
   }
 
-  void buildSetupSettlement(Player player, int nodeId) {
+  public void buildSetupSettlement(Player player, int nodeId) {
     if (nodeId < MIN_NODE_ID || nodeId > MAX_NODE_ID) {
       throw new IllegalArgumentException("Invalid NodeID - must be within [0, 53].");
     }
@@ -191,7 +191,7 @@ public class BoardHandler {
     player.placeSettlement();
   }
 
-  void buildSetupRoad(Player player, int claimedNodeId, int nodeId1, int nodeId2) {
+  public void buildSetupRoad(Player player, int claimedNodeId, int nodeId1, int nodeId2) {
     if (nodeId1 < MIN_NODE_ID || nodeId2 < MIN_NODE_ID
             || nodeId1 > MAX_NODE_ID || nodeId2 > MAX_NODE_ID) {
       throw new IllegalArgumentException("Edge nodeId out of bounds. Must be within [0, 53].");
