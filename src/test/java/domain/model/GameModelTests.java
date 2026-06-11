@@ -389,19 +389,9 @@ public class GameModelTests {
         Player playerMock = EasyMock.createMock(Player.class);
         ColorToPlayerObjMock = Map.of(PlayerColor.RED, playerMock);
 
-        for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER)) {
-            EasyMock.expect(playerMock.getResourceCount(r)).andReturn(1);
-        }
-
         boardMock.addRoad(playerMock, 0, 1);
         EasyMock.expectLastCall();
 
-        for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER)) {
-            playerMock.updateResources(r, -1);
-            EasyMock.expectLastCall();
-            decks.get(r).replenish();
-            EasyMock.expectLastCall();
-        }
         EasyMock.expect(
                 boardMock.calculateLongestRoad(
                         EasyMock.<List<Player>>anyObject(),
@@ -409,8 +399,7 @@ public class GameModelTests {
                 )
         ).andReturn(PlayerColor.SETUP);
 
-        EasyMock.replay(playerMock, lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, boardMock);
+        EasyMock.replay(playerMock, boardMock);
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
                 oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
@@ -419,8 +408,7 @@ public class GameModelTests {
         model.setCurrentGamePhase(GamePhase.ROAD_BUILDING_DEV_CARD);
         model.attemptBuildRoad(0, 1);
 
-        EasyMock.verify(playerMock, lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, boardMock);
+        EasyMock.verify(playerMock, boardMock);
     }
 
     @Test
@@ -857,6 +845,38 @@ public class GameModelTests {
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
         model.attemptBuildRoad(0, 1);
         EasyMock.verify(playerMock, lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock, woolDeckMock, boardMock);
+    }
+
+    @Test
+    void attemptBuildRoad_RoadBuildingDevCardPhase_ExpectSuccess_ExpectNoResourcesReduced(){
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        Player redStateMock = EasyMock.createMock(Player.class);
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock.put(PlayerColor.BLUE, blueStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.RED, redStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.WHITE, whiteStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.ORANGE, orangeStateMock);
+
+        boardMock.addRoad(blueStateMock, 0, 3);
+        EasyMock.expectLastCall();
+        EasyMock.expect(
+                boardMock.calculateLongestRoad(
+                        EasyMock.<List<Player>>anyObject(),
+                        EasyMock.eq(PlayerColor.SETUP)
+                )
+        ).andReturn(PlayerColor.SETUP);
+
+        EasyMock.replay(boardMock, blueStateMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        model.setCurrentGamePhase(GamePhase.ROAD_BUILDING_DEV_CARD);
+        model.setCurrentPlayerColor(PlayerColor.BLUE);
+        model.attemptBuildRoad(0, 3);
+
+        EasyMock.verify(boardMock, blueStateMock);
     }
 
     @Test

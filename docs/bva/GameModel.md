@@ -141,17 +141,18 @@ Step 3:
 - Brick (first checked): 0 (below cost); 1 (at cost); 2 (surplus)
 - Lumber (second checked): 0 (below cost, brick already ≥ 1); 1 (at cost)
 
-|             | State of the System                                                     | Expected output                            | Implemented?       |
-|-------------|-------------------------------------------------------------------------|--------------------------------------------|--------------------|
-| Test Case 1 | GENERAL_PLAY, brick=1, lumber=1 (at cost boundary), board succeeds      | success                                    | :white_check_mark: |
-| Test Case 2 | GENERAL_PLAY, brick=1, lumber=1, board throws                           | IllegalRoadPlacementException, no deduction | :white_check_mark: |
-| Test Case 3 | GENERAL_PLAY, brick=0 (below cost boundary)                             | InsufficientResourcesException             | :white_check_mark: |
-| Test Case 4 | BEFORE_ROLL (invalid phase)                                             | IllegalGamePhaseException                  | :white_check_mark: |
-| Test Case 5 | RESOURCE_PRODUCTION (invalid phase)                                     | IllegalGamePhaseException                  | :white_check_mark: |
-| Test Case 6 | GENERAL_PLAY, brick=1, lumber=0 (second resource below cost boundary)   | InsufficientResourcesException             | :white_check_mark: |
-| Test Case 7 | GENERAL_PLAY, brick=2, lumber=2 (surplus), board succeeds               | success (surplus does not prevent building) | :white_check_mark: |
-| Test Case 8 | ROAD_BUILDING_DEV_CARD, brick=1, lumber=1, board succeeds               | success (alternate valid phase)            | :white_check_mark: |
-| Test Case 9 | SETUP_PHASE, board succeeds                                             | success, no resources reduced              | :white_check_mark: |
+|             | State of the System                                                   | Expected output                                                                       | Implemented?       |
+|-------------|-----------------------------------------------------------------------|---------------------------------------------------------------------------------------|--------------------|
+| Test Case 1 | GENERAL_PLAY, brick=1, lumber=1 (at cost boundary), board succeeds    | success                                                                               | :white_check_mark: |
+| Test Case 2 | GENERAL_PLAY, brick=1, lumber=1, board throws                         | IllegalRoadPlacementException, no deduction                                           | :white_check_mark: |
+| Test Case 3 | GENERAL_PLAY, brick=0 (below cost boundary)                           | InsufficientResourcesException                                                        | :white_check_mark: |
+| Test Case 4 | BEFORE_ROLL (invalid phase)                                           | IllegalGamePhaseException                                                             | :white_check_mark: |
+| Test Case 5 | RESOURCE_PRODUCTION (invalid phase)                                   | IllegalGamePhaseException                                                             | :white_check_mark: |
+| Test Case 6 | GENERAL_PLAY, brick=1, lumber=0 (second resource below cost boundary) | InsufficientResourcesException                                                        | :white_check_mark: |
+| Test Case 7 | GENERAL_PLAY, brick=2, lumber=2 (surplus), board succeeds             | success (surplus does not prevent building)                                           | :white_check_mark: |
+| Test Case 8 | ROAD_BUILDING_DEV_CARD, brick=1, lumber=1, board succeeds             | success (alternate valid phase)                                                       | :white_check_mark: |
+| Test Case 9 | SETUP_PHASE, board succeeds                                           | success, no resources reduced                                                         | :white_check_mark: |
+| Test Case 8 | ROAD_BUILDING_DEV_CARD, board succeeds                                | Succeeds, no resources are reduced or checked, proper method from BoardHandler called | :white_check_mark: |
 
 ---
 

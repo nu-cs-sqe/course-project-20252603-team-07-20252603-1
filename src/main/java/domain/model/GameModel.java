@@ -197,6 +197,11 @@ public class GameModel {
             board.buildSetupRoad(getCurrentPlayer(), getPlayerLastClaimedNode(currentPlayerColor), startingNodeID, endingNodeID);
             return;
         }
+        else if (currentGamePhase == GamePhase.ROAD_BUILDING_DEV_CARD) {
+            board.addRoad(getCurrentPlayer(), startingNodeID, endingNodeID);
+            handleLongestRoad();
+            return;
+        }
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER)) {
             checkPlayerOwnsEnoughResources(currentPlayerColor, r, 1);
         }
