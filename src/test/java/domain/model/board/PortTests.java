@@ -350,4 +350,29 @@ public class PortTests {
     EasyMock.verify(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
   }
 
+  // Test Case 16
+  @Test
+  void RedAtAnyPort_BankHasOneOre_TradeSucceeds() throws EmptyDeckException {
+    Port port = new Port(3, Resource.ANY, List.of(0, 4));
+
+    EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
+    EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
+    EasyMock.expect(mockPlayer.getResourceCount(Resource.WOOL)).andReturn(3);
+    mockPlayer.updateResources(Resource.WOOL, -3);
+    EasyMock.expectLastCall();
+    mockGivingDeck.replenish(3);
+    EasyMock.expectLastCall();
+    EasyMock.expect(mockReceivingDeck.draw()).andReturn(Resource.ORE);
+    mockPlayer.updateResources(Resource.ORE, 1);
+    EasyMock.expectLastCall();
+
+    EasyMock.replay(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
+
+    port.executePortTrade(mockPlayer, mockBoard, Resource.WOOL, Resource.ORE,
+            mockGivingDeck, mockReceivingDeck);
+
+    EasyMock.verify(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
+  }
+
+
 }
