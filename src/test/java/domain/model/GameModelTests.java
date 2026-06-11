@@ -1297,7 +1297,7 @@ public class GameModelTests {
                 )
         ).andReturn(PlayerColor.RED);
 
-        EasyMock.replay(boardMock);
+        EasyMock.replay(boardMock, redStateMock);
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
                 oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
@@ -1308,7 +1308,7 @@ public class GameModelTests {
 
         assertEquals(PlayerColor.RED, model.getCurrentLongestRoadPlayerColor());
 
-        EasyMock.verify(boardMock);
+        EasyMock.verify(boardMock, redStateMock);
     }
 
 }
