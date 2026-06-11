@@ -121,7 +121,7 @@ public class BoardGraph {
         return true;
       }
     }
-    // check ending Node Edges
+
     for (GraphEdge edge : connectingEndingNodeEdges) {
       if (edge.checkOwningColor() == color) {
         return true;
@@ -222,8 +222,8 @@ public class BoardGraph {
       addGraphNodeObject(newNode);
     }
 
-    addGraphEdge(0, 1);
     addGraphEdge(0, 3);
+    addGraphEdge(0, 4);
     addGraphEdge(1, 4);
     addGraphEdge(1, 5);
     addGraphEdge(2, 5);

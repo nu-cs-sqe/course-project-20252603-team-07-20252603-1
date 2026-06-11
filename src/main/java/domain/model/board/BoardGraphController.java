@@ -93,6 +93,10 @@ public class BoardGraphController {
         return boardGraph.calculateLongestRoad(players, previousWinner);
     }
 
+    public boolean checkEdgeOccupied(int nodeId1, int nodeId2) {
+        return boardGraph.checkEdgeOccupied(nodeId1, nodeId2);
+    }
+
 }
 
 

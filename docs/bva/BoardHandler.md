@@ -128,7 +128,7 @@ Step 2:
 - Output - Interval
 
 Step 3:
-- Input: 2, 12, -1, 13
+- Input: 2, 12, -1, 13 (not feasible, verified by DiceHandler)
 - Input: Robber on hex or not
 - Output: 0, 1, 19 (max number of a single resource possible), 20 (not feasible)
 

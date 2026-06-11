@@ -96,11 +96,11 @@ public class BoardHandler {
     player.placeSettlement();
   }
 
-  boolean checkPlayerOwnsNode(PlayerColor playerColor, Integer nodeId) {
+  public boolean checkPlayerOwnsNode(PlayerColor playerColor, Integer nodeId) {
     return nodeOwners[nodeId] == playerColor;
   }
 
-  Integer getNodeBuildingLevel(Integer nodeId) {
+  public Integer getNodeBuildingLevel(Integer nodeId) {
     return nodeBuildingLevels[nodeId];
   }
 
@@ -136,7 +136,7 @@ public class BoardHandler {
     player.placeRoad();
   }
 
-  void awardResources(int rollNum) {
+  public void awardResources(int rollNum) {
     int robberLocation = robber.getRobberLocation();
 
     for (Hex hex : hexes) {
@@ -148,7 +148,7 @@ public class BoardHandler {
     }
   }
 
-  void moveRobber(int hexId) {
+  public void moveRobber(int hexId) {
     if (hexId < MIN_HEX_ID || hexId > MAX_HEX_ID) {
       throw new IllegalArgumentException("Cannot move Robber to invalid Hex ID");
     }
@@ -161,7 +161,7 @@ public class BoardHandler {
     robber.moveRobber(hexId);
   }
 
-  Set<Player> getPlayersOnHex(int hexId) {
+  public Set<Player> getPlayersOnHex(int hexId) {
     if (hexId < MIN_HEX_ID || hexId > MAX_HEX_ID) {
       throw new IllegalArgumentException("Invalid Hex ID, must be within [0,18]");
     }
@@ -303,5 +303,7 @@ public class BoardHandler {
     return nodeHexMap;
   }
 
-
+  public boolean checkEdgeOccupied(int nodeId1, int nodeId2) {
+    return boardGraphController.checkEdgeOccupied(nodeId1, nodeId2);
+  }
 }

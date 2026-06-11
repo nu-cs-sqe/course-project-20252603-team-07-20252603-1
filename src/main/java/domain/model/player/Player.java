@@ -107,8 +107,6 @@ public class Player {
         return this.numSettlement;
     }
 
-    // Stub
-    // Called by GameModel.updateVictoryPoints
     public void updateVictoryPoints(int amount) {
         this.numVictoryPoints += amount;
     }
