@@ -2,6 +2,9 @@ package domain.model.board;
 
 import domain.model.resources.Resource;
 import domain.model.resources.ResourceDeck;
+
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -24,7 +27,7 @@ public class PortTradeRequest {
                           Map<Resource, ResourceDeck> decks) {
     this.givingResource = givingResource;
     this.receivingResource = receivingResource;
-    this.decks = decks;
+    this.decks = new HashMap<>(decks);
   }
 
   /**
@@ -51,6 +54,6 @@ public class PortTradeRequest {
    * @return the decks map
    */
   public Map<Resource, ResourceDeck> getDecks() {
-    return decks;
+    return Collections.unmodifiableMap(decks);
   }
 }
