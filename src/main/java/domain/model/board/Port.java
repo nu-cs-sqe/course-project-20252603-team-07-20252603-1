@@ -48,7 +48,17 @@ public class Port {
   public void executePortTrade(Player player, BoardHandler board,
                                Resource givingResource, Resource receivingResource,
                                ResourceDeck givingDeck, ResourceDeck receivingDeck) throws EmptyDeckException {
-    board.checkPlayerOwnsNode(player.getColor(), nodeIds.get(0));
+    for (int nodeId : nodeIds) {
+      if (board.checkPlayerOwnsNode(player.getColor(), nodeId)) {
+        break;
+      }
+    }
+
+    if (givingResource != resource) {
+      throw new IllegalArgumentException(
+              "This port only accepts " + resource + " for 2:1 trades.");
+    }
+
     player.getResourceCount(givingResource);
     player.updateResources(givingResource, -tradeRatio);
     givingDeck.replenish(tradeRatio);

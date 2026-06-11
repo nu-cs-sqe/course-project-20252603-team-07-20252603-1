@@ -11,8 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PortTests {
 
@@ -240,6 +239,25 @@ public class PortTests {
 
     port.executePortTrade(mockPlayer, mockBoard, Resource.BRICK, Resource.LUMBER,
             mockGivingDeck, mockReceivingDeck);
+
+    EasyMock.verify(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
+  }
+
+  // Test Case 11
+  @Test
+  void RedAtWoolPort_TriesToGiveOre_ThrowsException() {
+    Port port = new Port(2, Resource.WOOL, List.of(0, 3));
+
+    EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
+    EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
+
+    EasyMock.replay(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () ->
+            port.executePortTrade(mockPlayer, mockBoard, Resource.ORE, Resource.WOOL,
+                    mockGivingDeck, mockReceivingDeck));
+
+    assertEquals("This port only accepts WOOL for 2:1 trades.", exception.getMessage());
 
     EasyMock.verify(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
   }
