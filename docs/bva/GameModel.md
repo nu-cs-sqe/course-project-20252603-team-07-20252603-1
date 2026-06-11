@@ -278,5 +278,5 @@ Outputs:
 | Test Case 2 | Currently RED, stays RED       | PlayerColor.Red                                                       | :white_check_mark: |
 | Test Case 3 | Currently SETUP, Becomes WHITE | PlayerColor.White, victory points awarded to WHITE                    | :white_check_mark: |
 | Test Case 4 | Currently BLUE, Becomes ORANGE | PlayerColor.Orange, victory points awarded to Orange, taken from blue | :white_check_mark: |
-| Test Case 5 | Currently ORANGE, becomes BLUE | PlayerColor.Blue, victory points awarded to BLUE, taken from ORANGE   | :x:                |
+| Test Case 5 | Currently ORANGE, becomes BLUE | PlayerColor.Blue, victory points awarded to BLUE, taken from ORANGE   | :white_check_mark: |
 | Test Case 6 | Currently WHITE, becomes RED   | PlayerColor.Red, victory points awarded to RED, taken from white      | :x:                |
