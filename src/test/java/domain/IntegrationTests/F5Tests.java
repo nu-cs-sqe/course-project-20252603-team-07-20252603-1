@@ -184,6 +184,33 @@ public class F5Tests {
     assertEquals(0, redPlayer.getResourceCount(Resource.ORE));
     assertEquals(0, redPlayer.getResourceCount(Resource.BRICK));
   }
+
+  // Test Case 8
+  @Test
+  void SevenRolled_OrangeCityOnEighteen_BlueSettlementOnThirtyFive_NoResourcesAwarded() {
+    BoardHandler b = new BoardHandler();
+    Player orangePlayer = new Player("Dummy", PlayerColor.ORANGE);
+    Player bluePlayer = new Player("Dummy", PlayerColor.BLUE);
+
+    b.buildSetupSettlement(orangePlayer, 18);
+    b.buildCity(orangePlayer, 18);
+
+    b.buildSetupSettlement(bluePlayer, 35);
+
+    b.awardResources(7);
+
+    assertEquals(0, orangePlayer.getResourceCount(Resource.WOOL));
+    assertEquals(0, orangePlayer.getResourceCount(Resource.LUMBER));
+    assertEquals(0, orangePlayer.getResourceCount(Resource.ORE));
+    assertEquals(0, orangePlayer.getResourceCount(Resource.GRAIN));
+    assertEquals(0, orangePlayer.getResourceCount(Resource.BRICK));
+
+    assertEquals(0, bluePlayer.getResourceCount(Resource.WOOL));
+    assertEquals(0, bluePlayer.getResourceCount(Resource.LUMBER));
+    assertEquals(0, bluePlayer.getResourceCount(Resource.ORE));
+    assertEquals(0, bluePlayer.getResourceCount(Resource.GRAIN));
+    assertEquals(0, bluePlayer.getResourceCount(Resource.BRICK));
+  }
 }
 
 
