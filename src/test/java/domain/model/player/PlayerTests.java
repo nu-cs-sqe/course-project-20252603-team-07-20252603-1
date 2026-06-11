@@ -210,4 +210,12 @@ public class PlayerTests {
         assertEquals(1, player.getVictoryPoints());
     }
 
+    @Test
+    void updateVictoryPoints_PlayerHas0_Receives2_ExpectPlayerHas2() {
+        Player player = new Player("Spencer", PlayerColor.RED);
+        assertEquals(0, player.getVictoryPoints());
+        player.updateVictoryPoints(2);
+        assertEquals(2, player.getVictoryPoints());
+    }
+
 }
