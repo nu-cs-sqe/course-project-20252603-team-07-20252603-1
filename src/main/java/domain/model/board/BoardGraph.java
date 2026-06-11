@@ -161,7 +161,7 @@ public class BoardGraph {
     }
 
     for (Player player : activePlayers) {
-      PlayerColor color = player.getPlayerColor();
+      PlayerColor color = player.getColor();
       if (color == previousWinner) continue;
 
       int playerLongest = calculatePlayerLongestRoad(color);
