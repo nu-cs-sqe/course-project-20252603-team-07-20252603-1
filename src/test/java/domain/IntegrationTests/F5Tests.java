@@ -101,6 +101,57 @@ public class F5Tests {
     assertEquals(0, whitePlayer.getResourceCount(Resource.BRICK));
   }
 
+  // Test Case 9
+  @Test
+  void EightRolled_RobberOnHexEleven_WhiteCityNodeTwenty_BlueTwoLumber_RedTwoLumber_OrangeTwoLumber() {
+    BoardHandler b = new BoardHandler();
+    Player whitePlayer = new Player("Dummy", PlayerColor.WHITE);
+    Player bluePlayer = new Player("Dummy", PlayerColor.BLUE);
+    Player redPlayer = new Player("Dummy", PlayerColor.RED);
+    Player orangePlayer = new Player("Dummy", PlayerColor.ORANGE);
+
+    b.buildSetupSettlement(whitePlayer, 20);
+    b.buildCity(whitePlayer, 20);
+
+    b.buildSetupSettlement(bluePlayer, 37);
+    b.buildSetupSettlement(bluePlayer, 28);
+    b.buildCity(bluePlayer, 28);
+
+    b.buildSetupSettlement(redPlayer, 38);
+    b.buildCity(redPlayer, 38);
+
+    b.buildSetupSettlement(orangePlayer, 39);
+    b.buildCity(orangePlayer, 39);
+
+    b.moveRobber(11);
+
+    b.awardResources(8);
+
+    assertEquals(0, whitePlayer.getResourceCount(Resource.LUMBER));
+    assertEquals(0, whitePlayer.getResourceCount(Resource.ORE));
+    assertEquals(0, whitePlayer.getResourceCount(Resource.WOOL));
+    assertEquals(0, whitePlayer.getResourceCount(Resource.GRAIN));
+    assertEquals(0, whitePlayer.getResourceCount(Resource.BRICK));
+
+    assertEquals(2, bluePlayer.getResourceCount(Resource.LUMBER));
+    assertEquals(0, bluePlayer.getResourceCount(Resource.ORE));
+    assertEquals(0, bluePlayer.getResourceCount(Resource.WOOL));
+    assertEquals(0, bluePlayer.getResourceCount(Resource.GRAIN));
+    assertEquals(0, bluePlayer.getResourceCount(Resource.BRICK));
+
+    assertEquals(2, redPlayer.getResourceCount(Resource.LUMBER));
+    assertEquals(0, redPlayer.getResourceCount(Resource.ORE));
+    assertEquals(0, redPlayer.getResourceCount(Resource.WOOL));
+    assertEquals(0, redPlayer.getResourceCount(Resource.GRAIN));
+    assertEquals(0, redPlayer.getResourceCount(Resource.BRICK));
+
+    assertEquals(2, orangePlayer.getResourceCount(Resource.LUMBER));
+    assertEquals(0, orangePlayer.getResourceCount(Resource.ORE));
+    assertEquals(0, orangePlayer.getResourceCount(Resource.WOOL));
+    assertEquals(0, orangePlayer.getResourceCount(Resource.GRAIN));
+    assertEquals(0, orangePlayer.getResourceCount(Resource.BRICK));
+  }
+
 
 }
 
