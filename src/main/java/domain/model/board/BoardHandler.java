@@ -32,6 +32,7 @@ public class BoardHandler {
   private int[] nodeBuildingLevels;
   private PlayerColor[] nodeOwners;
   private Robber robber;
+  private List<Port> ports;
 
   /**
    * Creates a new BoardHandler with a fresh board state.
@@ -46,6 +47,7 @@ public class BoardHandler {
     this.nodeOwners = new PlayerColor[NUM_NODES];
     Arrays.fill(this.nodeOwners, PlayerColor.SETUP);
     this.robber = new Robber(9);
+    this.ports = initPorts();
   }
 
   // private constructor for testing
@@ -301,6 +303,24 @@ public class BoardHandler {
     nodeHexMap.put(52, List.of(17));
     nodeHexMap.put(53, List.of(18));
     return nodeHexMap;
+  }
+
+  List<Port> initPorts() {
+    return List.of(
+            new Port(3, Resource.ANY, List.of(0, 3)),
+            new Port(2, Resource.GRAIN, List.of(1, 5)),
+            new Port(2, Resource.ORE, List.of(10, 15)),
+            new Port(2, Resource.LUMBER, List.of(11, 16)),
+            new Port(3, Resource.ANY, List.of(26, 32)),
+            new Port(2, Resource.BRICK, List.of(33, 38)),
+            new Port(2, Resource.WOOL, List.of(42, 46)),
+            new Port(3, Resource.ANY, List.of(47, 51)),
+            new Port(3, Resource.ANY, List.of(49, 52))
+    );
+  }
+
+  public List<Port> getAvailablePorts(Player player) {
+
   }
 
   public boolean checkEdgeOccupied(int nodeId1, int nodeId2) {
