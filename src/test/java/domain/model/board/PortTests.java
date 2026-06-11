@@ -199,7 +199,7 @@ public class PortTests {
   // Test Case 9
   @Test
   void RedAtGrainPort_GivesTwoGrain_ReceivesOneWool() throws EmptyDeckException {
-    Port port = new Port(2, Resource.GRAIN, List.of(0, 4));
+    Port port = new Port(2, Resource.GRAIN, List.of(0, 3));
 
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
@@ -215,6 +215,30 @@ public class PortTests {
     EasyMock.replay(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
 
     port.executePortTrade(mockPlayer, mockBoard, Resource.GRAIN, Resource.WOOL,
+            mockGivingDeck, mockReceivingDeck);
+
+    EasyMock.verify(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
+  }
+
+  // Test Case 10
+  @Test
+  void RedAtBrickPort_GivesTwoBrick_ReceivesOneLumber() throws EmptyDeckException {
+    Port port = new Port(2, Resource.BRICK, List.of(0, 3));
+
+    EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
+    EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
+    EasyMock.expect(mockPlayer.getResourceCount(Resource.BRICK)).andReturn(2);
+    mockPlayer.updateResources(Resource.BRICK, -2);
+    EasyMock.expectLastCall();
+    mockGivingDeck.replenish(2);
+    EasyMock.expectLastCall();
+    EasyMock.expect(mockReceivingDeck.draw()).andReturn(Resource.LUMBER);
+    mockPlayer.updateResources(Resource.LUMBER, 1);
+    EasyMock.expectLastCall();
+
+    EasyMock.replay(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
+
+    port.executePortTrade(mockPlayer, mockBoard, Resource.BRICK, Resource.LUMBER,
             mockGivingDeck, mockReceivingDeck);
 
     EasyMock.verify(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
