@@ -935,7 +935,7 @@ public class GameModelTests {
     // checkCurrentPlayerHasTenOrMoreVictoryPoints()
 
     @Test
-    void checkCurrentPlayer10OrMorePoints_RedHas0_ExpectFalse() {
+    void checkCurrentPlayer10OrMorePoints_RedHas0_ExpectSamePhase() {
         Player redStateMock = EasyMock.createMock(Player.class);
         ColorToPlayerObjMock = Map.of(
                 PlayerColor.RED, redStateMock
@@ -957,7 +957,7 @@ public class GameModelTests {
     }
 
     @Test
-    void checkCurrentPlayer10OrMorePoints_WhiteHas9_ExpectFalse() {
+    void checkCurrentPlayer10OrMorePoints_WhiteHas9_ExpectSamePhase() {
         Player whiteStateMock = EasyMock.createMock(Player.class);
         ColorToPlayerObjMock = Map.of(
                 PlayerColor.WHITE, whiteStateMock
@@ -979,7 +979,7 @@ public class GameModelTests {
     }
 
     @Test
-    void checkCurrentPlayer10OrMorePoints_OrangeHas10_ExpectTrue() {
+    void checkCurrentPlayer10OrMorePoints_OrangeHas10_ExpectEndPhase() {
         Player orangeStateMock = EasyMock.createMock(Player.class);
         ColorToPlayerObjMock = Map.of(
                 PlayerColor.ORANGE, orangeStateMock
@@ -999,5 +999,28 @@ public class GameModelTests {
         assertEquals(GamePhase.END_GAME, model.getCurrentPhase());
 
         EasyMock.verify(orangeStateMock);
+    }
+
+    @Test
+    void checkCurrentPlayer10OrMorePoints_BlueHas11_ExpectEndPhase() {
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
+                PlayerColor.BLUE, blueStateMock
+        );
+
+        EasyMock.expect(blueStateMock.getVictoryPoints()).andReturn(11);
+
+        EasyMock.replay(blueStateMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        model.setCurrentPlayerColor(PlayerColor.BLUE);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        model.checkCurrentPlayerHasTenOrMoreVictoryPoints();
+
+        assertEquals(GamePhase.END_GAME, model.getCurrentPhase());
+
+        EasyMock.verify(blueStateMock);
     }
 }

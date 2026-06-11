@@ -241,7 +241,7 @@ public class GameModel {
     public void checkCurrentPlayerHasTenOrMoreVictoryPoints() {
         Player currentPlayer = getCurrentPlayer();
         int currentPlayerVictoryPoints = currentPlayer.getVictoryPoints();
-        if (currentPlayerVictoryPoints == MIN_POINTS_TO_WIN_GAME) {
+        if (currentPlayerVictoryPoints >= MIN_POINTS_TO_WIN_GAME) {
             setCurrentGamePhase(GamePhase.END_GAME);
         }
     }
