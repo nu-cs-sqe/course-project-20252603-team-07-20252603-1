@@ -237,6 +237,12 @@ public class GameModel {
         relevantPlayer.updateVictoryPoints(amount);
     }
 
+    public boolean checkCurrentPlayerHasTenOrMoreVictoryPoints() {
+        Player currentPlayer = getCurrentPlayer();
+        currentPlayer.getVictoryPoints();
+        return false;
+    }
+
     public void attemptTrade(){};
 
     public void playDevCard(){};

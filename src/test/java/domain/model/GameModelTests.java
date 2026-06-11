@@ -15,8 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class GameModelTests {
@@ -931,5 +930,28 @@ public class GameModelTests {
         model.updateVictoryPoints(PlayerColor.BLUE, 2);
 
         EasyMock.verify(blueStateMock);
+    }
+
+    // checkCurrentPlayerHasTenOrMoreVictoryPoints()
+
+    @Test
+    void checkCurrentPlayer10OrMorePoints_RedHas0_ExpectFalse() {
+        Player redStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
+                PlayerColor.RED, redStateMock
+        );
+
+        EasyMock.expect(redStateMock.getVictoryPoints()).andReturn(0);
+
+        EasyMock.replay(redStateMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        model.setCurrentPlayerColor(PlayerColor.RED);
+
+        assertFalse(model.checkCurrentPlayerHasTenOrMoreVictoryPoints());
+
+        EasyMock.verify(redStateMock);
     }
 }

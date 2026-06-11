@@ -211,3 +211,23 @@ Outputs:
 | Test Case 2 | Orange recieves 2          | Success                    | :white_check_mark: |
 | Test Case 3 | White loses 2              | Success                    | :white_check_mark: |
 | Test Case 4 | Blue recieves 2            | Success                    | :white_check_mark: |
+
+### Method under test: `checkCurrentPlayerHasTenOrMoreVictoryPoints()`
+
+Returns true if a player has 10 or more points
+According to the rules, players can win ONLY on their turn, so we only need to check current player
+
+Inputs:
+- State of current Player
+  - Color -> RED, WHITE, ORANGE, BLUE
+  - Amount of Points: interval [0, 10]
+
+Outputs:
+- Boolean
+
+|             | State of the System  | Expected output | Implemented?       |
+|-------------|----------------------|-----------------|--------------------|
+| Test Case 1 | Red has 0 points     | False           | :white_check_mark: |
+| Test Case 2 | White has 9 points   | False           | :x:                |
+| Test Case 3 | Orange has 10 points | True            | :x:                |
+| Test Case 4 | Blue has 11 points   | True            | :x:                |
