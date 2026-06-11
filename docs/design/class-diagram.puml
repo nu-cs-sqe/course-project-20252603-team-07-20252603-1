@@ -1,131 +1,713 @@
-@startuml Catan MVP Class Diagram (MVC)
+@startuml Catan Class Diagram (MVC)
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+hide empty members
 
-package "Controller" {
-  class GameController {
-    - game: Game
-    - view: GameView
-    + initializeGame(playerNames)
-    + conductTurnOrderRoll()
-    + startInitialPlacements()
-  }
+' =========================================
+' EXTERNAL / JAVA STDLIB
+' =========================================
 
-  class PlacementController {
-    - game: Game
-    - view: GameView
-    + handleSettlementPlacement(player, vertex)
-    + handleRoadPlacement(player, edge)
-  }
+class RuntimeException <<external>> {
+}
+class Exception <<external>> {
+}
+class Application <<external>> {
 }
 
-package "Model" {
-  class Game {
-    - players: List<Player>
-    - board: Board
-    - developmentDeck: DevelopmentCardDeck
-    - turnOrder: List<Player>
-    + addPlayer(player)
-    + determineTurnOrder(rolls)
-    + getCurrentPlayer(): Player
-  }
+' =========================================
+' domain.model.resources
+' =========================================
 
-  class Player {
-    - name: String
-    - victoryPoints: int
-    - settlements: List<Settlement>
-    - roads: List<Road>
-    - resources: Map<ResourceType, int>
-    + placeSettlement(vertex)
-    + placeRoad(edge)
-    + receiveResources(resources)
-  }
+package "domain.model.resources" {
 
-  class Board {
-    - tiles: List<Tile>
-    - vertices: List<Vertex>
-    - edges: List<Edge>
-    + setupBoard()
-    + isValidSettlementPlacement(vertex): boolean
-    + isValidRoadPlacement(edge): boolean
-  }
+    enum Resource {
+        BRICK
+        GRAIN
+        LUMBER
+        ORE
+        WOOL
+        DESERT
+    }
 
-  class Tile {
-    - resourceType: ResourceType
-    - numberToken: int
-    - position: int
-  }
+    enum Resources {
+    }
 
-  enum ResourceType {
-    WOOD
-    BRICK
-    SHEEP
-    WHEAT
-    ORE
-    DESERT
-  }
+    class ResourceDeck {
+        - count : int
+        - type : Resource
+        + ResourceDeck()
+        + ResourceDeck(type : Resource)
+        + getType() : Resource
+        + draw() : Resource
+        + drawMultiple(numCards : int) : int
+        + replenish()
+        + replenish(numToReplenish : int)
+        + replenishAll()
+        + getTotalCards() : int
+    }
 
-  class Vertex {
-    - position: int
-    - adjacentTiles: List<Tile>
-    - settlement: Settlement
-  }
-
-  class Edge {
-    - position: int
-    - road: Road
-  }
-
-  class Settlement {
-    - owner: Player
-    - location: Vertex
-  }
-
-  class Road {
-    - owner: Player
-    - location: Edge
-  }
-
-  class DevelopmentCardDeck {
-    - cards: List<DevelopmentCard>
-    + shuffle()
-  }
-
-  class DevelopmentCard {
-    - cardType: String
-  }
-
-  class Dice {
-    + roll(): int
-  }
+    class ResourceQuantity {
+        - resource : Resource
+        - quantity : int
+        + {static} create(resource : Resource, quantity : int) : ResourceQuantity
+        + getResource() : Resource
+        + getQuantity() : int
+    }
 }
 
-package "View" {
-  class GameView {
-    + displayBoard(board)
-    + displayPlayers(players)
-    + displayTurnOrder(turnOrder)
-    + promptForSettlementPlacement(player)
-    + promptForRoadPlacement(player)
-    + displayRollResult(player, roll)
-  }
+' =========================================
+' domain.model.player
+' =========================================
+
+package "domain.model.player" {
+
+    enum PlayerColor {
+        SETUP
+        RED
+        BLUE
+        ORANGE
+        WHITE
+    }
+
+    class Player {
+        - name : String
+        - color : PlayerColor
+        - settlements : List<Settlement>
+        - roads : List<Edge>
+        - resources : Map<Resource, Integer>
+        + Player(name : String, color : PlayerColor)
+        + getResources() : Map<Resource, Integer>
+        + getSettlements() : List<Settlement>
+        + placeSettlement(vertex : Vertex)
+        + getRoads() : List<Edge>
+        + placeRoad(edge : Edge)
+        + receiveResources(resources : Map<Resource, Integer>)
+        + getName() : String
+        + getColor() : PlayerColor
+        + updateResources(resource : Resource, amount : int)
+        + getResourceCount(resource : Resource) : int
+    }
+
+    class PlayerState {
+        - player : Player
+        - resources : List<Resource>
+        + PlayerState(player : Player)
+        + getPlayer() : Player
+        + addResource(card : Resource)
+        + getResourceCount(type : Resource) : int
+    }
 }
 
-GameController --> Game
-GameController --> GameView
-PlacementController --> Game
-PlacementController --> GameView
+' =========================================
+' domain.model.development_cards
+' =========================================
 
-Game "1" *-- "3..4" Player
-Game "1" *-- "1" Board
-Game "1" *-- "1" DevelopmentCardDeck
-Game "1" -- "1" Dice
-Board "1" *-- "19" Tile
-Board "1" *-- "*" Vertex
-Board "1" *-- "*" Edge
-Tile -- ResourceType
-Player "1" *-- "*" Settlement
-Player "1" *-- "*" Road
-Settlement "1" -- "1" Vertex
-Road "1" -- "1" Edge
-DevelopmentCardDeck "1" *-- "*" DevelopmentCard
+package "domain.model.development_cards" {
+
+    enum DevelopmentCardType {
+        KNIGHT
+        VICTORY_POINT
+        ROAD_BUILDER
+        YEAR_OF_PLENTY
+        MONOPOLY
+    }
+
+    class DevelopmentCard {
+        - type : DevelopmentCardType
+        - roundDrawnAt : int
+        + DevelopmentCard(type : DevelopmentCardType, currentRoundNumber : int)
+        + {static} createKnightDevelopmentCard(currentRoundNumber : int) : DevelopmentCard
+        + {static} createVictoryPointDevelopmentCard(currentRoundNumber : int) : DevelopmentCard
+        + {static} createRoadBuilderDevelopmentCard(currentRoundNumber : int) : DevelopmentCard
+        + {static} createYearOfPlentyDevelopmentCard(currentRoundNumber : int) : DevelopmentCard
+        + {static} createMonopolyDevelopmentCard(currentRoundNumber : int) : DevelopmentCard
+        + isPlayable(currentRoundNumber : int) : boolean
+        + getType() : DevelopmentCardType
+    }
+
+    class DevelopmentCardDeck {
+        - deck : Stack<DevelopmentCard>
+        - cardsLeft : int
+        - knightCount : int
+        - victoryPointCount : int
+        - roadBuilderCount : int
+        - yearOfPlentyCount : int
+        - monopolyCount : int
+        + DevelopmentCardDeck()
+        + shuffle()
+        + drawCard() : DevelopmentCard
+        + countRemaining() : int
+    }
+}
+
+' =========================================
+' domain.model.game_pieces
+' =========================================
+
+package "domain.model.game_pieces" {
+
+    class Die {
+        - {static} DIE_SIDES_NUMBER : int
+        - randomizer : Random
+        + Die(randomizer : Random)
+        + rollOneDie() : int
+    }
+
+    class DiceHandler {
+        - dieOne : Die
+        - dieTwo : Die
+        + DiceHandler(firstDie : Die, secondDie : Die)
+        + rollTwoDice() : int
+    }
+
+    class Robber {
+        - {static} MIN_HEX_ID : int
+        - {static} MAX_HEX_ID : int
+        - currentHexId : int
+        + Robber(initialId : int)
+        + getRobberLocation() : int
+        + moveRobber(hexId : int)
+    }
+
+    class Settlement {
+    }
+}
+
+' =========================================
+' domain.model.board
+' =========================================
+
+package "domain.model.board" {
+
+    class Board {
+        - {static} STANDARD_HEX_COUNT : int
+        - hexOrder : List<String>
+        + Board()
+        + getHexCount() : int
+        + getHexOrder() : List<String>
+    }
+
+    class BoardHandler {
+    }
+
+    class BoardGraph {
+        - nodeIDToConnectingEdges : Map<Integer, Set<GraphEdge>>
+        - nodeIDToNodeObject : Map<Integer, GraphNode>
+        + addGraphNodeObject(graphNode : GraphNode) : boolean
+        + addGraphNodeConnection(nodeID : int, connectingEdge : GraphEdge) : boolean
+        + getGraphNodeByID(nodeID : int) : GraphNode
+        + getConnectingEdgesByID(nodeID : int) : Set<GraphEdge>
+        + checkPlayerOwnsGraphNodeObject(color : PlayerColor, nodeID : int) : boolean
+        + claimGraphNodeObject(color : PlayerColor, nodeID : int) : boolean
+        + claimGraphEdgeObject(color : PlayerColor, startingNodeID : int, endingNodeID : int) : boolean
+        + checkIfAdjacentNodesNotClaimed(nodeID : int) : boolean
+        + getMatchingEdgeFromSet(connectingEdges : Set<GraphEdge>, startingNodeID : int, endingNodeID : int) : GraphEdge
+        + edgeCheckPlayerOwnsNeighboringEdge(color : PlayerColor, startingNodeID : int, endingNodeID : int) : boolean
+        + edgeCheckPlayerOwnsNeighboringNode(color : PlayerColor, startingNodeID : int, endingNodeID : int) : boolean
+        + buildBoard()
+        + checkAmountOfNodesForTesting() : int
+        + checkAmountOfNodesInEdgeMapForTesting() : int
+    }
+
+    class BoardGraphController {
+        - boardGraph : BoardGraph
+        + BoardGraphController(b : BoardGraph)
+        + playerClaimStoredNodeSetupPhase(color : PlayerColor, nodeID : int) : boolean
+        + playerClaimStoredEdgeSetupPhase(color : PlayerColor, nodeID : int, startingNodeID : int, endingNodeID : int) : boolean
+    }
+
+    class GraphNode {
+        - {static} MAX_NODE_ID : int
+        - {static} MIN_NODE_ID : int
+        - nodeID : int
+        - occupied : boolean
+        - owningPlayerColor : PlayerColor
+        + GraphNode(nodeID : int)
+        + playerClaimNode(color : PlayerColor) : boolean
+        + checkOccupied() : boolean
+        + checkColor() : PlayerColor
+        + getNodeID() : int
+    }
+
+    class GraphEdge {
+        - startingNodeID : int
+        - endingNodeID : int
+        - roadBuilt : boolean
+        - owningPlayerColor : PlayerColor
+        + GraphEdge(startingNodeID : int, endingNodeID : int)
+        + claimGraphEdge(color : PlayerColor) : boolean
+        + checkRoadExists() : boolean
+        + checkOwningColor() : PlayerColor
+        + getStartingNodeID() : int
+        + getEndingNodeID() : int
+    }
+
+    class Hex <<final>> {
+        - {static} MIN_HEX_ID : int
+        - {static} MAX_HEX_ID : int
+        - {static} MIN_ROLL_NUMBER : int
+        - {static} MAX_ROLL_NUMBER : int
+        - {static} DESERT_ROLL_NUMBER : int
+        - {static} MAX_BUILDINGS_ON_HEX : int
+        - {static} SETTLEMENT_RESOURCE_AMOUNT : int
+        - {static} CITY_RESOURCE_AMOUNT : int
+        - hexId : int
+        - resource : Resource
+        - hexRollNum : int
+        - playerSettlements : List<Player>
+        - playerCities : List<Player>
+        - totalBuildingsOnHex : int
+        + Hex(hexId : int, resource : Resource, rollNumber : int)
+        + addPlayerSettlementToHex(player : Player)
+        + removePlayerSettlementFromHex(player : Player)
+        + addPlayerCityToHex(player : Player)
+        + awardSettlementResources()
+        + awardCityResources()
+        + getSettlementCount() : int
+        + getCityCount() : int
+        + getHexId() : int
+        + getHexResource() : Resource
+        + getHexRollNum() : int
+        + isPlayerSettlementOnHex(player : Player) : boolean
+        + isPlayerCityOnHex(player : Player) : boolean
+    }
+
+    class Edge {
+        + isOccupied() : boolean
+        + isConnectedToPlayerNetwork() : boolean
+    }
+
+    class Vertex {
+        + isOccupied() : boolean
+        + hasAdjacentSettlementViolatingDistanceRule() : boolean
+    }
+}
+
+' =========================================
+' domain.model.exceptions
+' =========================================
+
+package "domain.model.exceptions" {
+
+    class AdjacentNodeAlreadyClaimed {
+        + AdjacentNodeAlreadyClaimed(message : String)
+    }
+
+    class EdgeAlreadyClaimedException {
+        + EdgeAlreadyClaimedException(message : String)
+    }
+
+    class EmptyDeckException {
+        + EmptyDeckException(message : String)
+    }
+
+    class IllegalEdgeClaim {
+        + IllegalEdgeClaim(message : String)
+    }
+
+    class IllegalNodeIDException {
+        + IllegalNodeIDException(message : String)
+    }
+
+    class IllegalNodeOrderingInEdgeException {
+        + IllegalNodeOrderingInEdgeException(message : String)
+    }
+}
+
+' =========================================
+' domain.model
+' =========================================
+
+package "domain.model" {
+
+    class GameModel {
+        - playerStates : List<PlayerState>
+        - currentPlayerIndex : int
+        - lumberDeck : ResourceDeck
+        - brickDeck : ResourceDeck
+        - grainDeck : ResourceDeck
+        - oreDeck : ResourceDeck
+        - woolDeck : ResourceDeck
+        - decks : Map<Resource, ResourceDeck>
+        + GameModel(players : List<Player>)
+        + getTurnOrder() : List<Player>
+        + getCurrentPlayerIndex() : int
+        + getCurrentPlayer() : Player
+        + advanceToNextPlayer()
+        + getPlayerState(index : int) : PlayerState
+        + performTurn(roll : int)
+        + interpretRoll(roll : int) : Resource
+        + attemptBuildSettlement()
+        + attemptBuildCity()
+        + attemptBuildRoad()
+        + attemptTrade()
+        + playDevCard()
+        + buyDevCard()
+        + moveRobberAndSteal()
+    }
+
+    class GameSetupModel {
+        - players : List<Player>
+        - usedColors : Set<PlayerColor>
+        - usedNames : Set<String>
+        - board : Board
+        - resourceDeck : ResourceDeck
+        - developmentCardDeck : DevelopmentCardDeck
+        - turnOrder : List<Player>
+        + GameSetupModel()
+        + getPlayerCount() : int
+        + addPlayer(name : String, color : PlayerColor)
+        + isNameAvailable(name : String) : boolean
+        + clearPlayers()
+        + getPlayer(index : int) : Player
+        + isColorAvailable(color : PlayerColor) : boolean
+        + getBoard() : Board
+        + getResourceDeck() : ResourceDeck
+        + setResourceDeck(resourceDeck : ResourceDeck)
+        + getDevelopmentCardDeck() : DevelopmentCardDeck
+        + setDevelopmentCardDeck(developmentCardDeck : DevelopmentCardDeck)
+        + determineTurnOrder()
+        + getTurnOrder() : List<Player>
+    }
+
+    class TradeManager {
+        - offers : List<TradeOffer>
+        + offerTrade(offer : TradeOffer)
+        + clearOffers()
+        + listTrades() : List<TradeOffer>
+        + acceptTrade(offer : TradeOffer, acceptingPlayer : Player)
+    }
+
+    class TradeOffer {
+        - offeringPlayer : Player
+        - giving : ResourceQuantity
+        - receiving : ResourceQuantity
+        + {static} create(offeringPlayer : Player, giving : ResourceQuantity, receiving : ResourceQuantity) : TradeOffer
+        + getOfferingPlayer() : Player
+        + getGiving() : ResourceQuantity
+        + getReceiving() : ResourceQuantity
+    }
+}
+
+' =========================================
+' ui.controller
+' =========================================
+
+package "ui.controller" {
+
+    interface GameController <<interface>> {
+    }
+
+    enum PlayerAddResult {
+        SUCCESS
+        NAME_EMPTY
+        NAME_TAKEN
+        COLOR_EMPTY
+        COLOR_TAKEN
+    }
+
+    class GameLoopController {
+        + getCurrentPlayer(model : GameModel) : Player
+        + getCurrentPlayerIndex(model : GameModel) : int
+        + getResourceCount(model : GameModel, playerIndex : int, type : Resource) : int
+        + rollDiceAndDistribute(model : GameModel, roller : DiceHandler) : int
+        + endTurn(model : GameModel)
+    }
+
+    class GameSetupController {
+        + validatePlayerCount(model : GameSetupModel) : boolean
+        + addPlayer(model : GameSetupModel, name : String, color : PlayerColor)
+        + addPlayerWithColorValidation(model : GameSetupModel, name : String, color : PlayerColor) : boolean
+        + getPlayerName(model : GameSetupModel, index : int) : String
+        + getPlayerCount(model : GameSetupModel) : int
+        + initializeBoard(model : GameSetupModel)
+        + getBoard(model : GameSetupModel) : Board
+        + getBoardHexCount(board : Board) : int
+        + getHexOrder(board : Board) : List<String>
+        + initializeResourceDeck(model : GameSetupModel)
+        + getResourceDeck(model : GameSetupModel) : ResourceDeck
+        + initializeDevelopmentCardDeck(model : GameSetupModel)
+        + getDevelopmentCardDeck(model : GameSetupModel) : DevelopmentCardDeck
+        + determineTurnOrder(model : GameSetupModel)
+        + getTurnOrder(model : GameSetupModel) : List<Player>
+        + addPlayerWithFullValidation(model : GameSetupModel, name : String, color : PlayerColor) : PlayerAddResult
+        + clearPlayers(model : GameSetupModel)
+    }
+}
+
+' =========================================
+' ui.view
+' =========================================
+
+package "ui.view" {
+
+    interface SetupNavigator <<interface>> {
+        + goToHome()
+        + goToPlayerCount()
+        + goToPlayerConfig(count : int)
+        + goToSetupSummary()
+        + startGame()
+    }
+
+    interface RoundNavigator <<interface>> {
+        + goToGameRound()
+    }
+
+    class HomeScreenView {
+        - root : VBox
+        + HomeScreenView(navigator : SetupNavigator)
+        + getRoot() : Parent
+    }
+
+    class PlayerCountView {
+        - root : VBox
+        - countGroup : ToggleGroup
+        + PlayerCountView(navigator : SetupNavigator)
+        + getRoot() : Parent
+    }
+
+    class PlayerConfigView {
+        - root : VBox
+        - nameFields : List<TextField>
+        - colorBoxes : List<ComboBox<PlayerColor>>
+        - statusLabel : Label
+        - refreshingColors : boolean
+        + PlayerConfigView(navigator : SetupNavigator, controller : GameSetupController, model : GameSetupModel, playerCount : int)
+        + getRoot() : Parent
+    }
+
+    class SetupSummaryView {
+        - {static} HEX_ROW_SIZES : int[]
+        - root : ScrollPane
+        + SetupSummaryView(navigator : SetupNavigator, controller : GameSetupController, model : GameSetupModel)
+        + getRoot() : Parent
+    }
+
+    class GameRoundView {
+        - model : GameModel
+        - controller : GameLoopController
+        - diceRoller : DiceHandler
+        - deck : ResourceDeck
+        - banner : CurrentPlayerBanner
+        - lastRollLabel : Label
+        - resourcesPanel : PlayerResourcesPanel
+        - root : BorderPane
+        + GameRoundView(navigator : RoundNavigator, controller : GameLoopController, model : GameModel, diceRoller : DiceHandler, deck : ResourceDeck, board : Board)
+        + getRoot() : Parent
+    }
+
+    class CurrentPlayerBanner {
+        - root : HBox
+        - swatch : Region
+        - nameLabel : Label
+        + CurrentPlayerBanner()
+        + getRoot() : Parent
+        + update(player : Player)
+    }
+
+    class PlayerResourcesPanel {
+        - root : GridPane
+        - model : GameModel
+        - controller : GameLoopController
+        + PlayerResourcesPanel(controller : GameLoopController, model : GameModel)
+        + getRoot() : Parent
+        + refresh()
+    }
+
+    class BoardPlaceholderView {
+        - {static} HEX_ROW_SIZES : int[]
+        - root : VBox
+        + BoardPlaceholderView(board : Board)
+        + getRoot() : Parent
+    }
+}
+
+' =========================================
+' ui
+' =========================================
+
+package "ui" {
+
+    class Main {
+        - {static} WINDOW_WIDTH : int
+        - {static} WINDOW_HEIGHT : int
+        - {static} STYLESHEET : String
+        + start(stage : Stage)
+        + {static} main(args : String[])
+    }
+
+    class Navigator {
+        - scene : Scene
+        - setupController : GameSetupController
+        - loopController : GameLoopController
+        - diceRoller : DiceHandler
+        - setupModel : GameSetupModel
+        - gameModel : GameModel
+        + Navigator(scene : Scene, setupController : GameSetupController, loopController : GameLoopController, diceRoller : DiceHandler)
+        + goToHome()
+        + goToPlayerCount()
+        + goToPlayerConfig(count : int)
+        + goToSetupSummary()
+        + startGame()
+        + goToGameRound()
+    }
+}
+
+' =========================================
+' RELATIONSHIPS
+' =========================================
+
+' --- Exception hierarchy ---
+AdjacentNodeAlreadyClaimed --|> RuntimeException
+EdgeAlreadyClaimedException --|> RuntimeException
+EmptyDeckException --|> Exception
+IllegalEdgeClaim --|> RuntimeException
+IllegalNodeIDException --|> RuntimeException
+IllegalNodeOrderingInEdgeException --|> RuntimeException
+
+' --- Navigator implements ui.view interfaces ---
+Navigator ..|> SetupNavigator
+Navigator ..|> RoundNavigator
+
+' --- Main extends JavaFX Application ---
+Main --|> Application
+
+' --- domain.model.resources ---
+ResourceDeck --> Resource : type
+ResourceDeck ..> EmptyDeckException : throws
+ResourceQuantity --> Resource : resource
+
+' --- domain.model.development_cards ---
+DevelopmentCard --> DevelopmentCardType : type
+DevelopmentCardDeck "1" *-- "many" DevelopmentCard : deck (Stack)
+DevelopmentCardDeck ..> DevelopmentCardType : switch on
+DevelopmentCardDeck ..> EmptyDeckException : throws
+
+' --- domain.model.game_pieces ---
+DiceHandler "1" *-- "1" Die : dieOne
+DiceHandler "1" *-- "1" Die : dieTwo
+
+' --- domain.model.player ---
+Player --> PlayerColor : color
+Player "1" *-- "many" Settlement : settlements
+Player "1" *-- "many" Edge : roads
+Player ..> Resource : resources map key
+Player ..> Vertex : placeSettlement
+PlayerState "1" --> "1" Player : wraps
+PlayerState ..> Resource : resource list
+
+' --- domain.model.board ---
+BoardGraphController "1" --> "1" BoardGraph : boardGraph
+BoardGraphController ..> PlayerColor : uses
+BoardGraphController ..> GraphEdge : uses
+BoardGraphController ..> AdjacentNodeAlreadyClaimed : throws
+BoardGraphController ..> IllegalEdgeClaim : throws
+
+BoardGraph "1" *-- "many" GraphNode : nodeIDToNodeObject
+BoardGraph "1" *-- "many" GraphEdge : nodeIDToConnectingEdges (shared refs)
+BoardGraph ..> PlayerColor : uses
+
+GraphNode --> PlayerColor : owningPlayerColor
+GraphNode ..> IllegalNodeIDException : throws
+
+GraphEdge --> PlayerColor : owningPlayerColor
+GraphEdge ..> EdgeAlreadyClaimedException : throws
+GraphEdge ..> IllegalNodeOrderingInEdgeException : throws
+
+Hex --> Resource : resource
+Hex "1" --> "many" Player : playerSettlements
+Hex "1" --> "many" Player : playerCities
+
+' --- domain.model ---
+GameModel "1" *-- "many" PlayerState : playerStates
+GameModel "1" *-- "5" ResourceDeck : lumberDeck / brickDeck / grainDeck / oreDeck / woolDeck
+GameModel ..> Resource : decks map key
+GameModel ..> Player : getCurrentPlayer / getTurnOrder
+GameModel ..> DiceHandler : initializeDiceHandler (private)
+
+GameSetupModel "1" *-- "many" Player : players / turnOrder
+GameSetupModel o-- Board : board (lazy init)
+GameSetupModel o-- ResourceDeck : resourceDeck
+GameSetupModel o-- DevelopmentCardDeck : developmentCardDeck
+GameSetupModel ..> PlayerColor : usedColors set
+
+TradeManager "1" *-- "many" TradeOffer : offers
+TradeManager ..> Player : acceptTrade (offerer / acceptingPlayer)
+TradeManager ..> ResourceQuantity : uses
+TradeManager ..> Resource : uses
+
+TradeOffer "1" --> "1" Player : offeringPlayer
+TradeOffer "1" *-- "1" ResourceQuantity : giving
+TradeOffer "1" *-- "1" ResourceQuantity : receiving
+
+' --- ui.controller ---
+GameLoopController ..> GameModel : queries / mutates
+GameLoopController ..> Player : returns
+GameLoopController ..> PlayerState : reads via GameModel
+GameLoopController ..> Resource : uses
+GameLoopController ..> DiceHandler : rollTwoDice
+
+GameSetupController ..> GameSetupModel : delegates to
+GameSetupController ..> Board : returns
+GameSetupController ..> Player : returns
+GameSetupController ..> PlayerColor : uses
+GameSetupController ..> ResourceDeck : creates / returns
+GameSetupController ..> DevelopmentCardDeck : creates / returns
+GameSetupController ..> PlayerAddResult : returns
+
+' --- ui.Navigator ---
+Navigator --> GameSetupController : setupController
+Navigator --> GameLoopController : loopController
+Navigator --> DiceHandler : diceRoller
+Navigator "1" --> "1" GameSetupModel : setupModel
+Navigator "1" --> "1" GameModel : gameModel
+Navigator ..> HomeScreenView : creates
+Navigator ..> PlayerCountView : creates
+Navigator ..> PlayerConfigView : creates
+Navigator ..> SetupSummaryView : creates
+Navigator ..> GameRoundView : creates
+
+' --- ui.Main ---
+Main ..> Navigator : creates
+Main ..> GameSetupController : creates
+Main ..> GameLoopController : creates
+Main ..> DiceHandler : creates
+Main ..> Die : creates
+
+' --- ui.view ---
+HomeScreenView ..> SetupNavigator : uses
+
+PlayerCountView ..> SetupNavigator : uses
+
+PlayerConfigView ..> SetupNavigator : uses
+PlayerConfigView ..> GameSetupController : uses
+PlayerConfigView ..> GameSetupModel : uses
+PlayerConfigView ..> PlayerColor : uses
+PlayerConfigView ..> PlayerAddResult : uses
+
+SetupSummaryView ..> SetupNavigator : uses
+SetupSummaryView ..> GameSetupController : uses
+SetupSummaryView ..> GameSetupModel : uses
+SetupSummaryView ..> Board : uses
+SetupSummaryView ..> Player : renders
+
+GameRoundView ..> RoundNavigator : uses
+GameRoundView --> GameLoopController : controller
+GameRoundView --> GameModel : model
+GameRoundView --> DiceHandler : diceRoller
+GameRoundView --> ResourceDeck : deck
+GameRoundView ..> Board : uses (BoardPlaceholderView)
+GameRoundView "1" *-- "1" CurrentPlayerBanner : banner
+GameRoundView "1" *-- "1" PlayerResourcesPanel : resourcesPanel
+GameRoundView ..> BoardPlaceholderView : creates
+
+CurrentPlayerBanner ..> Player : update
+
+PlayerResourcesPanel --> GameModel : model
+PlayerResourcesPanel --> GameLoopController : controller
+PlayerResourcesPanel ..> Player : renders
+PlayerResourcesPanel ..> Resource : column headers
+
+BoardPlaceholderView ..> Board : getHexOrder
 
 @enduml

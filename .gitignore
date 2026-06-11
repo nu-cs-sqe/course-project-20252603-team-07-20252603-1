@@ -128,4 +128,11 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+
+# claude-users personal permissions
+.claude
+
+local-notes-tm/*
 local-notes-tm/
+
+testclean.sh

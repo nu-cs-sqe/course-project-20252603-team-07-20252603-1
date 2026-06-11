@@ -1,11 +1,11 @@
 package domain.model.board;
 
 public class Vertex {
-    public boolean isOccupied() {
+    boolean isOccupied() {
         return false;
     }
 
-    public boolean hasAdjacentSettlementViolatingDistanceRule() {
+    boolean hasAdjacentSettlementViolatingDistanceRule() {
         return false;
     }
 }
