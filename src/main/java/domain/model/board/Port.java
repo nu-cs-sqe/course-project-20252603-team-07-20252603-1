@@ -4,23 +4,26 @@ import domain.model.exceptions.EmptyDeckException;
 import domain.model.player.Player;
 import domain.model.resources.Resource;
 import domain.model.resources.ResourceDeck;
-
 import java.util.List;
 
+/**
+ * Represents a port on the Catan board that allows players
+ * to trade resources at a favorable ratio with the bank.
+ */
 public class Port {
   private static final int TWO_TO_ONE_RATIO = 2;
   private static final int THREE_TO_ONE_RATIO = 3;
   private static final int RECEIVE_AMOUNT = 1;
 
   private final int tradeRatio;
-  private final Resource resource; // ANY if 3:1 port
+  private final Resource resource;
   private final List<Integer> nodeIds;
 
   /**
    * Constructs a Port with a given trade ratio, resource, and adjacent nodes.
    *
    * @param tradeRatio the trade ratio (2 or 3)
-   * @param resource   the specific resource for 2:1 ports, null for 3:1 ports
+   * @param resource   the specific resource for 2:1 ports, ANY for 3:1 ports
    * @param nodeIds    the node IDs adjacent to this port
    */
   public Port(int tradeRatio, Resource resource, List<Integer> nodeIds) {
@@ -45,14 +48,20 @@ public class Port {
     return false;
   }
 
-  public void executePortTrade(Player player, BoardHandler board,
-                               Resource givingResource, Resource receivingResource,
-                               ResourceDeck givingDeck, ResourceDeck receivingDeck)
+  /**
+   * Executes a port trade for a player.
+   *
+   * @param player  the player making the trade
+   * @param board   the board handler to verify port access
+   * @param request the trade request containing giving/receiving resources and decks
+   * @throws EmptyDeckException if the bank has insufficient resources
+   */
+  public void executePortTrade(Player player, BoardHandler board, PortTradeRequest request)
           throws EmptyDeckException {
     validatePortAccess(player, board);
-    validateTradeResources(givingResource, receivingResource);
-    validatePlayerResources(player, givingResource);
-    performTrade(player, givingResource, receivingResource, givingDeck, receivingDeck);
+    validateTradeResources(request.getGivingResource(), request.getReceivingResource());
+    validatePlayerResources(player, request.getGivingResource());
+    performTrade(player, request);
   }
 
   private void validatePortAccess(Player player, BoardHandler board) {
@@ -80,9 +89,13 @@ public class Port {
     }
   }
 
-  private void performTrade(Player player, Resource givingResource, Resource receivingResource,
-                            ResourceDeck givingDeck, ResourceDeck receivingDeck)
+  private void performTrade(Player player, PortTradeRequest request)
           throws EmptyDeckException {
+    Resource givingResource = request.getGivingResource();
+    Resource receivingResource = request.getReceivingResource();
+    ResourceDeck givingDeck = request.getDecks().get(givingResource);
+    ResourceDeck receivingDeck = request.getDecks().get(receivingResource);
+
     player.updateResources(givingResource, -tradeRatio);
     givingDeck.replenish(tradeRatio);
 
@@ -94,6 +107,6 @@ public class Port {
       throw e;
     }
 
-    player.updateResources(receivingResource, 1);
+    player.updateResources(receivingResource, RECEIVE_AMOUNT);
   }
 }
