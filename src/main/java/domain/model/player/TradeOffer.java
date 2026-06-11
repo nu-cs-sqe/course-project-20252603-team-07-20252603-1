@@ -19,7 +19,7 @@ public class TradeOffer {
         return new TradeOffer(offeringPlayer, giving, receiving);
     }
 
-    public Player getOfferingPlayer() {
+    Player getOfferingPlayer() {
         return offeringPlayer;
     }
 
