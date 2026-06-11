@@ -1488,4 +1488,32 @@ public class BoardHandlerTests {
             mockPort5, mockPort6, mockPort7, mockPort8, mockPort9);
   }
 
+  // Test Case 59
+  @Test
+  void OrangeHasSettlementOnNodeZero_ReturnsOnePort() {
+    EasyMock.expect(mockPort1.playerCanUsePort(EasyMock.anyObject(), EasyMock.eq(mockOrangePlayer))).andReturn(true);
+    EasyMock.expect(mockPort2.playerCanUsePort(EasyMock.anyObject(), EasyMock.eq(mockOrangePlayer))).andReturn(false);
+    EasyMock.expect(mockPort3.playerCanUsePort(EasyMock.anyObject(), EasyMock.eq(mockOrangePlayer))).andReturn(false);
+    EasyMock.expect(mockPort4.playerCanUsePort(EasyMock.anyObject(), EasyMock.eq(mockOrangePlayer))).andReturn(false);
+    EasyMock.expect(mockPort5.playerCanUsePort(EasyMock.anyObject(), EasyMock.eq(mockOrangePlayer))).andReturn(false);
+    EasyMock.expect(mockPort6.playerCanUsePort(EasyMock.anyObject(), EasyMock.eq(mockOrangePlayer))).andReturn(false);
+    EasyMock.expect(mockPort7.playerCanUsePort(EasyMock.anyObject(), EasyMock.eq(mockOrangePlayer))).andReturn(false);
+    EasyMock.expect(mockPort8.playerCanUsePort(EasyMock.anyObject(), EasyMock.eq(mockOrangePlayer))).andReturn(false);
+    EasyMock.expect(mockPort9.playerCanUsePort(EasyMock.anyObject(), EasyMock.eq(mockOrangePlayer))).andReturn(false);
+
+    EasyMock.replay(mockOrangePlayer, mockPort1, mockPort2, mockPort3, mockPort4,
+            mockPort5, mockPort6, mockPort7, mockPort8, mockPort9);
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes,
+            nodeIdToHexes, mockRobber, ports);
+
+    List<Port> availablePorts = b.getAvailablePorts(mockOrangePlayer);
+
+    assertEquals(1, availablePorts.size());
+    assertTrue(availablePorts.contains(mockPort1));
+
+    EasyMock.verify(mockOrangePlayer, mockPort1, mockPort2, mockPort3, mockPort4,
+            mockPort5, mockPort6, mockPort7, mockPort8, mockPort9);
+  }
+
 }
