@@ -301,4 +301,24 @@ public class PortTests {
     EasyMock.verify(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
   }
 
+  // Test Case 14
+  @Test
+  void RedDoesNotOwnAdjacentNode_ThrowsException() {
+    Port port = new Port(3, Resource.ANY, List.of(0, 4));
+
+    EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
+    EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(false);
+    EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 4)).andReturn(false);
+
+    EasyMock.replay(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
+
+    Exception exception = assertThrows(IllegalStateException.class, () ->
+            port.executePortTrade(mockPlayer, mockBoard, Resource.WOOL, Resource.ORE,
+                    mockGivingDeck, mockReceivingDeck));
+
+    assertEquals("Player does not have access to this port.", exception.getMessage());
+
+    EasyMock.verify(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
+  }
+
 }

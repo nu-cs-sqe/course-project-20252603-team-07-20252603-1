@@ -48,10 +48,16 @@ public class Port {
   public void executePortTrade(Player player, BoardHandler board,
                                Resource givingResource, Resource receivingResource,
                                ResourceDeck givingDeck, ResourceDeck receivingDeck) throws EmptyDeckException {
+    boolean hasAccess = false;
     for (int nodeId : nodeIds) {
       if (board.checkPlayerOwnsNode(player.getColor(), nodeId)) {
+        hasAccess = true;
         break;
       }
+    }
+
+    if (!hasAccess) {
+      throw new IllegalStateException("Player does not have access to this port.");
     }
 
     if (givingResource != resource && resource != Resource.ANY) {
