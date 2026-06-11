@@ -201,4 +201,67 @@ public class PlayerTests {
         assertEquals("Cannot receive DESERT as a resource.", exception.getMessage());
     }
 
+    // updateVictoryPoints() Tests
+    @Test
+    void updateVictoryPoints_PlayerHas0_Receives1_ExpectPlayerHas1() {
+        Player player = new Player("Spencer", PlayerColor.RED);
+        assertEquals(0, player.getVictoryPoints());
+        player.updateVictoryPoints(1);
+        assertEquals(1, player.getVictoryPoints());
+    }
+
+    @Test
+    void updateVictoryPoints_PlayerHas0_Receives2_ExpectPlayerHas2() {
+        Player player = new Player("Spencer", PlayerColor.RED);
+        assertEquals(0, player.getVictoryPoints());
+        player.updateVictoryPoints(2);
+        assertEquals(2, player.getVictoryPoints());
+    }
+
+    @Test
+    void updateVictoryPoints_PlayerHas8_Receives2_ExpectPlayerHas10() {
+        Player player = new Player("Spencer", PlayerColor.RED);
+        player.updateVictoryPoints(8);
+        assertEquals(8, player.getVictoryPoints());
+        player.updateVictoryPoints(2);
+        assertEquals(10, player.getVictoryPoints());
+    }
+
+    @Test
+    void updateVictoryPoints_PlayerHas10_Loses2_ExpectPlayerHas8() {
+        Player player = new Player("Spencer", PlayerColor.RED);
+        player.updateVictoryPoints(10);
+        assertEquals(10, player.getVictoryPoints());
+        player.updateVictoryPoints(-2);
+        assertEquals(8, player.getVictoryPoints());
+    }
+
+    @Test
+    void updateVictoryPoints_PlayerHas11_Loses2_ExpectPlayerHas9() {
+        Player player = new Player("Spencer", PlayerColor.RED);
+        player.updateVictoryPoints(11);
+        assertEquals(11, player.getVictoryPoints());
+        player.updateVictoryPoints(-2);
+        assertEquals(9, player.getVictoryPoints());
+    }
+
+    @Test
+    void updateVictoryPoints_PlayerHas9_Receives2_ExpectPlayerHas11() {
+        Player player = new Player("Spencer", PlayerColor.RED);
+        player.updateVictoryPoints(9);
+        assertEquals(9, player.getVictoryPoints());
+        player.updateVictoryPoints(2);
+        assertEquals(11, player.getVictoryPoints());
+    }
+
+    @Test
+    void updateVictoryPoints_PlayerHas2_Loses2_ExpectPlayerHas0() {
+        Player player = new Player("Spencer", PlayerColor.RED);
+        player.updateVictoryPoints(2);
+        assertEquals(2, player.getVictoryPoints());
+        player.updateVictoryPoints(-2);
+        assertEquals(0, player.getVictoryPoints());
+    }
+
+
 }

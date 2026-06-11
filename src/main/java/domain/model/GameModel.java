@@ -18,6 +18,10 @@ public class GameModel {
 
     private static final int ROBBER_ROLL_VALUE = 7;
     private static final int MAX_AMOUNT_SETTLEMENTS = 5;
+    private static final int MIN_POINTS_TO_WIN_GAME = 10;
+    private static final int POINTS_FOR_SETTLEMENT = 1;
+    private static final int POINTS_FOR_CITY = 1;
+    private static final int POINTS_FOR_LONGEST_ROAD = 2;
 
     @SuppressFBWarnings(value = "EI_EXPOSE_REP2",
             justification = "BoardHandler is intentionally shared between GameSetupModel and GameModel as it represents the single game board state")
@@ -27,6 +31,8 @@ public class GameModel {
     private List<PlayerColor> playerColors;
     private PlayerColor currentPlayerColor;
     private Map<PlayerColor, Player> playerColorToPlayerObject = new HashMap<>();
+    private Map<PlayerColor, Integer> playerColorToLastClaimedNodeID = new HashMap<>();
+    private PlayerColor currentLongestRoadPlayerColor;
 
 
     private final ResourceDeck lumberDeck;
@@ -56,6 +62,7 @@ public class GameModel {
         );
         this.playerColorToPlayerObject = playerColorToPlayerObject;
         this.board = board;
+        this.currentLongestRoadPlayerColor = PlayerColor.SETUP;
     }
 
     public GameModel(List<Player> players, BoardHandler board) {
@@ -77,11 +84,13 @@ public class GameModel {
         for (Player player : players) {
 
             PlayerColor currentColor = player.getColor();
+            this.playerColorToLastClaimedNodeID.put(currentColor, -1);
             this.playerColorToPlayerObject.put(currentColor, player);
             playerColors.add(currentColor);
         }
         this.currentPlayerIndex = 0;
         this.currentPlayerColor = playerColors.get(0);
+        this.currentLongestRoadPlayerColor = PlayerColor.SETUP;
         this.currentGamePhase = GamePhase.BEFORE_ROLL;
     }
 
@@ -99,10 +108,26 @@ public class GameModel {
         return playerColorToPlayerObject.get(currentPlayerColor);
     }
 
+    public PlayerColor getCurrentPlayerColor() { return this.currentPlayerColor; }
+
+    public void setCurrentPlayerIndex(int newIndex) { this.currentPlayerIndex = newIndex; }
+
     public void setCurrentPlayerColor(PlayerColor color) {
         this.currentPlayerColor = color;
     }
 
+    public void endTurn() {
+        checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY);
+        checkCurrentPlayerHasTenOrMoreVictoryPoints();
+        if (getCurrentPhase() == GamePhase.END_GAME) {
+            return;
+        }
+        else {
+            advanceToNextPlayer();
+            setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+        }
+
+    }
     public void advanceToNextPlayer() {
         currentPlayerIndex = (currentPlayerIndex + 1) % playerColors.size();
         currentPlayerColor = playerColors.get(currentPlayerIndex);
@@ -140,7 +165,12 @@ public class GameModel {
     }
 
     public void attemptBuildSettlement(int nodeID){
-        checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY);
+        checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY, GamePhase.SETUP_PHASE);
+        if (this.currentGamePhase == GamePhase.SETUP_PHASE) {
+            board.buildSetupSettlement(getCurrentPlayer(), nodeID);
+            this.playerColorToLastClaimedNodeID.put(currentPlayerColor, nodeID);
+            return;
+        }
         checkIfPlayerAtMaxSettlements(currentPlayerColor);
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER, Resource.WOOL, Resource.GRAIN)) {
             checkPlayerOwnsEnoughResources(currentPlayerColor, r, 1); // 1s are not magic numbers?
@@ -152,10 +182,26 @@ public class GameModel {
             deckToReplenish.replenish();
         }
         incrementNumSettlements(currentPlayerColor);
+        Player currentPlayer = getCurrentPlayer();
+        currentPlayer.updateVictoryPoints(POINTS_FOR_SETTLEMENT);
+        // Building a settlement can change who has the longest road
+        handleLongestRoad();
     }
 
+    int getPlayerLastClaimedNode(PlayerColor color) {
+        return this.playerColorToLastClaimedNodeID.get(color);
+    }
     public void attemptBuildRoad(int startingNodeID, int endingNodeID) {
-        checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY, GamePhase.ROAD_BUILDING_DEV_CARD);
+        checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY, GamePhase.ROAD_BUILDING_DEV_CARD, GamePhase.SETUP_PHASE);
+        if (currentGamePhase == GamePhase.SETUP_PHASE) {
+            board.buildSetupRoad(getCurrentPlayer(), getPlayerLastClaimedNode(currentPlayerColor), startingNodeID, endingNodeID);
+            return;
+        }
+        else if (currentGamePhase == GamePhase.ROAD_BUILDING_DEV_CARD) {
+            board.addRoad(getCurrentPlayer(), startingNodeID, endingNodeID);
+            handleLongestRoad();
+            return;
+        }
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER)) {
             checkPlayerOwnsEnoughResources(currentPlayerColor, r, 1);
         }
@@ -165,6 +211,8 @@ public class GameModel {
             ResourceDeck deckToReplenish = decks.get(r);
             deckToReplenish.replenish();
         }
+        // building a road can edit longest road
+        handleLongestRoad();
     };
 
     void setCurrentGamePhase(GamePhase newGamePhase) {
@@ -175,11 +223,6 @@ public class GameModel {
         return currentGamePhase;
     }
 
-    public void endTurn() {
-        checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY);
-        advanceToNextPlayer();
-        currentGamePhase = GamePhase.BEFORE_ROLL;
-    }
 
     private void checkCurrentGamePhaseMatches(GamePhase... expectedGamePhaseOptions) {
         for (GamePhase allowedPhase : expectedGamePhaseOptions) {
@@ -230,7 +273,44 @@ public class GameModel {
         oreDeck.replenish(3);
         reducePlayerResources(currentPlayerColor, Resource.GRAIN, 2);
         grainDeck.replenish(2);
-    };
+        Player currentPlayer = getCurrentPlayer();
+        currentPlayer.updateVictoryPoints(POINTS_FOR_CITY);
+    }
+
+    public PlayerColor getCurrentLongestRoadPlayerColor() {
+        return this.currentLongestRoadPlayerColor;
+    }
+
+    void setCurrentLongestRoadPlayerColor(PlayerColor newLongestRoadColor) {
+        this.currentLongestRoadPlayerColor = newLongestRoadColor;
+    }
+    public void handleLongestRoad() {
+        List<Player> playerList = new ArrayList<>(playerColorToPlayerObject.values());
+        PlayerColor newLongestRoadColor = board.calculateLongestRoad(playerList, currentLongestRoadPlayerColor);
+        if (newLongestRoadColor != this.currentLongestRoadPlayerColor) {
+            Player playerToAwardPoints = getArbitraryPlayer(newLongestRoadColor);
+            playerToAwardPoints.updateVictoryPoints(POINTS_FOR_LONGEST_ROAD);
+            if (this.currentLongestRoadPlayerColor != PlayerColor.SETUP) {
+                Player playerToLosePoints = getArbitraryPlayer(this.currentLongestRoadPlayerColor);
+                playerToLosePoints.updateVictoryPoints(-POINTS_FOR_LONGEST_ROAD);
+            }
+            this.currentLongestRoadPlayerColor = newLongestRoadColor;
+        }
+
+    }
+
+    public void updateVictoryPoints(PlayerColor color, int amount) {
+        Player relevantPlayer = getArbitraryPlayer(color);
+        relevantPlayer.updateVictoryPoints(amount);
+    }
+
+    public void checkCurrentPlayerHasTenOrMoreVictoryPoints() {
+        Player currentPlayer = getCurrentPlayer();
+        int currentPlayerVictoryPoints = currentPlayer.getVictoryPoints();
+        if (currentPlayerVictoryPoints >= MIN_POINTS_TO_WIN_GAME) {
+            setCurrentGamePhase(GamePhase.END_GAME);
+        }
+    }
 
     public void attemptTrade(){};
 
