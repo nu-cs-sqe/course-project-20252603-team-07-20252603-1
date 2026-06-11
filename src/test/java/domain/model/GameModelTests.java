@@ -75,6 +75,8 @@ public class GameModelTests {
         redStateMock.increaseSettlementCount();
         EasyMock.expectLastCall();
 
+        redStateMock.updateVictoryPoints(1);
+
         EasyMock.replay(redStateMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock,
                 woolDeckMock);
 
@@ -201,6 +203,7 @@ public class GameModelTests {
 
         blueStateMock.increaseSettlementCount();
         EasyMock.expectLastCall();
+        blueStateMock.updateVictoryPoints(1);
 
         EasyMock.replay(blueStateMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock,
                 woolDeckMock);
@@ -420,6 +423,8 @@ public class GameModelTests {
         EasyMock.expectLastCall();
         grainDeckMock.replenish(2);
         EasyMock.expectLastCall();
+
+        redStateMock.updateVictoryPoints(1);
 
         EasyMock.replay(redStateMock, boardMock, oreDeckMock, grainDeckMock);
 
@@ -742,6 +747,7 @@ public class GameModelTests {
         }
         playerMock.increaseSettlementCount();
         EasyMock.expectLastCall();
+        playerMock.updateVictoryPoints(1);
         EasyMock.replay(playerMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, woolDeckMock);
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
                 oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
@@ -842,6 +848,7 @@ public class GameModelTests {
         EasyMock.expectLastCall();
         grainDeckMock.replenish(2);
         EasyMock.expectLastCall();
+        playerMock.updateVictoryPoints(1);
         EasyMock.replay(playerMock, boardMock, oreDeckMock, grainDeckMock);
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
                 oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);

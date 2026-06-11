@@ -19,6 +19,8 @@ public class GameModel {
     private static final int ROBBER_ROLL_VALUE = 7;
     private static final int MAX_AMOUNT_SETTLEMENTS = 5;
     private static final int MIN_POINTS_TO_WIN_GAME = 10;
+    private static final int POINTS_FOR_SETTLEMENT = 1;
+    private static final int POINTS_FOR_CITY = 1;
 
     @SuppressFBWarnings(value = "EI_EXPOSE_REP2",
             justification = "BoardHandler is intentionally shared between GameSetupModel and GameModel as it represents the single game board state")
@@ -153,6 +155,8 @@ public class GameModel {
             deckToReplenish.replenish();
         }
         incrementNumSettlements(currentPlayerColor);
+        Player currentPlayer = getCurrentPlayer();
+        currentPlayer.updateVictoryPoints(POINTS_FOR_SETTLEMENT);
     }
 
     public void attemptBuildRoad(int startingNodeID, int endingNodeID) {
@@ -231,6 +235,8 @@ public class GameModel {
         oreDeck.replenish(3);
         reducePlayerResources(currentPlayerColor, Resource.GRAIN, 2);
         grainDeck.replenish(2);
+        Player currentPlayer = getCurrentPlayer();
+        currentPlayer.updateVictoryPoints(POINTS_FOR_CITY);
     }
 
     public void updateVictoryPoints(PlayerColor color, int amount) {
