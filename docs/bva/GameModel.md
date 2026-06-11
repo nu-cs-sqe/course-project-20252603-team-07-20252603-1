@@ -210,4 +210,4 @@ Outputs:
 | Test Case 1 | Red recieves 1             | Success                    | :white_check_mark: |
 | Test Case 2 | Orange recieves 2          | Success                    | :white_check_mark: |
 | Test Case 3 | White loses 2              | Success                    | :white_check_mark: |
-| Test Case 4 | Blue recieves 2            | Success                    | :x:                |
+| Test Case 4 | Blue recieves 2            | Success                    | :white_check_mark: |
