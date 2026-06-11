@@ -1150,4 +1150,35 @@ public class GameModelTests {
 
         EasyMock.verify(whiteStateMock);
     }
+
+    @Test
+    void endTurn_RedDoesNotHaveEnoughVictoryPoints_ExpectNextTurn() {
+        Player redStateMock = EasyMock.createMock(Player.class);
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        List<Player> playerList = List.of(redStateMock, orangeStateMock, whiteStateMock, blueStateMock);
+        BoardHandler boardStub = EasyMock.createNiceMock(BoardHandler.class);
+
+        EasyMock.expect(redStateMock.getColor()).andReturn(PlayerColor.RED);
+        EasyMock.expect(orangeStateMock.getColor()).andReturn(PlayerColor.ORANGE);
+        EasyMock.expect(whiteStateMock.getColor()).andReturn(PlayerColor.WHITE);
+        EasyMock.expect(blueStateMock.getColor()).andReturn(PlayerColor.BLUE);
+
+        EasyMock.expect(redStateMock.getVictoryPoints()).andReturn(9);
+
+        EasyMock.replay(whiteStateMock, blueStateMock, redStateMock, orangeStateMock);
+
+        GameModel model = new GameModel(playerList, boardStub);
+
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentPlayerIndex(0);
+        model.endTurn();
+
+        assertEquals(PlayerColor.ORANGE, model.getCurrentPlayerColor());
+        assertEquals(GamePhase.BEFORE_ROLL, model.getCurrentPhase());
+
+        EasyMock.verify(whiteStateMock);
+    }
 }
