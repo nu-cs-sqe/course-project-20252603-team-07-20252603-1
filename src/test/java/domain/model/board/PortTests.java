@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PortTests {
 
@@ -30,7 +31,7 @@ public class PortTests {
   // Test Case 1
   @Test
   void PlayerOwnsNeitherPortNode_ReturnsFalse() {
-    Port port = new Port(3, Resource.ANY, List.of(0, 4));
+    Port port = new Port(3, Resource.ANY, List.of(0, 3));
 
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).times(2);
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(false);
@@ -39,6 +40,21 @@ public class PortTests {
     EasyMock.replay(mockBoard, mockPlayer);
 
     assertFalse(port.playerCanUsePort(mockBoard, mockPlayer));
+
+    EasyMock.verify(mockBoard, mockPlayer);
+  }
+
+  // Test Case 2
+  @Test
+  void PlayerOwnsFirstPortNode_ReturnsTrue() {
+    Port port = new Port(3, Resource.ANY, List.of(0, 3));
+
+    EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
+    EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
+
+    EasyMock.replay(mockBoard, mockPlayer);
+
+    assertTrue(port.playerCanUsePort(mockBoard, mockPlayer));
 
     EasyMock.verify(mockBoard, mockPlayer);
   }
