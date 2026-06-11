@@ -12,10 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -1247,4 +1244,39 @@ public class GameModelTests {
         assertEquals(PlayerColor.ORANGE, model.getCurrentPlayerColor());
         assertEquals(phase, model.getCurrentPhase());
     }
+
+    // handleLongestRoad()
+
+    @Test
+    void handleLongestRoad_NoOneQualifies_ExpectPlayerSetup() {
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        Player redStateMock = EasyMock.createMock(Player.class);
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock.put(PlayerColor.BLUE, blueStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.RED, redStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.WHITE, whiteStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.ORANGE, orangeStateMock);
+
+        EasyMock.expect(
+                boardMock.calculateLongestRoad(
+                        EasyMock.<List<Player>>anyObject(),
+                        EasyMock.eq(PlayerColor.SETUP)
+                )
+        ).andReturn(PlayerColor.SETUP);
+
+        EasyMock.replay(boardMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        assertEquals(PlayerColor.SETUP, model.getCurrentLongestRoadPlayerColor());
+
+        model.handleLongestRoad();
+
+        assertEquals(PlayerColor.SETUP, model.getCurrentLongestRoadPlayerColor());
+
+        EasyMock.verify(boardMock);
+    }
+
 }

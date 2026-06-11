@@ -257,3 +257,26 @@ Outputs:
 | Test Case 5 | RED, check fails     | ORANGE, BEFORE_ROLL phase | :white_check_mark: |
 | Test Case 6 | ORANGE, check fails  | WHITE, BEFORE_ROLL phase  | :white_check_mark: |
 | Test Case 7 | Incorrect game phase | IllegalGamePhaseException | :white_check_mark: |
+
+### Method under test: `handleLongestRoad()`
+
+Handles checking and redistributing points based on longest road, to be called in building settlements and roads (things which can change longest road)
+
+Inputs:
+- currentLongestRoadColor -> RED, WHITE, ORANGE, BLUE
+- Board state
+
+Outputs:
+- Cases -> BoardGraph result
+  - PlayerColor.SETUP -> no one meets conditions for longest road
+  - Same PlayerColor -> no change -> no victory points awarded
+  - New PlayerColor -> change -> Victory Points Redistributed
+
+|             | State of the System            | Expected output                                                       | Implemented?       |
+|-------------|--------------------------------|-----------------------------------------------------------------------|--------------------|
+| Test Case 1 | Currently no one, still no one | PlayerColor.setup                                                     | :white_check_mark: |
+| Test Case 2 | Currently RED, stays RED       | PlayerColor.Red                                                       | :x:                |
+| Test Case 3 | Currently SETUP, Becomes WHITE | PlayerColor.White, victory points awarded to WHITE                    | :x:                |
+| Test Case 4 | Currently BLUE, Becomes ORANGE | PlayerColor.Orange, victory points awarded to Orange, taken from blue | :x:                |
+| Test Case 5 | Currently ORANGE, becomes BLUE | PlayerColor.Blue, victory points awarded to BLUE, taken from ORANGE   | :x:                |
+| Test Case 6 | Currently WHITE, becomes RED   | PlayerColor.Red, victory points awarded to RED, taken from white      | :x:                |

@@ -30,6 +30,7 @@ public class GameModel {
     private List<PlayerColor> playerColors;
     private PlayerColor currentPlayerColor;
     private Map<PlayerColor, Player> playerColorToPlayerObject = new HashMap<>();
+    private PlayerColor currentLongestRoadPlayerColor;
 
 
     private final ResourceDeck lumberDeck;
@@ -59,6 +60,7 @@ public class GameModel {
         );
         this.playerColorToPlayerObject = playerColorToPlayerObject;
         this.board = board;
+        this.currentLongestRoadPlayerColor = PlayerColor.SETUP;
     }
 
     public GameModel(List<Player> players, BoardHandler board) {
@@ -85,6 +87,7 @@ public class GameModel {
         }
         this.currentPlayerIndex = 0;
         this.currentPlayerColor = playerColors.get(0);
+        this.currentLongestRoadPlayerColor = PlayerColor.SETUP;
         this.currentGamePhase = GamePhase.BEFORE_ROLL;
     }
 
@@ -248,6 +251,15 @@ public class GameModel {
         grainDeck.replenish(2);
         Player currentPlayer = getCurrentPlayer();
         currentPlayer.updateVictoryPoints(POINTS_FOR_CITY);
+    }
+
+    public PlayerColor getCurrentLongestRoadPlayerColor() {
+        return this.currentLongestRoadPlayerColor;
+    }
+    public void handleLongestRoad() {
+        List<Player> playerList = new ArrayList<>(playerColorToPlayerObject.values());
+        PlayerColor newLongestRoadColor = board.calculateLongestRoad(playerList, currentLongestRoadPlayerColor);
+        this.currentLongestRoadPlayerColor = newLongestRoadColor;
     }
 
     public void updateVictoryPoints(PlayerColor color, int amount) {

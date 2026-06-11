@@ -203,7 +203,7 @@ public class BoardHandler {
   }
 
   // Note: Returns SETUP PlayerColor if nobody has achieved longest road yet
-  PlayerColor calculateLongestRoad(List<Player> players, PlayerColor previousWinner) {
+  public PlayerColor calculateLongestRoad(List<Player> players, PlayerColor previousWinner) {
     return boardGraphController.calculateLongestRoad(players, previousWinner);
   }
 
