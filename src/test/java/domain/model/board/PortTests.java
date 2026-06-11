@@ -58,4 +58,20 @@ public class PortTests {
 
     EasyMock.verify(mockBoard, mockPlayer);
   }
+
+  // Test Case 3
+  @Test
+  void PlayerOwnsSecondPortNode_ReturnsTrue() {
+    Port port = new Port(3, Resource.ANY, List.of(0, 3));
+
+    EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
+    EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(false);
+    EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 3)).andReturn(true);
+
+    EasyMock.replay(mockBoard, mockPlayer);
+
+    assertTrue(port.playerCanUsePort(mockBoard, mockPlayer));
+
+    EasyMock.verify(mockBoard, mockPlayer);
+  }
 }
