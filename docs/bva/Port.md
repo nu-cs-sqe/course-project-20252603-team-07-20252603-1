@@ -15,11 +15,11 @@ Step 3:
 - Input: RED, WHITE, ORANGE, BLUE (all the same functionality)
 - Output: True, False
 
-|             | System under test                     | Expected output | Implemented? |
-|-------------|---------------------------------------|-----------------|--------------|
-| Test Case 1 | Player owns neither of the port nodes | false           | x            | 
-| Test Case 2 | Player owns port node 1               | true            | x            |
-| Test Case 3 | Player owns port node 2               | true            | x            |
+|             | System under test                     | Expected output | Implemented?       |
+|-------------|---------------------------------------|-----------------|--------------------|
+| Test Case 1 | Player owns neither of the port nodes | false           | :white_check_mark: | 
+| Test Case 2 | Player owns port node 1               | true            | :white_check_mark: |
+| Test Case 3 | Player owns port node 2               | true            | :white_check_mark: |
 
 
 ### Method under test: `executePortTrade(Player player, BoardHandler board, Resource givingResource, Resource receivingResource)`

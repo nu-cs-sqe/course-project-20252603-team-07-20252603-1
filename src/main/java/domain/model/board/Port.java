@@ -1,7 +1,9 @@
 package domain.model.board;
 
+import domain.model.exceptions.EmptyDeckException;
 import domain.model.player.Player;
 import domain.model.resources.Resource;
+import domain.model.resources.ResourceDeck;
 
 import java.util.List;
 
@@ -41,5 +43,16 @@ public class Port {
       }
     }
     return false;
+  }
+
+  public void executePortTrade(Player player, BoardHandler board,
+                               Resource givingResource, Resource receivingResource,
+                               ResourceDeck givingDeck, ResourceDeck receivingDeck) throws EmptyDeckException {
+    board.checkPlayerOwnsNode(player.getColor(), nodeIds.get(0));
+    player.getResourceCount(givingResource);
+    player.updateResources(givingResource, -tradeRatio);
+    givingDeck.replenish(tradeRatio);
+    receivingDeck.draw();
+    player.updateResources(receivingResource, 1);
   }
 }
