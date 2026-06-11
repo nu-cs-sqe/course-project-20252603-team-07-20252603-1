@@ -240,4 +240,6 @@ public class GameModel {
 
     public void moveRobberAndSteal(){};
 
+    public void attemptPortTrade(){};
+
 }
