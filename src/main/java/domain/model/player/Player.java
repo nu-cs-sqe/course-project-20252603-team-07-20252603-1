@@ -104,5 +104,4 @@ public class Player {
     public int getSettlementCount() {
         return this.numSettlement;
     }
-
 }

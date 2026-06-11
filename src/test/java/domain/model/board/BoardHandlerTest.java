@@ -100,15 +100,15 @@ public class BoardHandlerTest {
     @Test
     void buildSetupRoad_adjacentToOwnedNode_doesNotThrow() {
         boardHandler.buildSetupSettlement(redPlayer, 0);
-        assertDoesNotThrow(() -> boardHandler.buildSetupRoad(redPlayer, 0, 0, 1));
+        assertDoesNotThrow(() -> boardHandler.buildSetupRoad(redPlayer, 0, 0, 4));
     }
 
     @Test
     void addRoad_alreadyClaimedEdge_throwsIllegalEdgeClaim() {
         boardHandler.buildSetupSettlement(redPlayer, 0);
-        boardHandler.buildSetupRoad(redPlayer, 0, 0, 1);
+        boardHandler.buildSetupRoad(redPlayer, 0, 0, 4);
         Exception exception = assertThrows(IllegalEdgeClaim.class,
-                () -> boardHandler.addRoad(bluePlayer, 0, 1));
+                () -> boardHandler.addRoad(bluePlayer, 0, 4));
         assertEquals("Edge already claimed", exception.getMessage());
     }
 }
