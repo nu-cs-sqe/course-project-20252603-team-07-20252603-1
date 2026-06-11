@@ -862,10 +862,14 @@ public class GameModelTests {
         redStateMock.updateVictoryPoints(1);
         EasyMock.expectLastCall();
 
+        EasyMock.replay(redStateMock);
+
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
                 oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
 
         model.updateVictoryPoints(PlayerColor.RED, 1);
+
+        EasyMock.verify(redStateMock);
 
     }
 
@@ -879,10 +883,13 @@ public class GameModelTests {
         orangeStateMock.updateVictoryPoints(2);
         EasyMock.expectLastCall();
 
+        EasyMock.replay(orangeStateMock);
+
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
                 oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
 
-        model.updateVictoryPoints(PlayerColor.ORANGE, 1);
+        model.updateVictoryPoints(PlayerColor.ORANGE, 2);
 
+        EasyMock.verify(orangeStateMock);
     }
 }
