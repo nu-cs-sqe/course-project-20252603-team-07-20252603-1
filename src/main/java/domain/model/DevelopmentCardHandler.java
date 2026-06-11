@@ -16,6 +16,16 @@ import domain.model.resources.Resource;
 
 public class DevelopmentCardHandler {
 
+    private final Random random;
+
+    public DevelopmentCardHandler(Random random) {
+        this.random = random;
+    }
+
+    public DevelopmentCardHandler() {
+        this(new Random());
+    }
+
     public DevelopmentCard buyDevelopmentCard(Player buyer, DevelopmentCardDeck deck, int currentRound) throws EmptyDeckException {
         if (buyer.getResourceCount(Resource.ORE) < 1 ||
             buyer.getResourceCount(Resource.WOOL) < 1 ||
@@ -120,7 +130,7 @@ public class DevelopmentCardHandler {
             for (Map.Entry<Resource, Integer> entry : victim.getResources().entrySet()) {
                 if (entry.getValue() > 0) available.add(entry.getKey());
             }
-            Resource stolen = available.get(new Random().nextInt(available.size()));
+            Resource stolen = available.get(random.nextInt(available.size()));
             victim.updateResources(stolen, -1);
             player.updateResources(stolen, 1);
         }
