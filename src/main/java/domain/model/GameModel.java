@@ -104,6 +104,8 @@ public class GameModel {
 
     public PlayerColor getCurrentPlayerColor() { return this.currentPlayerColor; }
 
+    public void setCurrentPlayerIndex(int newIndex) { this.currentPlayerIndex = newIndex; }
+
     public void setCurrentPlayerColor(PlayerColor color) {
         this.currentPlayerColor = color;
     }
