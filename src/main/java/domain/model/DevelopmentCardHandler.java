@@ -18,7 +18,7 @@ public class DevelopmentCardHandler {
 
     private final Random random;
 
-    public DevelopmentCardHandler(Random random) {
+    DevelopmentCardHandler(Random random) {
         this.random = random;
     }
 
