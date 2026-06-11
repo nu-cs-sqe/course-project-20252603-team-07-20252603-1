@@ -320,8 +320,9 @@ Step 3:
 - Input: Player owns nodes next to number of ports
 - Output: empty collection, contains just one element, contains more than one element, duplicate elements (not feasible), max possible size
 
-|              | System under test                                                            | Expected output                | Implemented? |
-|--------------|------------------------------------------------------------------------------|--------------------------------|--------------|
-| Test Case 58 | RED has settlement on node 23                                                | Returns empty list             | x            |
-| Test Case 59 | ORANGE has settlement on node 0                                              | Returns the one port on node 0 | x            |
-| Test Case 60 | WHITE has claimed 0, 5, 11, 15, 32, 38, and 46 (can maximally claim 7 nodes) | Returns 7 ports                | x            |
+|              | System under test                                                            | Expected output                | Implemented?       |
+|--------------|------------------------------------------------------------------------------|--------------------------------|--------------------|
+| Test Case 58 | RED has settlement on node 23                                                | Returns empty list             | :white_check_mark: |
+| Test Case 59 | ORANGE has settlement on node 0                                              | Returns the one port on node 0 | x                  |
+| Test Case 60 | WHITE has claimed 0, 5, 11, 15, 32, 38, and 46 (can maximally claim 7 nodes) | Returns 7 ports                | x                  |
+

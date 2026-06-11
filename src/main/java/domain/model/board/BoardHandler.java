@@ -54,7 +54,8 @@ public class BoardHandler {
   private BoardHandler(BoardGraphController boardGraphController,
                        List<Hex> hexes, Map<Integer,
                        List<Integer>> nodeIdToHexes,
-                       Robber robber) {
+                       Robber robber,
+                       List<Port> ports) {
     this.boardGraphController = boardGraphController;
     this.hexes = hexes;
     this.nodeIdToHexes = nodeIdToHexes;
@@ -62,6 +63,7 @@ public class BoardHandler {
     this.nodeOwners = new PlayerColor[NUM_NODES];
     Arrays.fill(this.nodeOwners, PlayerColor.SETUP);
     this.robber = robber;
+    this.ports = ports;
   }
 
   /**
@@ -76,8 +78,9 @@ public class BoardHandler {
   public static BoardHandler createForTesting(BoardGraphController boardGraphController,
                                               List<Hex> hexes, Map<Integer,
                                               List<Integer>> nodeIdToHexes,
-                                              Robber robber) {
-    return new BoardHandler(boardGraphController, hexes, nodeIdToHexes, robber);
+                                              Robber robber,
+                                              List<Port> ports) {
+    return new BoardHandler(boardGraphController, hexes, nodeIdToHexes, robber, ports);
   }
 
   public void buildSettlement(Player player, int nodeId) {
@@ -320,7 +323,13 @@ public class BoardHandler {
   }
 
   public List<Port> getAvailablePorts(Player player) {
-
+    List<Port> availablePorts = new ArrayList<>();
+    for (Port port : ports) {
+      if (port.playerCanUsePort(this, player)) {
+        availablePorts.add(port);
+      }
+    }
+    return availablePorts;
   }
 
   public boolean checkEdgeOccupied(int nodeId1, int nodeId2) {
