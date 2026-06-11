@@ -251,9 +251,9 @@ Outputs:
 |             | State of the System  | Expected output           | Implemented?       |
 |-------------|----------------------|---------------------------|--------------------|
 | Test Case 1 | RED, check passes    | RED, END_GAME phase       | :white_check_mark: |
-| Test Case 2 | ORANGE, check passes | ORANGE, END_GAME phase    | :x:                |
+| Test Case 2 | ORANGE, check passes | ORANGE, END_GAME phase    | :white_check_mark: |
 | Test Case 3 | WHITE, check fails   | BLUE, BEFORE_ROLL phase   | :x:                |
 | Test Case 4 | BLUE, check fails    | RED, BEFORE_ROLL phase    | :x:                |
 | Test Case 5 | RED, check fails     | ORANGE, BEFORE_ROLL phase | :x:                |
 | Test Case 6 | ORANGE, check fails  | WHITE, BEFORE_ROLL phase  | :x:                |
-| Test Case 7 | Incorrect game phase |                           |                    |
+| Test Case 7 | Incorrect game phase | IllegalGamePhaseException | :x:                |

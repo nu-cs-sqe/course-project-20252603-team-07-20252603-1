@@ -1060,4 +1060,32 @@ public class GameModelTests {
         assertEquals(PlayerColor.RED, model.getCurrentPlayerColor());
         assertEquals(GamePhase.END_GAME, model.getCurrentPhase());
     }
+
+    @Test
+    void endTurn_OrangeHasEnoughVictoryPoints_ExpectEndGame() {
+        Player redStateMock = EasyMock.createMock(Player.class);
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
+                PlayerColor.RED, redStateMock,
+                PlayerColor.ORANGE, orangeStateMock,
+                PlayerColor.WHITE, whiteStateMock,
+                PlayerColor.BLUE, blueStateMock
+        );
+
+        EasyMock.expect(orangeStateMock.getVictoryPoints()).andReturn(11);
+
+        EasyMock.replay(orangeStateMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        model.setCurrentPlayerColor(PlayerColor.ORANGE);
+        model.endTurn();
+
+        assertEquals(PlayerColor.ORANGE, model.getCurrentPlayerColor());
+        assertEquals(GamePhase.END_GAME, model.getCurrentPhase());
+    }
 }
