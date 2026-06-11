@@ -18,6 +18,7 @@ public class GameModel {
 
     private static final int ROBBER_ROLL_VALUE = 7;
     private static final int MAX_AMOUNT_SETTLEMENTS = 5;
+    private static final int MIN_POINTS_TO_WIN_GAME = 10;
 
     @SuppressFBWarnings(value = "EI_EXPOSE_REP2",
             justification = "BoardHandler is intentionally shared between GameSetupModel and GameModel as it represents the single game board state")
@@ -237,10 +238,12 @@ public class GameModel {
         relevantPlayer.updateVictoryPoints(amount);
     }
 
-    public boolean checkCurrentPlayerHasTenOrMoreVictoryPoints() {
+    public void checkCurrentPlayerHasTenOrMoreVictoryPoints() {
         Player currentPlayer = getCurrentPlayer();
-        currentPlayer.getVictoryPoints();
-        return false;
+        int currentPlayerVictoryPoints = currentPlayer.getVictoryPoints();
+        if (currentPlayerVictoryPoints == MIN_POINTS_TO_WIN_GAME) {
+            setCurrentGamePhase(GamePhase.END_GAME);
+        }
     }
 
     public void attemptTrade(){};

@@ -950,9 +950,7 @@ public class GameModelTests {
 
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
-
-        assertFalse(model.checkCurrentPlayerHasTenOrMoreVictoryPoints());
-
+        model.checkCurrentPlayerHasTenOrMoreVictoryPoints();
         assertEquals(GamePhase.GENERAL_PLAY,model.getCurrentPhase());
 
         EasyMock.verify(redStateMock);
@@ -974,11 +972,32 @@ public class GameModelTests {
 
         model.setCurrentPlayerColor(PlayerColor.WHITE);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
-
-        assertFalse(model.checkCurrentPlayerHasTenOrMoreVictoryPoints());
-
+        model.checkCurrentPlayerHasTenOrMoreVictoryPoints();
         assertEquals(GamePhase.GENERAL_PLAY,model.getCurrentPhase());
 
         EasyMock.verify(whiteStateMock);
+    }
+
+    @Test
+    void checkCurrentPlayer10OrMorePoints_OrangeHas10_ExpectTrue() {
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
+                PlayerColor.ORANGE, orangeStateMock
+        );
+
+        EasyMock.expect(orangeStateMock.getVictoryPoints()).andReturn(10);
+
+        EasyMock.replay(orangeStateMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        model.setCurrentPlayerColor(PlayerColor.ORANGE);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        model.checkCurrentPlayerHasTenOrMoreVictoryPoints();
+
+        assertEquals(GamePhase.END_GAME, model.getCurrentPhase());
+
+        EasyMock.verify(orangeStateMock);
     }
 }

@@ -7,5 +7,6 @@ public enum GamePhase {
     GENERAL_PLAY,
     MONOPOLY_DEV_CARD,
     ROAD_BUILDING_DEV_CARD,
-    OFFERING_TRADE
+    OFFERING_TRADE,
+    END_GAME
 }
