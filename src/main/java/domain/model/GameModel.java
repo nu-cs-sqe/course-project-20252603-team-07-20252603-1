@@ -21,6 +21,7 @@ public class GameModel {
     private static final int MIN_POINTS_TO_WIN_GAME = 10;
     private static final int POINTS_FOR_SETTLEMENT = 1;
     private static final int POINTS_FOR_CITY = 1;
+    private static final int POINTS_FOR_LONGEST_ROAD = 2;
 
     @SuppressFBWarnings(value = "EI_EXPOSE_REP2",
             justification = "BoardHandler is intentionally shared between GameSetupModel and GameModel as it represents the single game board state")
@@ -263,7 +264,12 @@ public class GameModel {
     public void handleLongestRoad() {
         List<Player> playerList = new ArrayList<>(playerColorToPlayerObject.values());
         PlayerColor newLongestRoadColor = board.calculateLongestRoad(playerList, currentLongestRoadPlayerColor);
-        this.currentLongestRoadPlayerColor = newLongestRoadColor;
+        if (newLongestRoadColor != this.currentLongestRoadPlayerColor) {
+            Player playerToAwardPoints = getArbitraryPlayer(newLongestRoadColor);
+            playerToAwardPoints.updateVictoryPoints(POINTS_FOR_LONGEST_ROAD);
+            this.currentLongestRoadPlayerColor = newLongestRoadColor;
+        }
+
     }
 
     public void updateVictoryPoints(PlayerColor color, int amount) {
