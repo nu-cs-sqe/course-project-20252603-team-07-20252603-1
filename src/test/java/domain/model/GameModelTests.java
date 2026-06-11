@@ -9,6 +9,8 @@ import domain.model.resources.ResourceDeck;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -1211,5 +1213,38 @@ public class GameModelTests {
         assertEquals(GamePhase.BEFORE_ROLL, model.getCurrentPhase());
 
         EasyMock.verify(orangeStateMock);
+    }
+    @ParameterizedTest
+    @EnumSource(value = GamePhase.class, names = {
+            "BEFORE_ROLL",
+            "RESOURCE_PRODUCTION",
+            "MOVE_ROBBER",
+            "MONOPOLY_DEV_CARD",
+            "ROAD_BUILDING_DEV_CARD",
+            "OFFERING_TRADE"})
+    void endTurn_WrongPhase_ExpectError(GamePhase phase) {
+        Player redStateMock = EasyMock.createMock(Player.class);
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        List<Player> playerList = List.of(redStateMock, orangeStateMock, whiteStateMock, blueStateMock);
+        BoardHandler boardStub = EasyMock.createNiceMock(BoardHandler.class);
+
+        EasyMock.expect(redStateMock.getColor()).andReturn(PlayerColor.RED);
+        EasyMock.expect(orangeStateMock.getColor()).andReturn(PlayerColor.ORANGE);
+        EasyMock.expect(whiteStateMock.getColor()).andReturn(PlayerColor.WHITE);
+        EasyMock.expect(blueStateMock.getColor()).andReturn(PlayerColor.BLUE);
+
+        GameModel model = new GameModel(playerList, boardStub);
+
+        model.setCurrentGamePhase(phase);
+        model.setCurrentPlayerColor(PlayerColor.ORANGE);
+        model.setCurrentPlayerIndex(1);
+        Exception exception = assertThrows(IllegalGamePhaseException.class,
+            model::endTurn);
+
+        assertEquals("Not proper phase for that action", exception.getMessage());
+        assertEquals(PlayerColor.ORANGE, model.getCurrentPlayerColor());
+        assertEquals(phase, model.getCurrentPhase());
     }
 }

@@ -256,4 +256,4 @@ Outputs:
 | Test Case 4 | BLUE, check fails    | RED, BEFORE_ROLL phase    | :white_check_mark: |
 | Test Case 5 | RED, check fails     | ORANGE, BEFORE_ROLL phase | :white_check_mark: |
 | Test Case 6 | ORANGE, check fails  | WHITE, BEFORE_ROLL phase  | :white_check_mark: |
-| Test Case 7 | Incorrect game phase | IllegalGamePhaseException | :x:                |
+| Test Case 7 | Incorrect game phase | IllegalGamePhaseException | :white_check_mark: |
