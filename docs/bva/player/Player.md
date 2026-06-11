@@ -132,7 +132,7 @@ Output
 | Test Case 4 | 10 starting points,loses 2    | player has 8 points  | :white_check_mark: |
 | Test Case 5 | 11 starting points, loses 2   | player has 9 points  | :white_check_mark: |
 | Test Case 6 | 9 starting points, receives 2 | player has 11 points | :white_check_mark: |
-| Test Case 7 | 2 starting points, loses 2    | player has 0 points  | :x:                |
+| Test Case 7 | 2 starting points, loses 2    | player has 0 points  | :white_check_mark: |
 
 
 ---
