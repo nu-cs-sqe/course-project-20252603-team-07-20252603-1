@@ -102,10 +102,24 @@ public class GameModel {
         return playerColorToPlayerObject.get(currentPlayerColor);
     }
 
+    public PlayerColor getCurrentPlayerColor() { return this.currentPlayerColor; }
+
     public void setCurrentPlayerColor(PlayerColor color) {
         this.currentPlayerColor = color;
     }
 
+    public void endTurn() {
+        checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY);
+        checkCurrentPlayerHasTenOrMoreVictoryPoints();
+        if (getCurrentPhase() == GamePhase.END_GAME) {
+            return;
+        }
+        else {
+            advanceToNextPlayer();
+            setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+        }
+
+    }
     public void advanceToNextPlayer() {
         currentPlayerIndex = (currentPlayerIndex + 1) % playerColors.size();
         currentPlayerColor = playerColors.get(currentPlayerIndex);
@@ -180,11 +194,6 @@ public class GameModel {
         return currentGamePhase;
     }
 
-    public void endTurn() {
-        checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY);
-        advanceToNextPlayer();
-        currentGamePhase = GamePhase.BEFORE_ROLL;
-    }
 
     private void checkCurrentGamePhaseMatches(GamePhase... expectedGamePhaseOptions) {
         for (GamePhase allowedPhase : expectedGamePhaseOptions) {

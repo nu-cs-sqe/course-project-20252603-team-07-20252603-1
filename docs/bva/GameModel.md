@@ -231,3 +231,29 @@ Outputs:
 | Test Case 2 | White has 9 points   | GamePhase stays the same   | :white_check_mark: |
 | Test Case 3 | Orange has 10 points | GamePhase switches to end  | :white_check_mark: |
 | Test Case 4 | Blue has 11 points   | GamePhase switches to end  | :white_check_mark: |
+
+### Method under test: `endTurn()`
+
+Ends the current player's turn
+
+Inputs:
+- State of Game, 
+  - if checkCurrentPlayerHasTenOrMoreVictoryPoints() passes and GamePhase is in END_GAME, phase stays in end_game and currentPlayerColor Stays the same
+  - else, gamePhase switches to BEFORE_ROLL, currentPlayerColor changes
+  - Collection of players RED -> ORANGE -> WHITE -> BLUE
+  - GamePhase needs to start in GENERAL_PLAY
+
+Outputs:
+- GamePhase -> END_GAME or BEFORE_ROLL
+- currentPlayerColor -> stays the same, changes (RED, ORANGE, WHITE, BLUE)
+- IllegalGamePhaseException
+
+|             | State of the System  | Expected output           | Implemented?       |
+|-------------|----------------------|---------------------------|--------------------|
+| Test Case 1 | RED, check passes    | RED, END_GAME phase       | :white_check_mark: |
+| Test Case 2 | ORANGE, check passes | ORANGE, END_GAME phase    | :x:                |
+| Test Case 3 | WHITE, check fails   | BLUE, BEFORE_ROLL phase   | :x:                |
+| Test Case 4 | BLUE, check fails    | RED, BEFORE_ROLL phase    | :x:                |
+| Test Case 5 | RED, check fails     | ORANGE, BEFORE_ROLL phase | :x:                |
+| Test Case 6 | ORANGE, check fails  | WHITE, BEFORE_ROLL phase  | :x:                |
+| Test Case 7 | Incorrect game phase |                           |                    |
