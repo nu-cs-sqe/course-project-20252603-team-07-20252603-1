@@ -28,6 +28,7 @@ public class Player {
     private int numSettlement;
     private boolean hasPlayedDevCardThisTurn = false;
     private int knightCount = 0;
+    private int numVictoryPoints;
 
     public Player(String name, PlayerColor color) {
         this.settlements = new ArrayList<>();
@@ -37,6 +38,7 @@ public class Player {
         this.color = color;
         this.name = name;
         this.numSettlement = 0;
+        this.numVictoryPoints = 0;
     }
 
     public Map<Resource, Integer> getResources() {
@@ -148,4 +150,13 @@ public class Player {
         return knightCount;
     }
 
-} 
+
+    public void updateVictoryPoints(int amount) {
+        this.numVictoryPoints += amount;
+    }
+
+    public int getVictoryPoints() {
+        return this.numVictoryPoints;
+    }
+}
+ 

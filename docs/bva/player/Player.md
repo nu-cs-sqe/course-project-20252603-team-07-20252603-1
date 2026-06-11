@@ -106,3 +106,33 @@ Step 3:
 | Test Case 11 | resources = {WOOL: 0} (just below lower boundary)       | IllegalArgumentException: "Resource quantity must be at least 1." | :white_check_mark: |
 | Test Case 12 | resources = {LUMBER: 5, BRICK: 3} (more than one entry) | player's LUMBER count increases by 5 and BRICK count increases by 3 | :white_check_mark: |
 | Test Case 13 | resources = {DESERT: 1} (invalid resource type)         | IllegalArgumentException: "Cannot receive DESERT as a resource."  | :white_check_mark: |
+
+
+---
+
+### Method under test: `updateVictoryPoints(int amount)`
+
+Inputs:
+- Amount -> integer -> Cases
+  - 1 -> VP devcard, player builds a settlement, player builds a city
+  - 2 -> longest road, largest army
+  - -2 -> losing longest road, losing largest army
+- State of Player -> How many VPs they have -> [0, 10]
+
+Output
+- Updated player state -> amount of VPs -> [0, 10]
+  - Since players can only lose VPs in the scenario once they've gained them (i.e. losing longest road) it is not feasible that a player's points would ever be negative
+
+
+|             | System under test             | Expected output      | Implemented?       |
+|-------------|-------------------------------|----------------------|--------------------|
+| Test Case 1 | 0 starting points, receives 1 | player has 1 point   | :white_check_mark: |
+| Test Case 2 | 0 starting points, receives 2 | player has 2 points  | :white_check_mark: |
+| Test Case 3 | 8 starting points, receives 2 | player has 10 points | :white_check_mark: |
+| Test Case 4 | 10 starting points,loses 2    | player has 8 points  | :white_check_mark: |
+| Test Case 5 | 11 starting points, loses 2   | player has 9 points  | :white_check_mark: |
+| Test Case 6 | 9 starting points, receives 2 | player has 11 points | :white_check_mark: |
+| Test Case 7 | 2 starting points, loses 2    | player has 0 points  | :white_check_mark: |
+
+
+---
