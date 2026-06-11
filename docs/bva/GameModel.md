@@ -224,10 +224,11 @@ Inputs:
 
 Outputs:
 - Boolean
+- Change of Game Phase to GamePhase.END_GAME
 
-|             | State of the System  | Expected output | Implemented?       |
-|-------------|----------------------|-----------------|--------------------|
-| Test Case 1 | Red has 0 points     | False           | :white_check_mark: |
-| Test Case 2 | White has 9 points   | False           | :x:                |
-| Test Case 3 | Orange has 10 points | True            | :x:                |
-| Test Case 4 | Blue has 11 points   | True            | :x:                |
+|             | State of the System  | Expected output                                       | Implemented?       |
+|-------------|----------------------|-------------------------------------------------------|--------------------|
+| Test Case 1 | Red has 0 points     | False, color stays as Setup, GamePhase stays the same | :white_check_mark: |
+| Test Case 2 | White has 9 points   | False, color stays as Setup, GamePhase stays the same | :white_check_mark: |
+| Test Case 3 | Orange has 10 points | True, GamePhase switches to end                       | :x:                |
+| Test Case 4 | Blue has 11 points   | True,  GamePhase switches to end                      | :x:                |
