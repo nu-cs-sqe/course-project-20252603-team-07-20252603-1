@@ -8,19 +8,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class EmptyDeckExceptionTest {
 
-    @Test
-    void testExceptionMessageIsPreserved() {
-        String message = "Test exception message";
-        EmptyDeckException exception = new EmptyDeckException(message);
+  @Test
+  void testExceptionMessageIsPreserved() {
+    String message = "Test exception message";
+    EmptyDeckException exception = new EmptyDeckException(message);
 
-        assertEquals(message, exception.getMessage());
-    }
+    assertEquals(message, exception.getMessage());
+  }
 
-    @Test
-    void testExceptionCanBeThrown() {
-        Exception exception = assertThrows(EmptyDeckException.class, () -> {
-            throw new EmptyDeckException("Cannot draw card");
-        });
-        assertEquals("Cannot draw card", exception.getMessage());
-    }
+  @Test
+  void testExceptionCanBeThrown() {
+    Exception exception = assertThrows(EmptyDeckException.class, () -> {
+      throw new EmptyDeckException("Cannot draw card");
+    });
+    assertEquals("Cannot draw card", exception.getMessage());
+  }
 }

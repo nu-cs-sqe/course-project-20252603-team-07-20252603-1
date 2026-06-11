@@ -1368,7 +1368,7 @@ public class BoardHandlerTests {
     BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
 
     Exception exception = assertThrows(IllegalSettlementPlacementException.class, () ->
-        b.buildSettlement(mockRedPlayer, 0)
+            b.buildSettlement(mockRedPlayer, 0)
     );
     assertEquals("Node already claimed", exception.getMessage());
 
@@ -1382,7 +1382,7 @@ public class BoardHandlerTests {
 
     mockBoardGraphController.playerClaimStoredNode(PlayerColor.RED, 0);
     EasyMock.expectLastCall().andThrow(
-        new IllegalSettlementPlacementException("Can not claim node adjacent to node already claimed")
+            new IllegalSettlementPlacementException("Can not claim node adjacent to node already claimed")
     );
 
     EasyMock.replay(mockBoardGraphController, mockRedPlayer);
@@ -1390,7 +1390,7 @@ public class BoardHandlerTests {
     BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
 
     Exception exception = assertThrows(IllegalSettlementPlacementException.class, () ->
-        b.buildSettlement(mockRedPlayer, 0)
+            b.buildSettlement(mockRedPlayer, 0)
     );
     assertEquals("Can not claim node adjacent to node already claimed", exception.getMessage());
 
@@ -1410,7 +1410,7 @@ public class BoardHandlerTests {
     BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
 
     Exception exception = assertThrows(IllegalEdgeClaim.class, () ->
-        b.addRoad(mockRedPlayer, 0, 1)
+            b.addRoad(mockRedPlayer, 0, 1)
     );
     assertEquals("Edge already claimed", exception.getMessage());
 
@@ -1430,7 +1430,7 @@ public class BoardHandlerTests {
     BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
 
     Exception exception = assertThrows(IllegalEdgeClaim.class, () ->
-        b.addRoad(mockRedPlayer, 0, 1)
+            b.addRoad(mockRedPlayer, 0, 1)
     );
     assertEquals("Edge must be adjacent to an owned structure", exception.getMessage());
 

@@ -1,9 +1,9 @@
 package domain.model.player;
 
 public enum PlayerColor {
-    SETUP,
-    RED,
-    BLUE,
-    ORANGE,
-    WHITE
+  SETUP,
+  RED,
+  BLUE,
+  ORANGE,
+  WHITE
 }

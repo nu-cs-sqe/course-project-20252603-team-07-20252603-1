@@ -3,16 +3,16 @@ package domain.model.game_pieces;
 import java.util.Random;
 
 class Die {
-    private static final int DIE_SIDES_NUMBER = 6;
+  private static final int DIE_SIDES_NUMBER = 6;
 
-    private final Random randomizer;
+  private final Random randomizer;
 
-    Die(Random randomizer) {
-        this.randomizer = randomizer;
-    }
+  Die(Random randomizer) {
+    this.randomizer = randomizer;
+  }
 
-    // Need to add 1 to result of nextInt, returns in range of [0, bound)
-    int rollOneDie(){
-        return randomizer.nextInt(DIE_SIDES_NUMBER) + 1;
-    }
+  // Need to add 1 to result of nextInt, returns in range of [0, bound)
+  int rollOneDie() {
+    return randomizer.nextInt(DIE_SIDES_NUMBER) + 1;
+  }
 }

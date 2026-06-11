@@ -20,57 +20,57 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 class GameLoopControllerTest {
 
-    private GameLoopController controller;
-    private GameModel mockModel;
+  private GameLoopController controller;
+  private GameModel mockModel;
 
-    @BeforeEach
-    void setUp() {
-        controller = new GameLoopController();
-        mockModel = createMock(GameModel.class);
-    }
+  @BeforeEach
+  void setUp() {
+    controller = new GameLoopController();
+    mockModel = createMock(GameModel.class);
+  }
 
-    @Test
-    void testGetCurrentPlayerDelegatesToModel() {
-        Player expected = new Player("Alice", PlayerColor.RED);
-        expect(mockModel.getCurrentPlayer()).andReturn(expected);
-        replay(mockModel);
+  @Test
+  void testGetCurrentPlayerDelegatesToModel() {
+    Player expected = new Player("Alice", PlayerColor.RED);
+    expect(mockModel.getCurrentPlayer()).andReturn(expected);
+    replay(mockModel);
 
-        assertSame(expected, controller.getCurrentPlayer(mockModel));
+    assertSame(expected, controller.getCurrentPlayer(mockModel));
 
-        verify(mockModel);
-    }
+    verify(mockModel);
+  }
 
-    @Test
-    void testGetCurrentPlayerIndexDelegatesToModel() {
-        expect(mockModel.getCurrentPlayerIndex()).andReturn(2);
-        replay(mockModel);
+  @Test
+  void testGetCurrentPlayerIndexDelegatesToModel() {
+    expect(mockModel.getCurrentPlayerIndex()).andReturn(2);
+    replay(mockModel);
 
-        assertEquals(2, controller.getCurrentPlayerIndex(mockModel));
+    assertEquals(2, controller.getCurrentPlayerIndex(mockModel));
 
-        verify(mockModel);
-    }
+    verify(mockModel);
+  }
 
-    @Test
-    void testEndTurnDelegatesToModel() {
-        mockModel.endTurn();
-        expectLastCall();
-        replay(mockModel);
+  @Test
+  void testEndTurnDelegatesToModel() {
+    mockModel.endTurn();
+    expectLastCall();
+    replay(mockModel);
 
-        controller.endTurn(mockModel);
+    controller.endTurn(mockModel);
 
-        verify(mockModel);
-    }
+    verify(mockModel);
+  }
 
-    @Test
-    void testRollDiceAndDistributeReturnsRollerValue() {
-        DiceHandler mockRoller = createMock(DiceHandler.class);
-        expect(mockRoller.rollTwoDice()).andReturn(8);
-        mockModel.performTurn(8);
-        expectLastCall();
-        replay(mockRoller, mockModel);
+  @Test
+  void testRollDiceAndDistributeReturnsRollerValue() {
+    DiceHandler mockRoller = createMock(DiceHandler.class);
+    expect(mockRoller.rollTwoDice()).andReturn(8);
+    mockModel.performTurn(8);
+    expectLastCall();
+    replay(mockRoller, mockModel);
 
-        assertEquals(8, controller.rollDiceAndDistribute(mockModel, mockRoller));
+    assertEquals(8, controller.rollDiceAndDistribute(mockModel, mockRoller));
 
-        verify(mockRoller, mockModel);
-    }
+    verify(mockRoller, mockModel);
+  }
 }

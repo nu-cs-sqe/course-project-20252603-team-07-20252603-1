@@ -13,192 +13,192 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class PlayerTests {
 
-    // --- placeSettlement: BVA settlement count boundary ---
+  // --- placeSettlement: BVA settlement count boundary ---
 
-    @Test // test case 1
-    public void PlaceSettlement_ZeroExisting_ExpectLenOne() {
-        final int expectedNumSettlements = 1;
+  @Test // test case 1
+  public void PlaceSettlement_ZeroExisting_ExpectLenOne() {
+    final int expectedNumSettlements = 1;
 
-        Player player = new Player("Dummy", PlayerColor.BLUE);
-        player.placeSettlement();
+    Player player = new Player("Dummy", PlayerColor.BLUE);
+    player.placeSettlement();
 
-        assertEquals(
+    assertEquals(
             expectedNumSettlements,
             player.getSettlements().size(),
             "expected: settlement appended to player's settlements list"
-        );
+    );
+  }
+
+  @Test // test case 2
+  public void PlaceSettlement_FourExisting_ExpectLenFive() {
+    final int expectedNumSettlements = 5;
+
+    Player player = new Player("Dummy", PlayerColor.BLUE);
+    for (int i = 0; i < 4; i++) {
+      player.placeSettlement();
     }
 
-    @Test // test case 2
-    public void PlaceSettlement_FourExisting_ExpectLenFive() {
-        final int expectedNumSettlements = 5;
+    player.placeSettlement();
 
-        Player player = new Player("Dummy", PlayerColor.BLUE);
-        for (int i = 0; i < 4; i++) {
-            player.placeSettlement();
-        }
-
-        player.placeSettlement();
-
-        assertEquals(
+    assertEquals(
             expectedNumSettlements,
             player.getSettlements().size(),
             "expected: fifth settlement appended to player's settlements list"
-        );
+    );
+  }
+
+  @Test // test case 3
+  public void PlaceSettlement_FiveExisting_ExpectError() {
+    Player player = new Player("Dummy", PlayerColor.BLUE);
+    for (int i = 0; i < 5; i++) {
+      player.placeSettlement();
     }
 
-    @Test // test case 3
-    public void PlaceSettlement_FiveExisting_ExpectError() {
-        Player player = new Player("Dummy", PlayerColor.BLUE);
-        for (int i = 0; i < 5; i++) {
-            player.placeSettlement();
-        }
+    IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
+      player.placeSettlement();
+    });
+    assertEquals("No settlements remaining.", exception.getMessage());
+  }
 
-        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
-            player.placeSettlement();
-        });
-        assertEquals("No settlements remaining.", exception.getMessage());
-    }
+  // --- placeRoad: BVA road count boundary ---
 
-    // --- placeRoad: BVA road count boundary ---
+  @Test // test case 4
+  public void PlaceRoad_ZeroExisting_ExpectLenOne() {
+    final int expectedNumRoads = 1;
 
-    @Test // test case 4
-    public void PlaceRoad_ZeroExisting_ExpectLenOne() {
-        final int expectedNumRoads = 1;
+    Player player = new Player("Dummy", PlayerColor.BLUE);
+    player.placeRoad();
 
-        Player player = new Player("Dummy", PlayerColor.BLUE);
-        player.placeRoad();
-
-        assertEquals(
+    assertEquals(
             expectedNumRoads,
             player.getRoads().size(),
             "expected: road appended to player's roads list"
-        );
+    );
+  }
+
+  @Test // test case 5
+  public void PlaceRoad_FourteenExisting_ExpectLenFifteen() {
+    final int expectedNumRoads = 15;
+
+    Player player = new Player("Dummy", PlayerColor.BLUE);
+    for (int i = 0; i < 14; i++) {
+      player.placeRoad();
     }
 
-    @Test // test case 5
-    public void PlaceRoad_FourteenExisting_ExpectLenFifteen() {
-        final int expectedNumRoads = 15;
+    player.placeRoad();
 
-        Player player = new Player("Dummy", PlayerColor.BLUE);
-        for (int i = 0; i < 14; i++) {
-            player.placeRoad();
-        }
-
-        player.placeRoad();
-
-        assertEquals(
+    assertEquals(
             expectedNumRoads,
             player.getRoads().size(),
             "expected: fifteenth road appended to player's roads list"
-        );
+    );
+  }
+
+  @Test // test case 6
+  public void PlaceRoad_FifteenExisting_ExpectError() {
+    Player player = new Player("Dummy", PlayerColor.BLUE);
+    for (int i = 0; i < 15; i++) {
+      player.placeRoad();
     }
 
-    @Test // test case 6
-    public void PlaceRoad_FifteenExisting_ExpectError() {
-        Player player = new Player("Dummy", PlayerColor.BLUE);
-        for (int i = 0; i < 15; i++) {
-            player.placeRoad();
-        }
+    IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
+      player.placeRoad();
+    });
+    assertEquals("No roads remaining.", exception.getMessage());
+  }
 
-        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
-            player.placeRoad();
-        });
-        assertEquals("No roads remaining.", exception.getMessage());
-    }
+  // --- receiveResources ---
 
-    // --- receiveResources ---
+  @Test // test case 7
+  public void ReceiveResources_NullResources_ExpectError() {
+    Player player = new Player("Dummy", PlayerColor.BLUE);
 
-    @Test // test case 7
-    public void ReceiveResources_NullResources_ExpectError() {
-        Player player = new Player("Dummy", PlayerColor.BLUE);
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+            player.receiveResources(null)
+    );
+    assertEquals("Resources cannot be null.", exception.getMessage());
+  }
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
-                player.receiveResources(null)
-        );
-        assertEquals("Resources cannot be null.", exception.getMessage());
-    }
+  @Test // test case 8
+  public void ReceiveResources_EmptyMap_ExpectResourcesUnchanged() {
+    Map<Resource, Integer> emptyResources = new HashMap<>();
 
-    @Test // test case 8
-    public void ReceiveResources_EmptyMap_ExpectResourcesUnchanged() {
-        Map<Resource, Integer> emptyResources = new HashMap<>();
+    Player player = new Player("Dummy", PlayerColor.BLUE);
+    player.receiveResources(emptyResources);
 
-        Player player = new Player("Dummy", PlayerColor.BLUE);
-        player.receiveResources(emptyResources);
+    assertEquals(0, player.getResources().size(), "expected: player's resources map unchanged");
+  }
 
-        assertEquals(0, player.getResources().size(), "expected: player's resources map unchanged");
-    }
+  @Test // test case 9
+  public void ReceiveResources_WoodOneAtLowerBoundary_ExpectWoodCountIncreasedByOne() {
+    final int expectedWoodCount = 1;
 
-    @Test // test case 9
-    public void ReceiveResources_WoodOneAtLowerBoundary_ExpectWoodCountIncreasedByOne() {
-        final int expectedWoodCount = 1;
+    Map<Resource, Integer> resources = new HashMap<>();
+    resources.put(Resource.LUMBER, 1);
 
-        Map<Resource, Integer> resources = new HashMap<>();
-        resources.put(Resource.LUMBER, 1);
+    Player player = new Player("Dummy", PlayerColor.BLUE);
+    player.receiveResources(resources);
 
-        Player player = new Player("Dummy", PlayerColor.BLUE);
-        player.receiveResources(resources);
+    assertEquals(expectedWoodCount, player.getResources().get(Resource.LUMBER),
+            "expected: player's LUMBER count increases by 1");
+  }
 
-        assertEquals(expectedWoodCount, player.getResources().get(Resource.LUMBER),
-                "expected: player's LUMBER count increases by 1");
-    }
+  @Test // test case 10
+  public void ReceiveResources_BrickNineteenAtUpperBoundary_ExpectBrickCountIncreasedByNineteen() {
+    final int expectedBrickCount = 19;
 
-    @Test // test case 10
-    public void ReceiveResources_BrickNineteenAtUpperBoundary_ExpectBrickCountIncreasedByNineteen() {
-        final int expectedBrickCount = 19;
+    Map<Resource, Integer> resources = new HashMap<>();
+    resources.put(Resource.BRICK, 19);
 
-        Map<Resource, Integer> resources = new HashMap<>();
-        resources.put(Resource.BRICK, 19);
+    Player player = new Player("Dummy", PlayerColor.BLUE);
+    player.receiveResources(resources);
 
-        Player player = new Player("Dummy", PlayerColor.BLUE);
-        player.receiveResources(resources);
+    assertEquals(expectedBrickCount, player.getResources().get(Resource.BRICK),
+            "expected: player's BRICK count increases by 19");
+  }
 
-        assertEquals(expectedBrickCount, player.getResources().get(Resource.BRICK),
-                "expected: player's BRICK count increases by 19");
-    }
+  @Test // test case 11
+  public void ReceiveResources_SheepZeroBelowLowerBoundary_ExpectError() {
+    Map<Resource, Integer> resources = new HashMap<>();
+    resources.put(Resource.WOOL, 0);
 
-    @Test // test case 11
-    public void ReceiveResources_SheepZeroBelowLowerBoundary_ExpectError() {
-        Map<Resource, Integer> resources = new HashMap<>();
-        resources.put(Resource.WOOL, 0);
+    Player player = new Player("Dummy", PlayerColor.BLUE);
 
-        Player player = new Player("Dummy", PlayerColor.BLUE);
-
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
-                player.receiveResources(resources)
-        );
-        assertEquals("Resource quantity must be at least 1.", exception.getMessage());
-    }
-
-    @Test // test case 12
-    public void ReceiveResources_WoodFiveAndBrickThreeMoreThanOneEntry_ExpectBothCountsIncreased() {
-        final int expectedWoodCount = 5;
-        final int expectedBrickCount = 3;
-
-        Map<Resource, Integer> resources = new HashMap<>();
-        resources.put(Resource.LUMBER, expectedWoodCount);
-        resources.put(Resource.BRICK, expectedBrickCount);
-
-        Player player = new Player("Dummy", PlayerColor.BLUE);
-        player.receiveResources(resources);
-
-        assertEquals(expectedWoodCount, player.getResources().get(Resource.LUMBER),
-                "expected: player's LUMBER count increases by 5");
-        assertEquals(expectedBrickCount, player.getResources().get(Resource.BRICK),
-                "expected: player's BRICK count increases by 3");
-    }
-
-    @Test // test case 13
-    public void ReceiveResources_DesertOneInvalidResourceType_ExpectError() {
-        Map<Resource, Integer> resources = new HashMap<>();
-        resources.put(Resource.DESERT, 1);
-
-        Player player = new Player("Dummy", PlayerColor.BLUE);
-
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
             player.receiveResources(resources)
-        );
-        assertEquals("Cannot receive DESERT as a resource.", exception.getMessage());
-    }
+    );
+    assertEquals("Resource quantity must be at least 1.", exception.getMessage());
+  }
+
+  @Test // test case 12
+  public void ReceiveResources_WoodFiveAndBrickThreeMoreThanOneEntry_ExpectBothCountsIncreased() {
+    final int expectedWoodCount = 5;
+    final int expectedBrickCount = 3;
+
+    Map<Resource, Integer> resources = new HashMap<>();
+    resources.put(Resource.LUMBER, expectedWoodCount);
+    resources.put(Resource.BRICK, expectedBrickCount);
+
+    Player player = new Player("Dummy", PlayerColor.BLUE);
+    player.receiveResources(resources);
+
+    assertEquals(expectedWoodCount, player.getResources().get(Resource.LUMBER),
+            "expected: player's LUMBER count increases by 5");
+    assertEquals(expectedBrickCount, player.getResources().get(Resource.BRICK),
+            "expected: player's BRICK count increases by 3");
+  }
+
+  @Test // test case 13
+  public void ReceiveResources_DesertOneInvalidResourceType_ExpectError() {
+    Map<Resource, Integer> resources = new HashMap<>();
+    resources.put(Resource.DESERT, 1);
+
+    Player player = new Player("Dummy", PlayerColor.BLUE);
+
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+            player.receiveResources(resources)
+    );
+    assertEquals("Cannot receive DESERT as a resource.", exception.getMessage());
+  }
 
 }

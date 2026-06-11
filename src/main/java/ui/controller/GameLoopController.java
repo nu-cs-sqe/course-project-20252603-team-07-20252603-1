@@ -9,26 +9,26 @@ import domain.model.resources.Resource;
 
 public class GameLoopController {
 
-    public Player getCurrentPlayer(GameModel model) {
-        return model.getCurrentPlayer();
-    }
+  public Player getCurrentPlayer(GameModel model) {
+    return model.getCurrentPlayer();
+  }
 
-    public int getCurrentPlayerIndex(GameModel model) {
-        return model.getCurrentPlayerIndex();
-    }
+  public int getCurrentPlayerIndex(GameModel model) {
+    return model.getCurrentPlayerIndex();
+  }
 
-    public int getResourceCount(GameModel model, PlayerColor color, Resource type) {
-        Player playerOfInterest = model.getArbitraryPlayer(color);
-        return playerOfInterest.getResourceCount(type);
-    }
+  public int getResourceCount(GameModel model, PlayerColor color, Resource type) {
+    Player playerOfInterest = model.getArbitraryPlayer(color);
+    return playerOfInterest.getResourceCount(type);
+  }
 
-    public int rollDiceAndDistribute(GameModel model, DiceHandler roller) {
-        int roll = roller.rollTwoDice();
-        model.performTurn(roll);
-        return roll;
-    }
+  public int rollDiceAndDistribute(GameModel model, DiceHandler roller) {
+    int roll = roller.rollTwoDice();
+    model.performTurn(roll);
+    return roll;
+  }
 
-    public void endTurn(GameModel model) {
-        model.endTurn();
-    }
+  public void endTurn(GameModel model) {
+    model.endTurn();
+  }
 }

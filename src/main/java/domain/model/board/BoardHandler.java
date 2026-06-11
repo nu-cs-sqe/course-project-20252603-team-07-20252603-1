@@ -51,7 +51,7 @@ public class BoardHandler {
   // private constructor for testing
   private BoardHandler(BoardGraphController boardGraphController,
                        List<Hex> hexes, Map<Integer,
-                       List<Integer>> nodeIdToHexes,
+                  List<Integer>> nodeIdToHexes,
                        Robber robber) {
     this.boardGraphController = boardGraphController;
     this.hexes = hexes;
@@ -66,14 +66,14 @@ public class BoardHandler {
    * Creates a BoardHandler with injected dependencies for testing.
    *
    * @param boardGraphController the board graph controller
-   * @param hexes the list of hexes
-   * @param nodeIdToHexes mapping of node IDs to adjacent hex IDs
-   * @param robber the robber
+   * @param hexes                the list of hexes
+   * @param nodeIdToHexes        mapping of node IDs to adjacent hex IDs
+   * @param robber               the robber
    * @return a new BoardHandler instance
    */
   public static BoardHandler createForTesting(BoardGraphController boardGraphController,
                                               List<Hex> hexes, Map<Integer,
-                                              List<Integer>> nodeIdToHexes,
+                  List<Integer>> nodeIdToHexes,
                                               Robber robber) {
     return new BoardHandler(boardGraphController, hexes, nodeIdToHexes, robber);
   }
