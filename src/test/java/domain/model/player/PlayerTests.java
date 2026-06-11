@@ -201,4 +201,13 @@ public class PlayerTests {
         assertEquals("Cannot receive DESERT as a resource.", exception.getMessage());
     }
 
+    // updateVictoryPoints() Tests
+    @Test
+    void updateVictoryPoints_PlayerHas0_Receives1_ExpectPlayerHas1() {
+        Player player = new Player("Spencer", PlayerColor.RED);
+        assertEquals(0, player.getVictoryPoints());
+        player.updateVictoryPoints(1);
+        assertEquals(1, player.getVictoryPoints());
+    }
+
 }
