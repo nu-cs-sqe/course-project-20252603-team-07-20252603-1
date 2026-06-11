@@ -103,7 +103,7 @@ public class F3Tests {
     b.buildSetupSettlement(redPlayer, 0);
 
     Exception exception = assertThrows(AdjacentNodeAlreadyClaimed.class, () ->
-            b.buildSetupSettlement(bluePlayer, 1));
+            b.buildSetupSettlement(bluePlayer, 3));
 
     assertEquals("Can not claim node adjacent to node already claimed", exception.getMessage());
   }
