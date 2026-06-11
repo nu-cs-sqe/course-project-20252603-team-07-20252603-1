@@ -230,7 +230,12 @@ public class GameModel {
         oreDeck.replenish(3);
         reducePlayerResources(currentPlayerColor, Resource.GRAIN, 2);
         grainDeck.replenish(2);
-    };
+    }
+
+    public void updateVictoryPoints(PlayerColor color, int amount) {
+        Player relevantPlayer = getArbitraryPlayer(color);
+        relevantPlayer.updateVictoryPoints(amount);
+    }
 
     public void attemptTrade(){};
 

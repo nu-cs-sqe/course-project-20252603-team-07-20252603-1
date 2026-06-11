@@ -64,11 +64,11 @@ Step 3:
 
 - phase: GENERAL_PLAY; BEFORE_ROLL (invalid); MOVE_ROBBER (invalid)
 
-|             | State of the System                                             | Expected output                                          | Implemented?       |
-|-------------|-----------------------------------------------------------------|----------------------------------------------------------|--------------------|
+|             | State of the System                                            | Expected output                                          | Implemented?       |
+|-------------|----------------------------------------------------------------|----------------------------------------------------------|--------------------|
 | Test Case 6 | GENERAL_PLAY, two players (Alice → Bob)                        | phase = BEFORE_ROLL; current player advances to Bob      | :white_check_mark: |
-| Test Case 7 | BEFORE_ROLL                                                     | IllegalGamePhaseException                                | :white_check_mark: |
-| Test Case 8 | MOVE_ROBBER                                                     | IllegalGamePhaseException                                | :white_check_mark: |
+| Test Case 7 | BEFORE_ROLL                                                    | IllegalGamePhaseException                                | :white_check_mark: |
+| Test Case 8 | MOVE_ROBBER                                                    | IllegalGamePhaseException                                | :white_check_mark: |
 
 ---
 
@@ -100,19 +100,19 @@ Step 3:
 - Lumber (third checked): 0 (below cost, brick & grain already ≥ 1); 1 (at cost)
 - Wool (fourth checked): 0 (below cost, brick/grain/lumber already ≥ 1); 1 (at cost)
 
-|              | State of the System                                                             | Expected output                                       | Implemented?       |
-|--------------|---------------------------------------------------------------------------------|-------------------------------------------------------|--------------------|
-| Test Case 1  | GENERAL_PLAY, count=0, all resources=1 (at cost boundary), board succeeds       | success                                               | :white_check_mark: |
-| Test Case 2  | GENERAL_PLAY, count=0, all resources=1, board throws                            | IllegalSettlementPlacementException, no deduction     | :white_check_mark: |
-| Test Case 3  | GENERAL_PLAY, count=0, brick=0 (below cost boundary)                           | InsufficientResourcesException                        | :white_check_mark: |
-| Test Case 4  | GENERAL_PLAY, count=5 (at max)                                                  | IllegalSettlementPlacementException                   | :white_check_mark: |
-| Test Case 5  | GENERAL_PLAY, count=4 (one below max), all resources=1, board succeeds          | success                                               | :white_check_mark: |
-| Test Case 6  | RESOURCE_PRODUCTION (invalid phase)                                             | IllegalGamePhaseException                             | :white_check_mark: |
-| Test Case 7  | BEFORE_ROLL (invalid phase)                                                     | IllegalGamePhaseException                             | :white_check_mark: |
-| Test Case 8  | GENERAL_PLAY, count=0, brick=1, grain=0 (second resource below cost boundary)  | InsufficientResourcesException                        | :white_check_mark: |
-| Test Case 9  | GENERAL_PLAY, count=0, brick=1, grain=1, lumber=0 (third resource below cost)  | InsufficientResourcesException                        | :white_check_mark: |
-| Test Case 10 | GENERAL_PLAY, count=0, brick=1, grain=1, lumber=1, wool=0 (fourth below cost)  | InsufficientResourcesException                        | :white_check_mark: |
-| Test Case 11 | GENERAL_PLAY, count=0, all resources=2 (surplus), board succeeds                | success (surplus does not prevent building)           | :white_check_mark: |
+|              | State of the System                                                              | Expected output                                       | Implemented?       |
+|--------------|----------------------------------------------------------------------------------|-------------------------------------------------------|--------------------|
+| Test Case 1  | GENERAL_PLAY, count=0, all resources=1 (at cost boundary), board succeeds        | success                                               | :white_check_mark: |
+| Test Case 2  | GENERAL_PLAY, count=0, all resources=1, board throws                             | IllegalSettlementPlacementException, no deduction     | :white_check_mark: |
+| Test Case 3  | GENERAL_PLAY, count=0, brick=0 (below cost boundary)                             | InsufficientResourcesException                        | :white_check_mark: |
+| Test Case 4  | GENERAL_PLAY, count=5 (at max)                                                   | IllegalSettlementPlacementException                   | :white_check_mark: |
+| Test Case 5  | GENERAL_PLAY, count=4 (one below max), all resources=1, board succeeds           | success                                               | :white_check_mark: |
+| Test Case 6  | RESOURCE_PRODUCTION (invalid phase)                                              | IllegalGamePhaseException                             | :white_check_mark: |
+| Test Case 7  | BEFORE_ROLL (invalid phase)                                                      | IllegalGamePhaseException                             | :white_check_mark: |
+| Test Case 8  | GENERAL_PLAY, count=0, brick=1, grain=0 (second resource below cost boundary)    | InsufficientResourcesException                        | :white_check_mark: |
+| Test Case 9  | GENERAL_PLAY, count=0, brick=1, grain=1, lumber=0 (third resource below cost)    | InsufficientResourcesException                        | :white_check_mark: |
+| Test Case 10 | GENERAL_PLAY, count=0, brick=1, grain=1, lumber=1, wool=0 (fourth below cost)    | InsufficientResourcesException                        | :white_check_mark: |
+| Test Case 11 | GENERAL_PLAY, count=0, all resources=2 (surplus), board succeeds                 | success (surplus does not prevent building)           | :white_check_mark: |
 
 ---
 
@@ -176,14 +176,38 @@ Step 3:
 - Ore: 0 (zero); 2 (one below cost boundary); 3 (at cost boundary); 4 (surplus)
 - Grain (only reached if ore ≥ 3): 0 (zero); 1 (one below cost boundary); 2 (at cost boundary); 3 (surplus)
 
-|             | State of the System                                          | Expected output                                    | Implemented?       |
-|-------------|--------------------------------------------------------------|----------------------------------------------------|--------------------|
-| Test Case 1 | GENERAL_PLAY, ore=3 (at boundary), grain=2 (at boundary), board succeeds | success                               | :white_check_mark: |
-| Test Case 2 | GENERAL_PLAY, ore=2 (one below boundary)                     | InsufficientResourcesException                     | :white_check_mark: |
-| Test Case 3 | GENERAL_PLAY, ore=4, grain=1 (one below grain boundary)      | InsufficientResourcesException                     | :white_check_mark: |
-| Test Case 4 | GENERAL_PLAY, ore=3, grain=2, board throws                   | IllegalCityPlacementException                      | :white_check_mark: |
-| Test Case 5 | ROAD_BUILDING_DEV_CARD (invalid phase)                       | IllegalGamePhaseException                          | :white_check_mark: |
-| Test Case 6 | BEFORE_ROLL (invalid phase)                                  | IllegalGamePhaseException                          | :white_check_mark: |
-| Test Case 7 | GENERAL_PLAY, ore=0 (zero, well below boundary)              | InsufficientResourcesException                     | :white_check_mark: |
-| Test Case 8 | GENERAL_PLAY, ore=3, grain=0 (zero, well below boundary)     | InsufficientResourcesException                     | :white_check_mark: |
-| Test Case 9 | GENERAL_PLAY, ore=4 (surplus), grain=3 (surplus), board succeeds | success (surplus does not prevent building)    | :white_check_mark: |
+|             | State of the System                                                        | Expected output                             | Implemented?       |
+|-------------|----------------------------------------------------------------------------|---------------------------------------------|--------------------|
+| Test Case 1 | GENERAL_PLAY, ore=3 (at boundary), grain=2 (at boundary), board succeeds   | success                                     | :white_check_mark: |
+| Test Case 2 | GENERAL_PLAY, ore=2 (one below boundary)                                   | InsufficientResourcesException              | :white_check_mark: |
+| Test Case 3 | GENERAL_PLAY, ore=4, grain=1 (one below grain boundary)                    | InsufficientResourcesException              | :white_check_mark: |
+| Test Case 4 | GENERAL_PLAY, ore=3, grain=2, board throws                                 | IllegalCityPlacementException               | :white_check_mark: |
+| Test Case 5 | ROAD_BUILDING_DEV_CARD (invalid phase)                                     | IllegalGamePhaseException                   | :white_check_mark: |
+| Test Case 6 | BEFORE_ROLL (invalid phase)                                                | IllegalGamePhaseException                   | :white_check_mark: |
+| Test Case 7 | GENERAL_PLAY, ore=0 (zero, well below boundary)                            | InsufficientResourcesException              | :white_check_mark: |
+| Test Case 8 | GENERAL_PLAY, ore=3, grain=0 (zero, well below boundary)                   | InsufficientResourcesException              | :white_check_mark: |
+| Test Case 9 | GENERAL_PLAY, ore=4 (surplus), grain=3 (surplus), board succeeds           | success (surplus does not prevent building) | :white_check_mark: |
+
+
+---
+
+### Method under test: `updateVictoryPoints(PlayerColor color, int amount)`
+
+Either awards (+ amount) or takes away (- amount) player victory points
+
+Inputs:
+- PlayerColor -> RED, ORANGE, WHITE, BLUE
+- Amount -> cases
+  - -2 -> when a player loses largest army or longest road
+  - 2 -> when a player gains largest army or longest road
+  - 1 -> when a player plays a VP devcard, or builds a settlement, or upgrades to a city
+
+Outputs:
+- Player is updated -> use EasyMock verify to ensure method is called
+
+|             | State of the System        | Expected output            | Implemented?       |
+|-------------|----------------------------|----------------------------|--------------------|
+| Test Case 1 | Red recieves 1             | Success                    | :white_check_mark: |
+| Test Case 2 | Orange recieves 2          | Success                    | :x:                |
+| Test Case 3 | White loses 2              | Success                    | :x:                |
+| Test Case 4 | Blue recieves 2            | Success                    | :x:                |

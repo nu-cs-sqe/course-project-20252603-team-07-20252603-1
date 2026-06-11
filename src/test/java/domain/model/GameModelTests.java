@@ -519,8 +519,6 @@ public class GameModelTests {
                 PlayerColor.ORANGE, blueStateMock
         );;
 
-
-
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
                 oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
 
@@ -853,5 +851,22 @@ public class GameModelTests {
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
         model.attemptBuildCity(0);
         EasyMock.verify(playerMock, boardMock, oreDeckMock, grainDeckMock);
+    }
+
+    @Test
+    void updateVictoryPoints_RedHas0_Receives1_ExpectRedHasOnePoint() {
+        Player redStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
+                PlayerColor.RED, redStateMock
+        );;
+
+        redStateMock.updateVictoryPoints(1);
+        EasyMock.expectLastCall();
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        model.updateVictoryPoints(PlayerColor.RED, 1);
+
     }
 }
