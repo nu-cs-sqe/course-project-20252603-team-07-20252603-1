@@ -7,6 +7,7 @@ import domain.model.board.BoardHandler;
 import domain.model.exceptions.AdjacentNodeAlreadyClaimed;
 import domain.model.exceptions.EdgeAlreadyClaimedException;
 import domain.model.exceptions.IllegalEdgeClaim;
+import domain.model.exceptions.IllegalNodeOrderingInEdgeException;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 import org.junit.jupiter.api.Test;
@@ -408,6 +409,20 @@ public class F3Tests {
             b.buildSetupSettlement(bluePlayer, 0));
 
     assertEquals("Node Already Claimed", exception.getMessage());
+  }
+
+  // Test Case 23
+  @Test
+  void RedClaimsNodeZero_TriesToClaimRoadFourToZero_ThrowsInvalidNodeOrdering() {
+    BoardHandler b = new BoardHandler();
+    Player redPlayer = new Player("Dummy", PlayerColor.RED);
+
+    b.buildSetupSettlement(redPlayer, 0);
+
+    Exception exception = assertThrows(IllegalEdgeClaim.class, () ->
+            b.buildSetupRoad(redPlayer, 0, 4, 0));
+
+    assertEquals("Edge must be adjacent to just placed settlement", exception.getMessage());
   }
 }
 
