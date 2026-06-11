@@ -55,6 +55,31 @@ public class F5Tests {
     assertEquals(0, orangePlayer.getResourceCount(Resource.BRICK));
   }
 
+  // Test Case 4
+  @Test
+  void EightRolled_RobberNotOnHex_BlueOnNodeThirtyOne_RedOnNodeTwentyEight_EachGetOne() {
+    BoardHandler b = new BoardHandler();
+    Player bluePlayer = new Player("Dummy", PlayerColor.BLUE);
+    Player redPlayer = new Player("Dummy", PlayerColor.RED);
+
+    b.buildSetupSettlement(bluePlayer, 31);
+    b.buildSetupSettlement(redPlayer, 28);
+
+    b.awardResources(8);
+
+    assertEquals(1, bluePlayer.getResourceCount(Resource.ORE));
+    assertEquals(0, bluePlayer.getResourceCount(Resource.WOOL));
+    assertEquals(0, bluePlayer.getResourceCount(Resource.LUMBER));
+    assertEquals(0, bluePlayer.getResourceCount(Resource.GRAIN));
+    assertEquals(0, bluePlayer.getResourceCount(Resource.BRICK));
+
+    assertEquals(1, redPlayer.getResourceCount(Resource.LUMBER));
+    assertEquals(0, redPlayer.getResourceCount(Resource.WOOL));
+    assertEquals(0, redPlayer.getResourceCount(Resource.ORE));
+    assertEquals(0, redPlayer.getResourceCount(Resource.GRAIN));
+    assertEquals(0, redPlayer.getResourceCount(Resource.BRICK));
+  }
+
 
 }
 
