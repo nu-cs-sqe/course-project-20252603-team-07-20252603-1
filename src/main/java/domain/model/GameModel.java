@@ -256,6 +256,10 @@ public class GameModel {
     public PlayerColor getCurrentLongestRoadPlayerColor() {
         return this.currentLongestRoadPlayerColor;
     }
+
+    void setCurrentLongestRoadPlayerColor(PlayerColor newLongestRoadColor) {
+        this.currentLongestRoadPlayerColor = newLongestRoadColor;
+    }
     public void handleLongestRoad() {
         List<Player> playerList = new ArrayList<>(playerColorToPlayerObject.values());
         PlayerColor newLongestRoadColor = board.calculateLongestRoad(playerList, currentLongestRoadPlayerColor);
