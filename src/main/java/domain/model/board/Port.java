@@ -47,33 +47,42 @@ public class Port {
 
   public void executePortTrade(Player player, BoardHandler board,
                                Resource givingResource, Resource receivingResource,
-                               ResourceDeck givingDeck, ResourceDeck receivingDeck) throws EmptyDeckException {
-    boolean hasAccess = false;
+                               ResourceDeck givingDeck, ResourceDeck receivingDeck)
+          throws EmptyDeckException {
+    validatePortAccess(player, board);
+    validateTradeResources(givingResource, receivingResource);
+    validatePlayerResources(player, givingResource);
+    performTrade(player, givingResource, receivingResource, givingDeck, receivingDeck);
+  }
+
+  private void validatePortAccess(Player player, BoardHandler board) {
     for (int nodeId : nodeIds) {
       if (board.checkPlayerOwnsNode(player.getColor(), nodeId)) {
-        hasAccess = true;
-        break;
+        return;
       }
     }
+    throw new IllegalStateException("Player does not have access to this port.");
+  }
 
-    if (!hasAccess) {
-      throw new IllegalStateException("Player does not have access to this port.");
-    }
-
-    if (givingResource != resource && resource != Resource.ANY) {
-      throw new IllegalArgumentException(
-              "This port only accepts " + resource + " for " + tradeRatio + ":1 trades.");
-    }
-
+  private void validateTradeResources(Resource givingResource, Resource receivingResource) {
     if (givingResource == receivingResource) {
       throw new IllegalArgumentException("Cannot trade a resource for itself.");
     }
+    if (resource != Resource.ANY && givingResource != resource) {
+      throw new IllegalArgumentException(
+              "This port only accepts " + resource + " for " + tradeRatio + ":1 trades.");
+    }
+  }
 
-    int playerResourceCount = player.getResourceCount(givingResource);
-    if (playerResourceCount < tradeRatio) {
+  private void validatePlayerResources(Player player, Resource givingResource) {
+    if (player.getResourceCount(givingResource) < tradeRatio) {
       throw new IllegalStateException("Player has insufficient resources for this trade.");
     }
+  }
 
+  private void performTrade(Player player, Resource givingResource, Resource receivingResource,
+                            ResourceDeck givingDeck, ResourceDeck receivingDeck)
+          throws EmptyDeckException {
     player.updateResources(givingResource, -tradeRatio);
     givingDeck.replenish(tradeRatio);
 

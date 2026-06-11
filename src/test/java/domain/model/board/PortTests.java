@@ -35,7 +35,7 @@ public class PortTests {
 
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).times(2);
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(false);
-    EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 4)).andReturn(false);
+    EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 3)).andReturn(false);
 
     EasyMock.replay(mockBoard, mockPlayer);
 
