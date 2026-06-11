@@ -62,10 +62,10 @@ public class Port {
 
     if (givingResource != resource && resource != Resource.ANY) {
       throw new IllegalArgumentException(
-              "This port only accepts " + resource + " for " + tradeRatio +":1 trades.");
+              "This port only accepts " + resource + " for " + tradeRatio + ":1 trades.");
     }
 
-    if (givingResource == receivingResource){
+    if (givingResource == receivingResource) {
       throw new IllegalArgumentException("Cannot trade a resource for itself.");
     }
 
@@ -76,7 +76,15 @@ public class Port {
 
     player.updateResources(givingResource, -tradeRatio);
     givingDeck.replenish(tradeRatio);
-    receivingDeck.draw();
+
+    try {
+      receivingDeck.draw();
+    } catch (EmptyDeckException e) {
+      player.updateResources(givingResource, tradeRatio);
+      givingDeck.drawMultiple(tradeRatio);
+      throw e;
+    }
+
     player.updateResources(receivingResource, 1);
   }
 }

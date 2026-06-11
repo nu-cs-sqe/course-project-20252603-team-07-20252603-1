@@ -321,4 +321,33 @@ public class PortTests {
     EasyMock.verify(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
   }
 
+  // Test Case 15
+  @Test
+  void RedAtAnyPort_BankHasZeroOre_ThrowsEmptyDeckException() throws EmptyDeckException {
+    Port port = new Port(3, Resource.ANY, List.of(0, 4));
+
+    EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
+    EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
+    EasyMock.expect(mockPlayer.getResourceCount(Resource.WOOL)).andReturn(3);
+    mockPlayer.updateResources(Resource.WOOL, -3);
+    EasyMock.expectLastCall();
+    mockGivingDeck.replenish(3);
+    EasyMock.expectLastCall();
+    EasyMock.expect(mockReceivingDeck.draw()).andThrow(
+            new EmptyDeckException("Cannot draw new ORE card, no cards remain."));
+    mockPlayer.updateResources(Resource.WOOL, 3);
+    EasyMock.expectLastCall();
+    EasyMock.expect(mockGivingDeck.drawMultiple(3)).andReturn(3);
+
+    EasyMock.replay(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
+
+    Exception exception = assertThrows(EmptyDeckException.class, () ->
+            port.executePortTrade(mockPlayer, mockBoard, Resource.WOOL, Resource.ORE,
+                    mockGivingDeck, mockReceivingDeck));
+
+    assertEquals("Cannot draw new ORE card, no cards remain.", exception.getMessage());
+
+    EasyMock.verify(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
+  }
+
 }
