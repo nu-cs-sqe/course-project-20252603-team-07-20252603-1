@@ -80,7 +80,7 @@ public class F5Tests {
     assertEquals(0, redPlayer.getResourceCount(Resource.BRICK));
   }
 
-  // Test Case 8
+  // Test Case 5
   @Test
   void TwoRolled_RobberOnHexOne_WhiteSettlementsOnNodesFourFiveThirteen_NoResourcesAwarded() {
     BoardHandler b = new BoardHandler();
@@ -101,7 +101,7 @@ public class F5Tests {
     assertEquals(0, whitePlayer.getResourceCount(Resource.BRICK));
   }
 
-  // Test Case 9
+  // Test Case 6
   @Test
   void EightRolled_RobberOnHexEleven_WhiteCityNodeTwenty_BlueTwoLumber_RedTwoLumber_OrangeTwoLumber() {
     BoardHandler b = new BoardHandler();
@@ -152,7 +152,38 @@ public class F5Tests {
     assertEquals(0, orangePlayer.getResourceCount(Resource.BRICK));
   }
 
+  // Test Case 7
+  @Test
+  void SixRolled_RobberNotOnHex_WhiteCitiesOnEightSeventeenEighteen_RedSettlementsOnFortyFortyEightFortyNine() {
+    BoardHandler b = new BoardHandler();
+    Player whitePlayer = new Player("Dummy", PlayerColor.WHITE);
+    Player redPlayer = new Player("Dummy", PlayerColor.RED);
 
+    b.buildSetupSettlement(whitePlayer, 8);
+    b.buildCity(whitePlayer, 8);
+    b.buildSetupSettlement(whitePlayer, 17);
+    b.buildCity(whitePlayer, 17);
+    b.buildSetupSettlement(whitePlayer, 18);
+    b.buildCity(whitePlayer, 18);
+
+    b.buildSetupSettlement(redPlayer, 40);
+    b.buildSetupSettlement(redPlayer, 48);
+    b.buildSetupSettlement(redPlayer, 49);
+
+    b.awardResources(6);
+
+    assertEquals(6, whitePlayer.getResourceCount(Resource.BRICK));
+    assertEquals(0, whitePlayer.getResourceCount(Resource.WOOL));
+    assertEquals(0, whitePlayer.getResourceCount(Resource.LUMBER));
+    assertEquals(0, whitePlayer.getResourceCount(Resource.ORE));
+    assertEquals(0, whitePlayer.getResourceCount(Resource.GRAIN));
+
+    assertEquals(3, redPlayer.getResourceCount(Resource.GRAIN));
+    assertEquals(0, redPlayer.getResourceCount(Resource.WOOL));
+    assertEquals(0, redPlayer.getResourceCount(Resource.LUMBER));
+    assertEquals(0, redPlayer.getResourceCount(Resource.ORE));
+    assertEquals(0, redPlayer.getResourceCount(Resource.BRICK));
+  }
 }
 
 
