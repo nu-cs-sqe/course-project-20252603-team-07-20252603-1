@@ -1,10 +1,9 @@
-package domain;
+package domain.model.board;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
-import domain.model.board.GraphEdge;
 import domain.model.exceptions.EdgeAlreadyClaimedException;
 import domain.model.exceptions.IllegalNodeOrderingInEdgeException;
 import domain.model.player.PlayerColor;

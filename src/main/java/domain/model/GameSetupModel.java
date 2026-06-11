@@ -1,6 +1,5 @@
 package domain.model;
 
-import domain.model.board.Board;
 import domain.model.board.BoardHandler;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
@@ -36,6 +35,7 @@ public class GameSetupModel {
         this.usedColors = new HashSet<>();
         this.usedNames = new HashSet<>();
         this.turnOrder = new ArrayList<>();
+        this.board = new BoardHandler();
     }
 
     /**
@@ -92,18 +92,6 @@ public class GameSetupModel {
     }
 
     /**
-     * Gets the game board, initializing it if necessary.
-     *
-     * @return the game board
-     */
-    public BoardHandler getBoard() {
-        if (board == null) {
-            board = new BoardHandler();
-        }
-        return board;
-    }
-
-    /**
      * Gets the resource deck.
      *
      * @return the resource deck
@@ -156,5 +144,14 @@ public class GameSetupModel {
     public List<Player> getTurnOrder() {
         // Spotbugs Check -> return a copy instead
         return new ArrayList<>(turnOrder);
+    }
+
+    /**
+     * Creates the full game model, and returns it.
+     *
+     * @return the full game model
+     */
+    public GameModel createGameModel() {
+        return new GameModel(players, board);
     }
 }

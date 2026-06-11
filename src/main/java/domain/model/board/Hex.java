@@ -1,12 +1,12 @@
 package domain.model.board;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import domain.model.player.Player;
 import domain.model.resources.Resource;
 
-public final class Hex {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Hex {
   private static final int MIN_HEX_ID = 0;
   private static final int MAX_HEX_ID = 18;
 
@@ -25,7 +25,7 @@ public final class Hex {
   private List<Player> playerCities;
   private int totalBuildingsOnHex;
 
-  public Hex(int hexId, Resource resource, int rollNumber) {
+  Hex(int hexId, Resource resource, int rollNumber) {
     validateHexId(hexId);
     this.hexId = hexId;
     validateRollNum(rollNumber);
@@ -57,7 +57,7 @@ public final class Hex {
     }
   }
 
-  public void addPlayerSettlementToHex(Player player) {
+  void addPlayerSettlementToHex(Player player) {
     if (this.totalBuildingsOnHex >= MAX_BUILDINGS_ON_HEX) {
       throw new IllegalStateException("Already three buildings on hex.");
     } else if (player == null) {
@@ -68,7 +68,7 @@ public final class Hex {
     }
   }
 
-  public void removePlayerSettlementFromHex(Player player) {
+  void removePlayerSettlementFromHex(Player player) {
     boolean success = playerSettlements.remove(player);
     if (!success) {
       throw new IllegalArgumentException("Player does not have a settlement on hex.");
@@ -77,7 +77,7 @@ public final class Hex {
     }
   }
 
-  public void addPlayerCityToHex(Player player) {
+  void addPlayerCityToHex(Player player) {
     if (this.totalBuildingsOnHex >= MAX_BUILDINGS_ON_HEX) {
       throw new IllegalStateException("Already three buildings on hex.");
     } else if (player == null) {
@@ -88,7 +88,7 @@ public final class Hex {
     }
   }
 
-  public void awardSettlementResources() {
+  void awardSettlementResources() {
     if (resource != Resource.DESERT) {
       playerSettlements.forEach(player -> {
         player.updateResources(resource, SETTLEMENT_RESOURCE_AMOUNT);
@@ -96,7 +96,7 @@ public final class Hex {
     }
   }
 
-  public void awardCityResources() {
+  void awardCityResources() {
     if (resource != Resource.DESERT) {
       playerCities.forEach(player -> {
         player.updateResources(resource, CITY_RESOURCE_AMOUNT);
@@ -104,31 +104,44 @@ public final class Hex {
     }
   }
 
-  public int getSettlementCount() {
+  int getSettlementCount() {
     return playerSettlements.size();
   }
 
-  public int getCityCount() {
+  int getCityCount() {
     return playerCities.size();
   }
 
-  public int getHexId() {
+  int getHexId() {
     return this.hexId;
   }
 
-  public Resource getHexResource() {
+  Resource getHexResource() {
     return this.resource;
   }
 
-  public int getHexRollNum() {
+  int getHexRollNum() {
     return this.hexRollNum;
   }
 
-  public boolean isPlayerSettlementOnHex(Player player) {
+  boolean isPlayerSettlementOnHex(Player player) {
     return playerSettlements.contains(player);
   }
 
-  public boolean isPlayerCityOnHex(Player player) {
+  boolean isPlayerCityOnHex(Player player) {
     return playerCities.contains(player);
+  }
+
+  List<Player> getHexSettlementPlayers() {
+    return List.copyOf(playerSettlements);
+  }
+
+  List<Player> getHexCityPlayers() {
+    return List.copyOf(playerCities);
+  }
+
+  @Override
+  protected final void finalize() {
+    // intentionally empty — blocks finalizer attacks
   }
 }

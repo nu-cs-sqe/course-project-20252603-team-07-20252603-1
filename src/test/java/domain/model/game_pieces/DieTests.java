@@ -1,4 +1,4 @@
-package domain;
+package domain.model.game_pieces;
 
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package domain;
+package domain.model.resources;
 
 import org.junit.jupiter.api.Test;
 

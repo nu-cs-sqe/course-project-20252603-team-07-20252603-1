@@ -73,9 +73,10 @@ public class PlayerResourceTest {
     @Test
     public void UpdateResources_SubtractOneFromZero_ThrowsInsufficientResources() {
         Player player = new Player("Dummy", PlayerColor.BLUE);
-        assertThrows(InsufficientResourcesException.class, () ->
+        Exception exception = assertThrows(InsufficientResourcesException.class, () ->
             player.updateResources(Resource.BRICK, -1)
         );
+        assertEquals("Insufficient BRICK resources.", exception.getMessage());
     }
 
     // behavior 8: BVA delta exceeds current count — must throw and leave count unchanged
@@ -83,9 +84,10 @@ public class PlayerResourceTest {
     public void UpdateResources_SubtractTwoFromOne_ThrowsAndCountStaysOne() {
         Player player = new Player("Dummy", PlayerColor.BLUE);
         player.updateResources(Resource.BRICK, 1);
-        assertThrows(InsufficientResourcesException.class, () ->
+        Exception exception = assertThrows(InsufficientResourcesException.class, () ->
             player.updateResources(Resource.BRICK, -2)
         );
+        assertEquals("Insufficient BRICK resources.", exception.getMessage());
         assertEquals(1, player.getResourceCount(Resource.BRICK));
     }
 
@@ -93,36 +95,40 @@ public class PlayerResourceTest {
     @Test
     public void UpdateResources_NullResource_ThrowsIllegalArgument() {
         Player player = new Player("Dummy", PlayerColor.BLUE);
-        assertThrows(IllegalArgumentException.class, () ->
+        Exception exception = assertThrows(IllegalArgumentException.class, () ->
             player.updateResources(null, 1)
         );
+        assertEquals("Resource cannot be null.", exception.getMessage());
     }
 
     // behavior 10: DESERT resource → IllegalArgumentException
     @Test
     public void UpdateResources_DesertResource_ThrowsIllegalArgument() {
         Player player = new Player("Dummy", PlayerColor.BLUE);
-        assertThrows(IllegalArgumentException.class, () ->
+        Exception exception = assertThrows(IllegalArgumentException.class, () ->
             player.updateResources(Resource.DESERT, 1)
         );
+        assertEquals("Cannot update DESERT resources.", exception.getMessage());
     }
 
     // behavior 11: getResourceCount with null → IllegalArgumentException
     @Test
     public void GetResourceCount_NullResource_ThrowsIllegalArgument() {
         Player player = new Player("Dummy", PlayerColor.BLUE);
-        assertThrows(IllegalArgumentException.class, () ->
+        Exception exception = assertThrows(IllegalArgumentException.class, () ->
             player.getResourceCount(null)
         );
+        assertEquals("Resource cannot be null.", exception.getMessage());
     }
 
     // behavior 12: getResourceCount with DESERT → IllegalArgumentException
     @Test
     public void GetResourceCount_DesertResource_ThrowsIllegalArgument() {
         Player player = new Player("Dummy", PlayerColor.BLUE);
-        assertThrows(IllegalArgumentException.class, () ->
+        Exception exception = assertThrows(IllegalArgumentException.class, () ->
             player.getResourceCount(Resource.DESERT)
         );
+        assertEquals("Cannot get count of DESERT.", exception.getMessage());
     }
 
     // behavior 13: getTotalResourceCount on new player → 0
@@ -159,9 +165,10 @@ public class PlayerResourceTest {
         Player player = new Player("Dummy", PlayerColor.BLUE);
         player.updateResources(Resource.BRICK, 2);
         player.updateResources(Resource.WOOL, 3);
-        assertThrows(InsufficientResourcesException.class, () ->
+        Exception exception = assertThrows(InsufficientResourcesException.class, () ->
             player.updateResources(Resource.BRICK, -5)
         );
+        assertEquals("Insufficient BRICK resources.", exception.getMessage());
         assertEquals(2, player.getResourceCount(Resource.BRICK));
         assertEquals(3, player.getResourceCount(Resource.WOOL));
     }

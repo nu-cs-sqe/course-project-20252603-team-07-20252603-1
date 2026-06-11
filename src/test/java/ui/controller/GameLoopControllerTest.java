@@ -4,8 +4,8 @@ import domain.model.GameModel;
 import domain.model.game_pieces.DiceHandler;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
-import domain.model.player.PlayerState;
-import domain.model.resources.Resource;
+
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -49,18 +49,6 @@ class GameLoopControllerTest {
 
         verify(mockModel);
     }
-
-//    @Test
-//    void testGetResourceCountDelegatesThroughPlayerState() {
-//        PlayerState mockPlayerState = createMock(PlayerState.class);
-//        expect(mockModel.getPlayerState(PlayerColor.RED)).andReturn(mockPlayerState);
-//        expect(mockPlayerState.getResourceCount(Resource.GRAIN)).andReturn(3);
-//        replay(mockModel, mockPlayerState);
-//
-//        assertEquals(3, controller.getResourceCount(mockModel, PlayerColor.RED, Resource.GRAIN));
-//
-//        verify(mockModel, mockPlayerState);
-//    }
 
     @Test
     void testEndTurnDelegatesToModel() {

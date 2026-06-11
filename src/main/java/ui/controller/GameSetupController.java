@@ -1,7 +1,6 @@
 package ui.controller;
 
 import domain.model.GameSetupModel;
-import domain.model.board.Board;
 import domain.model.board.BoardHandler;
 import domain.model.development_cards.DevelopmentCardDeck;
 import domain.model.player.Player;
@@ -15,6 +14,10 @@ import java.util.List;
  * Delegates all business logic to GameSetupModel, maintaining separation of concerns.
  */
 public class GameSetupController {
+
+    public static final int MIN_PLAYERS = 3;
+    public static final int MAX_PLAYERS = 4;
+
     /**
      * Validates that the player count is within the valid range (3-4 players).
      *
@@ -23,7 +26,7 @@ public class GameSetupController {
      */
     public boolean validatePlayerCount(GameSetupModel model) {
         int count = model.getPlayerCount();
-        return count >= 3 && count <= 4;
+        return count >= MIN_PLAYERS && count <= MAX_PLAYERS;
     }
 
     /**
@@ -72,27 +75,6 @@ public class GameSetupController {
      */
     public int getPlayerCount(GameSetupModel model) {
         return model.getPlayerCount();
-    }
-
-    /**
-     * Initializes the game board.
-     *
-     * @param model the game setup model
-     */
-    public void initializeBoard(GameSetupModel model) {
-        // Board initialization is handled by the model
-        // Controller just triggers the initialization
-        model.getBoard();
-    }
-
-    /**
-     * Gets the game board.
-     *
-     * @param model the game setup model
-     * @return the game board
-     */
-    public BoardHandler getBoard(GameSetupModel model) {
-        return model.getBoard();
     }
 
     /**

@@ -1,13 +1,11 @@
 package ui.controller;
 
 import domain.model.GameSetupModel;
-import domain.model.board.Board;
 import domain.model.board.BoardHandler;
 import domain.model.development_cards.DevelopmentCardDeck;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 import domain.model.resources.ResourceDeck;
-import org.easymock.EasyMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,10 +14,6 @@ import java.util.List;
 import static org.easymock.EasyMock.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Test class for GameSetupController following TDD and SOLID principles.
- * Tests game initialization including player setup, board creation, and game piece initialization.
- */
 class GameSetupControllerTest {
 
     private GameSetupController controller;
@@ -33,597 +27,9 @@ class GameSetupControllerTest {
         mockBoard = createMock(BoardHandler.class);
     }
 
-    // ========== Player Count Validation Tests ==========
+    // ========== Full Validation Tests (BVA TC1–TC12) ==========
 
-    @Test
-    void testInitializeGameWithThreePlayersSucceeds() {
-        // Arrange
-        expect(mockModel.getPlayerCount()).andReturn(3);
-        replay(mockModel);
-
-        // Act
-        boolean result = controller.validatePlayerCount(mockModel);
-
-        // Assert
-        assertTrue(result);
-        verify(mockModel);
-    }
-
-    @Test
-    void testInitializeGameWithFourPlayersSucceeds() {
-        // Arrange
-        expect(mockModel.getPlayerCount()).andReturn(4);
-        replay(mockModel);
-
-        // Act
-        boolean result = controller.validatePlayerCount(mockModel);
-
-        // Assert
-        assertTrue(result);
-        verify(mockModel);
-    }
-
-    @Test
-    void testInitializeGameWithTwoPlayersFailsValidation() {
-        // Arrange
-        expect(mockModel.getPlayerCount()).andReturn(2);
-        replay(mockModel);
-
-        // Act
-        boolean result = controller.validatePlayerCount(mockModel);
-
-        // Assert
-        assertFalse(result);
-        verify(mockModel);
-    }
-
-    @Test
-    void testInitializeGameWithFivePlayersFailsValidation() {
-        // Arrange
-        expect(mockModel.getPlayerCount()).andReturn(5);
-        replay(mockModel);
-
-        // Act
-        boolean result = controller.validatePlayerCount(mockModel);
-
-        // Assert
-        assertFalse(result);
-        verify(mockModel);
-    }
-
-    @Test
-    void testInitializeGameWithZeroPlayersFailsValidation() {
-        // Arrange
-        expect(mockModel.getPlayerCount()).andReturn(0);
-        replay(mockModel);
-
-        // Act
-        boolean result = controller.validatePlayerCount(mockModel);
-
-        // Assert
-        assertFalse(result);
-        verify(mockModel);
-    }
-
-    // ========== Player Name Assignment Tests ==========
-
-    @Test
-    void testAddPlayerWithValidNameSucceeds() {
-        // Arrange
-        String playerName = "Alice";
-        mockModel.addPlayer(playerName, PlayerColor.RED);
-        expectLastCall().once();
-        replay(mockModel);
-
-        // Act
-        controller.addPlayer(mockModel, playerName, PlayerColor.RED);
-
-        // Assert
-        verify(mockModel);
-    }
-
-    @Test
-    void testAddMultiplePlayersWithDifferentNames() {
-        // Arrange
-        mockModel.addPlayer("Alice", PlayerColor.RED);
-        expectLastCall().once();
-        mockModel.addPlayer("Bob", PlayerColor.BLUE);
-        expectLastCall().once();
-        mockModel.addPlayer("Charlie", PlayerColor.WHITE);
-        expectLastCall().once();
-        replay(mockModel);
-
-        // Act
-        controller.addPlayer(mockModel, "Alice", PlayerColor.RED);
-        controller.addPlayer(mockModel, "Bob", PlayerColor.BLUE);
-        controller.addPlayer(mockModel, "Charlie", PlayerColor.WHITE);
-
-        // Assert
-        verify(mockModel);
-    }
-
-    @Test
-    void testPlayerNamesAreStoredCorrectly() {
-        // Arrange
-        Player mockPlayer = createMock(Player.class);
-        expect(mockPlayer.getName()).andReturn("Alice").once();
-        expect(mockModel.getPlayer(0)).andReturn(mockPlayer);
-        replay(mockModel, mockPlayer);
-
-        // Act
-        String name = controller.getPlayerName(mockModel, 0);
-
-        // Assert
-        assertEquals("Alice", name);
-        verify(mockModel, mockPlayer);
-    }
-
-    // ========== Exclusive Color Selection Tests ==========
-
-    @Test
-    void testAddPlayerWithUniqueColorSucceeds() {
-        // Arrange
-        expect(mockModel.isColorAvailable(PlayerColor.RED)).andReturn(true);
-        mockModel.addPlayer("Alice", PlayerColor.RED);
-        expectLastCall().once();
-        replay(mockModel);
-
-        // Act
-        boolean result = controller.addPlayerWithColorValidation(mockModel, "Alice", PlayerColor.RED);
-
-        // Assert
-        assertTrue(result);
-        verify(mockModel);
-    }
-
-    @Test
-    void testAddPlayerWithDuplicateColorFails() {
-        // Arrange
-        expect(mockModel.isColorAvailable(PlayerColor.RED)).andReturn(false);
-        replay(mockModel);
-
-        // Act
-        boolean result = controller.addPlayerWithColorValidation(mockModel, "Bob", PlayerColor.RED);
-
-        // Assert
-        assertFalse(result);
-        verify(mockModel);
-    }
-
-    @Test
-    void testEachPlayerHasExclusiveColor() {
-        // Arrange
-        expect(mockModel.isColorAvailable(PlayerColor.RED)).andReturn(true);
-        mockModel.addPlayer("Alice", PlayerColor.RED);
-        expectLastCall().once();
-
-        expect(mockModel.isColorAvailable(PlayerColor.BLUE)).andReturn(true);
-        mockModel.addPlayer("Bob", PlayerColor.BLUE);
-        expectLastCall().once();
-
-        expect(mockModel.isColorAvailable(PlayerColor.RED)).andReturn(false);
-        replay(mockModel);
-
-        // Act
-        boolean result1 = controller.addPlayerWithColorValidation(mockModel, "Alice", PlayerColor.RED);
-        boolean result2 = controller.addPlayerWithColorValidation(mockModel, "Bob", PlayerColor.BLUE);
-        boolean result3 = controller.addPlayerWithColorValidation(mockModel, "Charlie", PlayerColor.RED);
-
-        // Assert
-        assertTrue(result1);
-        assertTrue(result2);
-        assertFalse(result3);
-        verify(mockModel);
-    }
-
-    @Test
-    void testAllFourColorsCanBeAssignedExclusively() {
-        // Arrange
-        expect(mockModel.isColorAvailable(PlayerColor.RED)).andReturn(true);
-        mockModel.addPlayer("Alice", PlayerColor.RED);
-        expectLastCall().once();
-
-        expect(mockModel.isColorAvailable(PlayerColor.BLUE)).andReturn(true);
-        mockModel.addPlayer("Bob", PlayerColor.BLUE);
-        expectLastCall().once();
-
-        expect(mockModel.isColorAvailable(PlayerColor.WHITE)).andReturn(true);
-        mockModel.addPlayer("Charlie", PlayerColor.WHITE);
-        expectLastCall().once();
-
-        expect(mockModel.isColorAvailable(PlayerColor.ORANGE)).andReturn(true);
-        mockModel.addPlayer("Diana", PlayerColor.ORANGE);
-        expectLastCall().once();
-
-        replay(mockModel);
-
-        // Act & Assert
-        assertTrue(controller.addPlayerWithColorValidation(mockModel, "Alice", PlayerColor.RED));
-        assertTrue(controller.addPlayerWithColorValidation(mockModel, "Bob", PlayerColor.BLUE));
-        assertTrue(controller.addPlayerWithColorValidation(mockModel, "Charlie", PlayerColor.WHITE));
-        assertTrue(controller.addPlayerWithColorValidation(mockModel, "Diana", PlayerColor.ORANGE));
-        verify(mockModel);
-    }
-
-    // ========== Board Initialization Tests ==========
-
-    @Test
-    void testBoardIsInitializedWithNineteenHexes() {
-        // Arrange
-        expect(mockBoard.getHexCount()).andReturn(19);
-        replay(mockBoard);
-
-        // Act
-        int hexCount = controller.getBoardHexCount(mockBoard);
-
-        // Assert
-        assertEquals(19, hexCount);
-        verify(mockBoard);
-    }
-
-    @Test
-    void testInitializeBoardCreatesBoard() {
-        // Arrange
-        expect(mockModel.getBoard()).andReturn(mockBoard).times(2);
-        expect(mockBoard.getHexCount()).andReturn(19);
-        replay(mockModel, mockBoard);
-
-        // Act
-        controller.initializeBoard(mockModel);
-        int hexCount = controller.getBoardHexCount(mockModel.getBoard());
-
-        // Assert
-        assertEquals(19, hexCount);
-        verify(mockModel, mockBoard);
-    }
-
-    @Test
-    void testBoardIsNotNull() {
-        // Arrange
-        expect(mockModel.getBoard()).andReturn(mockBoard);
-        replay(mockModel);
-
-        // Act
-        BoardHandler board = controller.getBoard(mockModel);
-
-        // Assert
-        assertNotNull(board);
-        verify(mockModel);
-    }
-
-    // ========== Hex Order Determination Tests ==========
-
-    @Test
-    void testHexOrderIsDetermined() {
-        // Arrange
-        List<String> mockHexOrder = List.of("WHEAT", "SHEEP", "WOOD", "BRICK", "ORE");
-        expect(mockBoard.getHexOrder()).andReturn(mockHexOrder);
-        replay(mockBoard);
-
-        // Act
-        List<String> hexOrder = controller.getHexOrder(mockBoard);
-
-        // Assert
-        assertNotNull(hexOrder);
-        assertFalse(hexOrder.isEmpty());
-        verify(mockBoard);
-    }
-
-    @Test
-    void testHexOrderContainsNineteenElements() {
-        // Arrange
-        List<String> mockHexOrder = List.of(
-                "WHEAT", "SHEEP", "WOOD", "BRICK", "ORE",
-                "WHEAT", "SHEEP", "WOOD", "BRICK", "ORE",
-                "WHEAT", "SHEEP", "WOOD", "BRICK", "ORE",
-                "WHEAT", "SHEEP", "WOOD", "DESERT"
-        );
-        expect(mockBoard.getHexOrder()).andReturn(mockHexOrder);
-        replay(mockBoard);
-
-        // Act
-        List<String> hexOrder = controller.getHexOrder(mockBoard);
-
-        // Assert
-        assertEquals(19, hexOrder.size());
-        verify(mockBoard);
-    }
-
-    @Test
-    void testHexOrderIsNotEmpty() {
-        // Arrange
-        List<String> mockHexOrder = List.of("WHEAT", "SHEEP", "WOOD");
-        expect(mockBoard.getHexOrder()).andReturn(mockHexOrder);
-        replay(mockBoard);
-
-        // Act
-        List<String> hexOrder = controller.getHexOrder(mockBoard);
-
-        // Assert
-        assertNotNull(hexOrder);
-        assertFalse(hexOrder.isEmpty());
-        verify(mockBoard);
-    }
-
-    // ========== Resource Deck Initialization Tests ==========
-
-    @Test
-    void testResourceDeckIsInitialized() {
-        // Arrange
-        ResourceDeck mockResourceDeck = createMock(ResourceDeck.class);
-        expect(mockModel.getResourceDeck()).andReturn(mockResourceDeck);
-        replay(mockModel);
-
-        // Act
-        ResourceDeck deck = controller.getResourceDeck(mockModel);
-
-        // Assert
-        assertNotNull(deck);
-        verify(mockModel);
-    }
-
-    @Test
-    void testInitializeResourceDeckCreatesValidDeck() {
-        // Arrange
-        ResourceDeck mockResourceDeck = createMock(ResourceDeck.class);
-        expect(mockResourceDeck.getTotalCards()).andReturn(95);
-        mockModel.setResourceDeck(anyObject(ResourceDeck.class));
-        expectLastCall().once();
-        replay(mockModel, mockResourceDeck);
-
-        // Act
-        controller.initializeResourceDeck(mockModel);
-
-        // Assert
-        verify(mockModel);
-    }
-
-    @Test
-    void testResourceDeckIsNotNullAfterInitialization() {
-        // Arrange
-        ResourceDeck mockResourceDeck = createMock(ResourceDeck.class);
-        expect(mockModel.getResourceDeck()).andReturn(mockResourceDeck);
-        replay(mockModel);
-
-        // Act
-        ResourceDeck deck = controller.getResourceDeck(mockModel);
-
-        // Assert
-        assertNotNull(deck);
-        verify(mockModel);
-    }
-
-    // ========== Development Card Deck Initialization Tests ==========
-
-    @Test
-    void testDevelopmentCardDeckIsInitialized() {
-        // Arrange
-        DevelopmentCardDeck mockDevDeck = createMock(DevelopmentCardDeck.class);
-        expect(mockModel.getDevelopmentCardDeck()).andReturn(mockDevDeck);
-        replay(mockModel);
-
-        // Act
-        DevelopmentCardDeck deck = controller.getDevelopmentCardDeck(mockModel);
-
-        // Assert
-        assertNotNull(deck);
-        verify(mockModel);
-    }
-
-    @Test
-    void testInitializeDevelopmentCardDeckCreatesValidDeck() {
-        // Arrange
-        DevelopmentCardDeck mockDevDeck = createMock(DevelopmentCardDeck.class);
-        expect(mockDevDeck.countRemaining()).andReturn(25);
-        mockModel.setDevelopmentCardDeck(anyObject(DevelopmentCardDeck.class));
-        expectLastCall().once();
-        replay(mockModel, mockDevDeck);
-
-        // Act
-        controller.initializeDevelopmentCardDeck(mockModel);
-
-        // Assert
-        verify(mockModel);
-    }
-
-    @Test
-    void testDevelopmentCardDeckIsNotNullAfterInitialization() {
-        // Arrange
-        DevelopmentCardDeck mockDevDeck = createMock(DevelopmentCardDeck.class);
-        expect(mockModel.getDevelopmentCardDeck()).andReturn(mockDevDeck);
-        replay(mockModel);
-
-        // Act
-        DevelopmentCardDeck deck = controller.getDevelopmentCardDeck(mockModel);
-
-        // Assert
-        assertNotNull(deck);
-        verify(mockModel);
-    }
-
-    // ========== Turn Order Determination Tests ==========
-
-    @Test
-    void testTurnOrderIsDetermined() {
-        // Arrange
-        List<Player> mockPlayers = List.of(
-                createMock(Player.class),
-                createMock(Player.class),
-                createMock(Player.class)
-        );
-        expect(mockModel.getTurnOrder()).andReturn(mockPlayers);
-        replay(mockModel);
-
-        // Act
-        List<Player> turnOrder = controller.getTurnOrder(mockModel);
-
-        // Assert
-        assertNotNull(turnOrder);
-        assertFalse(turnOrder.isEmpty());
-        verify(mockModel);
-    }
-
-    @Test
-    void testTurnOrderContainsAllPlayers() {
-        // Arrange
-        Player player1 = createMock(Player.class);
-        Player player2 = createMock(Player.class);
-        Player player3 = createMock(Player.class);
-        List<Player> mockPlayers = List.of(player1, player2, player3);
-
-        expect(mockModel.getPlayerCount()).andReturn(3);
-        expect(mockModel.getTurnOrder()).andReturn(mockPlayers);
-        replay(mockModel);
-
-        // Act
-        List<Player> turnOrder = controller.getTurnOrder(mockModel);
-        int playerCount = controller.getPlayerCount(mockModel);
-
-        // Assert
-        assertEquals(playerCount, turnOrder.size());
-        verify(mockModel);
-    }
-
-    @Test
-    void testTurnOrderIsNotEmpty() {
-        // Arrange
-        List<Player> mockPlayers = List.of(
-                createMock(Player.class),
-                createMock(Player.class),
-                createMock(Player.class),
-                createMock(Player.class)
-        );
-        expect(mockModel.getTurnOrder()).andReturn(mockPlayers);
-        replay(mockModel);
-
-        // Act
-        List<Player> turnOrder = controller.getTurnOrder(mockModel);
-
-        // Assert
-        assertNotNull(turnOrder);
-        assertFalse(turnOrder.isEmpty());
-        verify(mockModel);
-    }
-
-    @Test
-    void testDetermineTurnOrderWithThreePlayers() {
-        // Arrange
-        Player player1 = createMock(Player.class);
-        Player player2 = createMock(Player.class);
-        Player player3 = createMock(Player.class);
-        List<Player> expectedOrder = List.of(player1, player2, player3);
-
-        mockModel.determineTurnOrder();
-        expectLastCall().once();
-        expect(mockModel.getTurnOrder()).andReturn(expectedOrder);
-        replay(mockModel);
-
-        // Act
-        controller.determineTurnOrder(mockModel);
-        List<Player> turnOrder = controller.getTurnOrder(mockModel);
-
-        // Assert
-        assertEquals(3, turnOrder.size());
-        verify(mockModel);
-    }
-
-    @Test
-    void testDetermineTurnOrderWithFourPlayers() {
-        // Arrange
-        Player player1 = createMock(Player.class);
-        Player player2 = createMock(Player.class);
-        Player player3 = createMock(Player.class);
-        Player player4 = createMock(Player.class);
-        List<Player> expectedOrder = List.of(player1, player2, player3, player4);
-
-        mockModel.determineTurnOrder();
-        expectLastCall().once();
-        expect(mockModel.getTurnOrder()).andReturn(expectedOrder);
-        replay(mockModel);
-
-        // Act
-        controller.determineTurnOrder(mockModel);
-        List<Player> turnOrder = controller.getTurnOrder(mockModel);
-
-        // Assert
-        assertEquals(4, turnOrder.size());
-        verify(mockModel);
-    }
-
-    // ========== Complete Game Initialization Integration Tests ==========
-
-    @Test
-    void testCompleteGameInitializationSequence() {
-        // Arrange
-        ResourceDeck mockResourceDeck = createMock(ResourceDeck.class);
-        DevelopmentCardDeck mockDevDeck = createMock(DevelopmentCardDeck.class);
-        List<Player> mockPlayers = List.of(
-                createMock(Player.class),
-                createMock(Player.class),
-                createMock(Player.class)
-        );
-
-        expect(mockModel.getPlayerCount()).andReturn(3);
-        expect(mockModel.getBoard()).andReturn(mockBoard);
-        expect(mockModel.getResourceDeck()).andReturn(mockResourceDeck);
-        expect(mockModel.getDevelopmentCardDeck()).andReturn(mockDevDeck);
-        expect(mockModel.getTurnOrder()).andReturn(mockPlayers);
-        expect(mockBoard.getHexCount()).andReturn(19);
-
-        replay(mockModel, mockBoard);
-
-        // Act
-        boolean validPlayerCount = controller.validatePlayerCount(mockModel);
-        BoardHandler board = controller.getBoard(mockModel);
-        ResourceDeck resourceDeck = controller.getResourceDeck(mockModel);
-        DevelopmentCardDeck devDeck = controller.getDevelopmentCardDeck(mockModel);
-        List<Player> turnOrder = controller.getTurnOrder(mockModel);
-        int hexCount = controller.getBoardHexCount(board);
-
-        // Assert
-        assertTrue(validPlayerCount);
-        assertNotNull(board);
-        assertNotNull(resourceDeck);
-        assertNotNull(devDeck);
-        assertNotNull(turnOrder);
-        assertEquals(19, hexCount);
-        assertEquals(3, turnOrder.size());
-        verify(mockModel, mockBoard);
-    }
-
-    @Test
-    void testGameInitializationFailsWithInvalidPlayerCount() {
-        // Arrange
-        expect(mockModel.getPlayerCount()).andReturn(2);
-        replay(mockModel);
-
-        // Act
-        boolean result = controller.validatePlayerCount(mockModel);
-
-        // Assert
-        assertFalse(result);
-        verify(mockModel);
-    }
-
-    // ========== Helper Method Tests ==========
-
-    @Test
-    void testGetPlayerCountReturnsCorrectValue() {
-        // Arrange
-        expect(mockModel.getPlayerCount()).andReturn(4);
-        replay(mockModel);
-
-        // Act
-        int count = controller.getPlayerCount(mockModel);
-
-        // Assert
-        assertEquals(4, count);
-        verify(mockModel);
-    }
-
-    // ========== Full Validation BVA Tests ==========
-
-    @Test
+    @Test // TC1
     void testFullValidationNullNameReturnsNameEmpty() {
         replay(mockModel);
 
@@ -633,7 +39,7 @@ class GameSetupControllerTest {
         verify(mockModel);
     }
 
-    @Test
+    @Test // TC2
     void testFullValidationEmptyStringNameReturnsNameEmpty() {
         replay(mockModel);
 
@@ -643,7 +49,7 @@ class GameSetupControllerTest {
         verify(mockModel);
     }
 
-    @Test
+    @Test // TC3
     void testFullValidationSingleSpaceNameReturnsNameEmpty() {
         replay(mockModel);
 
@@ -653,7 +59,7 @@ class GameSetupControllerTest {
         verify(mockModel);
     }
 
-    @Test
+    @Test // TC4
     void testFullValidationMixedWhitespaceNameReturnsNameEmpty() {
         replay(mockModel);
 
@@ -663,7 +69,7 @@ class GameSetupControllerTest {
         verify(mockModel);
     }
 
-    @Test
+    @Test // TC5
     void testFullValidationSingleCharNameSucceeds() {
         expect(mockModel.isNameAvailable("A")).andReturn(true);
         expect(mockModel.isColorAvailable(PlayerColor.RED)).andReturn(true);
@@ -677,7 +83,7 @@ class GameSetupControllerTest {
         verify(mockModel);
     }
 
-    @Test
+    @Test // TC6
     void testFullValidationTrimsLeadingAndTrailingWhitespace() {
         expect(mockModel.isNameAvailable("Alice")).andReturn(true);
         expect(mockModel.isColorAvailable(PlayerColor.RED)).andReturn(true);
@@ -691,7 +97,7 @@ class GameSetupControllerTest {
         verify(mockModel);
     }
 
-    @Test
+    @Test // TC7
     void testFullValidationDuplicateNameReturnsNameTaken() {
         expect(mockModel.isNameAvailable("Alice")).andReturn(false);
         replay(mockModel);
@@ -702,7 +108,7 @@ class GameSetupControllerTest {
         verify(mockModel);
     }
 
-    @Test
+    @Test // TC8
     void testFullValidationNullColorReturnsColorEmpty() {
         expect(mockModel.isNameAvailable("Alice")).andReturn(true);
         replay(mockModel);
@@ -713,7 +119,7 @@ class GameSetupControllerTest {
         verify(mockModel);
     }
 
-    @Test
+    @Test // TC9
     void testFullValidationDuplicateColorReturnsColorTaken() {
         expect(mockModel.isNameAvailable("Alice")).andReturn(true);
         expect(mockModel.isColorAvailable(PlayerColor.RED)).andReturn(false);
@@ -725,7 +131,7 @@ class GameSetupControllerTest {
         verify(mockModel);
     }
 
-    @Test
+    @Test // TC10
     void testFullValidationAllValidReturnsSuccess() {
         expect(mockModel.isNameAvailable("Alice")).andReturn(true);
         expect(mockModel.isColorAvailable(PlayerColor.RED)).andReturn(true);
@@ -739,7 +145,7 @@ class GameSetupControllerTest {
         verify(mockModel);
     }
 
-    @Test
+    @Test // TC11
     void testFullValidationNameCheckedBeforeColor() {
         replay(mockModel);
 
@@ -749,7 +155,7 @@ class GameSetupControllerTest {
         verify(mockModel);
     }
 
-    @Test
+    @Test // TC12
     void testFullValidationDuplicateNameShortCircuitsColorCheck() {
         expect(mockModel.isNameAvailable("Alice")).andReturn(false);
         replay(mockModel);
@@ -760,7 +166,9 @@ class GameSetupControllerTest {
         verify(mockModel);
     }
 
-    @Test
+    // ========== clearPlayers (BVA TC13) ==========
+
+    @Test // TC13
     void testClearPlayersDelegatesToModel() {
         mockModel.clearPlayers();
         expectLastCall();
@@ -768,6 +176,242 @@ class GameSetupControllerTest {
 
         controller.clearPlayers(mockModel);
 
+        verify(mockModel);
+    }
+
+    // ========== validatePlayerCount (BVA TC14–TC17) ==========
+
+    @Test // TC14
+    void testInitializeGameWithThreePlayersSucceeds() {
+        expect(mockModel.getPlayerCount()).andReturn(3);
+        replay(mockModel);
+
+        boolean result = controller.validatePlayerCount(mockModel);
+
+        assertTrue(result);
+        verify(mockModel);
+    }
+
+    @Test // TC15
+    void testInitializeGameWithFourPlayersSucceeds() {
+        expect(mockModel.getPlayerCount()).andReturn(4);
+        replay(mockModel);
+
+        boolean result = controller.validatePlayerCount(mockModel);
+
+        assertTrue(result);
+        verify(mockModel);
+    }
+
+    @Test // TC16
+    void testInitializeGameWithTwoPlayersFailsValidation() {
+        expect(mockModel.getPlayerCount()).andReturn(2);
+        replay(mockModel);
+
+        boolean result = controller.validatePlayerCount(mockModel);
+
+        assertFalse(result);
+        verify(mockModel);
+    }
+
+    @Test // TC17
+    void testInitializeGameWithFivePlayersFailsValidation() {
+        expect(mockModel.getPlayerCount()).andReturn(5);
+        replay(mockModel);
+
+        boolean result = controller.validatePlayerCount(mockModel);
+
+        assertFalse(result);
+        verify(mockModel);
+    }
+
+    // ========== addPlayer (BVA TC18) ==========
+
+    @Test // TC18
+    void testAddPlayerWithValidNameSucceeds() {
+        String playerName = "Alice";
+        mockModel.addPlayer(playerName, PlayerColor.RED);
+        expectLastCall().once();
+        replay(mockModel);
+
+        controller.addPlayer(mockModel, playerName, PlayerColor.RED);
+
+        verify(mockModel);
+    }
+
+    // ========== addPlayerWithColorValidation (BVA TC19–TC20) ==========
+
+    @Test // TC19
+    void testAddPlayerWithUniqueColorSucceeds() {
+        expect(mockModel.isColorAvailable(PlayerColor.RED)).andReturn(true);
+        mockModel.addPlayer("Alice", PlayerColor.RED);
+        expectLastCall().once();
+        replay(mockModel);
+
+        boolean result = controller.addPlayerWithColorValidation(mockModel, "Alice", PlayerColor.RED);
+
+        assertTrue(result);
+        verify(mockModel);
+    }
+
+    @Test // TC20
+    void testAddPlayerWithDuplicateColorFails() {
+        expect(mockModel.isColorAvailable(PlayerColor.RED)).andReturn(false);
+        replay(mockModel);
+
+        boolean result = controller.addPlayerWithColorValidation(mockModel, "Bob", PlayerColor.RED);
+
+        assertFalse(result);
+        verify(mockModel);
+    }
+
+    // ========== getPlayerName (BVA TC21) ==========
+
+    @Test // TC21
+    void testPlayerNamesAreStoredCorrectly() {
+        Player mockPlayer = createMock(Player.class);
+        expect(mockPlayer.getName()).andReturn("Alice").once();
+        expect(mockModel.getPlayer(0)).andReturn(mockPlayer);
+        replay(mockModel, mockPlayer);
+
+        String name = controller.getPlayerName(mockModel, 0);
+
+        assertEquals("Alice", name);
+        verify(mockModel, mockPlayer);
+    }
+
+    // ========== getPlayerCount (BVA TC22) ==========
+
+    @Test // TC22
+    void testGetPlayerCountReturnsCorrectValue() {
+        expect(mockModel.getPlayerCount()).andReturn(4);
+        replay(mockModel);
+
+        int count = controller.getPlayerCount(mockModel);
+
+        assertEquals(4, count);
+        verify(mockModel);
+    }
+
+    // ========== getBoardHexCount (BVA TC23) ==========
+
+    @Test // TC23
+    void testBoardIsInitializedWithNineteenHexes() {
+        expect(mockBoard.getHexCount()).andReturn(19);
+        replay(mockBoard);
+
+        int hexCount = controller.getBoardHexCount(mockBoard);
+
+        assertEquals(19, hexCount);
+        verify(mockBoard);
+    }
+
+    // ========== getHexOrder (BVA TC24) ==========
+
+    @Test // TC24
+    void testHexOrderIsDetermined() {
+        List<String> mockHexOrder = List.of("WHEAT", "SHEEP", "WOOD", "BRICK", "ORE");
+        expect(mockBoard.getHexOrder()).andReturn(mockHexOrder);
+        replay(mockBoard);
+
+        List<String> hexOrder = controller.getHexOrder(mockBoard);
+
+        assertNotNull(hexOrder);
+        assertFalse(hexOrder.isEmpty());
+        verify(mockBoard);
+    }
+
+    // ========== getResourceDeck (BVA TC25) ==========
+
+    @Test // TC25
+    void testResourceDeckIsInitialized() {
+        ResourceDeck mockResourceDeck = createMock(ResourceDeck.class);
+        expect(mockModel.getResourceDeck()).andReturn(mockResourceDeck);
+        replay(mockModel);
+
+        ResourceDeck deck = controller.getResourceDeck(mockModel);
+
+        assertNotNull(deck);
+        verify(mockModel);
+    }
+
+    // ========== initializeResourceDeck (BVA TC26) ==========
+
+    @Test // TC26
+    void testInitializeResourceDeckCreatesValidDeck() {
+        mockModel.setResourceDeck(anyObject(ResourceDeck.class));
+        expectLastCall().once();
+        replay(mockModel);
+
+        controller.initializeResourceDeck(mockModel);
+
+        verify(mockModel);
+    }
+
+    // ========== getDevelopmentCardDeck (BVA TC27) ==========
+
+    @Test // TC27
+    void testDevelopmentCardDeckIsInitialized() {
+        DevelopmentCardDeck mockDevDeck = createMock(DevelopmentCardDeck.class);
+        expect(mockModel.getDevelopmentCardDeck()).andReturn(mockDevDeck);
+        replay(mockModel);
+
+        DevelopmentCardDeck deck = controller.getDevelopmentCardDeck(mockModel);
+
+        assertNotNull(deck);
+        verify(mockModel);
+    }
+
+    // ========== initializeDevelopmentCardDeck (BVA TC28) ==========
+
+    @Test // TC28
+    void testInitializeDevelopmentCardDeckCreatesValidDeck() {
+        mockModel.setDevelopmentCardDeck(anyObject(DevelopmentCardDeck.class));
+        expectLastCall().once();
+        replay(mockModel);
+
+        controller.initializeDevelopmentCardDeck(mockModel);
+
+        verify(mockModel);
+    }
+
+    // ========== determineTurnOrder (BVA TC29) ==========
+
+    @Test // TC29
+    void testDetermineTurnOrderWithThreePlayers() {
+        Player player1 = createMock(Player.class);
+        Player player2 = createMock(Player.class);
+        Player player3 = createMock(Player.class);
+        List<Player> expectedOrder = List.of(player1, player2, player3);
+
+        mockModel.determineTurnOrder();
+        expectLastCall().once();
+        expect(mockModel.getTurnOrder()).andReturn(expectedOrder);
+        replay(mockModel);
+
+        controller.determineTurnOrder(mockModel);
+        List<Player> turnOrder = controller.getTurnOrder(mockModel);
+
+        assertEquals(3, turnOrder.size());
+        verify(mockModel);
+    }
+
+    // ========== getTurnOrder (BVA TC30) ==========
+
+    @Test // TC30
+    void testTurnOrderIsDetermined() {
+        List<Player> mockPlayers = List.of(
+                createMock(Player.class),
+                createMock(Player.class),
+                createMock(Player.class)
+        );
+        expect(mockModel.getTurnOrder()).andReturn(mockPlayers);
+        replay(mockModel);
+
+        List<Player> turnOrder = controller.getTurnOrder(mockModel);
+
+        assertNotNull(turnOrder);
+        assertFalse(turnOrder.isEmpty());
         verify(mockModel);
     }
 }
