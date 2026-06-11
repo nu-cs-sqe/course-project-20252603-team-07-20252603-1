@@ -18,8 +18,9 @@ class EmptyDeckExceptionTest {
 
     @Test
     void testExceptionCanBeThrown() {
-        assertThrows(EmptyDeckException.class, () -> {
+        Exception exception = assertThrows(EmptyDeckException.class, () -> {
             throw new EmptyDeckException("Cannot draw card");
         });
+        assertEquals("Cannot draw card", exception.getMessage());
     }
 }

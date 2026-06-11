@@ -31,12 +31,13 @@ Step 3:
 
 |             | System under test             | Expected output                                                                                                    | Implemented?       |
 |-------------|-------------------------------|--------------------------------------------------------------------------------------------------------------------|--------------------|
-| Test Case 1 | RED tries to claim node 0     | Calls to add RED settlement to hex 0 and claimStoredNode, node level is settlement, owned by RED                   | :white_check_mark: |
-| Test Case 2 | BLUE tries to claim node 53   | Calls to add BLUE settlement to hex 18 and claimStoredNode, node level is settlement, owned by BLUE                | :white_check_mark: |
-| Test Case 3 | ORANGE tries to claim node -1 | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNode and addPlayerSettlementToHex not called          | :white_check_mark: |
-| Test Case 4 | WHITE tries to claim node 54  | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNode and addPlayerSettlementToHex not called          | :white_check_mark: |
-| Test Case 5 | ORANGE tries to claim node 8  | Calls to add ORANGE settlement to hexes 0, 1, and 4 and claimStoredNode, node level is settlement, owned by ORANGE | :white_check_mark: |
-| Test Case 6 | BLUE tries to claim node 4    | Calls to add BLUE settlement to hexes 0 and 1 and claimStoredNode, node level is settlement, owned by BLUE         | :white_check_mark: |
+| Test Case 1  | RED tries to claim node 0                                                     | Calls to add RED settlement to hex 0 and claimStoredNode, node level is settlement, owned by RED                   | :white_check_mark: |
+| Test Case 2  | BLUE tries to claim node 53                                                   | Calls to add BLUE settlement to hex 18 and claimStoredNode, node level is settlement, owned by BLUE                | :white_check_mark: |
+| Test Case 3  | ORANGE tries to claim node -1                                                 | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNode and addPlayerSettlementToHex not called          | :white_check_mark: |
+| Test Case 4  | WHITE tries to claim node 54                                                  | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNode and addPlayerSettlementToHex not called          | :white_check_mark: |
+| Test Case 5  | ORANGE tries to claim node 8                                                  | Calls to add ORANGE settlement to hexes 0, 1, and 4 and claimStoredNode, node level is settlement, owned by ORANGE | :white_check_mark: |
+| Test Case 6  | BLUE tries to claim node 4                                                    | Calls to add BLUE settlement to hexes 0 and 1 and claimStoredNode, node level is settlement, owned by BLUE         | :white_check_mark: |
+| Test Case 69 | Controller rejects claim: adjacent node already claimed (distance rule fired) | IllegalSettlementPlacementException with message "Can not claim node adjacent to node already claimed" propagates  | :white_check_mark: |
 
 
 
@@ -119,6 +120,7 @@ Step 3:
 | Test Case 65 | RED tries to claim edge [5, 5] (same start and end)                | IllegalArgumentException                             | :white_check_mark: |
 | Test Case 66 | RED tries to claim edge [3, 0] (non-existent edge)                 | IllegalArgumentException                             | :white_check_mark: |
 | Test Case 67 | RED claims edge [0, 1], then BLUE tries to claim edge [0, 1] again | IllegalEdgeClaim                                     | :white_check_mark: |
+| Test Case 70 | Controller rejects road: edge already claimed                       | IllegalEdgeClaim with message "Edge already claimed" propagates | :white_check_mark: |
 
 
 ### Method under test: `awardResources(int rollNum)`
@@ -135,7 +137,7 @@ Step 2:
 - Output - Interval
 
 Step 3:
-- Input: 2, 12, -1, 13
+- Input: 2, 12, -1, 13 (not feasible, verified by DiceHandler)
 - Input: Robber on hex or not
 - Output: 0, 1, 19 (max number of a single resource possible), 20 (not feasible)
 

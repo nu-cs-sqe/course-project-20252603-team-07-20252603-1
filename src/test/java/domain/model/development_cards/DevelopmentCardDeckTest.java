@@ -56,9 +56,10 @@ class DevelopmentCardDeckTest {
         }
 
         // Try to draw one more
-        assertThrows(EmptyDeckException.class, () -> {
+        Exception exception = assertThrows(EmptyDeckException.class, () -> {
             deck.drawCard();
         });
+        assertEquals("Cannot draw new DevelopmentCard, no cards remain.", exception.getMessage());
     }
 
     @Test

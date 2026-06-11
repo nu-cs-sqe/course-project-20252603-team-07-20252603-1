@@ -26,7 +26,7 @@ public class Hex {
   private List<Player> playerCities;
   private int totalBuildingsOnHex;
 
-  public Hex(int hexId, Resource resource, int rollNumber) {
+  Hex(int hexId, Resource resource, int rollNumber) {
     validateHexId(hexId);
     this.hexId = hexId;
     validateRollNum(rollNumber);
@@ -58,7 +58,7 @@ public class Hex {
     }
   }
 
-  public void addPlayerSettlementToHex(Player player) {
+  void addPlayerSettlementToHex(Player player) {
     if (this.totalBuildingsOnHex >= MAX_BUILDINGS_ON_HEX) {
       throw new IllegalStateException("Already three buildings on hex.");
     } else if (player == null) {
@@ -69,7 +69,7 @@ public class Hex {
     }
   }
 
-  public void removePlayerSettlementFromHex(Player player) {
+  void removePlayerSettlementFromHex(Player player) {
     boolean success = playerSettlements.remove(player);
     if (!success) {
       throw new IllegalArgumentException("Player does not have a settlement on hex.");
@@ -78,7 +78,7 @@ public class Hex {
     }
   }
 
-  public void addPlayerCityToHex(Player player) {
+  void addPlayerCityToHex(Player player) {
     if (this.totalBuildingsOnHex >= MAX_BUILDINGS_ON_HEX) {
       throw new IllegalStateException("Already three buildings on hex.");
     } else if (player == null) {
@@ -89,7 +89,7 @@ public class Hex {
     }
   }
 
-  public void awardSettlementResources() {
+  void awardSettlementResources() {
     if (resource != Resource.DESERT) {
       playerSettlements.forEach(player -> {
         player.updateResources(resource, SETTLEMENT_RESOURCE_AMOUNT);
@@ -97,7 +97,7 @@ public class Hex {
     }
   }
 
-  public void awardCityResources() {
+  void awardCityResources() {
     if (resource != Resource.DESERT) {
       playerCities.forEach(player -> {
         player.updateResources(resource, CITY_RESOURCE_AMOUNT);
@@ -105,11 +105,11 @@ public class Hex {
     }
   }
 
-  public int getSettlementCount() {
+  int getSettlementCount() {
     return playerSettlements.size();
   }
 
-  public int getCityCount() {
+  int getCityCount() {
     return playerCities.size();
   }
 
@@ -117,19 +117,19 @@ public class Hex {
     return this.hexId;
   }
 
-  public Resource getHexResource() {
+  Resource getHexResource() {
     return this.resource;
   }
 
-  public int getHexRollNum() {
+  int getHexRollNum() {
     return this.hexRollNum;
   }
 
-  public boolean isPlayerSettlementOnHex(Player player) {
+  boolean isPlayerSettlementOnHex(Player player) {
     return playerSettlements.contains(player);
   }
 
-  public boolean isPlayerCityOnHex(Player player) {
+  boolean isPlayerCityOnHex(Player player) {
     return playerCities.contains(player);
   }
 

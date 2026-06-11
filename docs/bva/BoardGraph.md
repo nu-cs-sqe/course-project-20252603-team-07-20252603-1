@@ -250,3 +250,32 @@
 |             | State of the System | Expected output   | Implemented?       |
 |-------------|---------------------|-------------------|--------------------|
 | Test Case 1 | Empty Maps          | Setup Board Graph | :white_check_mark: |
+
+### Method under test: `calculateLongestRoad(List<Players> players, PlayerColor previousWinner)`
+
+#### Inputs:
+
+- Players -> List<Player> -> Collection of players to check
+- PreviousWinner -> PlayerColor -> the player who currently holds longest road 
+  - PlayerColor.SETUP if nobody holds it yet
+- Internal graph edge state -> each edge has an owning PlayerColor
+- Road length -> Integer -> [0, 15] max possible roads in Catan
+
+#### Outputs:
+
+- PlayerColor of the player with the longest road
+  - Returns PlayerColor.SETUP if no player has 5+ roads 
+  - Returns the max owning player's color if they have 5+ roads 
+  - In case of tie -> returns previous owner of longest road
+
+|             | State of the System                                                                            | Expected output    | Implemented?       |
+|-------------|------------------------------------------------------------------------------------------------|--------------------|--------------------|
+| Test Case 1 | No player has any roads, no previous winner                                                    | PlayerColor.SETUP  | :white_check_mark: |
+| Test Case 2 | RED has exactly 4 roads, no previous winner                                                    | PlayerColor.SETUP  | :white_check_mark: |
+| Test Case 3 | ORANGE has exactly 5 roads, no previous winner                                                 | PlayerColor.ORANGE | :white_check_mark: |
+| Test Case 4 | WHITE and BLUE both have exactly 5 roads, WHITE is previous winner                             | PlayerColor.WHITE  | :white_check_mark: |
+| Test Case 5 | RED and BLUE both have exactly 5 roads, BLUE is previous winner                                | PlayerColor.BLUE   | :white_check_mark: |
+| Test Case 6 | RED is previous winner with 5 roads, BLUE builds to 6                                          | PlayerColor.BLUE   | :white_check_mark: |
+| Test Case 7 | BLUE has 6 roads but branching, RED was previous winner                                        | PlayerColor.RED    | :white_check_mark: |
+| Test Case 8 | WHITE is the previous winner, 8 total roads, but 5 continous, ORANGE has 8 total, 6 continuous | PlayerColor.ORANGE | :white_check_mark: |
+| Test Case 9 | BLUE has longest road at 5, gets blocked to have 4, no other players at road of length 5       | PlayerColor.SETUP  | :white_check_mark: |

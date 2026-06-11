@@ -23,6 +23,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     // Source: https://mvnrepository.com/artifact/org.easymock/easymock
     testImplementation("org.easymock:easymock:5.4.0")
+    compileOnly("com.github.spotbugs:spotbugs-annotations:4.7.3")
 }
 
 java {
@@ -64,7 +65,6 @@ spotbugs {
 }
 
 tasks.spotbugsMain {
-    excludeFilter = file("config/spotbugs/exclude.xml")
     reports.create("html") {
         required = true
         outputLocation = layout.buildDirectory.file("reports/spotbugs/spotbugs.html")

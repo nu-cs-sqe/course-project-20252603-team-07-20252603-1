@@ -16,7 +16,7 @@ public class GraphNode {
     private static final int MAX_NODE_ID = 53;
     private static final int MIN_NODE_ID = 0;
 
-    public GraphNode(int nodeID) {
+    GraphNode(int nodeID) {
         assertValidNodeID(nodeID);
         this.nodeID = nodeID;
         this.occupied = false;
@@ -32,7 +32,7 @@ public class GraphNode {
         }
     }
 
-    public boolean playerClaimNode(PlayerColor color){
+    boolean playerClaimNode(PlayerColor color){
         if (checkOccupied()) {
             throw new IllegalArgumentException("Node Already Claimed");
         }
@@ -43,15 +43,15 @@ public class GraphNode {
         }
     }
 
-    public boolean checkOccupied(){
+    boolean checkOccupied(){
         return this.occupied;
     }
 
-    public PlayerColor checkColor(){
+    PlayerColor checkColor(){
         return this.owningPlayerColor;
     }
 
-    public int getNodeID(){
+    int getNodeID(){
         return this.nodeID;
     }
 
