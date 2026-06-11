@@ -177,6 +177,8 @@ public class GameModel {
         incrementNumSettlements(currentPlayerColor);
         Player currentPlayer = getCurrentPlayer();
         currentPlayer.updateVictoryPoints(POINTS_FOR_SETTLEMENT);
+        // Building a settlement can change who has the longest road
+        handleLongestRoad();
     }
 
     public void attemptBuildRoad(int startingNodeID, int endingNodeID) {
@@ -190,6 +192,8 @@ public class GameModel {
             ResourceDeck deckToReplenish = decks.get(r);
             deckToReplenish.replenish();
         }
+        // building a road can edit longest road
+        handleLongestRoad();
     };
 
     void setCurrentGamePhase(GamePhase newGamePhase) {

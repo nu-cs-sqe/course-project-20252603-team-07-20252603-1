@@ -75,6 +75,12 @@ public class GameModelTests {
         EasyMock.expectLastCall();
 
         redStateMock.updateVictoryPoints(1);
+        EasyMock.expect(
+                boardMock.calculateLongestRoad(
+                        EasyMock.<List<Player>>anyObject(),
+                        EasyMock.eq(PlayerColor.SETUP)
+                )
+        ).andReturn(PlayerColor.SETUP);
 
         EasyMock.replay(redStateMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock,
                 woolDeckMock);
@@ -203,6 +209,12 @@ public class GameModelTests {
         blueStateMock.increaseSettlementCount();
         EasyMock.expectLastCall();
         blueStateMock.updateVictoryPoints(1);
+        EasyMock.expect(
+                boardMock.calculateLongestRoad(
+                        EasyMock.<List<Player>>anyObject(),
+                        EasyMock.eq(PlayerColor.SETUP)
+                )
+        ).andReturn(PlayerColor.SETUP);
 
         EasyMock.replay(blueStateMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock,
                 woolDeckMock);
@@ -252,7 +264,6 @@ public class GameModelTests {
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER)) {
             EasyMock.expect(redStateMock.getResourceCount(r)).andReturn(1);
         }
-
         boardMock.addRoad(redStateMock, 0, 1);
         EasyMock.expectLastCall();
 
@@ -262,6 +273,12 @@ public class GameModelTests {
             decks.get(r).replenish();
             EasyMock.expectLastCall();
         }
+        EasyMock.expect(
+                boardMock.calculateLongestRoad(
+                        EasyMock.<List<Player>>anyObject(),
+                        EasyMock.eq(PlayerColor.SETUP)
+                )
+        ).andReturn(PlayerColor.SETUP);
 
         EasyMock.replay(redStateMock, lumberDeckMock, brickDeckMock, grainDeckMock,
                 oreDeckMock, woolDeckMock, boardMock);
@@ -385,6 +402,12 @@ public class GameModelTests {
             decks.get(r).replenish();
             EasyMock.expectLastCall();
         }
+        EasyMock.expect(
+                boardMock.calculateLongestRoad(
+                        EasyMock.<List<Player>>anyObject(),
+                        EasyMock.eq(PlayerColor.SETUP)
+                )
+        ).andReturn(PlayerColor.SETUP);
 
         EasyMock.replay(playerMock, lumberDeckMock, brickDeckMock, grainDeckMock,
                 oreDeckMock, woolDeckMock, boardMock);
@@ -747,6 +770,12 @@ public class GameModelTests {
         playerMock.increaseSettlementCount();
         EasyMock.expectLastCall();
         playerMock.updateVictoryPoints(1);
+        EasyMock.expect(
+                boardMock.calculateLongestRoad(
+                        EasyMock.<List<Player>>anyObject(),
+                        EasyMock.eq(PlayerColor.SETUP)
+                )
+        ).andReturn(PlayerColor.SETUP);
         EasyMock.replay(playerMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, woolDeckMock);
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
                 oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
@@ -789,6 +818,12 @@ public class GameModelTests {
             decks.get(r).replenish();
             EasyMock.expectLastCall();
         }
+        EasyMock.expect(
+                boardMock.calculateLongestRoad(
+                        EasyMock.<List<Player>>anyObject(),
+                        EasyMock.eq(PlayerColor.SETUP)
+                )
+        ).andReturn(PlayerColor.SETUP);
         EasyMock.replay(playerMock, lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock, woolDeckMock, boardMock);
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
                 oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
