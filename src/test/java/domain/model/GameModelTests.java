@@ -892,4 +892,24 @@ public class GameModelTests {
 
         EasyMock.verify(orangeStateMock);
     }
+
+    @Test
+    void updateVictoryPoints_WhiteLoses2_ExpectSuccess() {
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
+                PlayerColor.WHITE, whiteStateMock
+        );;
+
+        whiteStateMock.updateVictoryPoints(-2);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(whiteStateMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        model.updateVictoryPoints(PlayerColor.WHITE, -2);
+
+        EasyMock.verify(whiteStateMock);
+    }
 }
