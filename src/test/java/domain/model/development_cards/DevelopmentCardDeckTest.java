@@ -8,7 +8,7 @@ import domain.model.exceptions.EmptyDeckException;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DevelopmentCardDeckTest {
-  final int DECK_SIZE = 25;
+  static final int DECK_SIZE = 25;
 
   // TC1, TC13: new DevelopmentCardDeck() -> countRemaining() == 25
   @Test
