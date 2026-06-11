@@ -4,7 +4,6 @@ import domain.model.board.BoardHandler;
 import domain.model.exceptions.*;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
-import domain.model.player.Player;
 import domain.model.resources.Resource;
 import domain.model.resources.ResourceDeck;
 import org.easymock.EasyMock;
@@ -854,7 +853,7 @@ public class GameModelTests {
     }
 
     @Test
-    void updateVictoryPoints_RedHas0_Receives1_ExpectRedHasOnePoint() {
+    void updateVictoryPoints_RedReceives1_ExpectSuccess() {
         Player redStateMock = EasyMock.createMock(Player.class);
         ColorToPlayerObjMock = Map.of(
                 PlayerColor.RED, redStateMock
@@ -867,6 +866,23 @@ public class GameModelTests {
                 oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
 
         model.updateVictoryPoints(PlayerColor.RED, 1);
+
+    }
+
+    @Test
+    void updateVictoryPoints_OrangeReceives2_ExpectSuccess() {
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
+                PlayerColor.ORANGE, orangeStateMock
+        );;
+
+        orangeStateMock.updateVictoryPoints(2);
+        EasyMock.expectLastCall();
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        model.updateVictoryPoints(PlayerColor.ORANGE, 1);
 
     }
 }
