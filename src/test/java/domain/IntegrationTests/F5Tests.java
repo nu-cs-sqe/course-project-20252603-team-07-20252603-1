@@ -80,6 +80,27 @@ public class F5Tests {
     assertEquals(0, redPlayer.getResourceCount(Resource.BRICK));
   }
 
+  // Test Case 8
+  @Test
+  void TwoRolled_RobberOnHexOne_WhiteSettlementsOnNodesFourFiveThirteen_NoResourcesAwarded() {
+    BoardHandler b = new BoardHandler();
+    Player whitePlayer = new Player("Dummy", PlayerColor.WHITE);
+
+    b.buildSetupSettlement(whitePlayer, 4);
+    b.buildSetupSettlement(whitePlayer, 5);
+    b.buildSetupSettlement(whitePlayer, 13);
+
+    b.moveRobber(1);
+
+    b.awardResources(2);
+
+    assertEquals(0, whitePlayer.getResourceCount(Resource.WOOL));
+    assertEquals(0, whitePlayer.getResourceCount(Resource.LUMBER));
+    assertEquals(0, whitePlayer.getResourceCount(Resource.ORE));
+    assertEquals(0, whitePlayer.getResourceCount(Resource.GRAIN));
+    assertEquals(0, whitePlayer.getResourceCount(Resource.BRICK));
+  }
+
 
 }
 
