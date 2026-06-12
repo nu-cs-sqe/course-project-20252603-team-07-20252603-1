@@ -261,6 +261,51 @@ Outputs:
 | Test Case 6 | ORANGE, check fails  | WHITE, BEFORE_ROLL phase  | :white_check_mark: |
 | Test Case 7 | Incorrect game phase | IllegalGamePhaseException | :white_check_mark: |
 
+### Method under test: `buyDevCard(DevelopmentCardDeck deck)`
+
+Cost: 1 ORE + 1 WOOL + 1 GRAIN. Valid phase: GENERAL_PLAY only.
+Resource check order (matching existing GameModel convention): ORE → WOOL → GRAIN.
+The deck is drawn **after** resources are validated; resources are deducted only on a successful draw.
+The ORE, WOOL, and GRAIN resource decks are replenished by 1 each on success.
+Returns the drawn `DevelopmentCard`.
+
+Step 1:
+
+- Input: deck (DevelopmentCardDeck)
+- State: current game phase, current player's ORE/WOOL/GRAIN counts, deck size
+- Output: DevelopmentCard drawn; player's ORE/WOOL/GRAIN each decremented by 1; ORE/WOOL/GRAIN resource decks each replenished by 1; card added to player's hand
+- Output: exception
+
+Step 2:
+
+- Game phase: Case {GENERAL_PLAY (allowed), others (not allowed)}
+- Player ORE: Interval [0, 19]; cost boundary = 1
+- Player WOOL: Interval [0, 19]; cost boundary = 1
+- Player GRAIN: Interval [0, 19]; cost boundary = 1
+- Deck size: Interval [0, 25]; boundary values: 0 (empty), 1 (last card), 25 (full)
+
+Step 3:
+
+- Game phase: GENERAL_PLAY; BEFORE_ROLL (invalid); MOVE_ROBBER (invalid)
+- ORE (first checked): 0 (below cost); 1 (at cost boundary); 3 (surplus)
+- WOOL (second checked): 0 (below cost, ORE already ≥ 1); 1 (at cost boundary)
+- GRAIN (third checked): 0 (below cost, ORE/WOOL already ≥ 1); 1 (at cost boundary)
+- Deck size: 0 (empty — EmptyDeckException after resource check passes); 1 (last card); 25 (full)
+
+|             | State of the System                                                                              | Expected output                                                                                          | Implemented? |
+|-------------|--------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|--------------|
+| Test Case 1 | GENERAL_PLAY, ORE=1, WOOL=1, GRAIN=1 (exact cost), deck=25 (full)                               | card returned; player loses 1 each ORE/WOOL/GRAIN; ORE/WOOL/GRAIN decks each replenished by 1; deck countRemaining = 24 | :x: |
+| Test Case 2 | GENERAL_PLAY, ORE=3, WOOL=2, GRAIN=4 (surplus each), deck=25                                    | card returned; player loses 1 each ORE/WOOL/GRAIN; surplus does not prevent purchase                    | :x: |
+| Test Case 3 | GENERAL_PLAY, ORE=1, WOOL=1, GRAIN=1, deck=1 (last card)                                        | card returned; deck countRemaining = 0                                                                   | :x: |
+| Test Case 4 | GENERAL_PLAY, ORE=1, WOOL=1, GRAIN=1, deck=0 (empty)                                            | EmptyDeckException; player resources NOT deducted                                                        | :x: |
+| Test Case 5 | GENERAL_PLAY, ORE=0 (below cost boundary)                                                        | InsufficientResourcesException                                                                           | :x: |
+| Test Case 6 | GENERAL_PLAY, ORE=1, WOOL=0 (below cost boundary, ORE already ≥ 1)                              | InsufficientResourcesException                                                                           | :x: |
+| Test Case 7 | GENERAL_PLAY, ORE=1, WOOL=1, GRAIN=0 (below cost boundary, ORE/WOOL already ≥ 1)               | InsufficientResourcesException                                                                           | :x: |
+| Test Case 8 | BEFORE_ROLL                                                                                      | IllegalGamePhaseException                                                                                | :x: |
+| Test Case 9 | MOVE_ROBBER                                                                                      | IllegalGamePhaseException                                                                                | :x: |
+
+---
+
 ### Method under test: `handleLongestRoad()`
 
 Handles checking and redistributing points based on longest road, to be called in building settlements and roads (things which can change longest road)
