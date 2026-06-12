@@ -126,5 +126,5 @@ Step 3:
 |              | System under test                                                                    | Expected output                                                  | Implemented? |
 |--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------|--------------|
 | Test Case 8  | playDevCard(model, card); model completes normally                                   | model.playDevCard(card) called once; no exception                | :white_check_mark: |
-| Test Case 9  | playDevCard(model, card); model throws IllegalGamePhaseException (wrong phase)       | IllegalGamePhaseException relayed to caller                      | :x:          |
+| Test Case 9  | playDevCard(model, card); model throws IllegalGamePhaseException (wrong phase)       | IllegalGamePhaseException relayed to caller                      | :white_check_mark: |
 | Test Case 10 | playDevCard(model, card); model throws IllegalArgumentException (null card)          | IllegalArgumentException relayed to caller                       | :x:          |

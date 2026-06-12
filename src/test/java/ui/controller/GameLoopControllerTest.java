@@ -5,6 +5,7 @@ import domain.model.GameModel;
 import domain.model.development_cards.DevelopmentCard;
 import domain.model.development_cards.DevelopmentCardDeck;
 import domain.model.exceptions.EmptyDeckException;
+import domain.model.exceptions.IllegalGamePhaseException;
 import domain.model.exceptions.InsufficientResourcesException;
 import domain.model.game_pieces.DiceHandler;
 import domain.model.player.Player;
@@ -158,6 +159,22 @@ class GameLoopControllerTest {
         replay(mockModel, mockCard);
 
         controller.playDevCard(mockModel, mockCard);
+
+        verify(mockModel, mockCard);
+    }
+
+    // TC9: playDevCard(model, card); model throws IllegalGamePhaseException (wrong phase)
+    //      -> IllegalGamePhaseException relayed to caller
+    @Test
+    void playDevCard_ModelThrowsIllegalGamePhaseException_ExpectExceptionRelayed() {
+        DevelopmentCard mockCard = createMock(DevelopmentCard.class);
+        mockModel.playDevCard(mockCard);
+        expectLastCall().andThrow(new IllegalGamePhaseException("Not proper phase for that action"));
+        replay(mockModel, mockCard);
+
+        Exception exception = assertThrows(IllegalGamePhaseException.class,
+                () -> controller.playDevCard(mockModel, mockCard));
+        assertEquals("Not proper phase for that action", exception.getMessage());
 
         verify(mockModel, mockCard);
     }
