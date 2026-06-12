@@ -1812,6 +1812,24 @@ public class GameModelTests {
         EasyMock.verify(redStateMock, deckMock);
     }
 
+  // playDevCard() tests
+
+    // TC1: card = null
+    //      -> IllegalArgumentException: "Development card cannot be null."
+    @Test
+    void playDevCard_NullCard_ExpectIllegalArgumentException() {
+        EasyMock.replay(boardMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> model.playDevCard(null));
+        assertEquals("Development card cannot be null.", exception.getMessage());
+
+        EasyMock.verify(boardMock);
+    }
+
   // Attempt Port Trade Tests
 
   // Test Case 1
