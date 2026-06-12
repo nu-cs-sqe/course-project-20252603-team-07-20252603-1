@@ -6,6 +6,7 @@ import domain.model.board.Port;
 import domain.model.development_cards.DevelopmentCard;
 import domain.model.development_cards.DevelopmentCardDeck;
 import domain.model.exceptions.EmptyDeckException;
+import domain.model.exceptions.IllegalGamePhaseException;
 import domain.model.exceptions.InsufficientResourcesException;
 import domain.model.game_pieces.DiceHandler;
 import domain.model.player.Player;
@@ -197,5 +198,51 @@ class GameLoopControllerTest {
         assertEquals("Cannot draw new DevelopmentCard, no cards remain.", exception.getMessage());
 
         verify(mockModel, mockDeck, mockHandler, mockPlayer);
+    }
+
+    // TC8: playDevCard(model, card); model completes normally
+    //      -> model.playDevCard(card) called once; no exception
+    @Test
+    void playDevCard_ModelCompletesNormally_ExpectDelegationToModel() {
+        DevelopmentCard mockCard = createMock(DevelopmentCard.class);
+        mockModel.playDevCard(mockCard);
+        expectLastCall();
+        replay(mockModel, mockCard);
+
+        controller.playDevCard(mockModel, mockCard);
+
+        verify(mockModel, mockCard);
+    }
+
+    // TC9: playDevCard(model, card); model throws IllegalGamePhaseException (wrong phase)
+    //      -> IllegalGamePhaseException relayed to caller
+    @Test
+    void playDevCard_ModelThrowsIllegalGamePhaseException_ExpectExceptionRelayed() {
+        DevelopmentCard mockCard = createMock(DevelopmentCard.class);
+        mockModel.playDevCard(mockCard);
+        expectLastCall().andThrow(new IllegalGamePhaseException("Not proper phase for that action"));
+        replay(mockModel, mockCard);
+
+        Exception exception = assertThrows(IllegalGamePhaseException.class,
+                () -> controller.playDevCard(mockModel, mockCard));
+        assertEquals("Not proper phase for that action", exception.getMessage());
+
+        verify(mockModel, mockCard);
+    }
+
+    // TC10: playDevCard(model, card); model throws IllegalArgumentException (null card)
+    //       -> IllegalArgumentException relayed to caller
+    @Test
+    void playDevCard_ModelThrowsIllegalArgumentException_ExpectExceptionRelayed() {
+        DevelopmentCard mockCard = createMock(DevelopmentCard.class);
+        mockModel.playDevCard(mockCard);
+        expectLastCall().andThrow(new IllegalArgumentException("Development card cannot be null."));
+        replay(mockModel, mockCard);
+
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> controller.playDevCard(mockModel, mockCard));
+        assertEquals("Development card cannot be null.", exception.getMessage());
+
+        verify(mockModel, mockCard);
     }
 }

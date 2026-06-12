@@ -3,6 +3,7 @@ package domain.model;
 import domain.model.board.BoardHandler;
 import domain.model.development_cards.DevelopmentCard;
 import domain.model.development_cards.DevelopmentCardDeck;
+import domain.model.development_cards.DevelopmentCardType;
 import domain.model.exceptions.EmptyDeckException;
 import domain.model.board.Port;
 import domain.model.board.PortTradeRequest;
@@ -351,7 +352,20 @@ public List<Player> getOtherPlayers() {
         currentGamePhase = GamePhase.GENERAL_PLAY;
     }
 
-    public void playDevCard(){};
+    public void playDevCard(DevelopmentCard card) {
+        if (card == null) throw new IllegalArgumentException("Development card cannot be null.");
+        
+        checkCurrentGamePhaseMatches(GamePhase.BEFORE_ROLL, GamePhase.GENERAL_PLAY);
+        
+        DevelopmentCardType type = card.getType();
+        if (type == DevelopmentCardType.KNIGHT) {
+            currentGamePhase = GamePhase.MOVE_ROBBER;
+        } else if (type == DevelopmentCardType.ROAD_BUILDER) {
+            currentGamePhase = GamePhase.ROAD_BUILDING_DEV_CARD;
+        } else if (type == DevelopmentCardType.MONOPOLY) {
+            currentGamePhase = GamePhase.MONOPOLY_DEV_CARD;
+        }
+    }
 
     public DevelopmentCard buyDevCard(DevelopmentCardDeck deck) throws EmptyDeckException {
         checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY);
