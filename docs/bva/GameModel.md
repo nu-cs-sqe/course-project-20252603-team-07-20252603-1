@@ -192,6 +192,32 @@ Step 3:
 | Test Case 9 | GENERAL_PLAY, ore=4 (surplus), grain=3 (surplus), board succeeds           | success (surplus does not prevent building) | :white_check_mark: |
 
 
+### Method under test: `attemptPortTrade(Port port, Resource giving, Resource receiving)`
+
+Step 1:
+
+- Input: Port (player specific)
+- Input: current game phase, deck size
+- Output: trade executed, player resources updated, decks updated
+- Output: exception
+
+Step 2:
+
+- Game phase:  Cases {GENERAL_PLAY (allowed), others (not allowed)} 
+- Bank deck (receiving): Interval [0, 19]; boundary = 1 (need at least 1)
+
+Step 3:
+
+- Game phase: GENERAL_PLAY; BEFORE_ROLL (invalid);
+- Bank deck: 0 (empty, below boundary); 1 (at boundary); 19 (max/surplus)
+
+|             | State of the System                                      | Expected output                | Implemented?       |
+|-------------|----------------------------------------------------------|--------------------------------|--------------------|
+| Test Case 1 | GENERAL_PLAY, bank has 1 card (at boundary), valid trade | success                        | :white_check_mark: |
+| Test Case 2 | GENERAL_PLAY, bank has 0 cards (empty)                   | InsufficientResourcesException | :white_check_mark: |
+| Test Case 3 | GENERAL_PLAY, bank has 19 cards (max), valid trade       | success                        | :white_check_mark: |
+| Test Case 4 | BEFORE_ROLL (invalid phase)                              | IllegalGamePhaseException      | x                  |
+
 ---
 
 ### Method under test: `updateVictoryPoints(PlayerColor color, int amount)`
@@ -283,3 +309,77 @@ Outputs:
 | Test Case 4 | Currently BLUE, Becomes ORANGE | PlayerColor.Orange, victory points awarded to Orange, taken from blue | :white_check_mark: |
 | Test Case 5 | Currently ORANGE, becomes BLUE | PlayerColor.Blue, victory points awarded to BLUE, taken from ORANGE   | :white_check_mark: |
 | Test Case 6 | Currently WHITE, becomes RED   | PlayerColor.Red, victory points awarded to RED, taken from white      | :white_check_mark: |
+
+
+### Method under test: `offerTrade(TradeOffer offer)`
+
+Step 1:
+
+- Input: offer - validated by trademanager
+- Input: Game phase
+- Output: offer added
+- Output: now OFFERING_TRADE phase
+- Output: Exception
+
+Step 2:
+
+- Game phase: Now GENERAL_PLAY (allowed), others (not allowed)
+
+Step 3:
+
+- Game phase: GENERAL_PLAY; BEFORE_ROLL (invalid);
+
+
+|             | State of the System         | Expected output                  | Implemented?       |
+|-------------|-----------------------------|----------------------------------|--------------------|
+| Test Case 1 | GENERAL_PLAY, valid offer   | phase → OFFERING_TRADE, success  | :white_check_mark: |
+| Test Case 2 | BEFORE_ROLL (invalid phase) | IllegalGamePhaseException        | :white_check_mark: |
+
+
+### Method under test: `acceptTrade(TradeOffer offer, Player acceptingPlayer)`
+
+Step 1:
+
+- Input: offer - validated by trademanager
+- Input: Player
+- Input: Game phase
+- Output: trade executed
+- Output: now GENERAL_PLAY phase
+- Output: Exception
+
+Step 2:
+
+- Game phase: Now OFFERING_TRADE (allowed), others (not allowed)
+
+Step 3:
+
+- Game phase: OFFERING_TRADE; GENERAL_PLAY (invalid);
+
+
+|             | State of the System                              | Expected output             | Implemented?       |
+|-------------|--------------------------------------------------|-----------------------------|--------------------|
+| Test Case 1 | OFFERING_TRADE, valid offer and accepting player | GENERAL_PLAY phase, success | :white_check_mark: |
+| Test Case 2 | GENERAL_PLAY (invalid phase)                     | IllegalGamePhaseException   | :white_check_mark: |
+
+
+### Method under test: `clearOffers()`
+
+Step 1:
+
+- Input: Game phase
+- Output: Offers cleared
+- Output: Exception
+
+Step 2:
+
+- Game phase: Now OFFERING_TRADE (allowed), others (not allowed)
+
+Step 3:
+
+- Game phase: GENERAL_PLAY; GENERAL_PLAY (invalid);
+
+
+|             | State of the System            | Expected output           | Implemented?       |
+|-------------|--------------------------------|---------------------------|--------------------|
+| Test Case 1 | Currently no one, still no one | PlayerColor.setup         | :white_check_mark: |
+| Test Case 2 | GENERAL_PLAY (invalid phase)   | IllegalGamePhaseException | :white_check_mark: |
