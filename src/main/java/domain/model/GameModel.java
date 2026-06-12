@@ -24,6 +24,7 @@ public class GameModel {
     private static final int MIN_POINTS_TO_WIN_GAME = 10;
     private static final int POINTS_FOR_SETTLEMENT = 1;
     private static final int POINTS_FOR_CITY = 1;
+    private static final int DEV_CARD_COST = 1;
     private static final int POINTS_FOR_LONGEST_ROAD = 2;
 
     @SuppressFBWarnings(value = "EI_EXPOSE_REP2",
@@ -332,11 +333,12 @@ public List<Player> getOtherPlayers() {
     public void playDevCard(){};
 
     public DevelopmentCard buyDevCard(DevelopmentCardDeck deck) throws EmptyDeckException {
+        checkPlayerOwnsEnoughResources(currentPlayerColor, Resource.ORE, DEV_CARD_COST);
         DevelopmentCard card = deck.drawCard(currentRound);
         Player player = getCurrentPlayer();
-        player.updateResources(Resource.ORE, -1);
-        player.updateResources(Resource.WOOL, -1);
-        player.updateResources(Resource.GRAIN, -1);
+        player.updateResources(Resource.ORE, -DEV_CARD_COST);
+        player.updateResources(Resource.WOOL, -DEV_CARD_COST);
+        player.updateResources(Resource.GRAIN, -DEV_CARD_COST);
         oreDeck.replenish();
         woolDeck.replenish();
         grainDeck.replenish();

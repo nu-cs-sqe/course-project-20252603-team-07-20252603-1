@@ -1569,6 +1569,7 @@ public class GameModelTests {
         Player redStateMock = EasyMock.createMock(Player.class);
         ColorToPlayerObjMock = Map.of(PlayerColor.RED, redStateMock);
 
+        EasyMock.expect(redStateMock.getResourceCount(Resource.ORE)).andReturn(1);
         EasyMock.expect(deckMock.drawCard(0)).andReturn(cardMock);
         redStateMock.updateResources(Resource.ORE, -1);
         redStateMock.updateResources(Resource.WOOL, -1);
@@ -1600,6 +1601,7 @@ public class GameModelTests {
         Player redStateMock = EasyMock.createMock(Player.class);
         ColorToPlayerObjMock = Map.of(PlayerColor.RED, redStateMock);
 
+        EasyMock.expect(redStateMock.getResourceCount(Resource.ORE)).andReturn(3);
         EasyMock.expect(deckMock.drawCard(0)).andReturn(cardMock);
         redStateMock.updateResources(Resource.ORE, -1);
         redStateMock.updateResources(Resource.WOOL, -1);
@@ -1631,6 +1633,7 @@ public class GameModelTests {
         Player redStateMock = EasyMock.createMock(Player.class);
         ColorToPlayerObjMock = Map.of(PlayerColor.RED, redStateMock);
 
+        EasyMock.expect(redStateMock.getResourceCount(Resource.ORE)).andReturn(1);
         EasyMock.expect(deckMock.drawCard(0)).andReturn(cardMock);
         redStateMock.updateResources(Resource.ORE, -1);
         redStateMock.updateResources(Resource.WOOL, -1);
@@ -1661,6 +1664,7 @@ public class GameModelTests {
         Player redStateMock = EasyMock.createMock(Player.class);
         ColorToPlayerObjMock = Map.of(PlayerColor.RED, redStateMock);
 
+        EasyMock.expect(redStateMock.getResourceCount(Resource.ORE)).andReturn(1);
         EasyMock.expect(deckMock.drawCard(0)).andThrow(new EmptyDeckException("Cannot draw new DevelopmentCard, no cards remain."));
 
         EasyMock.replay(redStateMock, deckMock);
@@ -1671,6 +1675,28 @@ public class GameModelTests {
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
 
         assertThrows(EmptyDeckException.class, () -> model.buyDevCard(deckMock));
+
+        EasyMock.verify(redStateMock, deckMock);
+    }
+
+    // TC5: GENERAL_PLAY, ORE=0 (below cost boundary)
+    //      -> InsufficientResourcesException
+    @Test
+    void buyDevCard_InsufficientOre_ExpectInsufficientResourcesException() throws EmptyDeckException {
+        DevelopmentCardDeck deckMock = EasyMock.createMock(DevelopmentCardDeck.class);
+        Player redStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.RED, redStateMock);
+
+        EasyMock.expect(redStateMock.getResourceCount(Resource.ORE)).andReturn(0);
+
+        EasyMock.replay(redStateMock, deckMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+
+        assertThrows(InsufficientResourcesException.class, () -> model.buyDevCard(deckMock));
 
         EasyMock.verify(redStateMock, deckMock);
     }
