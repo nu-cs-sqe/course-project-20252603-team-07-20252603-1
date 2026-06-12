@@ -1,5 +1,6 @@
 package ui.view;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.ResourceBundle;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -7,6 +8,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import ui.ViewContext;
 
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"},
+        justification = "UI classes intentionally share JavaFX nodes, controllers, and models by reference")
 public class HomeScreenView {
 
     private final VBox root;

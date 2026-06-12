@@ -2,6 +2,7 @@ package ui;
 
 import domain.model.GameModel;
 import domain.model.GameSetupModel;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.scene.Scene;
 import ui.controller.GameSetupController;
 import ui.view.GameRoundView;
@@ -12,6 +13,8 @@ import ui.view.RoundNavigator;
 import ui.view.SetupNavigator;
 import ui.view.SetupSummaryView;
 
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"},
+        justification = "UI classes intentionally share JavaFX nodes, controllers, and models by reference")
 public class Navigator implements SetupNavigator, RoundNavigator {
     private final Scene scene;
     private final ViewContext context;
@@ -52,7 +55,8 @@ public class Navigator implements SetupNavigator, RoundNavigator {
 
     @Override
     public void startGame() {
-        gameModel = new GameModel(context.setup().getTurnOrder(setupModel));
+        GameSetupController setup = context.setup();
+        gameModel = new GameModel(setup.getTurnOrder(setupModel), setup.getBoard(setupModel));
         goToGameRound();
     }
 
@@ -63,7 +67,6 @@ public class Navigator implements SetupNavigator, RoundNavigator {
                 this,
                 context,
                 gameModel,
-                setup.getResourceDeck(setupModel),
                 setup.getBoard(setupModel)
         ).getRoot());
     }

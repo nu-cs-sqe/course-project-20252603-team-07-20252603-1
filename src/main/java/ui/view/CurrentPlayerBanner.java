@@ -1,6 +1,7 @@
 package ui.view;
 
-import domain.model.Player;
+import domain.model.player.Player;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import javafx.geometry.Pos;
@@ -10,6 +11,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 
 
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"},
+        justification = "UI classes intentionally share JavaFX nodes, controllers, and models by reference")
 public class CurrentPlayerBanner {
 
     private static final int SPACING_PX = 10;
@@ -40,6 +43,6 @@ public class CurrentPlayerBanner {
     public void update(Player player) {
         nameLabel.setText(MessageFormat.format(labels.getString("banner.turn"), player.getName()));
         swatch.getStyleClass().removeIf(c -> c.startsWith(SWATCH_CLASS_PREFIX));
-        swatch.getStyleClass().add(String.format("%s%s", SWATCH_CLASS_PREFIX, player.getColor().toLowerCase()));
+        swatch.getStyleClass().add(String.format("%s%s", SWATCH_CLASS_PREFIX, player.getColor().name().toLowerCase()));
     }
 }

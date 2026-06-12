@@ -1,5 +1,6 @@
 package ui.view;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import javafx.scene.Parent;
@@ -12,6 +13,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import ui.ViewContext;
 
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"},
+        justification = "UI classes intentionally share JavaFX nodes, controllers, and models by reference")
 public class PlayerCountView {
 
     private final VBox root;

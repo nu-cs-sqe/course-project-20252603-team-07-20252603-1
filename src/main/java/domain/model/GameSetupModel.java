@@ -1,7 +1,11 @@
 package domain.model;
 
+import domain.model.board.BoardHandler;
+import domain.model.player.Player;
+import domain.model.player.PlayerColor;
 import domain.model.development_cards.DevelopmentCardDeck;
 import domain.model.resources.ResourceDeck;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,9 +20,10 @@ import java.util.Set;
 public class GameSetupModel {
 
     private final List<Player> players;
-    private final Set<String> usedColors;
+    private final Set<PlayerColor> usedColors;
+    // private final Set<PlayerColor> usedColors;
     private final Set<String> usedNames;
-    private Board board;
+    private BoardHandler board;
     private ResourceDeck resourceDeck;
     private DevelopmentCardDeck developmentCardDeck;
     private List<Player> turnOrder;
@@ -31,6 +36,7 @@ public class GameSetupModel {
         this.usedColors = new HashSet<>();
         this.usedNames = new HashSet<>();
         this.turnOrder = new ArrayList<>();
+        this.board = new BoardHandler();
     }
 
     /**
@@ -48,7 +54,7 @@ public class GameSetupModel {
      * @param name the player's name
      * @param color the player's color
      */
-    public void addPlayer(String name, String color) {
+    public void addPlayer(String name, PlayerColor color) {
         Player player = new Player(name, color);
         players.add(player);
         usedColors.add(color);
@@ -82,19 +88,18 @@ public class GameSetupModel {
      * @param color the color to check
      * @return true if the color is available, false if already used
      */
-    public boolean isColorAvailable(String color) {
+    public boolean isColorAvailable(PlayerColor color) {
         return !usedColors.contains(color);
     }
 
     /**
-     * Gets the game board, initializing it if necessary.
+     * Gets the game board.
      *
-     * @return the game board
+     * @return the board handler
      */
-    public Board getBoard() {
-        if (board == null) {
-            board = new Board();
-        }
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP",
+            justification = "BoardHandler is intentionally shared between GameSetupModel and GameModel as it represents the single game board state")
+    public BoardHandler getBoard() {
         return board;
     }
 
@@ -149,6 +154,16 @@ public class GameSetupModel {
      * @return the list of players in turn order
      */
     public List<Player> getTurnOrder() {
-        return turnOrder;
+        // Spotbugs Check -> return a copy instead
+        return new ArrayList<>(turnOrder);
+    }
+
+    /**
+     * Creates the full game model, and returns it.
+     *
+     * @return the full game model
+     */
+    public GameModel createGameModel() {
+        return new GameModel(players, board);
     }
 }

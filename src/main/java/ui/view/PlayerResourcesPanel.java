@@ -1,8 +1,9 @@
 package ui.view;
 
 import domain.model.GameModel;
-import domain.model.Player;
-import domain.model.resources.ResourceType;
+import domain.model.player.Player;
+import domain.model.resources.Resource;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -15,9 +16,13 @@ import ui.controller.GameLoopController;
 import java.util.List;
 import java.util.ResourceBundle;
 
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"},
+        justification = "UI classes intentionally share JavaFX nodes, controllers, and models by reference")
 public class PlayerResourcesPanel {
 
-    private static final ResourceType[] RESOURCE_COLUMNS = ResourceType.values();
+    private static final Resource[] RESOURCE_COLUMNS = {
+            Resource.LUMBER, Resource.BRICK, Resource.WOOL, Resource.GRAIN, Resource.ORE
+    };
 
     private static final int HEADER_ROW = 0;
     private static final int PLAYER_NAME_COLUMN = 0;
@@ -76,7 +81,7 @@ public class PlayerResourcesPanel {
         root.add(buildNameCell(player, isCurrentPlayer), PLAYER_NAME_COLUMN, gridRow);
 
         for (int resourceIdx = 0; resourceIdx < RESOURCE_COLUMNS.length; resourceIdx++) {
-            int count = controller.getResourceCount(model, playerIdx, RESOURCE_COLUMNS[resourceIdx]);
+            int count = controller.getResourceCount(model, player.getColor(), RESOURCE_COLUMNS[resourceIdx]);
             root.add(buildCountCell(count, isCurrentPlayer),
                     FIRST_RESOURCE_COLUMN + resourceIdx, gridRow);
         }
@@ -85,7 +90,7 @@ public class PlayerResourcesPanel {
     private static HBox buildNameCell(Player player, boolean isCurrentPlayer) {
         Region swatch = new Region();
         swatch.getStyleClass().addAll(SWATCH_CSS,
-                String.format("swatch-%s", player.getColor().toLowerCase()));
+                String.format("swatch-%s", player.getColor().name().toLowerCase()));
 
         HBox cell = new HBox(swatch, new Label(player.getName()));
         cell.setAlignment(Pos.CENTER_LEFT);

@@ -91,9 +91,9 @@
     -fx-font-size: 11px;
 }
 
-.hex-wheat  { -fx-background-color: #f5d76e; }
-.hex-sheep  { -fx-background-color: #aedb6b; }
-.hex-wood   { -fx-background-color: #6da854; -fx-text-fill: white; }
+.hex-grain  { -fx-background-color: #f5d76e; }
+.hex-wool  { -fx-background-color: #aedb6b; }
+.hex-lumber   { -fx-background-color: #6da854; -fx-text-fill: white; }
 .hex-brick  { -fx-background-color: #b9603d; -fx-text-fill: white; }
 .hex-ore    { -fx-background-color: #888888; -fx-text-fill: white; }
 .hex-desert { -fx-background-color: #e0c89d; }

@@ -1,62 +1,53 @@
 package domain.model.resources;
 
-import domain.model.EmptyDeckException;
+import domain.model.exceptions.EmptyDeckException;
 
 public class ResourceDeck {
 
+    private static final int TOTAL_NUMBER_OF_RESOURCES = 95;
+    private static final int NUMBER_OF_RESOURCES_PER_DECK = 19;
+
     private int count;
-    private ResourceType type;
+    private Resource type;
 
     /**
      * Default constructor for testing purposes.
-     * Creates a placeholder deck. Real implementation should use ResourceDeck(ResourceType).
+     * Creates a placeholder deck. Real implementation should use ResourceDeck(Resource).
      * TODO: Future work - implement proper multi-resource deck management.
      */
     public ResourceDeck() {
         this.type = null; // Placeholder for all resource types
-        this.count = 95; // 5 types * 19 cards each
+        this.count = TOTAL_NUMBER_OF_RESOURCES; // 5 types * 19 cards each
     }
 
-    public ResourceDeck(ResourceType type) {
+    public ResourceDeck(Resource type) {
         this.type = type;
-        this.count = 19; // game standard
+        this.count = NUMBER_OF_RESOURCES_PER_DECK; // game standard
+
+        if (type == Resource.DESERT ) {
+            throw new IllegalArgumentException("Resource must be tradeable.");
+        }
     }
 
-
-
-    public ResourceType getType() {
+    public Resource getType() {
         return this.type;
     }
 
-    public ResourceCard draw() throws EmptyDeckException {
+    public Resource draw() throws EmptyDeckException {
         // just instantiate a brand new one, decrease count
         if (count > 0) {
-
             this.count--;
-            return new ResourceCard(this.type);
-
+            return this.type; // caller will index into store and ++
         } else {
             throw new EmptyDeckException(String.format("Cannot draw new %s card, no cards remain.", this.type.name()));
         }
     }
 
-    // ASSUMPTION -- WE WIL STORE PLAYER DECK IN SOME SORT OF ARRAYLIST AND CAN USE list1.addAll(list2)
-    public ResourceCard[] drawMultiple(int numCards) {
-        // here we'll assume that if there are 2 cards left and you want to draw 3, you get 2 and you deal with it.
-        // i.e. it is not an error to return less than numCards if it finishes the deck
 
+    public int drawMultiple(int numCards) {
         int numCardsReturning = numCards <= this.count ? numCards : this.count;
-
-        ResourceCard[] cardsToReturn = new ResourceCard[numCardsReturning];
-
-        for (int i = 0; i < numCardsReturning; i++) {
-            cardsToReturn[i] = new ResourceCard(this.type);
-        }
-
         this.count -= numCardsReturning;
-
-        return cardsToReturn;
-
+        return numCardsReturning;
     }
 
     public void replenish() {
@@ -67,8 +58,8 @@ public class ResourceDeck {
 
     public void replenish(int numToReplenish) { 
         // assuming we wanna keep max at 19
-        if (this.count + numToReplenish >= 19) {
-            this.count = 19;
+        if (this.count + numToReplenish >= NUMBER_OF_RESOURCES_PER_DECK) {
+            this.count = NUMBER_OF_RESOURCES_PER_DECK;
         } else {
             this.count += numToReplenish;
         }
@@ -76,7 +67,7 @@ public class ResourceDeck {
 
     public void replenishAll() {
         // this may be bad coding to have -- almost unnecessary and def
-        this.replenish(20); // will always set us back at 19.
+        this.replenish(NUMBER_OF_RESOURCES_PER_DECK); 
     }
 
     /**
@@ -88,6 +79,11 @@ public class ResourceDeck {
      */
     public int getTotalCards() {
         return count;
+    }
+
+    @Override
+    protected final void finalize() {
+        // intentionally empty — blocks finalizer attacks
     }
 
 

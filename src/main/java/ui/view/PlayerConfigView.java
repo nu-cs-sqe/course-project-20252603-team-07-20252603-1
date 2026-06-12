@@ -1,6 +1,8 @@
 package ui.view;
 
 import domain.model.GameSetupModel;
+import domain.model.player.PlayerColor;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.collections.FXCollections;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -22,13 +24,16 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"},
+        justification = "UI classes intentionally share JavaFX nodes, controllers, and models by reference")
 public class PlayerConfigView {
 
-    private static final List<String> COLOR_PALETTE = List.of("Red", "Blue", "White", "Orange");
+    private static final List<PlayerColor> COLOR_PALETTE =
+            List.of(PlayerColor.RED, PlayerColor.BLUE, PlayerColor.WHITE, PlayerColor.ORANGE);
 
     private final VBox root;
     private final List<TextField> nameFields = new ArrayList<>();
-    private final List<ComboBox<String>> colorBoxes = new ArrayList<>();
+    private final List<ComboBox<PlayerColor>> colorBoxes = new ArrayList<>();
     private final Label statusLabel;
     private final ResourceBundle labels;
     private boolean refreshingColors = false;
@@ -51,7 +56,7 @@ public class PlayerConfigView {
             Label rowLabel = new Label(MessageFormat.format(playerLabelPattern, i + 1));
             TextField nameField = new TextField();
             nameField.setPromptText(labels.getString("playerConfig.namePrompt"));
-            ComboBox<String> colorBox = new ComboBox<>();
+            ComboBox<PlayerColor> colorBox = new ComboBox<>();
             colorBox.setItems(FXCollections.observableArrayList(COLOR_PALETTE));
             // Items stay the canonical color names (used by the model and CSS swatch
             // classes); the converter only changes how they are displayed.
@@ -91,14 +96,14 @@ public class PlayerConfigView {
         if (refreshingColors) return;
         refreshingColors = true;
         try {
-            for (ComboBox<String> box : colorBoxes) {
-                String current = box.getValue();
-                Set<String> takenByOthers = colorBoxes.stream()
+            for (ComboBox<PlayerColor> box : colorBoxes) {
+                PlayerColor current = box.getValue();
+                Set<PlayerColor> takenByOthers = colorBoxes.stream()
                         .filter(other -> other != box)
                         .map(ComboBox::getValue)
                         .filter(Objects::nonNull)
                         .collect(Collectors.toSet());
-                List<String> available = COLOR_PALETTE.stream()
+                List<PlayerColor> available = COLOR_PALETTE.stream()
                         .filter(color -> !takenByOthers.contains(color))
                         .collect(Collectors.toList());
                 box.getItems().setAll(available);
@@ -117,7 +122,7 @@ public class PlayerConfigView {
 
         for (int i = 0; i < playerCount; i++) {
             String name = nameFields.get(i).getText();
-            String color = colorBoxes.get(i).getValue();
+            PlayerColor color = colorBoxes.get(i).getValue();
             PlayerAddResult result = controller.addPlayerWithFullValidation(model, name, color);
             switch (result) {
                 case SUCCESS:
@@ -136,7 +141,6 @@ public class PlayerConfigView {
                     return;
             }
         }
-        controller.initializeBoard(model);
         controller.initializeResourceDeck(model);
         controller.initializeDevelopmentCardDeck(model);
         controller.determineTurnOrder(model);
@@ -153,20 +157,20 @@ public class PlayerConfigView {
      * Converts between canonical color identifiers (stored in the model and used for
      * CSS swatch classes) and their localized display names.
      */
-    private StringConverter<String> colorConverter() {
-        return new StringConverter<String>() {
+    private StringConverter<PlayerColor> colorConverter() {
+        return new StringConverter<PlayerColor>() {
             @Override
-            public String toString(String color) {
-                return color == null ? null : labels.getString("color." + color);
+            public String toString(PlayerColor color) {
+                return color == null ? null : labels.getString("color." + color.name());
             }
 
             @Override
-            public String fromString(String displayName) {
+            public PlayerColor fromString(String displayName) {
                 if (displayName == null) {
                     return null;
                 }
                 return COLOR_PALETTE.stream()
-                        .filter(color -> labels.getString("color." + color).equals(displayName))
+                        .filter(color -> labels.getString("color." + color.name()).equals(displayName))
                         .findFirst()
                         .orElse(null);
             }

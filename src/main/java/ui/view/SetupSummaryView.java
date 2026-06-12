@@ -1,8 +1,9 @@
 package ui.view;
 
-import domain.model.Board;
 import domain.model.GameSetupModel;
-import domain.model.Player;
+import domain.model.board.BoardHandler;
+import domain.model.player.Player;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,6 +18,8 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.ResourceBundle;
 
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"},
+        justification = "UI classes intentionally share JavaFX nodes, controllers, and models by reference")
 public class SetupSummaryView {
 
     private static final int[] HEX_ROW_SIZES = {3, 4, 5, 4, 3};
@@ -68,7 +71,7 @@ public class SetupSummaryView {
             Player p = order.get(i);
             Label position = new Label((i + 1) + ".");
             Region swatch = new Region();
-            swatch.getStyleClass().addAll("color-swatch", "swatch-" + p.getColor().toLowerCase());
+            swatch.getStyleClass().addAll("color-swatch", "swatch-" + p.getColor().name().toLowerCase());
             Label name = new Label(p.getName());
 
             HBox line = new HBox(position, swatch, name);
@@ -85,7 +88,7 @@ public class SetupSummaryView {
         Label heading = new Label(labels.getString("summary.boardLayout"));
         heading.getStyleClass().add("section-heading");
 
-        Board board = controller.getBoard(model);
+        BoardHandler board = controller.getBoard(model);
         List<String> hexes = controller.getHexOrder(board);
 
         VBox grid = new VBox();

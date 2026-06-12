@@ -1,8 +1,8 @@
 package ui.view;
 
-import domain.model.Board;
 import domain.model.GameModel;
-import domain.model.resources.ResourceDeck;
+import domain.model.board.BoardHandler;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.text.MessageFormat;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -14,6 +14,8 @@ import javafx.scene.layout.VBox;
 import ui.ViewContext;
 
 
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"},
+        justification = "UI classes intentionally share JavaFX nodes, controllers, and models by reference")
 public class GameRoundView {
 
     private static final int SECTION_PADDING_PX = 10;
@@ -24,7 +26,6 @@ public class GameRoundView {
 
     private final GameModel model;
     private final ViewContext context;
-    private final ResourceDeck deck;
 
     private final CurrentPlayerBanner banner;
     private final Label lastRollLabel;
@@ -34,11 +35,9 @@ public class GameRoundView {
     public GameRoundView(RoundNavigator navigator,
                          ViewContext context,
                          GameModel model,
-                         ResourceDeck deck,
-                         Board board) {
+                         BoardHandler board) {
         this.model = model;
         this.context = context;
-        this.deck = deck;
 
         this.banner = new CurrentPlayerBanner(context.labels());
         this.lastRollLabel = buildLastRollLabel();
@@ -52,7 +51,7 @@ public class GameRoundView {
         return root;
     }
 
-    private BorderPane buildLayout(Board board) {
+    private BorderPane buildLayout(BoardHandler board) {
         BorderPane pane = new BorderPane();
         pane.getStyleClass().add(GAME_ROOT_CSS);
         pane.setTop(banner.getRoot());
@@ -89,7 +88,7 @@ public class GameRoundView {
     }
 
     private void beginTurn() {
-        int roll = context.loop().rollDiceAndDistribute(model, context.dice(), deck);
+        int roll = context.loop().rollDiceAndDistribute(model, context.dice());
         lastRollLabel.setText(MessageFormat.format(context.labels().getString("round.rolled"), roll));
         banner.update(context.loop().getCurrentPlayer(model));
         resourcesPanel.refresh();

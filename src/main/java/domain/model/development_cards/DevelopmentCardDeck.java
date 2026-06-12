@@ -2,7 +2,7 @@ package domain.model.development_cards;
 import java.util.Collections;
 import java.util.Stack;
 
-import domain.model.EmptyDeckException;
+import domain.model.exceptions.EmptyDeckException;
 
 
 public class DevelopmentCardDeck {
@@ -68,17 +68,14 @@ public class DevelopmentCardDeck {
     }
 
 
-    public DevelopmentCard drawCard() throws EmptyDeckException {
+    public DevelopmentCard drawCard(int currentRound) throws EmptyDeckException {
 
         if (this.cardsLeft <= 0) {
-            // throw an error or return something bad?
-            // expect this called in try,catch --> throw error
-
             throw new EmptyDeckException("Cannot draw new DevelopmentCard, no cards remain.");
         }
 
-        // we may not need this -- i can't actually think whyt he deck needs to know how many of each are left
         DevelopmentCard drawn = this.deck.pop();
+        drawn.setRoundDrawnAt(currentRound);
         this.cardsLeft--;
         DevelopmentCardType type = drawn.getType();
 

@@ -1,6 +1,7 @@
 package ui.view;
 
-import domain.model.Board;
+import domain.model.board.BoardHandler;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -9,13 +10,15 @@ import javafx.scene.layout.VBox;
 import java.util.List;
 import java.util.ResourceBundle;
 
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"},
+        justification = "UI classes intentionally share JavaFX nodes, controllers, and models by reference")
 public class BoardPlaceholderView {
 
     private static final int[] HEX_ROW_SIZES = {3, 4, 5, 4, 3};
 
     private final VBox root;
 
-    public BoardPlaceholderView(Board board, ResourceBundle labels) {
+    public BoardPlaceholderView(BoardHandler board, ResourceBundle labels) {
         root = buildGrid(board.getHexOrder(), labels);
     }
 

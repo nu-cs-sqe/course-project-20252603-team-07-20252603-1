@@ -1,11 +1,17 @@
 package ui.controller;
 
-import domain.model.DiceRoller;
+import domain.model.DevelopmentCardHandler;
 import domain.model.GameModel;
-import domain.model.Player;
-import domain.model.PlayerState;
-import domain.model.resources.ResourceDeck;
-import domain.model.resources.ResourceType;
+import domain.model.board.Port;
+import domain.model.development_cards.DevelopmentCard;
+import domain.model.development_cards.DevelopmentCardDeck;
+import domain.model.exceptions.EmptyDeckException;
+import domain.model.game_pieces.DiceHandler;
+import domain.model.player.Player;
+import domain.model.player.PlayerColor;
+import domain.model.player.TradeOffer;
+import domain.model.resources.Resource;
+
 
 public class GameLoopController {
 
@@ -17,18 +23,41 @@ public class GameLoopController {
         return model.getCurrentPlayerIndex();
     }
 
-    public int getResourceCount(GameModel model, int playerIndex, ResourceType type) {
-        PlayerState state = model.getPlayerState(playerIndex);
-        return state.getResourceCount(type);
+    public int getResourceCount(GameModel model, PlayerColor color, Resource type) {
+        Player playerOfInterest = model.getArbitraryPlayer(color);
+        return playerOfInterest.getResourceCount(type);
     }
 
-    public int rollDiceAndDistribute(GameModel model, DiceRoller roller, ResourceDeck deck) {
-        int roll = roller.roll();
-        model.performTurn(() -> roll, deck);
+    public int rollDiceAndDistribute(GameModel model, DiceHandler roller) {
+        int roll = roller.rollTwoDice();
+        model.performTurn(roll);
         return roll;
     }
 
     public void endTurn(GameModel model) {
-        model.advanceToNextPlayer();
+        model.endTurn();
+    }
+
+    public void offerTrade(GameModel model, TradeOffer offer) {
+        model.offerTrade(offer);
+    }
+
+    public void acceptTrade(GameModel model, TradeOffer offer, Player acceptingPlayer) {
+        model.acceptTrade(offer, acceptingPlayer);
+    }
+
+    public void clearOffers(GameModel model) {
+        model.clearOffers();
+    }
+
+    public void attemptPortTrade(GameModel model, Port port, Resource giving, Resource receiving) {
+        model.attemptPortTrade(port, giving, receiving);
+    }
+
+    public DevelopmentCard buyDevCard(GameModel model, DevelopmentCardDeck deck, DevelopmentCardHandler handler) throws EmptyDeckException {
+        Player player = model.getCurrentPlayer();
+        int round = model.getCurrentRound();
+
+        return handler.buyDevelopmentCard(player, deck, round);
     }
 }

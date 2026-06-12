@@ -1,6 +1,6 @@
 package ui;
 
-import domain.model.DiceRoller;
+import domain.model.game_pieces.DiceHandler;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.application.Application;
@@ -25,13 +25,10 @@ public class Main extends Application {
         Locale locale = Locale.getDefault();
         ResourceBundle labels = ResourceBundle.getBundle(BUNDLE_BASE_NAME, locale);
 
-        // TODO: Use dice class once implemented. For now, this allows us to test game flow without randomness.
-        DiceRoller diceRoller = () -> 8;
-
         ViewContext context = new ViewContext(
                 new GameSetupController(),
                 new GameLoopController(),
-                diceRoller,
+                new DiceHandler(),
                 labels
         );
 
