@@ -371,7 +371,7 @@ Step 3:
 |             | State of the System                         | Expected output                                                      | Implemented? |
 |-------------|---------------------------------------------|----------------------------------------------------------------------|--------------|
 | Test Case 1 | card = null                                 | IllegalArgumentException: "Development card cannot be null."         | :white_check_mark: |
-| Test Case 2 | MOVE_ROBBER (invalid phase), valid card     | IllegalGamePhaseException: "Not proper phase for that action"        | :x:          |
+| Test Case 2 | MOVE_ROBBER (invalid phase), valid card     | IllegalGamePhaseException: "Not proper phase for that action"        | :white_check_mark: |
 | Test Case 3 | GENERAL_PLAY, card type = KNIGHT            | phase → MOVE_ROBBER                                                  | :x:          |
 | Test Case 4 | GENERAL_PLAY, card type = ROAD_BUILDER      | phase → ROAD_BUILDING_DEV_CARD                                       | :x:          |
 | Test Case 5 | GENERAL_PLAY, card type = MONOPOLY          | phase → MONOPOLY_DEV_CARD                                            | :x:          |

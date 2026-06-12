@@ -353,6 +353,7 @@ public List<Player> getOtherPlayers() {
 
     public void playDevCard(DevelopmentCard card) {
         if (card == null) throw new IllegalArgumentException("Development card cannot be null.");
+        checkCurrentGamePhaseMatches(GamePhase.BEFORE_ROLL, GamePhase.GENERAL_PLAY);
     }
 
     public DevelopmentCard buyDevCard(DevelopmentCardDeck deck) throws EmptyDeckException {

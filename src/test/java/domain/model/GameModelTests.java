@@ -1830,6 +1830,24 @@ public class GameModelTests {
         EasyMock.verify(boardMock);
     }
 
+    // TC2: MOVE_ROBBER (invalid phase), valid card
+    //      -> IllegalGamePhaseException: "Not proper phase for that action"
+    @Test
+    void playDevCard_InvalidPhase_ExpectIllegalGamePhaseException() {
+        DevelopmentCard cardMock = EasyMock.createMock(DevelopmentCard.class);
+        EasyMock.replay(boardMock, cardMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+        model.setCurrentGamePhase(GamePhase.MOVE_ROBBER);
+
+        Exception exception = assertThrows(IllegalGamePhaseException.class,
+                () -> model.playDevCard(cardMock));
+        assertEquals("Not proper phase for that action", exception.getMessage());
+
+        EasyMock.verify(boardMock, cardMock);
+    }
+
   // Attempt Port Trade Tests
 
   // Test Case 1
