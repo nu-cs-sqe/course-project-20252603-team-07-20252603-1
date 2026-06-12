@@ -1,6 +1,8 @@
 package domain.model;
 
 import domain.model.board.BoardHandler;
+import domain.model.development_cards.DevelopmentCard;
+import domain.model.development_cards.DevelopmentCardDeck;
 import domain.model.exceptions.*;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
@@ -1554,5 +1556,38 @@ public class GameModelTests {
         assertEquals(PlayerColor.RED, model.getCurrentLongestRoadPlayerColor());
 
         EasyMock.verify(boardMock, redStateMock, whiteStateMock);
+    }
+
+    // buyDevCard() tests
+
+    // TC1: GENERAL_PLAY, ORE=1, WOOL=1, GRAIN=1 (exact cost), deck=25 (full)
+    //      -> card returned; player loses 1 each ORE/WOOL/GRAIN; ORE/WOOL/GRAIN decks each replenished by 1
+    @Test
+    void buyDevCard_ExactResources_FullDeck_ExpectCardReturnedAndResourcesDeducted() throws EmptyDeckException {
+        DevelopmentCardDeck deckMock = EasyMock.createMock(DevelopmentCardDeck.class);
+        DevelopmentCard cardMock = EasyMock.createMock(DevelopmentCard.class);
+        Player redStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.RED, redStateMock);
+
+        EasyMock.expect(deckMock.drawCard(0)).andReturn(cardMock);
+        redStateMock.updateResources(Resource.ORE, -1);
+        redStateMock.updateResources(Resource.WOOL, -1);
+        redStateMock.updateResources(Resource.GRAIN, -1);
+        oreDeckMock.replenish();
+        woolDeckMock.replenish();
+        grainDeckMock.replenish();
+        redStateMock.addDevelopmentCard(cardMock);
+
+        EasyMock.replay(redStateMock, deckMock, cardMock, oreDeckMock, woolDeckMock, grainDeckMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+
+        DevelopmentCard result = model.buyDevCard(deckMock);
+        assertEquals(cardMock, result);
+
+        EasyMock.verify(redStateMock, deckMock, cardMock, oreDeckMock, woolDeckMock, grainDeckMock);
     }
 }

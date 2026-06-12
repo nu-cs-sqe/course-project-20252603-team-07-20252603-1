@@ -1,6 +1,9 @@
 package domain.model;
 
 import domain.model.board.BoardHandler;
+import domain.model.development_cards.DevelopmentCard;
+import domain.model.development_cards.DevelopmentCardDeck;
+import domain.model.exceptions.EmptyDeckException;
 import domain.model.exceptions.IllegalCityPlacementException;
 import domain.model.exceptions.IllegalGamePhaseException;
 import domain.model.exceptions.IllegalSettlementPlacementException;
@@ -328,7 +331,18 @@ public List<Player> getOtherPlayers() {
 
     public void playDevCard(){};
 
-    public void buyDevCard(){};
+    public DevelopmentCard buyDevCard(DevelopmentCardDeck deck) throws EmptyDeckException {
+        DevelopmentCard card = deck.drawCard(currentRound);
+        Player player = getCurrentPlayer();
+        player.updateResources(Resource.ORE, -1);
+        player.updateResources(Resource.WOOL, -1);
+        player.updateResources(Resource.GRAIN, -1);
+        oreDeck.replenish();
+        woolDeck.replenish();
+        grainDeck.replenish();
+        player.addDevelopmentCard(card);
+        return card;
+    }
 
     public void moveRobberAndSteal(){};
 

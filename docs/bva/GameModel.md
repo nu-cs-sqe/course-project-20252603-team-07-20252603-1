@@ -294,7 +294,7 @@ Step 3:
 
 |             | State of the System                                                                              | Expected output                                                                                          | Implemented? |
 |-------------|--------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|--------------|
-| Test Case 1 | GENERAL_PLAY, ORE=1, WOOL=1, GRAIN=1 (exact cost), deck=25 (full)                               | card returned; player loses 1 each ORE/WOOL/GRAIN; ORE/WOOL/GRAIN decks each replenished by 1; deck countRemaining = 24 | :x: |
+| Test Case 1 | GENERAL_PLAY, ORE=1, WOOL=1, GRAIN=1 (exact cost), deck=25 (full)                               | card returned; player loses 1 each ORE/WOOL/GRAIN; ORE/WOOL/GRAIN decks each replenished by 1; deck countRemaining = 24 | :white_check_mark: |
 | Test Case 2 | GENERAL_PLAY, ORE=3, WOOL=2, GRAIN=4 (surplus each), deck=25                                    | card returned; player loses 1 each ORE/WOOL/GRAIN; surplus does not prevent purchase                    | :x: |
 | Test Case 3 | GENERAL_PLAY, ORE=1, WOOL=1, GRAIN=1, deck=1 (last card)                                        | card returned; deck countRemaining = 0                                                                   | :x: |
 | Test Case 4 | GENERAL_PLAY, ORE=1, WOOL=1, GRAIN=1, deck=0 (empty)                                            | EmptyDeckException; player resources NOT deducted                                                        | :x: |
