@@ -5,6 +5,7 @@ import domain.model.GameModel;
 import domain.model.development_cards.DevelopmentCard;
 import domain.model.development_cards.DevelopmentCardDeck;
 import domain.model.exceptions.EmptyDeckException;
+import domain.model.exceptions.InsufficientResourcesException;
 import domain.model.game_pieces.DiceHandler;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
@@ -99,5 +100,27 @@ class GameLoopControllerTest {
         assertSame(mockCard, result);
 
         verify(mockModel, mockDeck, mockHandler, mockCard, mockPlayer);
+    }
+
+    // TC6: handler throws InsufficientResourcesException (buyer lacks resources)
+    //      -> controller relays InsufficientResourcesException to caller
+    @Test
+    void buyDevCard_HandlerThrowsInsufficientResources_ExpectExceptionRelayed() throws EmptyDeckException {
+        DevelopmentCardDeck mockDeck = createMock(DevelopmentCardDeck.class);
+        DevelopmentCardHandler mockHandler = createMock(DevelopmentCardHandler.class);
+        Player mockPlayer = createMock(Player.class);
+        final int currentRound = 1;
+
+        expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
+        expect(mockModel.getCurrentRound()).andReturn(currentRound);
+        expect(mockHandler.buyDevelopmentCard(mockPlayer, mockDeck, currentRound))
+                .andThrow(new InsufficientResourcesException("Insufficient resources"));
+
+        replay(mockModel, mockDeck, mockHandler, mockPlayer);
+
+        assertThrows(InsufficientResourcesException.class,
+                () -> controller.buyDevCard(mockModel, mockDeck, mockHandler));
+
+        verify(mockModel, mockDeck, mockHandler, mockPlayer);
     }
 }
