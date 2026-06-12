@@ -5,6 +5,7 @@ import domain.model.board.Port;
 import domain.model.board.PortTradeRequest;
 import domain.model.exceptions.*;
 import domain.model.player.PlayerColor;
+import domain.model.player.TradeManager;
 import domain.model.player.TradeOffer;
 import domain.model.resources.ResourceDeck;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -42,13 +43,15 @@ public class GameModel {
     private final ResourceDeck oreDeck;
     private final ResourceDeck woolDeck;
     private final Map<Resource, ResourceDeck> decks;
+    private final TradeManager tradeManager;
 
     //constructor for injecting mocks/stubs
     GameModel(ResourceDeck lumberDeck, ResourceDeck brickDeck,
               ResourceDeck grainDeck, ResourceDeck oreDeck,
               ResourceDeck woolDeck,
               Map<PlayerColor, Player> playerColorToPlayerObject,
-              BoardHandler board) {
+              BoardHandler board,
+              TradeManager tradeManager) {
         this.lumberDeck = lumberDeck;
         this.brickDeck = brickDeck;
         this.grainDeck = grainDeck;
@@ -64,6 +67,7 @@ public class GameModel {
         this.playerColorToPlayerObject = playerColorToPlayerObject;
         this.board = board;
         this.currentLongestRoadPlayerColor = PlayerColor.SETUP;
+        this.tradeManager = tradeManager;
     }
 
     public GameModel(List<Player> players, BoardHandler board) {
@@ -93,6 +97,7 @@ public class GameModel {
         this.currentPlayerColor = playerColors.get(0);
         this.currentLongestRoadPlayerColor = PlayerColor.SETUP;
         this.currentGamePhase = GamePhase.BEFORE_ROLL;
+        this.tradeManager = new TradeManager();
     }
 
     public List<Player> getTurnOrder() {
@@ -324,7 +329,11 @@ public List<Player> getOtherPlayers() {
         }
     }
 
-    public void offerTrade(TradeOffer offer){};
+    public void offerTrade(TradeOffer offer) {
+        checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY);
+        tradeManager.offerTrade(offer);
+        currentGamePhase = GamePhase.OFFERING_TRADE;
+    }
 
     public void acceptTrade(TradeOffer offer, Player acceptingPlayer){};
 

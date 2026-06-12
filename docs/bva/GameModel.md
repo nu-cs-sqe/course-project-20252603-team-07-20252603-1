@@ -330,10 +330,10 @@ Step 3:
 - Game phase: GENERAL_PLAY; BEFORE_ROLL (invalid);
 
 
-|             | State of the System            | Expected output           | Implemented? |
-|-------------|--------------------------------|---------------------------|--------------|
-| Test Case 1 | Currently no one, still no one | PlayerColor.setup         | x            |
-| Test Case 2 | BEFORE_ROLL (invalid phase)    | IllegalGamePhaseException | x            |
+|             | State of the System            | Expected output           | Implemented?       |
+|-------------|--------------------------------|---------------------------|--------------------|
+| Test Case 1 | Currently no one, still no one | PlayerColor.setup         | :white_check_mark: |
+| Test Case 2 | BEFORE_ROLL (invalid phase)    | IllegalGamePhaseException | x                  |
 
 
 ### Method under test: `acceptTrade(TradeOffer offer, Player acceptingPlayer)`
