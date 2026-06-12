@@ -1,12 +1,14 @@
 package ui.controller;
 
 import domain.model.GameModel;
+import domain.model.board.Port;
 import domain.model.game_pieces.DiceHandler;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 
 
 import domain.model.player.TradeOffer;
+import domain.model.resources.Resource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -111,5 +113,15 @@ class GameLoopControllerTest {
         verify(mockModel);
     }
 
+    @Test
+    void testAttemptPortTradeDelegatesToModel() {
+        Port mockPort = createMock(Port.class);
+        mockModel.attemptPortTrade(mockPort, Resource.WOOL, Resource.ORE);
+        expectLastCall();
+        replay(mockModel, mockPort);
 
+        controller.attemptPortTrade(mockModel, mockPort, Resource.WOOL, Resource.ORE);
+
+        verify(mockModel, mockPort);
+    }
 }

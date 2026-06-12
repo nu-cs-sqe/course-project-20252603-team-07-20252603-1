@@ -1,6 +1,7 @@
 package ui.controller;
 
 import domain.model.GameModel;
+import domain.model.board.Port;
 import domain.model.game_pieces.DiceHandler;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
@@ -43,5 +44,9 @@ public class GameLoopController {
 
     public void clearOffers(GameModel model) {
         model.clearOffers();
+    }
+
+    public void attemptPortTrade(GameModel model, Port port, Resource giving, Resource receiving) {
+        model.attemptPortTrade(port, giving, receiving);
     }
 }

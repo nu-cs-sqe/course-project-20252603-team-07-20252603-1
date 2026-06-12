@@ -88,7 +88,7 @@ Delegates directly to `model.clearOffers()`.
 
 Delegates directly to `model.attemptPortTrade(port, giving, receiving)`.
 
-|             | State of the System   | Expected output                  | Implemented? |
-|-------------|-----------------------|----------------------------------|--------------|
-| Test Case 5 | In general play phase | model.attemptPortTrade is called | x            |
+|             | State of the System   | Expected output                  | Implemented?       |
+|-------------|-----------------------|----------------------------------|--------------------|
+| Test Case 5 | In general play phase | model.attemptPortTrade is called | :white_check_mark: |
 
