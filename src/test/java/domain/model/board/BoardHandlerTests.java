@@ -3,6 +3,7 @@ package domain.model.board;
 import domain.model.board.BoardGraphController;
 import domain.model.board.BoardHandler;
 import domain.model.board.Hex;
+import domain.model.exceptions.AdjacentNodeAlreadyClaimed;
 import domain.model.exceptions.IllegalEdgeClaim;
 import domain.model.exceptions.IllegalSettlementPlacementException;
 import domain.model.game_pieces.Robber;
@@ -1553,6 +1554,93 @@ public class BoardHandlerTests {
     assertEquals("Can not claim node adjacent to node already claimed", exception.getMessage());
 
     EasyMock.verify(mockBoardGraphController, mockRedPlayer);
+  }
+
+  // Test Case 65
+  @Test
+  void RedClaimsEdge_FiveFive_SameStartEnd_ThrowsIllegalArgumentException() {
+    EasyMock.expect(mockRedPlayer.getColor()).andReturn(PlayerColor.RED);
+
+    mockBoardGraphController.playerClaimStoredEdge(PlayerColor.RED, 5, 5);
+    EasyMock.expectLastCall().andThrow(new IllegalArgumentException("Edge does not exist"));
+
+    EasyMock.replay(mockBoardGraphController, mockRedPlayer);
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () ->
+        b.addRoad(mockRedPlayer, 5, 5)
+    );
+    assertEquals("Edge does not exist", exception.getMessage());
+
+    EasyMock.verify(mockBoardGraphController, mockRedPlayer);
+  }
+
+  // Test Case 66
+  @Test
+  void RedClaimsEdge_ThreeZero_NonExistentEdge_ThrowsIllegalArgumentException() {
+    EasyMock.expect(mockRedPlayer.getColor()).andReturn(PlayerColor.RED);
+
+    mockBoardGraphController.playerClaimStoredEdge(PlayerColor.RED, 3, 0);
+    EasyMock.expectLastCall().andThrow(new IllegalArgumentException("Edge does not exist"));
+
+    EasyMock.replay(mockBoardGraphController, mockRedPlayer);
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () ->
+        b.addRoad(mockRedPlayer, 3, 0)
+    );
+    assertEquals("Edge does not exist", exception.getMessage());
+
+    EasyMock.verify(mockBoardGraphController, mockRedPlayer);
+  }
+
+  // Test Case 67
+  @Test
+  void RedClaimsEdge_ZeroOne_ThenBlueTriesSameEdge_ThrowsIllegalEdgeClaim() {
+    EasyMock.expect(mockRedPlayer.getColor()).andReturn(PlayerColor.RED);
+    mockBoardGraphController.playerClaimStoredEdge(PlayerColor.RED, 0, 1);
+    EasyMock.expectLastCall();
+    mockRedPlayer.placeRoad();
+    EasyMock.expectLastCall();
+
+    EasyMock.expect(mockBluePlayer.getColor()).andReturn(PlayerColor.BLUE);
+    mockBoardGraphController.playerClaimStoredEdge(PlayerColor.BLUE, 0, 1);
+    EasyMock.expectLastCall().andThrow(new IllegalEdgeClaim("Edge already claimed"));
+
+    EasyMock.replay(mockBoardGraphController, mockRedPlayer, mockBluePlayer);
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+
+    b.addRoad(mockRedPlayer, 0, 1);
+
+    Exception exception = assertThrows(IllegalEdgeClaim.class, () ->
+        b.addRoad(mockBluePlayer, 0, 1)
+    );
+    assertEquals("Edge already claimed", exception.getMessage());
+
+    EasyMock.verify(mockBoardGraphController, mockRedPlayer, mockBluePlayer);
+  }
+
+  // Test Case 68
+  @Test
+  void buildSetupSettlement_ControllerRejectsAdjacentNode_AdjacentNodeAlreadyClaimedPropagates() {
+    EasyMock.expect(mockBluePlayer.getColor()).andReturn(PlayerColor.BLUE);
+
+    EasyMock.expect(mockBoardGraphController.playerClaimStoredNodeSetupPhase(PlayerColor.BLUE, 12))
+        .andThrow(new AdjacentNodeAlreadyClaimed("Can not claim node adjacent to node already claimed"));
+
+    EasyMock.replay(mockBoardGraphController, mockBluePlayer);
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+
+    Exception exception = assertThrows(AdjacentNodeAlreadyClaimed.class, () ->
+        b.buildSetupSettlement(mockBluePlayer, 12)
+    );
+    assertEquals("Can not claim node adjacent to node already claimed", exception.getMessage());
+
+    EasyMock.verify(mockBoardGraphController, mockBluePlayer);
   }
 
   // Test Case 70

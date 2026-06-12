@@ -125,23 +125,22 @@ public class GameModel {
 
     private void distributeResources(int roll) {
         Map<Resource, Map<Player, Integer>> demand = board.computeResourceDemand(roll);
-        
-        // not just clamp to as many left in deck, if not enough to satisfy all people, no one gets anything. if one person requesting, vcan get partial
-        for (Map.Entry<Resource, Map<Player, Integer>> entry : demand.entrySet()) {
+        for (Map.Entry<Resource, Map<Player, Integer>> resourceEntry : demand.entrySet()) {
+            distributeResourceToPlayers(resourceEntry.getKey(), resourceEntry.getValue());
+        }
+    }
 
-            Resource resource = entry.getKey();
-            Map<Player, Integer> playerAmounts = entry.getValue();
-
-            ResourceDeck deck = decks.get(resource);
-            if (playerAmounts.size() > 1) {
-                int total = playerAmounts.values().stream().mapToInt(Integer::intValue).sum();
-                if (deck.getTotalCards() < total) continue;
-            }
-            for (Map.Entry<Player, Integer> pe : playerAmounts.entrySet()) {
-                int drawn = deck.drawMultiple(pe.getValue());
-                if (drawn > 0) {
-                    pe.getKey().updateResources(resource, drawn);
-                }
+    // if not enough to satisfy all players, no one gets anything; if only one player is requesting, they can get a partial amount
+    private void distributeResourceToPlayers(Resource resource, Map<Player, Integer> playerAmounts) {
+        ResourceDeck deck = decks.get(resource);
+        if (playerAmounts.size() > 1) {
+            int total = playerAmounts.values().stream().mapToInt(Integer::intValue).sum();
+            if (deck.getTotalCards() < total) return;
+        }
+        for (Map.Entry<Player, Integer> playerAmountEntry : playerAmounts.entrySet()) {
+            int drawn = deck.drawMultiple(playerAmountEntry.getValue());
+            if (drawn > 0) {
+                playerAmountEntry.getKey().updateResources(resource, drawn);
             }
         }
     }

@@ -175,19 +175,33 @@ public class BoardHandler {
     return playersOnHex;
   }
 
+  private void deliverResourcesToCitiesAndSettlements(List<Player> hexSettlementPlayers, List<Player> hexCityPlayers, Map<Resource, Map<Player, Integer>> demand, Resource resource) {
+
+    for (Player p : hexSettlementPlayers) {
+        demand.computeIfAbsent(resource, k -> new HashMap<>()).merge(p, 1, Integer::sum);
+    }
+
+    for (Player p : hexCityPlayers) {
+        demand.computeIfAbsent(resource, k -> new HashMap<>()).merge(p, 2, Integer::sum);
+    }
+
+  }
+
   public Map<Resource, Map<Player, Integer>> computeResourceDemand(int rollNum) {
     Map<Resource, Map<Player, Integer>> demand = new HashMap<>();
     int robberLocation = robber.getRobberLocation();
+
+    
+
     for (Hex hex : hexes) {
       if (hex.getHexRollNum() == rollNum && hex.getHexId() != robberLocation) {
         Resource resource = hex.getHexResource();
         if (resource == Resource.DESERT) continue;
-        for (Player p : hex.getHexSettlementPlayers()) {
-          demand.computeIfAbsent(resource, k -> new HashMap<>()).merge(p, 1, Integer::sum);
-        }
-        for (Player p : hex.getHexCityPlayers()) {
-          demand.computeIfAbsent(resource, k -> new HashMap<>()).merge(p, 2, Integer::sum);
-        }
+
+        List<Player> hexSettlementPlayers = hex.getHexSettlementPlayers();
+        List<Player> hexCityPlayers = hex.getHexCityPlayers();
+
+        deliverResourcesToCitiesAndSettlements(hexSettlementPlayers, hexCityPlayers, demand, resource);
       }
     }
     return demand;
