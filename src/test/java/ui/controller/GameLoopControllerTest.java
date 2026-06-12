@@ -147,4 +147,18 @@ class GameLoopControllerTest {
 
         verify(mockModel, mockDeck, mockHandler, mockPlayer);
     }
+
+    // TC8: playDevCard(model, card); model completes normally
+    //      -> model.playDevCard(card) called once; no exception
+    @Test
+    void playDevCard_ModelCompletesNormally_ExpectDelegationToModel() {
+        DevelopmentCard mockCard = createMock(DevelopmentCard.class);
+        mockModel.playDevCard(mockCard);
+        expectLastCall();
+        replay(mockModel, mockCard);
+
+        controller.playDevCard(mockModel, mockCard);
+
+        verify(mockModel, mockCard);
+    }
 }

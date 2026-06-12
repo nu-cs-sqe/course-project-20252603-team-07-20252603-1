@@ -42,4 +42,8 @@ public class GameLoopController {
         
         return handler.buyDevelopmentCard(player, deck, round);
     }
+
+    public void playDevCard(GameModel model, DevelopmentCard card) {
+        model.playDevCard(card);
+    }
 }
