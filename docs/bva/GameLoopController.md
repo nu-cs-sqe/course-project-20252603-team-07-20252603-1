@@ -72,9 +72,9 @@ Delegates directly to `model.offerTrade(offer)`.
 
 Delegates directly to `model.acceptTrade(offer, acceptingPlayer)`.
 
-|             | State of the System | Expected output             | Implemented? |
-|-------------|---------------------|-----------------------------|--------------|
-| Test Case 6 | In trade phase      | model.acceptTrade is called | x            |
+|             | State of the System | Expected output             | Implemented?       |
+|-------------|---------------------|-----------------------------|--------------------|
+| Test Case 6 | In trade phase      | model.acceptTrade is called | :white_check_mark: |
 
 ### Method under test: `clearOffers(model)`
 

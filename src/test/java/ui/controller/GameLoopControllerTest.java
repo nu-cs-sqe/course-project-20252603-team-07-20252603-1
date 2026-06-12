@@ -87,5 +87,18 @@ class GameLoopControllerTest {
         verify(mockModel, mockOffer);
     }
 
+    @Test
+    void testAcceptTradeDelegatesToModel() {
+        TradeOffer mockOffer = createMock(TradeOffer.class);
+        Player mockPlayer = createMock(Player.class);
+        mockModel.acceptTrade(mockOffer, mockPlayer);
+        expectLastCall();
+        replay(mockModel, mockOffer, mockPlayer);
+
+        controller.acceptTrade(mockModel, mockOffer, mockPlayer);
+
+        verify(mockModel, mockOffer, mockPlayer);
+    }
+
 
 }
