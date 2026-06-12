@@ -332,6 +332,56 @@ Step 3:
 
 ---
 
+### Method under test: `playDevCard(DevelopmentCard card, DevelopmentCardHandler handler)`
+
+Validates that the current phase allows playing a development card, delegates the
+card effect to `DevelopmentCardHandler`, then transitions the game phase based on
+the card type. Victory Point cards are revealed but cause no phase change and are
+not removed from hand. All other card effects (resource transfer, robber movement,
+road placement) are handled entirely by `DevelopmentCardHandler`.
+
+Valid phases for playing a dev card: `BEFORE_ROLL` and `GENERAL_PLAY` (per official
+Catan rules, dev cards may be played before or after rolling dice).
+
+Phase transitions after play:
+- `KNIGHT` → `MOVE_ROBBER` (robber must be moved immediately)
+- `ROAD_BUILDER` → `ROAD_BUILDING_DEV_CARD` (player must place up to 2 roads)
+- `MONOPOLY` → `MONOPOLY_DEV_CARD` (player must declare a resource)
+- `YEAR_OF_PLENTY` → `GENERAL_PLAY` / `BEFORE_ROLL` (no mandatory follow-up action)
+- `VICTORY_POINT` → `GENERAL_PLAY` / `BEFORE_ROLL` (revealed, no action required)
+
+Step 1:
+
+- Input: card (DevelopmentCard), handler (DevelopmentCardHandler)
+- State: current game phase, card type
+- Output: handler play method called with current player and current round; phase transitions per card type
+- Output: exception
+
+Step 2:
+
+- card: Pointer; null (invalid)
+- card type: Case {KNIGHT, ROAD_BUILDER, MONOPOLY, YEAR_OF_PLENTY, VICTORY_POINT}
+- Game phase: Case {BEFORE_ROLL or GENERAL_PLAY (valid), all others (invalid)}
+
+Step 3:
+
+- card: null (invalid); valid card
+- card type: KNIGHT; ROAD_BUILDER; MONOPOLY; YEAR_OF_PLENTY; VICTORY_POINT
+- Game phase: GENERAL_PLAY (valid); BEFORE_ROLL (valid); MOVE_ROBBER (invalid representative)
+
+|              | State of the System                                              | Expected output                                                     | Implemented? |
+|--------------|------------------------------------------------------------------|---------------------------------------------------------------------|--------------|
+| Test Case 1  | card = null                                                      | IllegalArgumentException: "Development card cannot be null."        | :x:          |
+| Test Case 2  | MOVE_ROBBER (invalid phase), valid card                          | IllegalGamePhaseException: "Not proper phase for that action"       | :x:          |
+| Test Case 3  | GENERAL_PLAY, card type = KNIGHT                                 | handler.playKnightCard called; phase → MOVE_ROBBER                  | :x:          |
+| Test Case 4  | GENERAL_PLAY, card type = ROAD_BUILDER                           | handler.playRoadBuildingCard called; phase → ROAD_BUILDING_DEV_CARD | :x:          |
+| Test Case 5  | GENERAL_PLAY, card type = MONOPOLY                               | handler.playMonopolyCard called; phase → MONOPOLY_DEV_CARD          | :x:          |
+| Test Case 6  | GENERAL_PLAY, card type = YEAR_OF_PLENTY                         | handler.playYearOfPlentyCard called; phase unchanged                 | :x:          |
+| Test Case 7  | GENERAL_PLAY, card type = VICTORY_POINT                          | handler.countVictoryPointCards called; phase unchanged               | :x:          |
+| Test Case 8  | BEFORE_ROLL, card type = KNIGHT                                  | handler.playKnightCard called; phase → MOVE_ROBBER                  | :x:          |
+
+---
+
 ### Method under test: `handleLongestRoad()`
 
 Handles checking and redistributing points based on longest road, to be called in building settlements and roads (things which can change longest road)

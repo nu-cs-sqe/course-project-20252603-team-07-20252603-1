@@ -95,3 +95,38 @@ Step 3:
 | Test Case 5 | buyDevCard(model, deck, handler); handler returns a DevelopmentCard                                 | controller returns the same DevelopmentCard; verify handler called with currentPlayer, deck, and currentRound     | :white_check_mark: |
 | Test Case 6 | buyDevCard(model, deck, handler); handler throws InsufficientResourcesException (buyer lacks resources) | controller relays InsufficientResourcesException to caller                                                    | :white_check_mark: |
 | Test Case 7 | buyDevCard(model, deck, handler); handler throws EmptyDeckException (deck is empty)                 | controller relays EmptyDeckException to caller                                                                    | :white_check_mark: |
+
+---
+
+### Method under test: `playDevCard(GameModel model, DevelopmentCard card, DevelopmentCardHandler handler)`
+
+Thin delegation only. Extracts the current player and current round from the model,
+delegates to `model.playDevCard(card, handler)`, and relays whatever the model
+returns or throws. No game-rule logic lives here.
+
+BVA focuses on correct delegation and transparent exception relay.
+
+Step 1:
+
+- Input: model, card, handler
+- State: delegated to model; controller reads currentPlayer and currentRound from model
+- Output: void on success; exception relayed unchanged
+
+Step 2:
+
+- model: Pointer (mock)
+- card: Pointer (mock)
+- handler: Pointer (mock)
+- Output: delegation verified or relayed exception
+
+Step 3:
+
+- Verify controller calls `model.playDevCard(card, handler)`
+- Verify controller relays `IllegalGamePhaseException` when model throws it (wrong phase)
+- Verify controller relays `IllegalArgumentException` when model throws it (null card)
+
+|              | System under test                                                                   | Expected output                                                                           | Implemented? |
+|--------------|-------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|--------------|
+| Test Case 8  | playDevCard(model, card, handler); model completes normally                         | model.playDevCard(card, handler) called once; no exception                                | :x:          |
+| Test Case 9  | playDevCard(model, card, handler); model throws IllegalGamePhaseException           | IllegalGamePhaseException relayed to caller                                               | :x:          |
+| Test Case 10 | playDevCard(model, card, handler); model throws IllegalArgumentException (null card) | IllegalArgumentException relayed to caller                                               | :x:          |
