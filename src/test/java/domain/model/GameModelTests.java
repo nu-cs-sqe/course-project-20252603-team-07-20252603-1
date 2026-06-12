@@ -1811,4 +1811,28 @@ public class GameModelTests {
     EasyMock.verify(redStateMock, boardMock, tradeManagerMock,
             lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock, woolDeckMock);
   }
+
+  // Test Case 2
+  @Test
+  void clearOffers_test02_GeneralPlay_ExpectIllegalGamePhaseException() {
+    Player redStateMock = EasyMock.createMock(Player.class);
+    TradeManager tradeManagerMock = EasyMock.createMock(TradeManager.class);
+    ColorToPlayerObjMock = Map.of(PlayerColor.RED, redStateMock);
+
+    EasyMock.replay(redStateMock, boardMock, tradeManagerMock,
+            lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock, woolDeckMock);
+
+    GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+            oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+
+    model.setCurrentPlayerColor(PlayerColor.RED);
+    model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+    Exception exception = assertThrows(IllegalGamePhaseException.class,
+            () -> model.clearOffers());
+
+    assertEquals("Not proper phase for that action", exception.getMessage());
+
+    EasyMock.verify(redStateMock, boardMock, tradeManagerMock,
+            lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock, woolDeckMock);
+  }
 }

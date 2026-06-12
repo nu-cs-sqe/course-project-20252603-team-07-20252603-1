@@ -382,4 +382,4 @@ Step 3:
 |             | State of the System            | Expected output           | Implemented?       |
 |-------------|--------------------------------|---------------------------|--------------------|
 | Test Case 1 | Currently no one, still no one | PlayerColor.setup         | :white_check_mark: |
-| Test Case 2 | GENERAL_PLAY (invalid phase)   | IllegalGamePhaseException | x                  |
+| Test Case 2 | GENERAL_PLAY (invalid phase)   | IllegalGamePhaseException | :white_check_mark: |
