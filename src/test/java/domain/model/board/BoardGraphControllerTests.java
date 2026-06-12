@@ -102,7 +102,7 @@ public class BoardGraphControllerTests {
         BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
         BoardGraphController boardControl = new BoardGraphController(boardMock);
         EasyMock.expect(boardMock.checkPlayerOwnsGraphNodeObject(PlayerColor.BLUE, 2)).andReturn(true);
-        EasyMock.expect(boardMock.getConnectingEdgesByID(2)).andReturn(new HashSet<>());
+        EasyMock.expect(boardMock.getConnectingEdgesById(2)).andReturn(new HashSet<>());
         EasyMock.expect(boardMock.getMatchingEdgeFromSet(new HashSet<>(), 0, 3))
                 .andThrow(new IllegalArgumentException("Edge does not exist"));
         EasyMock.replay(boardMock);
@@ -121,7 +121,7 @@ public class BoardGraphControllerTests {
         BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
         BoardGraphController boardControl = new BoardGraphController(boardMock);
         EasyMock.expect(boardMock.checkPlayerOwnsGraphNodeObject(PlayerColor.ORANGE, 50)).andReturn(true);
-        EasyMock.expect(boardMock.getConnectingEdgesByID(50)).andReturn(new HashSet<>());
+        EasyMock.expect(boardMock.getConnectingEdgesById(50)).andReturn(new HashSet<>());
         EasyMock.expect(boardMock.getMatchingEdgeFromSet(new HashSet<>(), 50, 53)).andReturn(new GraphEdge(50, 53));
         EasyMock.expect(boardMock.claimGraphEdgeObject(PlayerColor.ORANGE, 50, 53))
                         .andThrow(new EdgeAlreadyClaimedException("Edge already claimed"));

@@ -1,10 +1,9 @@
 package domain.model.board;
 
-import domain.model.game_pieces.Robber;
+import domain.model.gamepieces.Robber;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 import domain.model.resources.Resource;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,11 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Handles all board-related operations for a game of Catan.
- */
+/** Handles all board-related operations for a game of Catan. */
 public class BoardHandler {
-  // static fields to represent the type of building on a node
+
   private static final int SETTLEMENT_LEVEL = 1;
   private static final int CITY_LEVEL = 2;
   private static final int MIN_HEX_ID = 0;
@@ -33,9 +30,7 @@ public class BoardHandler {
   private PlayerColor[] nodeOwners;
   private Robber robber;
 
-  /**
-   * Creates a new BoardHandler with a fresh board state.
-   */
+  /** Creates a new BoardHandler with a fresh board state. */
   public BoardHandler() {
     BoardGraph constructorGraph = new BoardGraph();
     constructorGraph.buildBoard();
@@ -48,11 +43,11 @@ public class BoardHandler {
     this.robber = new Robber(9);
   }
 
-  // private constructor for testing
-  private BoardHandler(BoardGraphController boardGraphController,
-                       List<Hex> hexes, Map<Integer,
-                       List<Integer>> nodeIdToHexes,
-                       Robber robber) {
+  private BoardHandler(
+      BoardGraphController boardGraphController,
+      List<Hex> hexes,
+      Map<Integer, List<Integer>> nodeIdToHexes,
+      Robber robber) {
     this.boardGraphController = boardGraphController;
     this.hexes = hexes;
     this.nodeIdToHexes = nodeIdToHexes;
@@ -71,13 +66,20 @@ public class BoardHandler {
    * @param robber the robber
    * @return a new BoardHandler instance
    */
-  public static BoardHandler createForTesting(BoardGraphController boardGraphController,
-                                              List<Hex> hexes, Map<Integer,
-                                              List<Integer>> nodeIdToHexes,
-                                              Robber robber) {
+  public static BoardHandler createForTesting(
+      BoardGraphController boardGraphController,
+      List<Hex> hexes,
+      Map<Integer, List<Integer>> nodeIdToHexes,
+      Robber robber) {
     return new BoardHandler(boardGraphController, hexes, nodeIdToHexes, robber);
   }
 
+  /**
+   * Places a settlement for the given player at the specified node.
+   *
+   * @param player the player building the settlement
+   * @param nodeId the node to build on
+   */
   public void buildSettlement(Player player, int nodeId) {
     if (nodeId < MIN_NODE_ID || nodeId > MAX_NODE_ID) {
       throw new IllegalArgumentException("Invalid NodeID - must be within [0, 53].");
@@ -96,14 +98,33 @@ public class BoardHandler {
     player.placeSettlement();
   }
 
+  /**
+   * Returns whether the given player color owns the specified node.
+   *
+   * @param playerColor the color to check
+   * @param nodeId the node to check
+   * @return true if the player owns the node
+   */
   public boolean checkPlayerOwnsNode(PlayerColor playerColor, Integer nodeId) {
     return nodeOwners[nodeId] == playerColor;
   }
 
+  /**
+   * Returns the building level at the specified node (0=empty, 1=settlement, 2=city).
+   *
+   * @param nodeId the node to query
+   * @return the building level
+   */
   public Integer getNodeBuildingLevel(Integer nodeId) {
     return nodeBuildingLevels[nodeId];
   }
 
+  /**
+   * Upgrades a settlement to a city for the given player at the specified node.
+   *
+   * @param player the player building the city
+   * @param nodeId the node to upgrade
+   */
   public void buildCity(Player player, int nodeId) {
     if (nodeId < MIN_NODE_ID || nodeId > MAX_NODE_ID) {
       throw new IllegalArgumentException("Invalid NodeID - must be within [0, 53].");
@@ -126,9 +147,16 @@ public class BoardHandler {
     nodeBuildingLevels[nodeId] = CITY_LEVEL;
   }
 
+  /**
+   * Places a road for the given player between the two specified nodes.
+   *
+   * @param player the player building the road
+   * @param nodeId1 one endpoint of the road
+   * @param nodeId2 the other endpoint of the road
+   */
   public void addRoad(Player player, int nodeId1, int nodeId2) {
     if (nodeId1 < MIN_NODE_ID || nodeId2 < MIN_NODE_ID
-            || nodeId1 > MAX_NODE_ID || nodeId2 > MAX_NODE_ID) {
+        || nodeId1 > MAX_NODE_ID || nodeId2 > MAX_NODE_ID) {
       throw new IllegalArgumentException("Edge nodeId out of bounds. Must be within [0, 53].");
     }
     PlayerColor claimingColor = player.getColor();
@@ -136,6 +164,11 @@ public class BoardHandler {
     player.placeRoad();
   }
 
+  /**
+   * Awards resources to all players with settlements or cities on hexes matching the roll.
+   *
+   * @param rollNum the dice roll result
+   */
   public void awardResources(int rollNum) {
     int robberLocation = robber.getRobberLocation();
 
@@ -148,6 +181,11 @@ public class BoardHandler {
     }
   }
 
+  /**
+   * Moves the robber to the specified hex.
+   *
+   * @param hexId the destination hex ID
+   */
   public void moveRobber(int hexId) {
     if (hexId < MIN_HEX_ID || hexId > MAX_HEX_ID) {
       throw new IllegalArgumentException("Cannot move Robber to invalid Hex ID");
@@ -161,6 +199,12 @@ public class BoardHandler {
     robber.moveRobber(hexId);
   }
 
+  /**
+   * Returns all players who have a settlement or city on the specified hex.
+   *
+   * @param hexId the hex to query
+   * @return the set of players on that hex
+   */
   public Set<Player> getPlayersOnHex(int hexId) {
     if (hexId < MIN_HEX_ID || hexId > MAX_HEX_ID) {
       throw new IllegalArgumentException("Invalid Hex ID, must be within [0,18]");
@@ -174,6 +218,12 @@ public class BoardHandler {
     return playersOnHex;
   }
 
+  /**
+   * Places a setup-phase settlement for the given player at the specified node.
+   *
+   * @param player the player building the settlement
+   * @param nodeId the node to build on
+   */
   public void buildSetupSettlement(Player player, int nodeId) {
     if (nodeId < MIN_NODE_ID || nodeId > MAX_NODE_ID) {
       throw new IllegalArgumentException("Invalid NodeID - must be within [0, 53].");
@@ -191,47 +241,67 @@ public class BoardHandler {
     player.placeSettlement();
   }
 
+  /**
+   * Places a setup-phase road for the given player adjacent to their claimed node.
+   *
+   * @param player the player building the road
+   * @param claimedNodeId the node the player just claimed
+   * @param nodeId1 one endpoint of the road
+   * @param nodeId2 the other endpoint of the road
+   */
   public void buildSetupRoad(Player player, int claimedNodeId, int nodeId1, int nodeId2) {
     if (nodeId1 < MIN_NODE_ID || nodeId2 < MIN_NODE_ID
-            || nodeId1 > MAX_NODE_ID || nodeId2 > MAX_NODE_ID) {
+        || nodeId1 > MAX_NODE_ID || nodeId2 > MAX_NODE_ID) {
       throw new IllegalArgumentException("Edge nodeId out of bounds. Must be within [0, 53].");
     }
     PlayerColor claimingColor = player.getColor();
-    boardGraphController.playerClaimStoredEdgeSetupPhase(claimingColor,
-            claimedNodeId, nodeId1, nodeId2);
+    boardGraphController.playerClaimStoredEdgeSetupPhase(
+        claimingColor, claimedNodeId, nodeId1, nodeId2);
     player.placeRoad();
   }
 
-  // Note: Returns SETUP PlayerColor if nobody has achieved longest road yet
+  /**
+   * Calculates and returns the color of the player with the longest road.
+   * Returns SETUP PlayerColor if nobody has achieved longest road yet.
+   *
+   * @param players the list of active players
+   * @param previousWinner the previous longest-road holder
+   * @return the color of the longest-road holder
+   */
   public PlayerColor calculateLongestRoad(List<Player> players, PlayerColor previousWinner) {
     return boardGraphController.calculateLongestRoad(players, previousWinner);
   }
 
   private List<Hex> initHexes() {
-    List<Hex> hexes = new ArrayList<>(List.of(
-            new Hex(0, Resource.ORE, 10),
-            new Hex(1, Resource.WOOL, 2),
-            new Hex(2, Resource.LUMBER, 9),
-            new Hex(3, Resource.GRAIN, 12),
-            new Hex(4, Resource.BRICK, 6),
-            new Hex(5, Resource.WOOL, 4),
-            new Hex(6, Resource.BRICK, 10),
-            new Hex(7, Resource.GRAIN, 9),
-            new Hex(8, Resource.LUMBER, 11),
-            new Hex(9, Resource.DESERT, 7),
-            new Hex(10, Resource.LUMBER, 3),
-            new Hex(11, Resource.ORE, 8),
-            new Hex(12, Resource.LUMBER, 8),
-            new Hex(13, Resource.ORE, 3),
-            new Hex(14, Resource.GRAIN, 4),
-            new Hex(15, Resource.WOOL, 5),
-            new Hex(16, Resource.BRICK, 5),
-            new Hex(17, Resource.GRAIN, 6),
-            new Hex(18, Resource.LUMBER, 11)
+    List<Hex> hexList = new ArrayList<>(List.of(
+        new Hex(0, Resource.ORE, 10),
+        new Hex(1, Resource.WOOL, 2),
+        new Hex(2, Resource.LUMBER, 9),
+        new Hex(3, Resource.GRAIN, 12),
+        new Hex(4, Resource.BRICK, 6),
+        new Hex(5, Resource.WOOL, 4),
+        new Hex(6, Resource.BRICK, 10),
+        new Hex(7, Resource.GRAIN, 9),
+        new Hex(8, Resource.LUMBER, 11),
+        new Hex(9, Resource.DESERT, 7),
+        new Hex(10, Resource.LUMBER, 3),
+        new Hex(11, Resource.ORE, 8),
+        new Hex(12, Resource.LUMBER, 8),
+        new Hex(13, Resource.ORE, 3),
+        new Hex(14, Resource.GRAIN, 4),
+        new Hex(15, Resource.WOOL, 5),
+        new Hex(16, Resource.BRICK, 5),
+        new Hex(17, Resource.GRAIN, 6),
+        new Hex(18, Resource.LUMBER, 11)
     ));
-    return hexes;
+    return hexList;
   }
 
+  /**
+   * Returns the list of resource names for each hex in board order.
+   *
+   * @return ordered list of resource name strings
+   */
   public List<String> getHexOrder() {
     List<String> order = new ArrayList<>();
     for (Hex hex : hexes) {
@@ -240,6 +310,11 @@ public class BoardHandler {
     return order;
   }
 
+  /**
+   * Returns the total number of hexes on the board.
+   *
+   * @return hex count
+   */
   public int getHexCount() {
     return this.hexes.size();
   }
@@ -303,6 +378,13 @@ public class BoardHandler {
     return nodeHexMap;
   }
 
+  /**
+   * Returns whether the edge between the two nodes has a road on it.
+   *
+   * @param nodeId1 one endpoint
+   * @param nodeId2 the other endpoint
+   * @return true if an edge exists and has a road
+   */
   public boolean checkEdgeOccupied(int nodeId1, int nodeId2) {
     return boardGraphController.checkEdgeOccupied(nodeId1, nodeId2);
   }

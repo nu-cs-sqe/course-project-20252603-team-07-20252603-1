@@ -2,10 +2,11 @@ package domain.model.board;
 
 import domain.model.player.Player;
 import domain.model.resources.Resource;
-
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Represents a hexagonal tile on the game board, tracking its resource type and occupants. */
 public class Hex {
   private static final int MIN_HEX_ID = 0;
   private static final int MAX_HEX_ID = 18;
@@ -25,6 +26,9 @@ public class Hex {
   private List<Player> playerCities;
   private int totalBuildingsOnHex;
 
+  @SuppressFBWarnings(
+      value = "CT_CONSTRUCTOR_THROW",
+      justification = "Validation in constructor is intentional; no finalizer risk")
   Hex(int hexId, Resource resource, int rollNumber) {
     validateHexId(hexId);
     this.hexId = hexId;
@@ -45,15 +49,18 @@ public class Hex {
 
   private void validateRollNum(int rollNumber) {
     if (rollNumber < MIN_ROLL_NUMBER || rollNumber > MAX_ROLL_NUMBER) {
-      throw new IllegalArgumentException("Invalid Hex - rollNumber must be within [2, 12].");
+      throw new IllegalArgumentException(
+          "Invalid Hex - rollNumber must be within [2, 12].");
     }
   }
 
   private void validateResourceAndHexNumber(Resource resource, int rollNum) {
     if (resource != Resource.DESERT && rollNum == DESERT_ROLL_NUMBER) {
-      throw new IllegalArgumentException("Invalid Hex - Only Desert Hex can have rollNumber 7");
+      throw new IllegalArgumentException(
+          "Invalid Hex - Only Desert Hex can have rollNumber 7");
     } else if (resource == Resource.DESERT && rollNum != DESERT_ROLL_NUMBER) {
-      throw new IllegalArgumentException("Invalid Hex - Desert Hex must have rollNumber 7.");
+      throw new IllegalArgumentException(
+          "Invalid Hex - Desert Hex must have rollNumber 7.");
     }
   }
 
@@ -138,10 +145,5 @@ public class Hex {
 
   List<Player> getHexCityPlayers() {
     return List.copyOf(playerCities);
-  }
-
-  @Override
-  protected final void finalize() {
-    // intentionally empty — blocks finalizer attacks
   }
 }

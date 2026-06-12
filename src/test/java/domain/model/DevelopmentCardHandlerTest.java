@@ -3,8 +3,8 @@ package domain.model;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
-import domain.model.development_cards.DevelopmentCard;
-import domain.model.development_cards.DevelopmentCardDeck;
+import domain.model.developmentcards.DevelopmentCard;
+import domain.model.developmentcards.DevelopmentCardDeck;
 import domain.model.exceptions.EmptyDeckException;
 import domain.model.player.Player;
 import domain.model.resources.Resource;
@@ -12,9 +12,9 @@ import domain.model.resources.Resource;
 import java.util.List;
 import java.util.Map;
 
-import domain.model.development_cards.DevelopmentCardType;
+import domain.model.developmentcards.DevelopmentCardType;
 import domain.model.exceptions.InsufficientResourcesException;
-import domain.model.game_pieces.Robber;
+import domain.model.gamepieces.Robber;
 
 import static org.junit.jupiter.api.Assertions.*;
 

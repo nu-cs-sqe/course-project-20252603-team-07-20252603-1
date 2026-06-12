@@ -21,12 +21,12 @@ public class BoardGraphTests {
   void addNodeToGraph_test01_EmptyGraph_ExpectTrue() {
     BoardGraph b = new BoardGraph();
     GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
-    EasyMock.expect(nodeMock.getNodeID()).andReturn(0);
+    EasyMock.expect(nodeMock.getNodeId()).andReturn(0);
     EasyMock.replay(nodeMock);
 
     assertTrue(b.addGraphNodeObject(nodeMock));
-    assertNotNull(b.getGraphNodeByID(0));
-    assertNotNull(b.getConnectingEdgesByID(0));
+    assertNotNull(b.getGraphNodeById(0));
+    assertNotNull(b.getConnectingEdgesById(0));
     EasyMock.verify(nodeMock);
 
   }
@@ -38,14 +38,14 @@ public class BoardGraphTests {
     GraphNode nodeMock1 = EasyMock.createMock(GraphNode.class);
     GraphNode nodeMock2 = EasyMock.createMock(GraphNode.class);
 
-    EasyMock.expect(nodeMock1.getNodeID()).andReturn(0);
-    EasyMock.expect(nodeMock2.getNodeID()).andReturn(53);
+    EasyMock.expect(nodeMock1.getNodeId()).andReturn(0);
+    EasyMock.expect(nodeMock2.getNodeId()).andReturn(53);
     EasyMock.replay(nodeMock1, nodeMock2);
 
     assertTrue(b.addGraphNodeObject(nodeMock1));
     assertTrue(b.addGraphNodeObject(nodeMock2));
-    assertNotNull(b.getGraphNodeByID(53));
-    assertNotNull(b.getConnectingEdgesByID(53));
+    assertNotNull(b.getGraphNodeById(53));
+    assertNotNull(b.getConnectingEdgesById(53));
     EasyMock.verify(nodeMock1, nodeMock2);
   }
 
@@ -57,9 +57,9 @@ public class BoardGraphTests {
     GraphNode nodeMock2 = EasyMock.createMock(GraphNode.class);
     GraphNode nodeMock3 = EasyMock.createMock(GraphNode.class);
 
-    EasyMock.expect(nodeMock1.getNodeID()).andReturn(0);
-    EasyMock.expect(nodeMock2.getNodeID()).andReturn(1);
-    EasyMock.expect(nodeMock3.getNodeID()).andReturn(53);
+    EasyMock.expect(nodeMock1.getNodeId()).andReturn(0);
+    EasyMock.expect(nodeMock2.getNodeId()).andReturn(1);
+    EasyMock.expect(nodeMock3.getNodeId()).andReturn(53);
     EasyMock.replay(nodeMock1, nodeMock2, nodeMock3);
 
     b.addGraphNodeObject(nodeMock1);
@@ -67,8 +67,8 @@ public class BoardGraphTests {
 
     assertTrue(b.addGraphNodeObject(nodeMock3));
 
-    assertNotNull(b.getGraphNodeByID(53));
-    assertNotNull(b.getConnectingEdgesByID(53));
+    assertNotNull(b.getGraphNodeById(53));
+    assertNotNull(b.getConnectingEdgesById(53));
 
     EasyMock.verify(nodeMock1, nodeMock2, nodeMock3);
 
@@ -82,9 +82,9 @@ public class BoardGraphTests {
     GraphNode nodeMock2 = EasyMock.createMock(GraphNode.class);
     GraphNode nodeMock3 = EasyMock.createMock(GraphNode.class);
 
-    EasyMock.expect(nodeMock1.getNodeID()).andReturn(0);
-    EasyMock.expect(nodeMock2.getNodeID()).andReturn(1);
-    EasyMock.expect(nodeMock3.getNodeID()).andReturn(0);
+    EasyMock.expect(nodeMock1.getNodeId()).andReturn(0);
+    EasyMock.expect(nodeMock2.getNodeId()).andReturn(1);
+    EasyMock.expect(nodeMock3.getNodeId()).andReturn(0);
 
     EasyMock.replay(nodeMock1, nodeMock2, nodeMock3);
 
@@ -96,35 +96,35 @@ public class BoardGraphTests {
 
     assertEquals("Node already exists", exception.getMessage());
 
-    assertNotNull(b.getGraphNodeByID(0));
-    assertNotNull(b.getConnectingEdgesByID(0));
+    assertNotNull(b.getGraphNodeById(0));
+    assertNotNull(b.getConnectingEdgesById(0));
 
     EasyMock.verify(nodeMock1, nodeMock2);
 
   }
 
-  // getGraphNodeByID() Tests
+  // getGraphNodeById() Tests
   @Test
-  void getNodeID0_test01_EmptyMap_ExpectError() {
+  void getNodeId0_test01_EmptyMap_ExpectError() {
     BoardGraph b = new BoardGraph();
 
     Exception exception = assertThrows(IllegalArgumentException.class,
-            () -> b.getGraphNodeByID(0));
+            () -> b.getGraphNodeById(0));
 
     assertEquals("Node does not exist", exception.getMessage());
 
   }
 
   @Test
-  void getNodeID0_test02_OneElementMap_ID0Exists_ExpectGraphNode() {
+  void getNodeId0_test02_OneElementMap_ID0Exists_ExpectGraphNode() {
     BoardGraph b = new BoardGraph();
 
     GraphNode nodeStub = EasyMock.createMock(GraphNode.class);
-    EasyMock.expect(nodeStub.getNodeID()).andStubReturn(0);
+    EasyMock.expect(nodeStub.getNodeId()).andStubReturn(0);
 
     b.addGraphNodeObject(nodeStub);
 
-    GraphNode result = b.getGraphNodeByID(0);
+    GraphNode result = b.getGraphNodeById(0);
 
     assertNotNull(result);
     assertEquals(nodeStub, result);
@@ -132,21 +132,21 @@ public class BoardGraphTests {
   }
 
   @Test
-  void getNodeID53_test03_MultipleElementMap_ID53DoesNotExists_ExpectError() {
+  void getNodeId53_test03_MultipleElementMap_ID53DoesNotExists_ExpectError() {
     BoardGraph b = new BoardGraph();
 
     GraphNode nodeStub0 = EasyMock.createMock(GraphNode.class);
     GraphNode nodeStub1 = EasyMock.createMock(GraphNode.class);
 
-    EasyMock.expect(nodeStub0.getNodeID()).andStubReturn(0);
-    EasyMock.expect(nodeStub1.getNodeID()).andStubReturn(1);
+    EasyMock.expect(nodeStub0.getNodeId()).andStubReturn(0);
+    EasyMock.expect(nodeStub1.getNodeId()).andStubReturn(1);
     EasyMock.replay(nodeStub0, nodeStub1);
 
     b.addGraphNodeObject(nodeStub0);
     b.addGraphNodeObject(nodeStub1);
 
     Exception exception = assertThrows(IllegalArgumentException.class,
-            () -> b.getGraphNodeByID(53));
+            () -> b.getGraphNodeById(53));
 
 
     assertEquals("Node does not exist", exception.getMessage());
@@ -156,7 +156,7 @@ public class BoardGraphTests {
   void checkPlayerOwnsGraphNodeObject_test01_NodeExists_PlayerOwnsIt_ExpectTrue() {
     BoardGraph b = new BoardGraph();
     GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
-    EasyMock.expect(nodeMock.getNodeID()).andReturn(0);
+    EasyMock.expect(nodeMock.getNodeId()).andReturn(0);
     EasyMock.expect(nodeMock.checkColor()).andReturn(PlayerColor.RED);
     EasyMock.replay(nodeMock);
 
@@ -169,7 +169,7 @@ public class BoardGraphTests {
   void checkPlayerOwnsGraphNodeObject_test02_NodeExists_PlayerDoesNotOwnsIt_ExpectFalse() {
     BoardGraph b = new BoardGraph();
     GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
-    EasyMock.expect(nodeMock.getNodeID()).andReturn(0);
+    EasyMock.expect(nodeMock.getNodeId()).andReturn(0);
     EasyMock.expect(nodeMock.checkColor()).andReturn(PlayerColor.WHITE);
     EasyMock.replay(nodeMock);
 
@@ -190,7 +190,7 @@ public class BoardGraphTests {
   void checkPlayerOwnsGraphNodeObject_test04_NodeExists_DifferentColor_ExpectFalse() {
     BoardGraph b = new BoardGraph();
     GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
-    EasyMock.expect(nodeMock.getNodeID()).andReturn(0);
+    EasyMock.expect(nodeMock.getNodeId()).andReturn(0);
     EasyMock.expect(nodeMock.checkColor()).andReturn(PlayerColor.BLUE);
     EasyMock.replay(nodeMock);
 
@@ -204,7 +204,7 @@ public class BoardGraphTests {
     BoardGraph b = new BoardGraph();
 
     GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
-    EasyMock.expect(nodeMock.getNodeID()).andReturn(0);
+    EasyMock.expect(nodeMock.getNodeId()).andReturn(0);
     EasyMock.expect(nodeMock.playerClaimNode(PlayerColor.RED)).andReturn(true);
     EasyMock.replay(nodeMock);
 
@@ -221,10 +221,10 @@ public class BoardGraphTests {
     GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
     GraphNode nodeStub2 = EasyMock.createMock(GraphNode.class);
     GraphNode nodeStub3 = EasyMock.createMock(GraphNode.class);
-    EasyMock.expect(nodeMock.getNodeID()).andReturn(0);
+    EasyMock.expect(nodeMock.getNodeId()).andReturn(0);
     EasyMock.expect(nodeMock.playerClaimNode(PlayerColor.ORANGE)).andReturn(true);
-    EasyMock.expect(nodeStub2.getNodeID()).andStubReturn(2);
-    EasyMock.expect(nodeStub3.getNodeID()).andStubReturn(3);
+    EasyMock.expect(nodeStub2.getNodeId()).andStubReturn(2);
+    EasyMock.expect(nodeStub3.getNodeId()).andStubReturn(3);
     EasyMock.replay(nodeMock, nodeStub2, nodeStub3);
 
     b.addGraphNodeObject(nodeMock);
@@ -250,7 +250,7 @@ public class BoardGraphTests {
     BoardGraph b = new BoardGraph();
 
     GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
-    EasyMock.expect(nodeMock.getNodeID()).andReturn(53);
+    EasyMock.expect(nodeMock.getNodeId()).andReturn(53);
     EasyMock.expect(nodeMock.playerClaimNode(PlayerColor.WHITE)).andThrow(new IllegalArgumentException("Node already claimed"));
     EasyMock.replay(nodeMock);
 
@@ -270,9 +270,9 @@ public class BoardGraphTests {
     BoardGraph b = new BoardGraph();
     GraphNode nodeStub = EasyMock.createMock(GraphNode.class);
     GraphEdge edge0to1 = EasyMock.createMock(GraphEdge.class);
-    EasyMock.expect(nodeStub.getNodeID()).andReturn(0);
-    EasyMock.expect(edge0to1.getStartingNodeID()).andReturn(0);
-    EasyMock.expect(edge0to1.getEndingNodeID()).andReturn(1);
+    EasyMock.expect(nodeStub.getNodeId()).andReturn(0);
+    EasyMock.expect(edge0to1.getStartingNodeId()).andReturn(0);
+    EasyMock.expect(edge0to1.getEndingNodeId()).andReturn(1);
     EasyMock.expect(edge0to1.claimGraphEdge(PlayerColor.RED)).andReturn(true);
     EasyMock.replay(nodeStub, edge0to1);
     b.addGraphNodeObject(nodeStub);
@@ -289,11 +289,11 @@ public class BoardGraphTests {
     GraphEdge edge0to1 = EasyMock.createMock(GraphEdge.class);
     GraphEdge edge0to2 = EasyMock.createNiceMock(GraphEdge.class);
 
-    EasyMock.expect(nodeStub.getNodeID()).andReturn(0);
-    EasyMock.expect(edge0to2.getStartingNodeID()).andReturn(0);
-    EasyMock.expect(edge0to2.getEndingNodeID()).andReturn(2);
-    EasyMock.expect(edge0to1.getStartingNodeID()).andReturn(0);
-    EasyMock.expect(edge0to1.getEndingNodeID()).andReturn(1);
+    EasyMock.expect(nodeStub.getNodeId()).andReturn(0);
+    EasyMock.expect(edge0to2.getStartingNodeId()).andReturn(0);
+    EasyMock.expect(edge0to2.getEndingNodeId()).andReturn(2);
+    EasyMock.expect(edge0to1.getStartingNodeId()).andReturn(0);
+    EasyMock.expect(edge0to1.getEndingNodeId()).andReturn(1);
     EasyMock.expect(edge0to1.claimGraphEdge(PlayerColor.BLUE)).andReturn(true);
     EasyMock.replay(nodeStub, edge0to1, edge0to2);
     b.addGraphNodeObject(nodeStub);
@@ -309,7 +309,7 @@ public class BoardGraphTests {
     BoardGraph b = new BoardGraph();
     GraphNode nodeStub = EasyMock.createNiceMock(GraphNode.class);
 
-    EasyMock.expect(nodeStub.getNodeID()).andReturn(52);
+    EasyMock.expect(nodeStub.getNodeId()).andReturn(52);
     EasyMock.replay(nodeStub);
 
     b.addGraphNodeObject(nodeStub);
@@ -328,16 +328,16 @@ public class BoardGraphTests {
     GraphEdge edge50to52 = EasyMock.createNiceMock(GraphEdge.class);
     GraphEdge edge50to51 = EasyMock.createNiceMock(GraphEdge.class);
 
-    EasyMock.expect(nodeStub.getNodeID()).andReturn(50);
+    EasyMock.expect(nodeStub.getNodeId()).andReturn(50);
 
-    EasyMock.expect(edge50to53.getStartingNodeID()).andReturn(50);
-    EasyMock.expect(edge50to53.getEndingNodeID()).andReturn(53);
+    EasyMock.expect(edge50to53.getStartingNodeId()).andReturn(50);
+    EasyMock.expect(edge50to53.getEndingNodeId()).andReturn(53);
 
-    EasyMock.expect(edge50to52.getStartingNodeID()).andReturn(50);
-    EasyMock.expect(edge50to52.getEndingNodeID()).andReturn(52);
+    EasyMock.expect(edge50to52.getStartingNodeId()).andReturn(50);
+    EasyMock.expect(edge50to52.getEndingNodeId()).andReturn(52);
 
-    EasyMock.expect(edge50to51.getStartingNodeID()).andReturn(50);
-    EasyMock.expect(edge50to51.getEndingNodeID()).andReturn(51);
+    EasyMock.expect(edge50to51.getStartingNodeId()).andReturn(50);
+    EasyMock.expect(edge50to51.getEndingNodeId()).andReturn(51);
 
     EasyMock.expect(edge50to53.claimGraphEdge(PlayerColor.WHITE))
             .andThrow(new EdgeAlreadyClaimedException("Edge already claimed"));
@@ -363,14 +363,14 @@ public class BoardGraphTests {
     GraphNode nodeStub = EasyMock.createMock(GraphNode.class);
     GraphEdge edgeStub = EasyMock.createMock(GraphEdge.class);
 
-    EasyMock.expect(nodeStub.getNodeID()).andStubReturn(0);
+    EasyMock.expect(nodeStub.getNodeId()).andStubReturn(0);
     EasyMock.replay(nodeStub, edgeStub);
 
     b.addGraphNodeObject(nodeStub);
 
     assertTrue(b.addGraphNodeConnection(0, edgeStub));
 
-    assertTrue(b.getConnectingEdgesByID(0).contains(edgeStub));
+    assertTrue(b.getConnectingEdgesById(0).contains(edgeStub));
   }
 
   @Test
@@ -380,7 +380,7 @@ public class BoardGraphTests {
     GraphNode nodeStub = EasyMock.createMock(GraphNode.class);
     GraphEdge edgeStub = EasyMock.createMock(GraphEdge.class);
 
-    EasyMock.expect(nodeStub.getNodeID()).andStubReturn(0);
+    EasyMock.expect(nodeStub.getNodeId()).andStubReturn(0);
     EasyMock.replay(nodeStub, edgeStub);
 
     b.addGraphNodeObject(nodeStub);
@@ -403,8 +403,8 @@ public class BoardGraphTests {
     GraphNode nodeStub1 = EasyMock.createMock(GraphNode.class);
     GraphEdge edgeStub = EasyMock.createMock(GraphEdge.class);
 
-    EasyMock.expect(nodeStub0.getNodeID()).andStubReturn(0);
-    EasyMock.expect(nodeStub1.getNodeID()).andStubReturn(1);
+    EasyMock.expect(nodeStub0.getNodeId()).andStubReturn(0);
+    EasyMock.expect(nodeStub1.getNodeId()).andStubReturn(1);
 
     EasyMock.replay(nodeStub0, nodeStub1, edgeStub);
 
@@ -413,8 +413,8 @@ public class BoardGraphTests {
     b.addGraphNodeConnection(0, edgeStub);
 
     assertTrue(b.addGraphNodeConnection(1, edgeStub));
-    assertTrue(b.getConnectingEdgesByID(0).contains(edgeStub));
-    assertTrue(b.getConnectingEdgesByID(1).contains(edgeStub));
+    assertTrue(b.getConnectingEdgesById(0).contains(edgeStub));
+    assertTrue(b.getConnectingEdgesById(1).contains(edgeStub));
 
   }
 
@@ -432,13 +432,13 @@ public class BoardGraphTests {
 
   }
 
-  // getConnectingEdgesByID Tests
+  // getConnectingEdgesById Tests
   @Test
   void getEdgeSet_test01_NodeDoesNotExist_ExpectError() {
     BoardGraph b = new BoardGraph();
 
     Exception exception = assertThrows(IllegalArgumentException.class,
-            () -> b.getConnectingEdgesByID(0));
+            () -> b.getConnectingEdgesById(0));
 
     assertEquals("Node does not exist", exception.getMessage());
   }
@@ -448,14 +448,14 @@ public class BoardGraphTests {
     BoardGraph b = new BoardGraph();
     GraphNode nodeStub = EasyMock.createMock(GraphNode.class);
 
-    EasyMock.expect(nodeStub.getNodeID()).andStubReturn(0);
+    EasyMock.expect(nodeStub.getNodeId()).andStubReturn(0);
 
     EasyMock.replay(nodeStub);
 
     b.addGraphNodeObject(nodeStub);
 
-    assertNotNull(b.getConnectingEdgesByID(0));
-    assertEquals(0, b.getConnectingEdgesByID(0).size());
+    assertNotNull(b.getConnectingEdgesById(0));
+    assertEquals(0, b.getConnectingEdgesById(0).size());
   }
 
   @Test
@@ -465,8 +465,8 @@ public class BoardGraphTests {
     GraphNode nodeStub53 = EasyMock.createMock(GraphNode.class);
     GraphEdge edgeStub = EasyMock.createMock(GraphEdge.class);
 
-    EasyMock.expect(nodeStub0.getNodeID()).andStubReturn(0);
-    EasyMock.expect(nodeStub53.getNodeID()).andStubReturn(53);
+    EasyMock.expect(nodeStub0.getNodeId()).andStubReturn(0);
+    EasyMock.expect(nodeStub53.getNodeId()).andStubReturn(53);
 
     EasyMock.replay(nodeStub0, nodeStub53, edgeStub);
 
@@ -474,9 +474,9 @@ public class BoardGraphTests {
     b.addGraphNodeObject(nodeStub53);
     b.addGraphNodeConnection(53, edgeStub);
 
-    assertNotNull(b.getConnectingEdgesByID(53));
-    assertEquals(1, b.getConnectingEdgesByID(53).size());
-    assertTrue(b.getConnectingEdgesByID(53).contains(edgeStub));
+    assertNotNull(b.getConnectingEdgesById(53));
+    assertEquals(1, b.getConnectingEdgesById(53).size());
+    assertTrue(b.getConnectingEdgesById(53).contains(edgeStub));
   }
 
   @Test
@@ -487,8 +487,8 @@ public class BoardGraphTests {
     GraphEdge edgeStub0 = EasyMock.createMock(GraphEdge.class);
     GraphEdge edgeStub1 = EasyMock.createMock(GraphEdge.class);
 
-    EasyMock.expect(nodeStub0.getNodeID()).andStubReturn(0);
-    EasyMock.expect(nodeStub53.getNodeID()).andStubReturn(53);
+    EasyMock.expect(nodeStub0.getNodeId()).andStubReturn(0);
+    EasyMock.expect(nodeStub53.getNodeId()).andStubReturn(53);
 
     EasyMock.replay(nodeStub0, nodeStub53, edgeStub0, edgeStub1);
 
@@ -497,10 +497,10 @@ public class BoardGraphTests {
     b.addGraphNodeConnection(53, edgeStub0);
     b.addGraphNodeConnection(53, edgeStub1);
 
-    assertNotNull(b.getConnectingEdgesByID(53));
-    assertEquals(2, b.getConnectingEdgesByID(53).size());
-    assertTrue(b.getConnectingEdgesByID(53).contains(edgeStub0));
-    assertTrue(b.getConnectingEdgesByID(53).contains(edgeStub1));
+    assertNotNull(b.getConnectingEdgesById(53));
+    assertEquals(2, b.getConnectingEdgesById(53).size());
+    assertTrue(b.getConnectingEdgesById(53).contains(edgeStub0));
+    assertTrue(b.getConnectingEdgesById(53).contains(edgeStub1));
   }
 
   // getMatchingEdgeFromSet() tests
@@ -508,11 +508,11 @@ public class BoardGraphTests {
   void getMatchingEdgeFromSet_test01_EmptySet_ExpectError() {
     BoardGraph b = new BoardGraph();
     GraphNode nodeStub = EasyMock.createNiceMock((GraphNode.class));
-    EasyMock.expect(nodeStub.getNodeID()).andStubReturn(0);
+    EasyMock.expect(nodeStub.getNodeId()).andStubReturn(0);
     EasyMock.replay(nodeStub);
 
     b.addGraphNodeObject(nodeStub);
-    Set<GraphEdge> node0EdgeSet = b.getConnectingEdgesByID(0);
+    Set<GraphEdge> node0EdgeSet = b.getConnectingEdgesById(0);
     Exception exception = assertThrows(IllegalArgumentException.class,
             () -> b.getMatchingEdgeFromSet(node0EdgeSet, 0, 1));
 
@@ -524,14 +524,14 @@ public class BoardGraphTests {
     BoardGraph b = new BoardGraph();
     GraphNode nodeStub = EasyMock.createNiceMock(GraphNode.class);
     GraphEdge edgeStub = EasyMock.createNiceMock(GraphEdge.class);
-    EasyMock.expect(nodeStub.getNodeID()).andStubReturn(0);
-    EasyMock.expect(edgeStub.getStartingNodeID()).andStubReturn(0);
-    EasyMock.expect(edgeStub.getEndingNodeID()).andStubReturn(1);
+    EasyMock.expect(nodeStub.getNodeId()).andStubReturn(0);
+    EasyMock.expect(edgeStub.getStartingNodeId()).andStubReturn(0);
+    EasyMock.expect(edgeStub.getEndingNodeId()).andStubReturn(1);
     EasyMock.replay(nodeStub, edgeStub);
 
     b.addGraphNodeObject(nodeStub);
     b.addGraphNodeConnection(0, edgeStub);
-    Set<GraphEdge> node0EdgeSet = b.getConnectingEdgesByID(0);
+    Set<GraphEdge> node0EdgeSet = b.getConnectingEdgesById(0);
 
     assertEquals(edgeStub, b.getMatchingEdgeFromSet(node0EdgeSet, 0, 1));
   }
@@ -542,17 +542,17 @@ public class BoardGraphTests {
     GraphNode nodeStub = EasyMock.createNiceMock(GraphNode.class);
     GraphEdge edgeStub0 = EasyMock.createNiceMock(GraphEdge.class);
     GraphEdge edgeStub1 = EasyMock.createNiceMock(GraphEdge.class);
-    EasyMock.expect(nodeStub.getNodeID()).andStubReturn(53);
-    EasyMock.expect(edgeStub0.getStartingNodeID()).andStubReturn(52);
-    EasyMock.expect(edgeStub0.getEndingNodeID()).andStubReturn(53);
-    EasyMock.expect(edgeStub1.getStartingNodeID()).andStubReturn(51);
-    EasyMock.expect(edgeStub1.getEndingNodeID()).andStubReturn(53);
+    EasyMock.expect(nodeStub.getNodeId()).andStubReturn(53);
+    EasyMock.expect(edgeStub0.getStartingNodeId()).andStubReturn(52);
+    EasyMock.expect(edgeStub0.getEndingNodeId()).andStubReturn(53);
+    EasyMock.expect(edgeStub1.getStartingNodeId()).andStubReturn(51);
+    EasyMock.expect(edgeStub1.getEndingNodeId()).andStubReturn(53);
     EasyMock.replay(nodeStub, edgeStub0, edgeStub1);
 
     b.addGraphNodeObject(nodeStub);
     b.addGraphNodeConnection(53, edgeStub0);
     b.addGraphNodeConnection(53, edgeStub1);
-    Set<GraphEdge> node0EdgeSet = b.getConnectingEdgesByID(53);
+    Set<GraphEdge> node0EdgeSet = b.getConnectingEdgesById(53);
 
     assertEquals(edgeStub1, b.getMatchingEdgeFromSet(node0EdgeSet, 51, 53));
   }
@@ -564,16 +564,16 @@ public class BoardGraphTests {
     GraphEdge edgeStub0 = EasyMock.createNiceMock(GraphEdge.class);
     GraphEdge edgeStub1 = EasyMock.createNiceMock(GraphEdge.class);
     GraphEdge edgeStub2 = EasyMock.createNiceMock(GraphEdge.class);
-    EasyMock.expect(nodeStub.getNodeID()).andStubReturn(53);
+    EasyMock.expect(nodeStub.getNodeId()).andStubReturn(53);
 
-    EasyMock.expect(edgeStub0.getStartingNodeID()).andStubReturn(52);
-    EasyMock.expect(edgeStub0.getEndingNodeID()).andStubReturn(53);
+    EasyMock.expect(edgeStub0.getStartingNodeId()).andStubReturn(52);
+    EasyMock.expect(edgeStub0.getEndingNodeId()).andStubReturn(53);
 
-    EasyMock.expect(edgeStub1.getStartingNodeID()).andStubReturn(51);
-    EasyMock.expect(edgeStub1.getEndingNodeID()).andStubReturn(53);
+    EasyMock.expect(edgeStub1.getStartingNodeId()).andStubReturn(51);
+    EasyMock.expect(edgeStub1.getEndingNodeId()).andStubReturn(53);
 
-    EasyMock.expect(edgeStub2.getStartingNodeID()).andStubReturn(50);
-    EasyMock.expect(edgeStub2.getEndingNodeID()).andStubReturn(53);
+    EasyMock.expect(edgeStub2.getStartingNodeId()).andStubReturn(50);
+    EasyMock.expect(edgeStub2.getEndingNodeId()).andStubReturn(53);
 
     EasyMock.replay(nodeStub, edgeStub0, edgeStub1, edgeStub2);
 
@@ -581,7 +581,7 @@ public class BoardGraphTests {
     b.addGraphNodeConnection(53, edgeStub0);
     b.addGraphNodeConnection(53, edgeStub1);
     b.addGraphNodeConnection(53, edgeStub2);
-    Set<GraphEdge> node0EdgeSet = b.getConnectingEdgesByID(53);
+    Set<GraphEdge> node0EdgeSet = b.getConnectingEdgesById(53);
 
     Exception exception = assertThrows(IllegalArgumentException.class,
             () -> b.getMatchingEdgeFromSet(node0EdgeSet, 49, 53));
@@ -601,15 +601,15 @@ public class BoardGraphTests {
     // edge which red owns
     GraphEdge edge0to2 = EasyMock.createNiceMock(GraphEdge.class);
 
-    EasyMock.expect(nodeStub0.getNodeID()).andStubReturn(0);
-    EasyMock.expect(nodeStub1.getNodeID()).andStubReturn(1);
+    EasyMock.expect(nodeStub0.getNodeId()).andStubReturn(0);
+    EasyMock.expect(nodeStub1.getNodeId()).andStubReturn(1);
 
-    EasyMock.expect(edge0to1.getStartingNodeID()).andStubReturn(0);
-    EasyMock.expect(edge0to1.getEndingNodeID()).andStubReturn(1);
+    EasyMock.expect(edge0to1.getStartingNodeId()).andStubReturn(0);
+    EasyMock.expect(edge0to1.getEndingNodeId()).andStubReturn(1);
     EasyMock.expect(edge0to1.checkOwningColor()).andStubReturn(PlayerColor.SETUP);
 
-    EasyMock.expect(edge0to2.getStartingNodeID()).andStubReturn(0);
-    EasyMock.expect(edge0to2.getEndingNodeID()).andStubReturn(2);
+    EasyMock.expect(edge0to2.getStartingNodeId()).andStubReturn(0);
+    EasyMock.expect(edge0to2.getEndingNodeId()).andStubReturn(2);
     EasyMock.expect(edge0to2.checkOwningColor()).andStubReturn(PlayerColor.RED);
     EasyMock.replay(nodeStub0, nodeStub1, edge0to1, edge0to2);
 
@@ -633,15 +633,15 @@ public class BoardGraphTests {
     // edge which red owns
     GraphEdge edge1to2 = EasyMock.createNiceMock(GraphEdge.class);
 
-    EasyMock.expect(nodeStub0.getNodeID()).andStubReturn(0);
-    EasyMock.expect(nodeStub1.getNodeID()).andStubReturn(1);
+    EasyMock.expect(nodeStub0.getNodeId()).andStubReturn(0);
+    EasyMock.expect(nodeStub1.getNodeId()).andStubReturn(1);
 
-    EasyMock.expect(edge0to1.getStartingNodeID()).andStubReturn(0);
-    EasyMock.expect(edge0to1.getEndingNodeID()).andStubReturn(1);
+    EasyMock.expect(edge0to1.getStartingNodeId()).andStubReturn(0);
+    EasyMock.expect(edge0to1.getEndingNodeId()).andStubReturn(1);
     EasyMock.expect(edge0to1.checkOwningColor()).andStubReturn(PlayerColor.SETUP);
 
-    EasyMock.expect(edge1to2.getStartingNodeID()).andStubReturn(1);
-    EasyMock.expect(edge1to2.getEndingNodeID()).andStubReturn(2);
+    EasyMock.expect(edge1to2.getStartingNodeId()).andStubReturn(1);
+    EasyMock.expect(edge1to2.getEndingNodeId()).andStubReturn(2);
     EasyMock.expect(edge1to2.checkOwningColor()).andStubReturn(PlayerColor.WHITE);
     EasyMock.replay(nodeStub0, nodeStub1, edge0to1, edge1to2);
 
@@ -666,19 +666,19 @@ public class BoardGraphTests {
     GraphEdge edge51to53 = EasyMock.createNiceMock(GraphEdge.class);
     GraphEdge edge51to52 = EasyMock.createNiceMock(GraphEdge.class);
 
-    EasyMock.expect(nodeStub52.getNodeID()).andStubReturn(52);
-    EasyMock.expect(nodeStub53.getNodeID()).andStubReturn(53);
+    EasyMock.expect(nodeStub52.getNodeId()).andStubReturn(52);
+    EasyMock.expect(nodeStub53.getNodeId()).andStubReturn(53);
 
-    EasyMock.expect(edge52to53.getStartingNodeID()).andStubReturn(52);
-    EasyMock.expect(edge52to53.getEndingNodeID()).andStubReturn(53);
+    EasyMock.expect(edge52to53.getStartingNodeId()).andStubReturn(52);
+    EasyMock.expect(edge52to53.getEndingNodeId()).andStubReturn(53);
     EasyMock.expect(edge52to53.checkOwningColor()).andStubReturn(PlayerColor.SETUP);
 
-    EasyMock.expect(edge51to53.getStartingNodeID()).andStubReturn(51);
-    EasyMock.expect(edge51to53.getEndingNodeID()).andStubReturn(53);
+    EasyMock.expect(edge51to53.getStartingNodeId()).andStubReturn(51);
+    EasyMock.expect(edge51to53.getEndingNodeId()).andStubReturn(53);
     EasyMock.expect(edge51to53.checkOwningColor()).andStubReturn(PlayerColor.WHITE);
 
-    EasyMock.expect(edge51to52.getStartingNodeID()).andStubReturn(51);
-    EasyMock.expect(edge51to52.getEndingNodeID()).andStubReturn(52);
+    EasyMock.expect(edge51to52.getStartingNodeId()).andStubReturn(51);
+    EasyMock.expect(edge51to52.getEndingNodeId()).andStubReturn(52);
     EasyMock.expect(edge51to52.checkOwningColor()).andStubReturn(PlayerColor.WHITE);
 
     EasyMock.replay(nodeStub52, nodeStub53, edge51to52, edge51to53, edge52to53);
@@ -705,19 +705,19 @@ public class BoardGraphTests {
     GraphEdge edge51to53 = EasyMock.createNiceMock(GraphEdge.class);
     GraphEdge edge51to52 = EasyMock.createNiceMock(GraphEdge.class);
 
-    EasyMock.expect(nodeStub52.getNodeID()).andStubReturn(52);
-    EasyMock.expect(nodeStub53.getNodeID()).andStubReturn(53);
+    EasyMock.expect(nodeStub52.getNodeId()).andStubReturn(52);
+    EasyMock.expect(nodeStub53.getNodeId()).andStubReturn(53);
 
-    EasyMock.expect(edge52to53.getStartingNodeID()).andStubReturn(52);
-    EasyMock.expect(edge52to53.getEndingNodeID()).andStubReturn(53);
+    EasyMock.expect(edge52to53.getStartingNodeId()).andStubReturn(52);
+    EasyMock.expect(edge52to53.getEndingNodeId()).andStubReturn(53);
     EasyMock.expect(edge52to53.checkOwningColor()).andStubReturn(PlayerColor.SETUP);
 
-    EasyMock.expect(edge51to53.getStartingNodeID()).andStubReturn(51);
-    EasyMock.expect(edge51to53.getEndingNodeID()).andStubReturn(53);
+    EasyMock.expect(edge51to53.getStartingNodeId()).andStubReturn(51);
+    EasyMock.expect(edge51to53.getEndingNodeId()).andStubReturn(53);
     EasyMock.expect(edge51to53.checkOwningColor()).andStubReturn(PlayerColor.ORANGE);
 
-    EasyMock.expect(edge51to52.getStartingNodeID()).andStubReturn(51);
-    EasyMock.expect(edge51to52.getEndingNodeID()).andStubReturn(52);
+    EasyMock.expect(edge51to52.getStartingNodeId()).andStubReturn(51);
+    EasyMock.expect(edge51to52.getEndingNodeId()).andStubReturn(52);
     EasyMock.expect(edge51to52.checkOwningColor()).andStubReturn(PlayerColor.ORANGE);
 
     EasyMock.replay(nodeStub52, nodeStub53, edge51to52, edge51to53, edge52to53);
@@ -742,9 +742,9 @@ public class BoardGraphTests {
     GraphNode nodeStub0 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub1 = EasyMock.createNiceMock(GraphNode.class);
 
-    EasyMock.expect(nodeStub0.getNodeID()).andStubReturn(0);
+    EasyMock.expect(nodeStub0.getNodeId()).andStubReturn(0);
     EasyMock.expect(nodeStub0.checkColor()).andStubReturn(PlayerColor.RED);
-    EasyMock.expect(nodeStub1.getNodeID()).andStubReturn(1);
+    EasyMock.expect(nodeStub1.getNodeId()).andStubReturn(1);
     EasyMock.expect(nodeStub1.checkColor()).andStubReturn(PlayerColor.ORANGE);
 
     EasyMock.replay(nodeStub0, nodeStub1);
@@ -762,9 +762,9 @@ public class BoardGraphTests {
     GraphNode nodeStub0 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub1 = EasyMock.createNiceMock(GraphNode.class);
 
-    EasyMock.expect(nodeStub0.getNodeID()).andStubReturn(0);
+    EasyMock.expect(nodeStub0.getNodeId()).andStubReturn(0);
     EasyMock.expect(nodeStub0.checkColor()).andStubReturn(PlayerColor.RED);
-    EasyMock.expect(nodeStub1.getNodeID()).andStubReturn(1);
+    EasyMock.expect(nodeStub1.getNodeId()).andStubReturn(1);
     EasyMock.expect(nodeStub1.checkColor()).andStubReturn(PlayerColor.WHITE);
 
     EasyMock.replay(nodeStub0, nodeStub1);
@@ -782,9 +782,9 @@ public class BoardGraphTests {
     GraphNode nodeStub52 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub53 = EasyMock.createNiceMock(GraphNode.class);
 
-    EasyMock.expect(nodeStub52.getNodeID()).andStubReturn(52);
+    EasyMock.expect(nodeStub52.getNodeId()).andStubReturn(52);
     EasyMock.expect(nodeStub52.checkColor()).andStubReturn(PlayerColor.RED);
-    EasyMock.expect(nodeStub53.getNodeID()).andStubReturn(53);
+    EasyMock.expect(nodeStub53.getNodeId()).andStubReturn(53);
     EasyMock.expect(nodeStub53.checkColor()).andStubReturn(PlayerColor.WHITE);
 
     EasyMock.replay(nodeStub52, nodeStub53);
@@ -802,9 +802,9 @@ public class BoardGraphTests {
     GraphNode nodeStub52 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub53 = EasyMock.createNiceMock(GraphNode.class);
 
-    EasyMock.expect(nodeStub52.getNodeID()).andStubReturn(52);
+    EasyMock.expect(nodeStub52.getNodeId()).andStubReturn(52);
     EasyMock.expect(nodeStub52.checkColor()).andStubReturn(PlayerColor.ORANGE);
-    EasyMock.expect(nodeStub53.getNodeID()).andStubReturn(53);
+    EasyMock.expect(nodeStub53.getNodeId()).andStubReturn(53);
     EasyMock.expect(nodeStub53.checkColor()).andStubReturn(PlayerColor.ORANGE);
 
     EasyMock.replay(nodeStub52, nodeStub53);
@@ -827,15 +827,15 @@ public class BoardGraphTests {
     GraphEdge edge0to1 = EasyMock.createNiceMock(GraphEdge.class);
     GraphEdge edge0to3 = EasyMock.createNiceMock(GraphEdge.class);
 
-    EasyMock.expect(nodeStub0.getNodeID()).andStubReturn(0);
-    EasyMock.expect(nodeStub1.getNodeID()).andStubReturn(1);
-    EasyMock.expect(nodeStub3.getNodeID()).andStubReturn(3);
+    EasyMock.expect(nodeStub0.getNodeId()).andStubReturn(0);
+    EasyMock.expect(nodeStub1.getNodeId()).andStubReturn(1);
+    EasyMock.expect(nodeStub3.getNodeId()).andStubReturn(3);
 
-    EasyMock.expect(edge0to3.getStartingNodeID()).andStubReturn(0);
-    EasyMock.expect(edge0to3.getEndingNodeID()).andStubReturn(3);
+    EasyMock.expect(edge0to3.getStartingNodeId()).andStubReturn(0);
+    EasyMock.expect(edge0to3.getEndingNodeId()).andStubReturn(3);
     EasyMock.expect(edge0to3.checkOwningColor()).andStubReturn(PlayerColor.SETUP);
-    EasyMock.expect(edge0to1.getStartingNodeID()).andStubReturn(0);
-    EasyMock.expect(edge0to1.getEndingNodeID()).andStubReturn(1);
+    EasyMock.expect(edge0to1.getStartingNodeId()).andStubReturn(0);
+    EasyMock.expect(edge0to1.getEndingNodeId()).andStubReturn(1);
     // Adjacent Edge which Red Owns
     EasyMock.expect(edge0to1.checkOwningColor()).andStubReturn(PlayerColor.RED);
 
@@ -860,15 +860,15 @@ public class BoardGraphTests {
     GraphEdge edge0to1 = EasyMock.createNiceMock(GraphEdge.class);
     GraphEdge edge0to3 = EasyMock.createNiceMock(GraphEdge.class);
 
-    EasyMock.expect(nodeStub0.getNodeID()).andStubReturn(0);
-    EasyMock.expect(nodeStub1.getNodeID()).andStubReturn(1);
-    EasyMock.expect(nodeStub3.getNodeID()).andStubReturn(3);
+    EasyMock.expect(nodeStub0.getNodeId()).andStubReturn(0);
+    EasyMock.expect(nodeStub1.getNodeId()).andStubReturn(1);
+    EasyMock.expect(nodeStub3.getNodeId()).andStubReturn(3);
 
-    EasyMock.expect(edge0to3.getStartingNodeID()).andStubReturn(0);
-    EasyMock.expect(edge0to3.getEndingNodeID()).andStubReturn(3);
+    EasyMock.expect(edge0to3.getStartingNodeId()).andStubReturn(0);
+    EasyMock.expect(edge0to3.getEndingNodeId()).andStubReturn(3);
     EasyMock.expect(edge0to3.checkOwningColor()).andStubReturn(PlayerColor.WHITE);
-    EasyMock.expect(edge0to1.getStartingNodeID()).andStubReturn(0);
-    EasyMock.expect(edge0to1.getEndingNodeID()).andStubReturn(1);
+    EasyMock.expect(edge0to1.getStartingNodeId()).andStubReturn(0);
+    EasyMock.expect(edge0to1.getEndingNodeId()).andStubReturn(1);
     EasyMock.expect(edge0to1.checkOwningColor()).andStubReturn(PlayerColor.RED);
 
     EasyMock.replay(nodeStub0, nodeStub3, nodeStub1, edge0to3, edge0to1);
@@ -892,15 +892,15 @@ public class BoardGraphTests {
     GraphEdge edge49to53 = EasyMock.createNiceMock(GraphEdge.class);
     GraphEdge edge50to53 = EasyMock.createNiceMock(GraphEdge.class);
 
-    EasyMock.expect(nodeStub49.getNodeID()).andStubReturn(49);
-    EasyMock.expect(nodeStub50.getNodeID()).andStubReturn(50);
-    EasyMock.expect(nodeStub53.getNodeID()).andStubReturn(53);
+    EasyMock.expect(nodeStub49.getNodeId()).andStubReturn(49);
+    EasyMock.expect(nodeStub50.getNodeId()).andStubReturn(50);
+    EasyMock.expect(nodeStub53.getNodeId()).andStubReturn(53);
 
-    EasyMock.expect(edge50to53.getStartingNodeID()).andStubReturn(50);
-    EasyMock.expect(edge50to53.getEndingNodeID()).andStubReturn(53);
+    EasyMock.expect(edge50to53.getStartingNodeId()).andStubReturn(50);
+    EasyMock.expect(edge50to53.getEndingNodeId()).andStubReturn(53);
     EasyMock.expect(edge50to53.checkOwningColor()).andStubReturn(PlayerColor.WHITE);
-    EasyMock.expect(edge49to53.getStartingNodeID()).andStubReturn(49);
-    EasyMock.expect(edge49to53.getEndingNodeID()).andStubReturn(53);
+    EasyMock.expect(edge49to53.getStartingNodeId()).andStubReturn(49);
+    EasyMock.expect(edge49to53.getEndingNodeId()).andStubReturn(53);
     EasyMock.expect(edge49to53.checkOwningColor()).andStubReturn(PlayerColor.RED);
 
     EasyMock.replay(nodeStub49, nodeStub53, nodeStub50, edge50to53, edge49to53);
@@ -924,15 +924,15 @@ public class BoardGraphTests {
     GraphEdge edge49to53 = EasyMock.createNiceMock(GraphEdge.class);
     GraphEdge edge50to53 = EasyMock.createNiceMock(GraphEdge.class);
 
-    EasyMock.expect(nodeStub49.getNodeID()).andStubReturn(49);
-    EasyMock.expect(nodeStub50.getNodeID()).andStubReturn(50);
-    EasyMock.expect(nodeStub53.getNodeID()).andStubReturn(53);
+    EasyMock.expect(nodeStub49.getNodeId()).andStubReturn(49);
+    EasyMock.expect(nodeStub50.getNodeId()).andStubReturn(50);
+    EasyMock.expect(nodeStub53.getNodeId()).andStubReturn(53);
 
-    EasyMock.expect(edge50to53.getStartingNodeID()).andStubReturn(50);
-    EasyMock.expect(edge50to53.getEndingNodeID()).andStubReturn(53);
+    EasyMock.expect(edge50to53.getStartingNodeId()).andStubReturn(50);
+    EasyMock.expect(edge50to53.getEndingNodeId()).andStubReturn(53);
     EasyMock.expect(edge50to53.checkOwningColor()).andStubReturn(PlayerColor.SETUP);
-    EasyMock.expect(edge49to53.getStartingNodeID()).andStubReturn(49);
-    EasyMock.expect(edge49to53.getEndingNodeID()).andStubReturn(53);
+    EasyMock.expect(edge49to53.getStartingNodeId()).andStubReturn(49);
+    EasyMock.expect(edge49to53.getEndingNodeId()).andStubReturn(53);
     EasyMock.expect(edge49to53.checkOwningColor()).andStubReturn(PlayerColor.SETUP);
 
     EasyMock.replay(nodeStub49, nodeStub53, nodeStub50, edge50to53, edge49to53);
@@ -959,15 +959,15 @@ public class BoardGraphTests {
     GraphEdge edge0to3 = EasyMock.createNiceMock(GraphEdge.class);
     GraphEdge edge0to4 = EasyMock.createNiceMock(GraphEdge.class);
 
-    EasyMock.expect(nodeStub0.getNodeID()).andStubReturn(0);
-    EasyMock.expect(nodeStub3.getNodeID()).andStubReturn(3);
-    EasyMock.expect(nodeStub4.getNodeID()).andStubReturn(4);
+    EasyMock.expect(nodeStub0.getNodeId()).andStubReturn(0);
+    EasyMock.expect(nodeStub3.getNodeId()).andStubReturn(3);
+    EasyMock.expect(nodeStub4.getNodeId()).andStubReturn(4);
 
-    EasyMock.expect(edge0to3.getStartingNodeID()).andStubReturn(0);
-    EasyMock.expect(edge0to3.getEndingNodeID()).andStubReturn(3);
+    EasyMock.expect(edge0to3.getStartingNodeId()).andStubReturn(0);
+    EasyMock.expect(edge0to3.getEndingNodeId()).andStubReturn(3);
     EasyMock.expect(edge0to3.checkOwningColor()).andStubReturn(PlayerColor.SETUP);
-    EasyMock.expect(edge0to4.getStartingNodeID()).andStubReturn(0);
-    EasyMock.expect(edge0to4.getEndingNodeID()).andStubReturn(4);
+    EasyMock.expect(edge0to4.getStartingNodeId()).andStubReturn(0);
+    EasyMock.expect(edge0to4.getEndingNodeId()).andStubReturn(4);
     EasyMock.expect(edge0to4.checkOwningColor()).andStubReturn(PlayerColor.SETUP);
 
     EasyMock.replay(nodeStub0, nodeStub3, nodeStub4, edge0to3, edge0to4);
@@ -990,16 +990,16 @@ public class BoardGraphTests {
     GraphEdge edge0to3 = EasyMock.createNiceMock(GraphEdge.class);
     GraphEdge edge0to4 = EasyMock.createNiceMock(GraphEdge.class);
 
-    EasyMock.expect(nodeStub0.getNodeID()).andStubReturn(0);
-    EasyMock.expect(nodeStub3.getNodeID()).andStubReturn(3);
+    EasyMock.expect(nodeStub0.getNodeId()).andStubReturn(0);
+    EasyMock.expect(nodeStub3.getNodeId()).andStubReturn(3);
     EasyMock.expect(nodeStub3.checkOccupied()).andStubReturn(true);
-    EasyMock.expect(nodeStub4.getNodeID()).andStubReturn(4);
+    EasyMock.expect(nodeStub4.getNodeId()).andStubReturn(4);
 
-    EasyMock.expect(edge0to3.getStartingNodeID()).andStubReturn(0);
-    EasyMock.expect(edge0to3.getEndingNodeID()).andStubReturn(3);
+    EasyMock.expect(edge0to3.getStartingNodeId()).andStubReturn(0);
+    EasyMock.expect(edge0to3.getEndingNodeId()).andStubReturn(3);
     EasyMock.expect(edge0to3.checkOwningColor()).andStubReturn(PlayerColor.SETUP);
-    EasyMock.expect(edge0to4.getStartingNodeID()).andStubReturn(0);
-    EasyMock.expect(edge0to4.getEndingNodeID()).andStubReturn(4);
+    EasyMock.expect(edge0to4.getStartingNodeId()).andStubReturn(0);
+    EasyMock.expect(edge0to4.getEndingNodeId()).andStubReturn(4);
     EasyMock.expect(edge0to4.checkOwningColor()).andStubReturn(PlayerColor.SETUP);
 
     EasyMock.replay(nodeStub0, nodeStub3, nodeStub4, edge0to3, edge0to4);
@@ -1024,16 +1024,16 @@ public class BoardGraphTests {
     GraphEdge edge49to53 = EasyMock.createNiceMock(GraphEdge.class);
     GraphEdge edge50to53 = EasyMock.createNiceMock(GraphEdge.class);
 
-    EasyMock.expect(nodeStub49.getNodeID()).andStubReturn(49);
-    EasyMock.expect(nodeStub50.getNodeID()).andStubReturn(50);
+    EasyMock.expect(nodeStub49.getNodeId()).andStubReturn(49);
+    EasyMock.expect(nodeStub50.getNodeId()).andStubReturn(50);
     EasyMock.expect(nodeStub50.checkOccupied()).andStubReturn(true);
-    EasyMock.expect(nodeStub53.getNodeID()).andStubReturn(53);
+    EasyMock.expect(nodeStub53.getNodeId()).andStubReturn(53);
 
-    EasyMock.expect(edge49to53.getStartingNodeID()).andStubReturn(49);
-    EasyMock.expect(edge49to53.getEndingNodeID()).andStubReturn(53);
+    EasyMock.expect(edge49to53.getStartingNodeId()).andStubReturn(49);
+    EasyMock.expect(edge49to53.getEndingNodeId()).andStubReturn(53);
     EasyMock.expect(edge49to53.checkOwningColor()).andStubReturn(PlayerColor.SETUP);
-    EasyMock.expect(edge50to53.getStartingNodeID()).andStubReturn(50);
-    EasyMock.expect(edge50to53.getEndingNodeID()).andStubReturn(53);
+    EasyMock.expect(edge50to53.getStartingNodeId()).andStubReturn(50);
+    EasyMock.expect(edge50to53.getEndingNodeId()).andStubReturn(53);
     EasyMock.expect(edge50to53.checkOwningColor()).andStubReturn(PlayerColor.SETUP);
 
     EasyMock.replay(nodeStub49, nodeStub50, nodeStub53, edge49to53, edge50to53);
@@ -1058,21 +1058,21 @@ public class BoardGraphTests {
     GraphEdge edge49to52 = EasyMock.createNiceMock(GraphEdge.class);
     GraphEdge edge49to53 = EasyMock.createNiceMock(GraphEdge.class);
 
-    EasyMock.expect(nodeStub45.getNodeID()).andStubReturn(45);
+    EasyMock.expect(nodeStub45.getNodeId()).andStubReturn(45);
     EasyMock.expect(nodeStub49.checkOccupied()).andStubReturn(true);
-    EasyMock.expect(nodeStub49.getNodeID()).andStubReturn(49);
-    EasyMock.expect(nodeStub52.getNodeID()).andStubReturn(52);
+    EasyMock.expect(nodeStub49.getNodeId()).andStubReturn(49);
+    EasyMock.expect(nodeStub52.getNodeId()).andStubReturn(52);
     EasyMock.expect(nodeStub52.checkOccupied()).andStubReturn(true);
-    EasyMock.expect(nodeStub53.getNodeID()).andStubReturn(53);
+    EasyMock.expect(nodeStub53.getNodeId()).andStubReturn(53);
 
-    EasyMock.expect(edge45to49.getStartingNodeID()).andStubReturn(45);
-    EasyMock.expect(edge45to49.getEndingNodeID()).andStubReturn(49);
+    EasyMock.expect(edge45to49.getStartingNodeId()).andStubReturn(45);
+    EasyMock.expect(edge45to49.getEndingNodeId()).andStubReturn(49);
     EasyMock.expect(edge45to49.checkOwningColor()).andStubReturn(PlayerColor.SETUP);
-    EasyMock.expect(edge49to52.getStartingNodeID()).andStubReturn(49);
-    EasyMock.expect(edge49to52.getEndingNodeID()).andStubReturn(52);
+    EasyMock.expect(edge49to52.getStartingNodeId()).andStubReturn(49);
+    EasyMock.expect(edge49to52.getEndingNodeId()).andStubReturn(52);
     EasyMock.expect(edge49to52.checkOwningColor()).andStubReturn(PlayerColor.SETUP);
-    EasyMock.expect(edge49to53.getStartingNodeID()).andStubReturn(49);
-    EasyMock.expect(edge49to53.getEndingNodeID()).andStubReturn(53);
+    EasyMock.expect(edge49to53.getStartingNodeId()).andStubReturn(49);
+    EasyMock.expect(edge49to53.getEndingNodeId()).andStubReturn(53);
     EasyMock.expect(edge49to53.checkOwningColor()).andStubReturn(PlayerColor.SETUP);
 
     EasyMock.replay(nodeStub45, nodeStub49, nodeStub52, nodeStub53, edge45to49, edge49to52, edge49to53);
@@ -1137,20 +1137,20 @@ public class BoardGraphTests {
     GraphEdge mockEdge8To12 = EasyMock.createMock(GraphEdge.class);
     GraphEdge mockEdge12To17 = EasyMock.createMock(GraphEdge.class);
 
-    EasyMock.expect(mockNode0.getNodeID()).andReturn(0);
-    EasyMock.expect(mockNode4.getNodeID()).andReturn(4);
-    EasyMock.expect(mockNode8.getNodeID()).andReturn(8);
-    EasyMock.expect(mockNode12.getNodeID()).andReturn(12);
-    EasyMock.expect(mockNode17.getNodeID()).andReturn(17);
+    EasyMock.expect(mockNode0.getNodeId()).andReturn(0);
+    EasyMock.expect(mockNode4.getNodeId()).andReturn(4);
+    EasyMock.expect(mockNode8.getNodeId()).andReturn(8);
+    EasyMock.expect(mockNode12.getNodeId()).andReturn(12);
+    EasyMock.expect(mockNode17.getNodeId()).andReturn(17);
 
-    EasyMock.expect(mockEdge0To4.getStartingNodeID()).andReturn(0).anyTimes();
-    EasyMock.expect(mockEdge0To4.getEndingNodeID()).andReturn(4).anyTimes();
-    EasyMock.expect(mockEdge4To8.getStartingNodeID()).andReturn(4).anyTimes();
-    EasyMock.expect(mockEdge4To8.getEndingNodeID()).andReturn(8).anyTimes();
-    EasyMock.expect(mockEdge8To12.getStartingNodeID()).andReturn(8).anyTimes();
-    EasyMock.expect(mockEdge8To12.getEndingNodeID()).andReturn(12).anyTimes();
-    EasyMock.expect(mockEdge12To17.getStartingNodeID()).andReturn(12).anyTimes();
-    EasyMock.expect(mockEdge12To17.getEndingNodeID()).andReturn(17).anyTimes();
+    EasyMock.expect(mockEdge0To4.getStartingNodeId()).andReturn(0).anyTimes();
+    EasyMock.expect(mockEdge0To4.getEndingNodeId()).andReturn(4).anyTimes();
+    EasyMock.expect(mockEdge4To8.getStartingNodeId()).andReturn(4).anyTimes();
+    EasyMock.expect(mockEdge4To8.getEndingNodeId()).andReturn(8).anyTimes();
+    EasyMock.expect(mockEdge8To12.getStartingNodeId()).andReturn(8).anyTimes();
+    EasyMock.expect(mockEdge8To12.getEndingNodeId()).andReturn(12).anyTimes();
+    EasyMock.expect(mockEdge12To17.getStartingNodeId()).andReturn(12).anyTimes();
+    EasyMock.expect(mockEdge12To17.getEndingNodeId()).andReturn(17).anyTimes();
 
     EasyMock.expect(mockEdge0To4.checkOwningColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockEdge4To8.checkOwningColor()).andReturn(PlayerColor.RED).anyTimes();
@@ -1219,23 +1219,23 @@ public class BoardGraphTests {
     GraphEdge mockEdge12To17 = EasyMock.createMock(GraphEdge.class);
     GraphEdge mockEdge17To22 = EasyMock.createMock(GraphEdge.class);
 
-    EasyMock.expect(mockNode0.getNodeID()).andReturn(0);
-    EasyMock.expect(mockNode4.getNodeID()).andReturn(4);
-    EasyMock.expect(mockNode8.getNodeID()).andReturn(8);
-    EasyMock.expect(mockNode12.getNodeID()).andReturn(12);
-    EasyMock.expect(mockNode17.getNodeID()).andReturn(17);
-    EasyMock.expect(mockNode22.getNodeID()).andReturn(22);
+    EasyMock.expect(mockNode0.getNodeId()).andReturn(0);
+    EasyMock.expect(mockNode4.getNodeId()).andReturn(4);
+    EasyMock.expect(mockNode8.getNodeId()).andReturn(8);
+    EasyMock.expect(mockNode12.getNodeId()).andReturn(12);
+    EasyMock.expect(mockNode17.getNodeId()).andReturn(17);
+    EasyMock.expect(mockNode22.getNodeId()).andReturn(22);
 
-    EasyMock.expect(mockEdge0To4.getStartingNodeID()).andReturn(0).anyTimes();
-    EasyMock.expect(mockEdge0To4.getEndingNodeID()).andReturn(4).anyTimes();
-    EasyMock.expect(mockEdge4To8.getStartingNodeID()).andReturn(4).anyTimes();
-    EasyMock.expect(mockEdge4To8.getEndingNodeID()).andReturn(8).anyTimes();
-    EasyMock.expect(mockEdge8To12.getStartingNodeID()).andReturn(8).anyTimes();
-    EasyMock.expect(mockEdge8To12.getEndingNodeID()).andReturn(12).anyTimes();
-    EasyMock.expect(mockEdge12To17.getStartingNodeID()).andReturn(12).anyTimes();
-    EasyMock.expect(mockEdge12To17.getEndingNodeID()).andReturn(17).anyTimes();
-    EasyMock.expect(mockEdge17To22.getStartingNodeID()).andReturn(17).anyTimes();
-    EasyMock.expect(mockEdge17To22.getEndingNodeID()).andReturn(22).anyTimes();
+    EasyMock.expect(mockEdge0To4.getStartingNodeId()).andReturn(0).anyTimes();
+    EasyMock.expect(mockEdge0To4.getEndingNodeId()).andReturn(4).anyTimes();
+    EasyMock.expect(mockEdge4To8.getStartingNodeId()).andReturn(4).anyTimes();
+    EasyMock.expect(mockEdge4To8.getEndingNodeId()).andReturn(8).anyTimes();
+    EasyMock.expect(mockEdge8To12.getStartingNodeId()).andReturn(8).anyTimes();
+    EasyMock.expect(mockEdge8To12.getEndingNodeId()).andReturn(12).anyTimes();
+    EasyMock.expect(mockEdge12To17.getStartingNodeId()).andReturn(12).anyTimes();
+    EasyMock.expect(mockEdge12To17.getEndingNodeId()).andReturn(17).anyTimes();
+    EasyMock.expect(mockEdge17To22.getStartingNodeId()).andReturn(17).anyTimes();
+    EasyMock.expect(mockEdge17To22.getEndingNodeId()).andReturn(22).anyTimes();
 
     EasyMock.expect(mockEdge0To4.checkOwningColor()).andReturn(PlayerColor.ORANGE).anyTimes();
     EasyMock.expect(mockEdge4To8.checkOwningColor()).andReturn(PlayerColor.ORANGE).anyTimes();
@@ -1320,39 +1320,39 @@ public class BoardGraphTests {
     GraphEdge mockEdge13To18 = EasyMock.createMock(GraphEdge.class);
     GraphEdge mockEdge18To23 = EasyMock.createMock(GraphEdge.class);
 
-    EasyMock.expect(mockNode0.getNodeID()).andReturn(0);
-    EasyMock.expect(mockNode4.getNodeID()).andReturn(4);
-    EasyMock.expect(mockNode8.getNodeID()).andReturn(8);
-    EasyMock.expect(mockNode12.getNodeID()).andReturn(12);
-    EasyMock.expect(mockNode17.getNodeID()).andReturn(17);
-    EasyMock.expect(mockNode22.getNodeID()).andReturn(22);
-    EasyMock.expect(mockNode2.getNodeID()).andReturn(2);
-    EasyMock.expect(mockNode5.getNodeID()).andReturn(5);
-    EasyMock.expect(mockNode9.getNodeID()).andReturn(9);
-    EasyMock.expect(mockNode13.getNodeID()).andReturn(13);
-    EasyMock.expect(mockNode18.getNodeID()).andReturn(18);
-    EasyMock.expect(mockNode23.getNodeID()).andReturn(23);
+    EasyMock.expect(mockNode0.getNodeId()).andReturn(0);
+    EasyMock.expect(mockNode4.getNodeId()).andReturn(4);
+    EasyMock.expect(mockNode8.getNodeId()).andReturn(8);
+    EasyMock.expect(mockNode12.getNodeId()).andReturn(12);
+    EasyMock.expect(mockNode17.getNodeId()).andReturn(17);
+    EasyMock.expect(mockNode22.getNodeId()).andReturn(22);
+    EasyMock.expect(mockNode2.getNodeId()).andReturn(2);
+    EasyMock.expect(mockNode5.getNodeId()).andReturn(5);
+    EasyMock.expect(mockNode9.getNodeId()).andReturn(9);
+    EasyMock.expect(mockNode13.getNodeId()).andReturn(13);
+    EasyMock.expect(mockNode18.getNodeId()).andReturn(18);
+    EasyMock.expect(mockNode23.getNodeId()).andReturn(23);
 
-    EasyMock.expect(mockEdge0To4.getStartingNodeID()).andReturn(0).anyTimes();
-    EasyMock.expect(mockEdge0To4.getEndingNodeID()).andReturn(4).anyTimes();
-    EasyMock.expect(mockEdge4To8.getStartingNodeID()).andReturn(4).anyTimes();
-    EasyMock.expect(mockEdge4To8.getEndingNodeID()).andReturn(8).anyTimes();
-    EasyMock.expect(mockEdge8To12.getStartingNodeID()).andReturn(8).anyTimes();
-    EasyMock.expect(mockEdge8To12.getEndingNodeID()).andReturn(12).anyTimes();
-    EasyMock.expect(mockEdge12To17.getStartingNodeID()).andReturn(12).anyTimes();
-    EasyMock.expect(mockEdge12To17.getEndingNodeID()).andReturn(17).anyTimes();
-    EasyMock.expect(mockEdge17To22.getStartingNodeID()).andReturn(17).anyTimes();
-    EasyMock.expect(mockEdge17To22.getEndingNodeID()).andReturn(22).anyTimes();
-    EasyMock.expect(mockEdge2To5.getStartingNodeID()).andReturn(2).anyTimes();
-    EasyMock.expect(mockEdge2To5.getEndingNodeID()).andReturn(5).anyTimes();
-    EasyMock.expect(mockEdge5To9.getStartingNodeID()).andReturn(5).anyTimes();
-    EasyMock.expect(mockEdge5To9.getEndingNodeID()).andReturn(9).anyTimes();
-    EasyMock.expect(mockEdge9To13.getStartingNodeID()).andReturn(9).anyTimes();
-    EasyMock.expect(mockEdge9To13.getEndingNodeID()).andReturn(13).anyTimes();
-    EasyMock.expect(mockEdge13To18.getStartingNodeID()).andReturn(13).anyTimes();
-    EasyMock.expect(mockEdge13To18.getEndingNodeID()).andReturn(18).anyTimes();
-    EasyMock.expect(mockEdge18To23.getStartingNodeID()).andReturn(18).anyTimes();
-    EasyMock.expect(mockEdge18To23.getEndingNodeID()).andReturn(23).anyTimes();
+    EasyMock.expect(mockEdge0To4.getStartingNodeId()).andReturn(0).anyTimes();
+    EasyMock.expect(mockEdge0To4.getEndingNodeId()).andReturn(4).anyTimes();
+    EasyMock.expect(mockEdge4To8.getStartingNodeId()).andReturn(4).anyTimes();
+    EasyMock.expect(mockEdge4To8.getEndingNodeId()).andReturn(8).anyTimes();
+    EasyMock.expect(mockEdge8To12.getStartingNodeId()).andReturn(8).anyTimes();
+    EasyMock.expect(mockEdge8To12.getEndingNodeId()).andReturn(12).anyTimes();
+    EasyMock.expect(mockEdge12To17.getStartingNodeId()).andReturn(12).anyTimes();
+    EasyMock.expect(mockEdge12To17.getEndingNodeId()).andReturn(17).anyTimes();
+    EasyMock.expect(mockEdge17To22.getStartingNodeId()).andReturn(17).anyTimes();
+    EasyMock.expect(mockEdge17To22.getEndingNodeId()).andReturn(22).anyTimes();
+    EasyMock.expect(mockEdge2To5.getStartingNodeId()).andReturn(2).anyTimes();
+    EasyMock.expect(mockEdge2To5.getEndingNodeId()).andReturn(5).anyTimes();
+    EasyMock.expect(mockEdge5To9.getStartingNodeId()).andReturn(5).anyTimes();
+    EasyMock.expect(mockEdge5To9.getEndingNodeId()).andReturn(9).anyTimes();
+    EasyMock.expect(mockEdge9To13.getStartingNodeId()).andReturn(9).anyTimes();
+    EasyMock.expect(mockEdge9To13.getEndingNodeId()).andReturn(13).anyTimes();
+    EasyMock.expect(mockEdge13To18.getStartingNodeId()).andReturn(13).anyTimes();
+    EasyMock.expect(mockEdge13To18.getEndingNodeId()).andReturn(18).anyTimes();
+    EasyMock.expect(mockEdge18To23.getStartingNodeId()).andReturn(18).anyTimes();
+    EasyMock.expect(mockEdge18To23.getEndingNodeId()).andReturn(23).anyTimes();
 
     EasyMock.expect(mockEdge0To4.checkOwningColor()).andReturn(PlayerColor.WHITE).anyTimes();
     EasyMock.expect(mockEdge4To8.checkOwningColor()).andReturn(PlayerColor.WHITE).anyTimes();
@@ -1468,39 +1468,39 @@ public class BoardGraphTests {
     GraphEdge mockEdge13To18 = EasyMock.createMock(GraphEdge.class);
     GraphEdge mockEdge18To23 = EasyMock.createMock(GraphEdge.class);
 
-    EasyMock.expect(mockNode0.getNodeID()).andReturn(0);
-    EasyMock.expect(mockNode4.getNodeID()).andReturn(4);
-    EasyMock.expect(mockNode8.getNodeID()).andReturn(8);
-    EasyMock.expect(mockNode12.getNodeID()).andReturn(12);
-    EasyMock.expect(mockNode17.getNodeID()).andReturn(17);
-    EasyMock.expect(mockNode22.getNodeID()).andReturn(22);
-    EasyMock.expect(mockNode2.getNodeID()).andReturn(2);
-    EasyMock.expect(mockNode5.getNodeID()).andReturn(5);
-    EasyMock.expect(mockNode9.getNodeID()).andReturn(9);
-    EasyMock.expect(mockNode13.getNodeID()).andReturn(13);
-    EasyMock.expect(mockNode18.getNodeID()).andReturn(18);
-    EasyMock.expect(mockNode23.getNodeID()).andReturn(23);
+    EasyMock.expect(mockNode0.getNodeId()).andReturn(0);
+    EasyMock.expect(mockNode4.getNodeId()).andReturn(4);
+    EasyMock.expect(mockNode8.getNodeId()).andReturn(8);
+    EasyMock.expect(mockNode12.getNodeId()).andReturn(12);
+    EasyMock.expect(mockNode17.getNodeId()).andReturn(17);
+    EasyMock.expect(mockNode22.getNodeId()).andReturn(22);
+    EasyMock.expect(mockNode2.getNodeId()).andReturn(2);
+    EasyMock.expect(mockNode5.getNodeId()).andReturn(5);
+    EasyMock.expect(mockNode9.getNodeId()).andReturn(9);
+    EasyMock.expect(mockNode13.getNodeId()).andReturn(13);
+    EasyMock.expect(mockNode18.getNodeId()).andReturn(18);
+    EasyMock.expect(mockNode23.getNodeId()).andReturn(23);
 
-    EasyMock.expect(mockEdge0To4.getStartingNodeID()).andReturn(0).anyTimes();
-    EasyMock.expect(mockEdge0To4.getEndingNodeID()).andReturn(4).anyTimes();
-    EasyMock.expect(mockEdge4To8.getStartingNodeID()).andReturn(4).anyTimes();
-    EasyMock.expect(mockEdge4To8.getEndingNodeID()).andReturn(8).anyTimes();
-    EasyMock.expect(mockEdge8To12.getStartingNodeID()).andReturn(8).anyTimes();
-    EasyMock.expect(mockEdge8To12.getEndingNodeID()).andReturn(12).anyTimes();
-    EasyMock.expect(mockEdge12To17.getStartingNodeID()).andReturn(12).anyTimes();
-    EasyMock.expect(mockEdge12To17.getEndingNodeID()).andReturn(17).anyTimes();
-    EasyMock.expect(mockEdge17To22.getStartingNodeID()).andReturn(17).anyTimes();
-    EasyMock.expect(mockEdge17To22.getEndingNodeID()).andReturn(22).anyTimes();
-    EasyMock.expect(mockEdge2To5.getStartingNodeID()).andReturn(2).anyTimes();
-    EasyMock.expect(mockEdge2To5.getEndingNodeID()).andReturn(5).anyTimes();
-    EasyMock.expect(mockEdge5To9.getStartingNodeID()).andReturn(5).anyTimes();
-    EasyMock.expect(mockEdge5To9.getEndingNodeID()).andReturn(9).anyTimes();
-    EasyMock.expect(mockEdge9To13.getStartingNodeID()).andReturn(9).anyTimes();
-    EasyMock.expect(mockEdge9To13.getEndingNodeID()).andReturn(13).anyTimes();
-    EasyMock.expect(mockEdge13To18.getStartingNodeID()).andReturn(13).anyTimes();
-    EasyMock.expect(mockEdge13To18.getEndingNodeID()).andReturn(18).anyTimes();
-    EasyMock.expect(mockEdge18To23.getStartingNodeID()).andReturn(18).anyTimes();
-    EasyMock.expect(mockEdge18To23.getEndingNodeID()).andReturn(23).anyTimes();
+    EasyMock.expect(mockEdge0To4.getStartingNodeId()).andReturn(0).anyTimes();
+    EasyMock.expect(mockEdge0To4.getEndingNodeId()).andReturn(4).anyTimes();
+    EasyMock.expect(mockEdge4To8.getStartingNodeId()).andReturn(4).anyTimes();
+    EasyMock.expect(mockEdge4To8.getEndingNodeId()).andReturn(8).anyTimes();
+    EasyMock.expect(mockEdge8To12.getStartingNodeId()).andReturn(8).anyTimes();
+    EasyMock.expect(mockEdge8To12.getEndingNodeId()).andReturn(12).anyTimes();
+    EasyMock.expect(mockEdge12To17.getStartingNodeId()).andReturn(12).anyTimes();
+    EasyMock.expect(mockEdge12To17.getEndingNodeId()).andReturn(17).anyTimes();
+    EasyMock.expect(mockEdge17To22.getStartingNodeId()).andReturn(17).anyTimes();
+    EasyMock.expect(mockEdge17To22.getEndingNodeId()).andReturn(22).anyTimes();
+    EasyMock.expect(mockEdge2To5.getStartingNodeId()).andReturn(2).anyTimes();
+    EasyMock.expect(mockEdge2To5.getEndingNodeId()).andReturn(5).anyTimes();
+    EasyMock.expect(mockEdge5To9.getStartingNodeId()).andReturn(5).anyTimes();
+    EasyMock.expect(mockEdge5To9.getEndingNodeId()).andReturn(9).anyTimes();
+    EasyMock.expect(mockEdge9To13.getStartingNodeId()).andReturn(9).anyTimes();
+    EasyMock.expect(mockEdge9To13.getEndingNodeId()).andReturn(13).anyTimes();
+    EasyMock.expect(mockEdge13To18.getStartingNodeId()).andReturn(13).anyTimes();
+    EasyMock.expect(mockEdge13To18.getEndingNodeId()).andReturn(18).anyTimes();
+    EasyMock.expect(mockEdge18To23.getStartingNodeId()).andReturn(18).anyTimes();
+    EasyMock.expect(mockEdge18To23.getEndingNodeId()).andReturn(23).anyTimes();
 
     EasyMock.expect(mockEdge0To4.checkOwningColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockEdge4To8.checkOwningColor()).andReturn(PlayerColor.RED).anyTimes();
@@ -1618,42 +1618,42 @@ public class BoardGraphTests {
     GraphEdge mockEdge18To23 = EasyMock.createMock(GraphEdge.class);
     GraphEdge mockEdge23To29 = EasyMock.createMock(GraphEdge.class);
 
-    EasyMock.expect(mockNode0.getNodeID()).andReturn(0);
-    EasyMock.expect(mockNode4.getNodeID()).andReturn(4);
-    EasyMock.expect(mockNode8.getNodeID()).andReturn(8);
-    EasyMock.expect(mockNode12.getNodeID()).andReturn(12);
-    EasyMock.expect(mockNode17.getNodeID()).andReturn(17);
-    EasyMock.expect(mockNode22.getNodeID()).andReturn(22);
-    EasyMock.expect(mockNode2.getNodeID()).andReturn(2);
-    EasyMock.expect(mockNode5.getNodeID()).andReturn(5);
-    EasyMock.expect(mockNode9.getNodeID()).andReturn(9);
-    EasyMock.expect(mockNode13.getNodeID()).andReturn(13);
-    EasyMock.expect(mockNode18.getNodeID()).andReturn(18);
-    EasyMock.expect(mockNode23.getNodeID()).andReturn(23);
-    EasyMock.expect(mockNode29.getNodeID()).andReturn(29);
+    EasyMock.expect(mockNode0.getNodeId()).andReturn(0);
+    EasyMock.expect(mockNode4.getNodeId()).andReturn(4);
+    EasyMock.expect(mockNode8.getNodeId()).andReturn(8);
+    EasyMock.expect(mockNode12.getNodeId()).andReturn(12);
+    EasyMock.expect(mockNode17.getNodeId()).andReturn(17);
+    EasyMock.expect(mockNode22.getNodeId()).andReturn(22);
+    EasyMock.expect(mockNode2.getNodeId()).andReturn(2);
+    EasyMock.expect(mockNode5.getNodeId()).andReturn(5);
+    EasyMock.expect(mockNode9.getNodeId()).andReturn(9);
+    EasyMock.expect(mockNode13.getNodeId()).andReturn(13);
+    EasyMock.expect(mockNode18.getNodeId()).andReturn(18);
+    EasyMock.expect(mockNode23.getNodeId()).andReturn(23);
+    EasyMock.expect(mockNode29.getNodeId()).andReturn(29);
 
-    EasyMock.expect(mockEdge0To4.getStartingNodeID()).andReturn(0).anyTimes();
-    EasyMock.expect(mockEdge0To4.getEndingNodeID()).andReturn(4).anyTimes();
-    EasyMock.expect(mockEdge4To8.getStartingNodeID()).andReturn(4).anyTimes();
-    EasyMock.expect(mockEdge4To8.getEndingNodeID()).andReturn(8).anyTimes();
-    EasyMock.expect(mockEdge8To12.getStartingNodeID()).andReturn(8).anyTimes();
-    EasyMock.expect(mockEdge8To12.getEndingNodeID()).andReturn(12).anyTimes();
-    EasyMock.expect(mockEdge12To17.getStartingNodeID()).andReturn(12).anyTimes();
-    EasyMock.expect(mockEdge12To17.getEndingNodeID()).andReturn(17).anyTimes();
-    EasyMock.expect(mockEdge17To22.getStartingNodeID()).andReturn(17).anyTimes();
-    EasyMock.expect(mockEdge17To22.getEndingNodeID()).andReturn(22).anyTimes();
-    EasyMock.expect(mockEdge2To5.getStartingNodeID()).andReturn(2).anyTimes();
-    EasyMock.expect(mockEdge2To5.getEndingNodeID()).andReturn(5).anyTimes();
-    EasyMock.expect(mockEdge5To9.getStartingNodeID()).andReturn(5).anyTimes();
-    EasyMock.expect(mockEdge5To9.getEndingNodeID()).andReturn(9).anyTimes();
-    EasyMock.expect(mockEdge9To13.getStartingNodeID()).andReturn(9).anyTimes();
-    EasyMock.expect(mockEdge9To13.getEndingNodeID()).andReturn(13).anyTimes();
-    EasyMock.expect(mockEdge13To18.getStartingNodeID()).andReturn(13).anyTimes();
-    EasyMock.expect(mockEdge13To18.getEndingNodeID()).andReturn(18).anyTimes();
-    EasyMock.expect(mockEdge18To23.getStartingNodeID()).andReturn(18).anyTimes();
-    EasyMock.expect(mockEdge18To23.getEndingNodeID()).andReturn(23).anyTimes();
-    EasyMock.expect(mockEdge23To29.getStartingNodeID()).andReturn(23).anyTimes();
-    EasyMock.expect(mockEdge23To29.getEndingNodeID()).andReturn(29).anyTimes();
+    EasyMock.expect(mockEdge0To4.getStartingNodeId()).andReturn(0).anyTimes();
+    EasyMock.expect(mockEdge0To4.getEndingNodeId()).andReturn(4).anyTimes();
+    EasyMock.expect(mockEdge4To8.getStartingNodeId()).andReturn(4).anyTimes();
+    EasyMock.expect(mockEdge4To8.getEndingNodeId()).andReturn(8).anyTimes();
+    EasyMock.expect(mockEdge8To12.getStartingNodeId()).andReturn(8).anyTimes();
+    EasyMock.expect(mockEdge8To12.getEndingNodeId()).andReturn(12).anyTimes();
+    EasyMock.expect(mockEdge12To17.getStartingNodeId()).andReturn(12).anyTimes();
+    EasyMock.expect(mockEdge12To17.getEndingNodeId()).andReturn(17).anyTimes();
+    EasyMock.expect(mockEdge17To22.getStartingNodeId()).andReturn(17).anyTimes();
+    EasyMock.expect(mockEdge17To22.getEndingNodeId()).andReturn(22).anyTimes();
+    EasyMock.expect(mockEdge2To5.getStartingNodeId()).andReturn(2).anyTimes();
+    EasyMock.expect(mockEdge2To5.getEndingNodeId()).andReturn(5).anyTimes();
+    EasyMock.expect(mockEdge5To9.getStartingNodeId()).andReturn(5).anyTimes();
+    EasyMock.expect(mockEdge5To9.getEndingNodeId()).andReturn(9).anyTimes();
+    EasyMock.expect(mockEdge9To13.getStartingNodeId()).andReturn(9).anyTimes();
+    EasyMock.expect(mockEdge9To13.getEndingNodeId()).andReturn(13).anyTimes();
+    EasyMock.expect(mockEdge13To18.getStartingNodeId()).andReturn(13).anyTimes();
+    EasyMock.expect(mockEdge13To18.getEndingNodeId()).andReturn(18).anyTimes();
+    EasyMock.expect(mockEdge18To23.getStartingNodeId()).andReturn(18).anyTimes();
+    EasyMock.expect(mockEdge18To23.getEndingNodeId()).andReturn(23).anyTimes();
+    EasyMock.expect(mockEdge23To29.getStartingNodeId()).andReturn(23).anyTimes();
+    EasyMock.expect(mockEdge23To29.getEndingNodeId()).andReturn(29).anyTimes();
 
     EasyMock.expect(mockEdge0To4.checkOwningColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockEdge4To8.checkOwningColor()).andReturn(PlayerColor.RED).anyTimes();
@@ -1783,43 +1783,43 @@ public class BoardGraphTests {
     GraphEdge mockEdge14To19 = EasyMock.createMock(GraphEdge.class);
     GraphEdge mockEdge19To25 = EasyMock.createMock(GraphEdge.class);
 
-    EasyMock.expect(mockNode0.getNodeID()).andReturn(0);
-    EasyMock.expect(mockNode4.getNodeID()).andReturn(4);
-    EasyMock.expect(mockNode7.getNodeID()).andReturn(7);
-    EasyMock.expect(mockNode8.getNodeID()).andReturn(8);
-    EasyMock.expect(mockNode12.getNodeID()).andReturn(12);
-    EasyMock.expect(mockNode49.getNodeID()).andReturn(49);
-    EasyMock.expect(mockNode50.getNodeID()).andReturn(50);
-    EasyMock.expect(mockNode53.getNodeID()).andReturn(53);
-    EasyMock.expect(mockNode2.getNodeID()).andReturn(2);
-    EasyMock.expect(mockNode6.getNodeID()).andReturn(6);
-    EasyMock.expect(mockNode10.getNodeID()).andReturn(10);
-    EasyMock.expect(mockNode14.getNodeID()).andReturn(14);
-    EasyMock.expect(mockNode19.getNodeID()).andReturn(19);
-    EasyMock.expect(mockNode25.getNodeID()).andReturn(25);
+    EasyMock.expect(mockNode0.getNodeId()).andReturn(0);
+    EasyMock.expect(mockNode4.getNodeId()).andReturn(4);
+    EasyMock.expect(mockNode7.getNodeId()).andReturn(7);
+    EasyMock.expect(mockNode8.getNodeId()).andReturn(8);
+    EasyMock.expect(mockNode12.getNodeId()).andReturn(12);
+    EasyMock.expect(mockNode49.getNodeId()).andReturn(49);
+    EasyMock.expect(mockNode50.getNodeId()).andReturn(50);
+    EasyMock.expect(mockNode53.getNodeId()).andReturn(53);
+    EasyMock.expect(mockNode2.getNodeId()).andReturn(2);
+    EasyMock.expect(mockNode6.getNodeId()).andReturn(6);
+    EasyMock.expect(mockNode10.getNodeId()).andReturn(10);
+    EasyMock.expect(mockNode14.getNodeId()).andReturn(14);
+    EasyMock.expect(mockNode19.getNodeId()).andReturn(19);
+    EasyMock.expect(mockNode25.getNodeId()).andReturn(25);
 
-    EasyMock.expect(mockEdge0To4.getStartingNodeID()).andReturn(0).anyTimes();
-    EasyMock.expect(mockEdge0To4.getEndingNodeID()).andReturn(4).anyTimes();
-    EasyMock.expect(mockEdge4To8.getStartingNodeID()).andReturn(4).anyTimes();
-    EasyMock.expect(mockEdge4To8.getEndingNodeID()).andReturn(8).anyTimes();
-    EasyMock.expect(mockEdge7To12.getStartingNodeID()).andReturn(7).anyTimes();
-    EasyMock.expect(mockEdge7To12.getEndingNodeID()).andReturn(12).anyTimes();
-    EasyMock.expect(mockEdge8To12.getStartingNodeID()).andReturn(8).anyTimes();
-    EasyMock.expect(mockEdge8To12.getEndingNodeID()).andReturn(12).anyTimes();
-    EasyMock.expect(mockEdge49To53.getStartingNodeID()).andReturn(49).anyTimes();
-    EasyMock.expect(mockEdge49To53.getEndingNodeID()).andReturn(53).anyTimes();
-    EasyMock.expect(mockEdge50To53.getStartingNodeID()).andReturn(50).anyTimes();
-    EasyMock.expect(mockEdge50To53.getEndingNodeID()).andReturn(53).anyTimes();
-    EasyMock.expect(mockEdge2To6.getStartingNodeID()).andReturn(2).anyTimes();
-    EasyMock.expect(mockEdge2To6.getEndingNodeID()).andReturn(6).anyTimes();
-    EasyMock.expect(mockEdge6To10.getStartingNodeID()).andReturn(6).anyTimes();
-    EasyMock.expect(mockEdge6To10.getEndingNodeID()).andReturn(10).anyTimes();
-    EasyMock.expect(mockEdge10To14.getStartingNodeID()).andReturn(10).anyTimes();
-    EasyMock.expect(mockEdge10To14.getEndingNodeID()).andReturn(14).anyTimes();
-    EasyMock.expect(mockEdge14To19.getStartingNodeID()).andReturn(14).anyTimes();
-    EasyMock.expect(mockEdge14To19.getEndingNodeID()).andReturn(19).anyTimes();
-    EasyMock.expect(mockEdge19To25.getStartingNodeID()).andReturn(19).anyTimes();
-    EasyMock.expect(mockEdge19To25.getEndingNodeID()).andReturn(25).anyTimes();
+    EasyMock.expect(mockEdge0To4.getStartingNodeId()).andReturn(0).anyTimes();
+    EasyMock.expect(mockEdge0To4.getEndingNodeId()).andReturn(4).anyTimes();
+    EasyMock.expect(mockEdge4To8.getStartingNodeId()).andReturn(4).anyTimes();
+    EasyMock.expect(mockEdge4To8.getEndingNodeId()).andReturn(8).anyTimes();
+    EasyMock.expect(mockEdge7To12.getStartingNodeId()).andReturn(7).anyTimes();
+    EasyMock.expect(mockEdge7To12.getEndingNodeId()).andReturn(12).anyTimes();
+    EasyMock.expect(mockEdge8To12.getStartingNodeId()).andReturn(8).anyTimes();
+    EasyMock.expect(mockEdge8To12.getEndingNodeId()).andReturn(12).anyTimes();
+    EasyMock.expect(mockEdge49To53.getStartingNodeId()).andReturn(49).anyTimes();
+    EasyMock.expect(mockEdge49To53.getEndingNodeId()).andReturn(53).anyTimes();
+    EasyMock.expect(mockEdge50To53.getStartingNodeId()).andReturn(50).anyTimes();
+    EasyMock.expect(mockEdge50To53.getEndingNodeId()).andReturn(53).anyTimes();
+    EasyMock.expect(mockEdge2To6.getStartingNodeId()).andReturn(2).anyTimes();
+    EasyMock.expect(mockEdge2To6.getEndingNodeId()).andReturn(6).anyTimes();
+    EasyMock.expect(mockEdge6To10.getStartingNodeId()).andReturn(6).anyTimes();
+    EasyMock.expect(mockEdge6To10.getEndingNodeId()).andReturn(10).anyTimes();
+    EasyMock.expect(mockEdge10To14.getStartingNodeId()).andReturn(10).anyTimes();
+    EasyMock.expect(mockEdge10To14.getEndingNodeId()).andReturn(14).anyTimes();
+    EasyMock.expect(mockEdge14To19.getStartingNodeId()).andReturn(14).anyTimes();
+    EasyMock.expect(mockEdge14To19.getEndingNodeId()).andReturn(19).anyTimes();
+    EasyMock.expect(mockEdge19To25.getStartingNodeId()).andReturn(19).anyTimes();
+    EasyMock.expect(mockEdge19To25.getEndingNodeId()).andReturn(25).anyTimes();
 
     EasyMock.expect(mockEdge0To4.checkOwningColor()).andReturn(PlayerColor.BLUE).anyTimes();
     EasyMock.expect(mockEdge4To8.checkOwningColor()).andReturn(PlayerColor.BLUE).anyTimes();
@@ -1972,62 +1972,62 @@ public class BoardGraphTests {
     GraphEdge mockEdgeO32To37 = EasyMock.createMock(GraphEdge.class);
     GraphEdge mockEdgeO37To42 = EasyMock.createMock(GraphEdge.class);
 
-    EasyMock.expect(mockNodeW0.getNodeID()).andReturn(0);
-    EasyMock.expect(mockNodeW4.getNodeID()).andReturn(4);
-    EasyMock.expect(mockNodeW8.getNodeID()).andReturn(8);
-    EasyMock.expect(mockNodeW12.getNodeID()).andReturn(12);
-    EasyMock.expect(mockNodeW17.getNodeID()).andReturn(17);
-    EasyMock.expect(mockNodeW22.getNodeID()).andReturn(22);
-    EasyMock.expect(mockNodeW2.getNodeID()).andReturn(2);
-    EasyMock.expect(mockNodeW5.getNodeID()).andReturn(5);
-    EasyMock.expect(mockNodeW9.getNodeID()).andReturn(9);
-    EasyMock.expect(mockNodeW13.getNodeID()).andReturn(13);
-    EasyMock.expect(mockNodeO47.getNodeID()).andReturn(47);
-    EasyMock.expect(mockNodeO51.getNodeID()).andReturn(51);
-    EasyMock.expect(mockNodeO48.getNodeID()).andReturn(48);
-    EasyMock.expect(mockNodeO52.getNodeID()).andReturn(52);
-    EasyMock.expect(mockNodeO49.getNodeID()).andReturn(49);
-    EasyMock.expect(mockNodeO53.getNodeID()).andReturn(53);
-    EasyMock.expect(mockNodeO50.getNodeID()).andReturn(50);
-    EasyMock.expect(mockNodeO26.getNodeID()).andReturn(26);
-    EasyMock.expect(mockNodeO32.getNodeID()).andReturn(32);
-    EasyMock.expect(mockNodeO37.getNodeID()).andReturn(37);
-    EasyMock.expect(mockNodeO42.getNodeID()).andReturn(42);
+    EasyMock.expect(mockNodeW0.getNodeId()).andReturn(0);
+    EasyMock.expect(mockNodeW4.getNodeId()).andReturn(4);
+    EasyMock.expect(mockNodeW8.getNodeId()).andReturn(8);
+    EasyMock.expect(mockNodeW12.getNodeId()).andReturn(12);
+    EasyMock.expect(mockNodeW17.getNodeId()).andReturn(17);
+    EasyMock.expect(mockNodeW22.getNodeId()).andReturn(22);
+    EasyMock.expect(mockNodeW2.getNodeId()).andReturn(2);
+    EasyMock.expect(mockNodeW5.getNodeId()).andReturn(5);
+    EasyMock.expect(mockNodeW9.getNodeId()).andReturn(9);
+    EasyMock.expect(mockNodeW13.getNodeId()).andReturn(13);
+    EasyMock.expect(mockNodeO47.getNodeId()).andReturn(47);
+    EasyMock.expect(mockNodeO51.getNodeId()).andReturn(51);
+    EasyMock.expect(mockNodeO48.getNodeId()).andReturn(48);
+    EasyMock.expect(mockNodeO52.getNodeId()).andReturn(52);
+    EasyMock.expect(mockNodeO49.getNodeId()).andReturn(49);
+    EasyMock.expect(mockNodeO53.getNodeId()).andReturn(53);
+    EasyMock.expect(mockNodeO50.getNodeId()).andReturn(50);
+    EasyMock.expect(mockNodeO26.getNodeId()).andReturn(26);
+    EasyMock.expect(mockNodeO32.getNodeId()).andReturn(32);
+    EasyMock.expect(mockNodeO37.getNodeId()).andReturn(37);
+    EasyMock.expect(mockNodeO42.getNodeId()).andReturn(42);
 
-    EasyMock.expect(mockEdgeW0To4.getStartingNodeID()).andReturn(0).anyTimes();
-    EasyMock.expect(mockEdgeW0To4.getEndingNodeID()).andReturn(4).anyTimes();
-    EasyMock.expect(mockEdgeW4To8.getStartingNodeID()).andReturn(4).anyTimes();
-    EasyMock.expect(mockEdgeW4To8.getEndingNodeID()).andReturn(8).anyTimes();
-    EasyMock.expect(mockEdgeW8To12.getStartingNodeID()).andReturn(8).anyTimes();
-    EasyMock.expect(mockEdgeW8To12.getEndingNodeID()).andReturn(12).anyTimes();
-    EasyMock.expect(mockEdgeW12To17.getStartingNodeID()).andReturn(12).anyTimes();
-    EasyMock.expect(mockEdgeW12To17.getEndingNodeID()).andReturn(17).anyTimes();
-    EasyMock.expect(mockEdgeW17To22.getStartingNodeID()).andReturn(17).anyTimes();
-    EasyMock.expect(mockEdgeW17To22.getEndingNodeID()).andReturn(22).anyTimes();
-    EasyMock.expect(mockEdgeW2To5.getStartingNodeID()).andReturn(2).anyTimes();
-    EasyMock.expect(mockEdgeW2To5.getEndingNodeID()).andReturn(5).anyTimes();
-    EasyMock.expect(mockEdgeW5To9.getStartingNodeID()).andReturn(5).anyTimes();
-    EasyMock.expect(mockEdgeW5To9.getEndingNodeID()).andReturn(9).anyTimes();
-    EasyMock.expect(mockEdgeW9To13.getStartingNodeID()).andReturn(9).anyTimes();
-    EasyMock.expect(mockEdgeW9To13.getEndingNodeID()).andReturn(13).anyTimes();
-    EasyMock.expect(mockEdgeO47To51.getStartingNodeID()).andReturn(47).anyTimes();
-    EasyMock.expect(mockEdgeO47To51.getEndingNodeID()).andReturn(51).anyTimes();
-    EasyMock.expect(mockEdgeO48To51.getStartingNodeID()).andReturn(48).anyTimes();
-    EasyMock.expect(mockEdgeO48To51.getEndingNodeID()).andReturn(51).anyTimes();
-    EasyMock.expect(mockEdgeO48To52.getStartingNodeID()).andReturn(48).anyTimes();
-    EasyMock.expect(mockEdgeO48To52.getEndingNodeID()).andReturn(52).anyTimes();
-    EasyMock.expect(mockEdgeO49To52.getStartingNodeID()).andReturn(49).anyTimes();
-    EasyMock.expect(mockEdgeO49To52.getEndingNodeID()).andReturn(52).anyTimes();
-    EasyMock.expect(mockEdgeO49To53.getStartingNodeID()).andReturn(49).anyTimes();
-    EasyMock.expect(mockEdgeO49To53.getEndingNodeID()).andReturn(53).anyTimes();
-    EasyMock.expect(mockEdgeO50To53.getStartingNodeID()).andReturn(50).anyTimes();
-    EasyMock.expect(mockEdgeO50To53.getEndingNodeID()).andReturn(53).anyTimes();
-    EasyMock.expect(mockEdgeO26To32.getStartingNodeID()).andReturn(26).anyTimes();
-    EasyMock.expect(mockEdgeO26To32.getEndingNodeID()).andReturn(32).anyTimes();
-    EasyMock.expect(mockEdgeO32To37.getStartingNodeID()).andReturn(32).anyTimes();
-    EasyMock.expect(mockEdgeO32To37.getEndingNodeID()).andReturn(37).anyTimes();
-    EasyMock.expect(mockEdgeO37To42.getStartingNodeID()).andReturn(37).anyTimes();
-    EasyMock.expect(mockEdgeO37To42.getEndingNodeID()).andReturn(42).anyTimes();
+    EasyMock.expect(mockEdgeW0To4.getStartingNodeId()).andReturn(0).anyTimes();
+    EasyMock.expect(mockEdgeW0To4.getEndingNodeId()).andReturn(4).anyTimes();
+    EasyMock.expect(mockEdgeW4To8.getStartingNodeId()).andReturn(4).anyTimes();
+    EasyMock.expect(mockEdgeW4To8.getEndingNodeId()).andReturn(8).anyTimes();
+    EasyMock.expect(mockEdgeW8To12.getStartingNodeId()).andReturn(8).anyTimes();
+    EasyMock.expect(mockEdgeW8To12.getEndingNodeId()).andReturn(12).anyTimes();
+    EasyMock.expect(mockEdgeW12To17.getStartingNodeId()).andReturn(12).anyTimes();
+    EasyMock.expect(mockEdgeW12To17.getEndingNodeId()).andReturn(17).anyTimes();
+    EasyMock.expect(mockEdgeW17To22.getStartingNodeId()).andReturn(17).anyTimes();
+    EasyMock.expect(mockEdgeW17To22.getEndingNodeId()).andReturn(22).anyTimes();
+    EasyMock.expect(mockEdgeW2To5.getStartingNodeId()).andReturn(2).anyTimes();
+    EasyMock.expect(mockEdgeW2To5.getEndingNodeId()).andReturn(5).anyTimes();
+    EasyMock.expect(mockEdgeW5To9.getStartingNodeId()).andReturn(5).anyTimes();
+    EasyMock.expect(mockEdgeW5To9.getEndingNodeId()).andReturn(9).anyTimes();
+    EasyMock.expect(mockEdgeW9To13.getStartingNodeId()).andReturn(9).anyTimes();
+    EasyMock.expect(mockEdgeW9To13.getEndingNodeId()).andReturn(13).anyTimes();
+    EasyMock.expect(mockEdgeO47To51.getStartingNodeId()).andReturn(47).anyTimes();
+    EasyMock.expect(mockEdgeO47To51.getEndingNodeId()).andReturn(51).anyTimes();
+    EasyMock.expect(mockEdgeO48To51.getStartingNodeId()).andReturn(48).anyTimes();
+    EasyMock.expect(mockEdgeO48To51.getEndingNodeId()).andReturn(51).anyTimes();
+    EasyMock.expect(mockEdgeO48To52.getStartingNodeId()).andReturn(48).anyTimes();
+    EasyMock.expect(mockEdgeO48To52.getEndingNodeId()).andReturn(52).anyTimes();
+    EasyMock.expect(mockEdgeO49To52.getStartingNodeId()).andReturn(49).anyTimes();
+    EasyMock.expect(mockEdgeO49To52.getEndingNodeId()).andReturn(52).anyTimes();
+    EasyMock.expect(mockEdgeO49To53.getStartingNodeId()).andReturn(49).anyTimes();
+    EasyMock.expect(mockEdgeO49To53.getEndingNodeId()).andReturn(53).anyTimes();
+    EasyMock.expect(mockEdgeO50To53.getStartingNodeId()).andReturn(50).anyTimes();
+    EasyMock.expect(mockEdgeO50To53.getEndingNodeId()).andReturn(53).anyTimes();
+    EasyMock.expect(mockEdgeO26To32.getStartingNodeId()).andReturn(26).anyTimes();
+    EasyMock.expect(mockEdgeO26To32.getEndingNodeId()).andReturn(32).anyTimes();
+    EasyMock.expect(mockEdgeO32To37.getStartingNodeId()).andReturn(32).anyTimes();
+    EasyMock.expect(mockEdgeO32To37.getEndingNodeId()).andReturn(37).anyTimes();
+    EasyMock.expect(mockEdgeO37To42.getStartingNodeId()).andReturn(37).anyTimes();
+    EasyMock.expect(mockEdgeO37To42.getEndingNodeId()).andReturn(42).anyTimes();
 
     EasyMock.expect(mockEdgeW0To4.checkOwningColor()).andReturn(PlayerColor.WHITE).anyTimes();
     EasyMock.expect(mockEdgeW4To8.checkOwningColor()).andReturn(PlayerColor.WHITE).anyTimes();
@@ -2179,20 +2179,20 @@ public class BoardGraphTests {
     GraphEdge mockEdge8To12 = EasyMock.createMock(GraphEdge.class);
     GraphEdge mockEdge12To17 = EasyMock.createMock(GraphEdge.class);
 
-    EasyMock.expect(mockNode0.getNodeID()).andReturn(0);
-    EasyMock.expect(mockNode4.getNodeID()).andReturn(4);
-    EasyMock.expect(mockNode8.getNodeID()).andReturn(8);
-    EasyMock.expect(mockNode12.getNodeID()).andReturn(12);
-    EasyMock.expect(mockNode17.getNodeID()).andReturn(17);
+    EasyMock.expect(mockNode0.getNodeId()).andReturn(0);
+    EasyMock.expect(mockNode4.getNodeId()).andReturn(4);
+    EasyMock.expect(mockNode8.getNodeId()).andReturn(8);
+    EasyMock.expect(mockNode12.getNodeId()).andReturn(12);
+    EasyMock.expect(mockNode17.getNodeId()).andReturn(17);
 
-    EasyMock.expect(mockEdge0To4.getStartingNodeID()).andReturn(0).anyTimes();
-    EasyMock.expect(mockEdge0To4.getEndingNodeID()).andReturn(4).anyTimes();
-    EasyMock.expect(mockEdge4To8.getStartingNodeID()).andReturn(4).anyTimes();
-    EasyMock.expect(mockEdge4To8.getEndingNodeID()).andReturn(8).anyTimes();
-    EasyMock.expect(mockEdge8To12.getStartingNodeID()).andReturn(8).anyTimes();
-    EasyMock.expect(mockEdge8To12.getEndingNodeID()).andReturn(12).anyTimes();
-    EasyMock.expect(mockEdge12To17.getStartingNodeID()).andReturn(12).anyTimes();
-    EasyMock.expect(mockEdge12To17.getEndingNodeID()).andReturn(17).anyTimes();
+    EasyMock.expect(mockEdge0To4.getStartingNodeId()).andReturn(0).anyTimes();
+    EasyMock.expect(mockEdge0To4.getEndingNodeId()).andReturn(4).anyTimes();
+    EasyMock.expect(mockEdge4To8.getStartingNodeId()).andReturn(4).anyTimes();
+    EasyMock.expect(mockEdge4To8.getEndingNodeId()).andReturn(8).anyTimes();
+    EasyMock.expect(mockEdge8To12.getStartingNodeId()).andReturn(8).anyTimes();
+    EasyMock.expect(mockEdge8To12.getEndingNodeId()).andReturn(12).anyTimes();
+    EasyMock.expect(mockEdge12To17.getStartingNodeId()).andReturn(12).anyTimes();
+    EasyMock.expect(mockEdge12To17.getEndingNodeId()).andReturn(17).anyTimes();
 
     EasyMock.expect(mockEdge0To4.checkOwningColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockEdge4To8.checkOwningColor()).andReturn(PlayerColor.RED).anyTimes();

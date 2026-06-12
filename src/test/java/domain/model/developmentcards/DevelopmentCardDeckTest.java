@@ -1,4 +1,4 @@
-package domain.model.development_cards;
+package domain.model.developmentcards;
 
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;

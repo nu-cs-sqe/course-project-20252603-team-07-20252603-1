@@ -5,7 +5,7 @@ import domain.model.board.BoardHandler;
 import domain.model.board.Hex;
 import domain.model.exceptions.IllegalEdgeClaim;
 import domain.model.exceptions.IllegalSettlementPlacementException;
-import domain.model.game_pieces.Robber;
+import domain.model.gamepieces.Robber;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 import org.easymock.EasyMock;

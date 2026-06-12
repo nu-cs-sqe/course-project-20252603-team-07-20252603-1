@@ -1,6 +1,6 @@
 package domain.model.board;
 
-import domain.model.exceptions.IllegalNodeIDException;
+import domain.model.exceptions.IllegalNodeIdException;
 import domain.model.board.GraphNode;
 import domain.model.player.PlayerColor;
 import org.junit.jupiter.api.Test;
@@ -8,7 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 import domain.model.board.GraphNode;
-import domain.model.exceptions.IllegalNodeIDException;
+import domain.model.exceptions.IllegalNodeIdException;
 import domain.model.player.PlayerColor;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,28 +37,28 @@ public class GraphNodeTests {
     }
 
     @Test
-    void assertValidNodeID_test01_ID0_ExpectTrue() {
+    void assertValidNodeId_test01_ID0_ExpectTrue() {
         GraphNode g1 = new GraphNode(0);
         assertNotNull(g1);
     }
 
     @Test
-    void assertValidNodeID_test02_ID53_ExpectTrue() {
+    void assertValidNodeId_test02_ID53_ExpectTrue() {
         GraphNode g1 = new GraphNode(53);
         assertNotNull(g1);
     }
 
     @Test
-    void assertValidNodeID_test03_IDNegative1_ExpectError() {
-        Exception exception = assertThrows(IllegalNodeIDException.class,
+    void assertValidNodeId_test03_IDNegative1_ExpectError() {
+        Exception exception = assertThrows(IllegalNodeIdException.class,
                 () -> new GraphNode(-1));
-        assertEquals("Requested nodeID number illegal", exception.getMessage());
+        assertEquals("Requested nodeId number illegal", exception.getMessage());
     }
 
     @Test
-    void assertValidNodeID_test04_ID54_ExpectError() {
-        Exception exception = assertThrows(IllegalNodeIDException.class,
+    void assertValidNodeId_test04_ID54_ExpectError() {
+        Exception exception = assertThrows(IllegalNodeIdException.class,
                 () -> new GraphNode(54));
-        assertEquals("Requested nodeID number illegal", exception.getMessage());
+        assertEquals("Requested nodeId number illegal", exception.getMessage());
     }
 }

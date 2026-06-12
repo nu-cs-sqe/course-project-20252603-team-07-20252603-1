@@ -1,157 +1,163 @@
 package domain.model;
 
 import domain.model.board.BoardHandler;
+import domain.model.developmentcards.DevelopmentCardDeck;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
-import domain.model.development_cards.DevelopmentCardDeck;
 import domain.model.resources.ResourceDeck;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 /**
- * Model class for game setup state.
- * Handles player management, board initialization, and game piece setup.
- * Follows Single Responsibility Principle - manages only setup-related state.
- */
+* Model class for game setup state.
+* Handles player management, board initialization, and game piece setup.
+* Follows Single Responsibility Principle - manages only setup-related state.
+*/
 public class GameSetupModel {
 
-    private final List<Player> players;
-    private final Set<PlayerColor> usedColors;
-    // private final Set<PlayerColor> usedColors;
-    private final Set<String> usedNames;
-    private BoardHandler board;
-    private ResourceDeck resourceDeck;
-    private DevelopmentCardDeck developmentCardDeck;
-    private List<Player> turnOrder;
+  private final List<Player> players;
+  private final Set<PlayerColor> usedColors;
+  // private final Set<PlayerColor> usedColors;
+  private final Set<String> usedNames;
+  private BoardHandler board;
+  private ResourceDeck resourceDeck;
+  private DevelopmentCardDeck developmentCardDeck;
+  private List<Player> turnOrder;
 
-    /**
-     * Constructs a new GameSetupModel with empty player list.
-     */
-    public GameSetupModel() {
-        this.players = new ArrayList<>();
-        this.usedColors = new HashSet<>();
-        this.usedNames = new HashSet<>();
-        this.turnOrder = new ArrayList<>();
-        this.board = new BoardHandler();
-    }
+  /**
+  * Constructs a new GameSetupModel with empty player list.
+  */
+  public GameSetupModel() {
+    this.players = new ArrayList<>();
+    this.usedColors = new HashSet<>();
+    this.usedNames = new HashSet<>();
+    this.turnOrder = new ArrayList<>();
+    this.board = new BoardHandler();
+  }
 
-    /**
-     * Gets the number of players currently in the game.
-     *
-     * @return the player count
-     */
-    public int getPlayerCount() {
-        return players.size();
-    }
+  /**
+  * Gets the number of players currently in the game.
+  *
+  * @return the player count
+  */
+  public int getPlayerCount() {
+    return players.size();
+  }
 
-    /**
-     * Adds a player to the game with the specified name and color.
-     *
-     * @param name the player's name
-     * @param color the player's color
-     */
-    public void addPlayer(String name, PlayerColor color) {
-        Player player = new Player(name, color);
-        players.add(player);
-        usedColors.add(color);
-        usedNames.add(name);
-    }
+  /**
+  * Adds a player to the game with the specified name and color.
+  *
+  * @param name the player's name
+  * @param color the player's color
+  */
+  public void addPlayer(String name, PlayerColor color) {
+    Player player = new Player(name, color);
+    players.add(player);
+    usedColors.add(color);
+    usedNames.add(name);
+  }
 
-    public boolean isNameAvailable(String name) {
-        return !usedNames.contains(name);
-    }
+  /**
+   * Returns whether the given name is available for a new player.
+   *
+   * @param name the name to check
+   * @return true if the name has not been taken
+   */
+  public boolean isNameAvailable(String name) {
+    return !usedNames.contains(name);
+  }
 
-    public void clearPlayers() {
-        players.clear();
-        usedColors.clear();
-        usedNames.clear();
-        turnOrder.clear();
-    }
+  /** Removes all players and resets used name/color tracking. */
+  public void clearPlayers() {
+    players.clear();
+    usedColors.clear();
+    usedNames.clear();
+    turnOrder.clear();
+  }
 
-    /**
-     * Gets a player by index.
-     *
-     * @param index the player index
-     * @return the player at the specified index
-     */
-    public Player getPlayer(int index) {
-        return players.get(index);
-    }
+  /**
+  * Gets a player by index.
+  *
+  * @param index the player index
+  * @return the player at the specified index
+  */
+  public Player getPlayer(int index) {
+    return players.get(index);
+  }
 
-    /**
-     * Checks if a color is available for selection.
-     *
-     * @param color the color to check
-     * @return true if the color is available, false if already used
-     */
-    public boolean isColorAvailable(PlayerColor color) {
-        return !usedColors.contains(color);
-    }
+  /**
+  * Checks if a color is available for selection.
+  *
+  * @param color the color to check
+  * @return true if the color is available, false if already used
+  */
+  public boolean isColorAvailable(PlayerColor color) {
+    return !usedColors.contains(color);
+  }
 
-    /**
-     * Gets the resource deck.
-     *
-     * @return the resource deck
-     */
-    public ResourceDeck getResourceDeck() {
-        return resourceDeck;
-    }
+  /**
+  * Gets the resource deck.
+  *
+  * @return the resource deck
+  */
+  public ResourceDeck getResourceDeck() {
+    return resourceDeck;
+  }
 
-    /**
-     * Sets the resource deck.
-     *
-     * @param resourceDeck the resource deck to set
-     */
-    public void setResourceDeck(ResourceDeck resourceDeck) {
-        this.resourceDeck = resourceDeck;
-    }
+  /**
+  * Sets the resource deck.
+  *
+  * @param resourceDeck the resource deck to set
+  */
+  public void setResourceDeck(ResourceDeck resourceDeck) {
+    this.resourceDeck = resourceDeck;
+  }
 
-    /**
-     * Gets the development card deck.
-     *
-     * @return the development card deck
-     */
-    public DevelopmentCardDeck getDevelopmentCardDeck() {
-        return developmentCardDeck;
-    }
+  /**
+  * Gets the development card deck.
+  *
+  * @return the development card deck
+  */
+  public DevelopmentCardDeck getDevelopmentCardDeck() {
+    return developmentCardDeck;
+  }
 
-    /**
-     * Sets the development card deck.
-     *
-     * @param developmentCardDeck the development card deck to set
-     */
-    public void setDevelopmentCardDeck(DevelopmentCardDeck developmentCardDeck) {
-        this.developmentCardDeck = developmentCardDeck;
-    }
+  /**
+  * Sets the development card deck.
+  *
+  * @param developmentCardDeck the development card deck to set
+  */
+  public void setDevelopmentCardDeck(DevelopmentCardDeck developmentCardDeck) {
+    this.developmentCardDeck = developmentCardDeck;
+  }
 
-    /**
-     * Determines the turn order for players.
-     * For now, maintains the order in which players were added.
-     * Future implementation may randomize or allow dice rolls.
-     */
-    public void determineTurnOrder() {
-        turnOrder = new ArrayList<>(players);
-    }
+  /**
+  * Determines the turn order for players.
+  * For now, maintains the order in which players were added.
+  * Future implementation may randomize or allow dice rolls.
+  */
+  public void determineTurnOrder() {
+    turnOrder = new ArrayList<>(players);
+  }
 
-    /**
-     * Gets the turn order.
-     *
-     * @return the list of players in turn order
-     */
-    public List<Player> getTurnOrder() {
-        // Spotbugs Check -> return a copy instead
-        return new ArrayList<>(turnOrder);
-    }
+  /**
+  * Gets the turn order.
+  *
+  * @return the list of players in turn order
+  */
+  public List<Player> getTurnOrder() {
+    // Spotbugs Check -> return a copy instead
+    return new ArrayList<>(turnOrder);
+  }
 
-    /**
-     * Creates the full game model, and returns it.
-     *
-     * @return the full game model
-     */
-    public GameModel createGameModel() {
-        return new GameModel(players, board);
-    }
+  /**
+  * Creates the full game model, and returns it.
+  *
+  * @return the full game model
+  */
+  public GameModel createGameModel() {
+    return new GameModel(players, board);
+  }
 }
