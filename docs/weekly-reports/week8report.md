@@ -9,17 +9,17 @@ Almost prepared for game setup, and then game turns should not be far off based 
 - Updated Die class based off of feedback
 - Created DiceHandler class, and then merged Die and DiceHandler into main
 - Planned for BoardHandler class, began rudimentary implementation
-2. [15% done] Spencer: Began working on fixing discrepancies between PRs, worked on functionality for Game Model
-3. [Player (done), ready] Connor: Merged in Player class to main, resolving conflicts and missing files
-- fixed checkstyle issues; will merge later this week
+2. [15% done] Spencer: Began working on fixing discrepancies between PRs, worked on functionality for Game Model https://github.com/nu-cs-sqe/course-project-20252603-team-07-20252603-1/pull/63
+3. [done] Connor: Merged in Player class to main, resolving conflicts and missing files https://github.com/nu-cs-sqe/course-project-20252603-team-07-20252603-1/pull/29
+- Fixed checkstyle issues; will merge later this week
 - I was a bit busy with other classes the past week; ready to pick up new task this week!
-4. [100% done] Kevin: Raised game round views PRs, reviewed two PRs
-5. [60% done] Theo: iterated on player turns and fixed some non-mocked tests, all local.
+4. [100% done] Kevin: Raised game round views PRs, reviewed two PRs https://github.com/nu-cs-sqe/course-project-20252603-team-07-20252603-1/pull/51
+5. [60% done] Theo: Iterated on player turns and fixed some non-mocked tests, all local. https://github.com/nu-cs-sqe/course-project-20252603-team-07-20252603-1/pull/41
 
 
 ## Goals
 1. Ben: Work on BoardHandler class in preparation for actual game setup and game turns
 2. Spencer: Address issues with group, reconvene to address issues
 3. Connor: Resolve conflicting implementation
-4. Kevin: 
-5. Theo: get to a state of functional playability (at least in theory, the views probably won't be finished, so just code existing and tested up besides all else)
+4. Kevin: Continue to work on game round views
+5. Theo: Get to a state of functional playability (at least in theory, the views probably won't be finished, so just code existing and tested up besides all else)

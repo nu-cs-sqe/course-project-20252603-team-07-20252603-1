@@ -5,9 +5,7 @@ package domain.IntegrationTests;
 
 import domain.model.board.BoardHandler;
 import domain.model.exceptions.AdjacentNodeAlreadyClaimed;
-import domain.model.exceptions.EdgeAlreadyClaimedException;
 import domain.model.exceptions.IllegalEdgeClaim;
-import domain.model.exceptions.IllegalNodeOrderingInEdgeException;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 import org.junit.jupiter.api.Test;

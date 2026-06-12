@@ -16,4 +16,3 @@ Features of Catan
 Features to Perform Integration Testing On:
 - F3: Ability to place initial settlements and roads during the setup phase according to setup rules 
 - F5: Ability to roll dice and distribute resources to players based on settlements and cities adjacent to matching number tokens, excluding robber-blocked hexes
-
