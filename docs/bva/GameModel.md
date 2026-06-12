@@ -332,6 +332,55 @@ Step 3:
 
 ---
 
+### Method under test: `playDevCard(DevelopmentCard card)`
+
+Validates that the current phase allows playing a development card and transitions
+the game phase based on card type. This method is purely a game-state coordinator —
+it does not execute card effects. Card effects (robber movement, road placement,
+resource transfer) are triggered separately via the resulting phase.
+
+Valid phases: `BEFORE_ROLL` and `GENERAL_PLAY` (dev cards may be played before or
+after rolling dice per official Catan rules).
+
+Phase transitions:
+- `KNIGHT` → `MOVE_ROBBER`
+- `ROAD_BUILDER` → `ROAD_BUILDING_DEV_CARD`
+- `MONOPOLY` → `MONOPOLY_DEV_CARD`
+- `YEAR_OF_PLENTY` → phase unchanged
+- `VICTORY_POINT` → phase unchanged
+
+Step 1:
+
+- Input: card (DevelopmentCard)
+- State: current game phase, card type
+- Output: phase transitions per card type above
+- Output: exception
+
+Step 2:
+
+- card: Pointer; null (invalid)
+- card type: Case {KNIGHT, ROAD_BUILDER, MONOPOLY, YEAR_OF_PLENTY, VICTORY_POINT}
+- Game phase: Case {BEFORE_ROLL or GENERAL_PLAY (valid), all others (invalid)}
+
+Step 3:
+
+- card: null (invalid); valid card
+- card type: KNIGHT; ROAD_BUILDER; MONOPOLY; YEAR_OF_PLENTY; VICTORY_POINT
+- Game phase: GENERAL_PLAY (valid); BEFORE_ROLL (valid); MOVE_ROBBER (invalid representative)
+
+|             | State of the System                         | Expected output                                                      | Implemented? |
+|-------------|---------------------------------------------|----------------------------------------------------------------------|--------------|
+| Test Case 1 | card = null                                 | IllegalArgumentException: "Development card cannot be null."         | :white_check_mark: |
+| Test Case 2 | MOVE_ROBBER (invalid phase), valid card     | IllegalGamePhaseException: "Not proper phase for that action"        | :white_check_mark: |
+| Test Case 3 | GENERAL_PLAY, card type = KNIGHT            | phase → MOVE_ROBBER                                                  | :white_check_mark: |
+| Test Case 4 | GENERAL_PLAY, card type = ROAD_BUILDER      | phase → ROAD_BUILDING_DEV_CARD                                       | :white_check_mark: |
+| Test Case 5 | GENERAL_PLAY, card type = MONOPOLY          | phase → MONOPOLY_DEV_CARD                                            | :white_check_mark: |
+| Test Case 6 | GENERAL_PLAY, card type = YEAR_OF_PLENTY    | phase unchanged (GENERAL_PLAY)                                       | :white_check_mark: |
+| Test Case 7 | GENERAL_PLAY, card type = VICTORY_POINT     | phase unchanged (GENERAL_PLAY)                                       | :white_check_mark: |
+| Test Case 8 | BEFORE_ROLL, card type = KNIGHT             | phase → MOVE_ROBBER                                                  | :white_check_mark: |
+
+---
+
 ### Method under test: `handleLongestRoad()`
 
 Handles checking and redistributing points based on longest road, to be called in building settlements and roads (things which can change longest road)

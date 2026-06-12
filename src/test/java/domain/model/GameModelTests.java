@@ -3,6 +3,7 @@ package domain.model;
 import domain.model.board.BoardHandler;
 import domain.model.development_cards.DevelopmentCard;
 import domain.model.development_cards.DevelopmentCardDeck;
+import domain.model.development_cards.DevelopmentCardType;
 import domain.model.board.Port;
 import domain.model.board.PortTradeRequest;
 import domain.model.exceptions.*;
@@ -1810,6 +1811,150 @@ public class GameModelTests {
         assertEquals("Not proper phase for that action", exception.getMessage());
 
         EasyMock.verify(redStateMock, deckMock);
+    }
+
+  // playDevCard() tests
+
+    // TC1: card = null
+    //      -> IllegalArgumentException: "Development card cannot be null."
+    @Test
+    void playDevCard_NullCard_ExpectIllegalArgumentException() {
+        EasyMock.replay(boardMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> model.playDevCard(null));
+        assertEquals("Development card cannot be null.", exception.getMessage());
+
+        EasyMock.verify(boardMock);
+    }
+
+    // TC2: MOVE_ROBBER (invalid phase), valid card
+    //      -> IllegalGamePhaseException: "Not proper phase for that action"
+    @Test
+    void playDevCard_InvalidPhase_ExpectIllegalGamePhaseException() {
+        DevelopmentCard cardMock = EasyMock.createMock(DevelopmentCard.class);
+        EasyMock.replay(boardMock, cardMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+        model.setCurrentGamePhase(GamePhase.MOVE_ROBBER);
+
+        Exception exception = assertThrows(IllegalGamePhaseException.class,
+                () -> model.playDevCard(cardMock));
+        assertEquals("Not proper phase for that action", exception.getMessage());
+
+        EasyMock.verify(boardMock, cardMock);
+    }
+
+    // TC3: GENERAL_PLAY, card type = KNIGHT
+    //      -> phase transitions to MOVE_ROBBER
+    @Test
+    void playDevCard_GeneralPlayKnightCard_ExpectPhaseMovesToMoveRobber() {
+        DevelopmentCard cardMock = EasyMock.createMock(DevelopmentCard.class);
+        EasyMock.expect(cardMock.getType()).andReturn(DevelopmentCardType.KNIGHT);
+        EasyMock.replay(boardMock, cardMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+
+        model.playDevCard(cardMock);
+
+        assertEquals(GamePhase.MOVE_ROBBER, model.getCurrentPhase());
+        EasyMock.verify(boardMock, cardMock);
+    }
+
+    // TC4: GENERAL_PLAY, card type = ROAD_BUILDER
+    //      -> phase transitions to ROAD_BUILDING_DEV_CARD
+    @Test
+    void playDevCard_GeneralPlayRoadBuilderCard_ExpectPhaseMovesToRoadBuildingDevCard() {
+        DevelopmentCard cardMock = EasyMock.createMock(DevelopmentCard.class);
+        EasyMock.expect(cardMock.getType()).andReturn(DevelopmentCardType.ROAD_BUILDER);
+        EasyMock.replay(boardMock, cardMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+
+        model.playDevCard(cardMock);
+
+        assertEquals(GamePhase.ROAD_BUILDING_DEV_CARD, model.getCurrentPhase());
+        EasyMock.verify(boardMock, cardMock);
+    }
+
+    // TC5: GENERAL_PLAY, card type = MONOPOLY
+    //      -> phase transitions to MONOPOLY_DEV_CARD
+    @Test
+    void playDevCard_GeneralPlayMonopolyCard_ExpectPhaseMovesToMonopolyDevCard() {
+        DevelopmentCard cardMock = EasyMock.createMock(DevelopmentCard.class);
+        EasyMock.expect(cardMock.getType()).andReturn(DevelopmentCardType.MONOPOLY);
+        EasyMock.replay(boardMock, cardMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+
+        model.playDevCard(cardMock);
+
+        assertEquals(GamePhase.MONOPOLY_DEV_CARD, model.getCurrentPhase());
+        EasyMock.verify(boardMock, cardMock);
+    }
+
+    // TC6: GENERAL_PLAY, card type = YEAR_OF_PLENTY
+    //      -> phase unchanged (remains GENERAL_PLAY)
+    @Test
+    void playDevCard_GeneralPlayYearOfPlentyCard_ExpectPhaseUnchanged() {
+        DevelopmentCard cardMock = EasyMock.createMock(DevelopmentCard.class);
+        EasyMock.expect(cardMock.getType()).andReturn(DevelopmentCardType.YEAR_OF_PLENTY);
+        EasyMock.replay(boardMock, cardMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+
+        model.playDevCard(cardMock);
+
+        assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+        EasyMock.verify(boardMock, cardMock);
+    }
+
+    // TC7: GENERAL_PLAY, card type = VICTORY_POINT
+    //      -> phase unchanged (remains GENERAL_PLAY)
+    @Test
+    void playDevCard_GeneralPlayVictoryPointCard_ExpectPhaseUnchanged() {
+        DevelopmentCard cardMock = EasyMock.createMock(DevelopmentCard.class);
+        EasyMock.expect(cardMock.getType()).andReturn(DevelopmentCardType.VICTORY_POINT);
+        EasyMock.replay(boardMock, cardMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+
+        model.playDevCard(cardMock);
+
+        assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+        EasyMock.verify(boardMock, cardMock);
+    }
+
+    // TC8: BEFORE_ROLL, card type = KNIGHT
+    //      -> phase transitions to MOVE_ROBBER
+    @Test
+    void playDevCard_BeforeRollKnightCard_ExpectPhaseMovesToMoveRobber() {
+        DevelopmentCard cardMock = EasyMock.createMock(DevelopmentCard.class);
+        EasyMock.expect(cardMock.getType()).andReturn(DevelopmentCardType.KNIGHT);
+        EasyMock.replay(boardMock, cardMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+
+        model.playDevCard(cardMock);
+
+        assertEquals(GamePhase.MOVE_ROBBER, model.getCurrentPhase());
+        EasyMock.verify(boardMock, cardMock);
     }
 
   // Attempt Port Trade Tests
