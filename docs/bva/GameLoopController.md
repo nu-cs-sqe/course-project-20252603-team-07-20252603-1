@@ -64,9 +64,9 @@ Step 3:
 
 Delegates directly to `model.offerTrade(offer)`.
 
-|             | State of the System | Expected output            | Implemented? |
-|-------------|---------------------|----------------------------|--------------|
-| Test Case 5 | In trade phase      | model.offerTrade is called | x            |
+|             | State of the System | Expected output            | Implemented?       |
+|-------------|---------------------|----------------------------|--------------------|
+| Test Case 5 | In trade phase      | model.offerTrade is called | :white_check_mark: |
 
 ### Method under test: `acceptTrade(model, offer, acceptingPlayer)`
 

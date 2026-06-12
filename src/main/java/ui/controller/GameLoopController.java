@@ -4,6 +4,7 @@ import domain.model.GameModel;
 import domain.model.game_pieces.DiceHandler;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
+import domain.model.player.TradeOffer;
 import domain.model.resources.Resource;
 
 
@@ -30,5 +31,9 @@ public class GameLoopController {
 
     public void endTurn(GameModel model) {
         model.endTurn();
+    }
+
+    public void offerTrade(GameModel model, TradeOffer offer) {
+        model.offerTrade(offer);
     }
 }

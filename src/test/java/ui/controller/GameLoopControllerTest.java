@@ -6,6 +6,7 @@ import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 
 
+import domain.model.player.TradeOffer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -73,4 +74,18 @@ class GameLoopControllerTest {
 
         verify(mockRoller, mockModel);
     }
+
+    @Test
+    void testOfferTradeDelegatesToModel() {
+        TradeOffer mockOffer = createMock(TradeOffer.class);
+        mockModel.offerTrade(mockOffer);
+        expectLastCall();
+        replay(mockModel, mockOffer);
+
+        controller.offerTrade(mockModel, mockOffer);
+
+        verify(mockModel, mockOffer);
+    }
+
+
 }
