@@ -334,6 +334,7 @@ public List<Player> getOtherPlayers() {
 
     public DevelopmentCard buyDevCard(DevelopmentCardDeck deck) throws EmptyDeckException {
         checkPlayerOwnsEnoughResources(currentPlayerColor, Resource.ORE, DEV_CARD_COST);
+        checkPlayerOwnsEnoughResources(currentPlayerColor, Resource.WOOL, DEV_CARD_COST);
         DevelopmentCard card = deck.drawCard(currentRound);
         Player player = getCurrentPlayer();
         player.updateResources(Resource.ORE, -DEV_CARD_COST);
