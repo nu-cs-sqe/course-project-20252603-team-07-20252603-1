@@ -359,7 +359,7 @@ Step 3:
 |             | State of the System                              | Expected output             | Implemented?       |
 |-------------|--------------------------------------------------|-----------------------------|--------------------|
 | Test Case 1 | OFFERING_TRADE, valid offer and accepting player | GENERAL_PLAY phase, success | :white_check_mark: |
-| Test Case 2 | GENERAL_PLAY (invalid phase)                     | IllegalGamePhaseException   | x                  |
+| Test Case 2 | GENERAL_PLAY (invalid phase)                     | IllegalGamePhaseException   | :white_check_mark: |
 
 
 ### Method under test: `clearOffers()`
@@ -379,9 +379,7 @@ Step 3:
 - Game phase: GENERAL_PLAY; GENERAL_PLAY (invalid);
 
 
-|             | State of the System            | Expected output           | Implemented? |
-|-------------|--------------------------------|---------------------------|--------------|
-| Test Case 1 | Currently no one, still no one | PlayerColor.setup         | x            |
-| Test Case 2 | GENERAL_PLAY (invalid phase)   | IllegalGamePhaseException | x            |
-
-
+|             | State of the System            | Expected output           | Implemented?       |
+|-------------|--------------------------------|---------------------------|--------------------|
+| Test Case 1 | Currently no one, still no one | PlayerColor.setup         | :white_check_mark: |
+| Test Case 2 | GENERAL_PLAY (invalid phase)   | IllegalGamePhaseException | x                  |

@@ -1784,4 +1784,31 @@ public class GameModelTests {
     EasyMock.verify(redStateMock, blueStateMock, boardMock, tradeManagerMock, offerMock,
             lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock, woolDeckMock);
   }
+
+  // clearOffers Tests
+  // Test Case 1
+  @Test
+  void clearOffers_test01_OfferingTrade_ExpectSuccess() {
+    Player redStateMock = EasyMock.createMock(Player.class);
+    TradeManager tradeManagerMock = EasyMock.createMock(TradeManager.class);
+    ColorToPlayerObjMock = Map.of(PlayerColor.RED, redStateMock);
+
+    tradeManagerMock.clearOffers();
+    EasyMock.expectLastCall();
+
+    EasyMock.replay(redStateMock, boardMock, tradeManagerMock,
+            lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock, woolDeckMock);
+
+    GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+            oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+
+    model.setCurrentPlayerColor(PlayerColor.RED);
+    model.setCurrentGamePhase(GamePhase.OFFERING_TRADE);
+    model.clearOffers();
+
+    assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+
+    EasyMock.verify(redStateMock, boardMock, tradeManagerMock,
+            lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock, woolDeckMock);
+  }
 }

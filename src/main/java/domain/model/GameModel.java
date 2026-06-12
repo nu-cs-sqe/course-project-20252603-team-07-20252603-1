@@ -341,7 +341,11 @@ public List<Player> getOtherPlayers() {
         currentGamePhase = GamePhase.GENERAL_PLAY;
     }
 
-    public void clearOffers() {};
+    public void clearOffers() {
+        checkCurrentGamePhaseMatches(GamePhase.OFFERING_TRADE);
+        tradeManager.clearOffers();
+        currentGamePhase = GamePhase.GENERAL_PLAY;
+    }
 
     public void playDevCard(){};
 
