@@ -943,4 +943,28 @@ public class GameModelTests {
         EasyMock.verify(redStateMock, boardMock, portMock, lumberDeckMock, brickDeckMock,
                 grainDeckMock, oreDeckMock, woolDeckMock);
     }
+
+    // Test Case 4
+    @Test
+    void attemptPortTrade_test04_BeforeRoll_ExpectIllegalGamePhaseException() throws EmptyDeckException {
+        Player redStateMock = EasyMock.createMock(Player.class);
+        Port portMock = EasyMock.createMock(Port.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.RED, redStateMock);
+
+        EasyMock.replay(redStateMock, boardMock, portMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock, woolDeckMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+        Exception exception = assertThrows(IllegalGamePhaseException.class,
+                () -> model.attemptPortTrade(portMock, Resource.WOOL, Resource.ORE));
+
+        assertEquals("Not proper phase for that action", exception.getMessage());
+
+        EasyMock.verify(redStateMock, boardMock, portMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock, woolDeckMock);
+    }
 }
