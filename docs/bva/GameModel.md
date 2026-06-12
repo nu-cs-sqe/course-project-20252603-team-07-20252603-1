@@ -301,7 +301,7 @@ Step 3:
 | Test Case 5 | GENERAL_PLAY, ORE=0 (below cost boundary)                                                        | InsufficientResourcesException                                                                           | :white_check_mark: |
 | Test Case 6 | GENERAL_PLAY, ORE=1, WOOL=0 (below cost boundary, ORE already ≥ 1)                              | InsufficientResourcesException                                                                           | :white_check_mark: |
 | Test Case 7 | GENERAL_PLAY, ORE=1, WOOL=1, GRAIN=0 (below cost boundary, ORE/WOOL already ≥ 1)               | InsufficientResourcesException                                                                           | :white_check_mark: |
-| Test Case 8 | BEFORE_ROLL                                                                                      | IllegalGamePhaseException                                                                                | :x: |
+| Test Case 8 | BEFORE_ROLL                                                                                      | IllegalGamePhaseException                                                                                | :white_check_mark: |
 | Test Case 9 | MOVE_ROBBER                                                                                      | IllegalGamePhaseException                                                                                | :x: |
 
 ---

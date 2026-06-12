@@ -333,6 +333,7 @@ public List<Player> getOtherPlayers() {
     public void playDevCard(){};
 
     public DevelopmentCard buyDevCard(DevelopmentCardDeck deck) throws EmptyDeckException {
+        checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY);
         checkPlayerOwnsEnoughResources(currentPlayerColor, Resource.ORE, DEV_CARD_COST);
         checkPlayerOwnsEnoughResources(currentPlayerColor, Resource.WOOL, DEV_CARD_COST);
         checkPlayerOwnsEnoughResources(currentPlayerColor, Resource.GRAIN, DEV_CARD_COST);
