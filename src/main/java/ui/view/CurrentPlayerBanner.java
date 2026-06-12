@@ -1,6 +1,8 @@
 package ui.view;
 
 import domain.model.Player;
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
@@ -18,8 +20,10 @@ public class CurrentPlayerBanner {
     private final HBox root;
     private final Region swatch;
     private final Label nameLabel;
+    private final ResourceBundle labels;
 
-    public CurrentPlayerBanner() {
+    public CurrentPlayerBanner(ResourceBundle labels) {
+        this.labels = labels;
         this.swatch = new Region();
         this.swatch.getStyleClass().add(SWATCH_CSS);
         this.nameLabel = new Label();
@@ -34,7 +38,7 @@ public class CurrentPlayerBanner {
     }
 
     public void update(Player player) {
-        nameLabel.setText(String.format("%s's turn", player.getName()));
+        nameLabel.setText(MessageFormat.format(labels.getString("banner.turn"), player.getName()));
         swatch.getStyleClass().removeIf(c -> c.startsWith(SWATCH_CLASS_PREFIX));
         swatch.getStyleClass().add(String.format("%s%s", SWATCH_CLASS_PREFIX, player.getColor().toLowerCase()));
     }

@@ -9,12 +9,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
+import ui.ViewContext;
 import ui.controller.GameSetupController;
 import ui.controller.PlayerAddResult;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -26,25 +30,33 @@ public class PlayerConfigView {
     private final List<TextField> nameFields = new ArrayList<>();
     private final List<ComboBox<String>> colorBoxes = new ArrayList<>();
     private final Label statusLabel;
+    private final ResourceBundle labels;
     private boolean refreshingColors = false;
 
     public PlayerConfigView(SetupNavigator navigator,
-                            GameSetupController controller,
+                            ViewContext context,
                             GameSetupModel model,
                             int playerCount) {
-        Label header = new Label("Configure players");
+        this.labels = context.labels();
+
+        Label header = new Label(labels.getString("playerConfig.header"));
         header.getStyleClass().add("prompt");
+
+        String playerLabelPattern = labels.getString("playerConfig.playerLabel");
 
         VBox playerRows = new VBox();
         playerRows.getStyleClass().add("option-list");
 
         for (int i = 0; i < playerCount; i++) {
-            Label rowLabel = new Label("Player " + (i + 1));
+            Label rowLabel = new Label(MessageFormat.format(playerLabelPattern, i + 1));
             TextField nameField = new TextField();
-            nameField.setPromptText("Name");
+            nameField.setPromptText(labels.getString("playerConfig.namePrompt"));
             ComboBox<String> colorBox = new ComboBox<>();
             colorBox.setItems(FXCollections.observableArrayList(COLOR_PALETTE));
-            colorBox.setPromptText("Color");
+            // Items stay the canonical color names (used by the model and CSS swatch
+            // classes); the converter only changes how they are displayed.
+            colorBox.setConverter(colorConverter());
+            colorBox.setPromptText(labels.getString("playerConfig.colorPrompt"));
             colorBox.valueProperty().addListener((obs, oldV, newV) -> refreshColorChoices());
 
             nameFields.add(nameField);
@@ -58,11 +70,11 @@ public class PlayerConfigView {
         statusLabel = new Label();
         statusLabel.getStyleClass().add("status");
 
-        Button back = new Button("Back");
+        Button back = new Button(labels.getString("common.back"));
         back.setOnAction(e -> navigator.goToPlayerCount());
 
-        Button startButton = new Button("Start Game");
-        startButton.setOnAction(e -> handleStart(navigator, controller, model));
+        Button startButton = new Button(labels.getString("common.startGame"));
+        startButton.setOnAction(e -> handleStart(navigator, context.setup(), model));
 
         HBox buttons = new HBox(back, startButton);
         buttons.getStyleClass().add("button-bar");
@@ -111,16 +123,16 @@ public class PlayerConfigView {
                 case SUCCESS:
                     break;
                 case NAME_EMPTY:
-                    showError("Player " + (i + 1) + " needs a name.");
+                    showError("playerConfig.error.nameEmpty", i + 1);
                     return;
                 case NAME_TAKEN:
-                    showError("Player " + (i + 1) + "'s name is already used.");
+                    showError("playerConfig.error.nameTaken", i + 1);
                     return;
                 case COLOR_EMPTY:
-                    showError("Player " + (i + 1) + " needs a color.");
+                    showError("playerConfig.error.colorEmpty", i + 1);
                     return;
                 case COLOR_TAKEN:
-                    showError("Player " + (i + 1) + "'s color is already taken.");
+                    showError("playerConfig.error.colorTaken", i + 1);
                     return;
             }
         }
@@ -132,8 +144,32 @@ public class PlayerConfigView {
         navigator.goToSetupSummary();
     }
 
-    private void showError(String message) {
+    private void showError(String key, Object... args) {
         statusLabel.getStyleClass().setAll("status", "error");
-        statusLabel.setText(message);
+        statusLabel.setText(MessageFormat.format(labels.getString(key), args));
+    }
+
+    /**
+     * Converts between canonical color identifiers (stored in the model and used for
+     * CSS swatch classes) and their localized display names.
+     */
+    private StringConverter<String> colorConverter() {
+        return new StringConverter<String>() {
+            @Override
+            public String toString(String color) {
+                return color == null ? null : labels.getString("color." + color);
+            }
+
+            @Override
+            public String fromString(String displayName) {
+                if (displayName == null) {
+                    return null;
+                }
+                return COLOR_PALETTE.stream()
+                        .filter(color -> labels.getString("color." + color).equals(displayName))
+                        .findFirst()
+                        .orElse(null);
+            }
+        };
     }
 }
