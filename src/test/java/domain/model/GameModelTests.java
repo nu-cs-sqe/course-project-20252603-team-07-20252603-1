@@ -1590,4 +1590,35 @@ public class GameModelTests {
 
         EasyMock.verify(redStateMock, deckMock, cardMock, oreDeckMock, woolDeckMock, grainDeckMock);
     }
+
+    // TC2: GENERAL_PLAY, ORE=3, WOOL=2, GRAIN=4 (surplus each), deck=25 (full)
+    //      -> card returned; player loses 1 each ORE/WOOL/GRAIN; surplus does not prevent purchase
+    @Test
+    void buyDevCard_SurplusResources_FullDeck_ExpectCardReturnedAndResourcesDeducted() throws EmptyDeckException {
+        DevelopmentCardDeck deckMock = EasyMock.createMock(DevelopmentCardDeck.class);
+        DevelopmentCard cardMock = EasyMock.createMock(DevelopmentCard.class);
+        Player redStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.RED, redStateMock);
+
+        EasyMock.expect(deckMock.drawCard(0)).andReturn(cardMock);
+        redStateMock.updateResources(Resource.ORE, -1);
+        redStateMock.updateResources(Resource.WOOL, -1);
+        redStateMock.updateResources(Resource.GRAIN, -1);
+        oreDeckMock.replenish();
+        woolDeckMock.replenish();
+        grainDeckMock.replenish();
+        redStateMock.addDevelopmentCard(cardMock);
+
+        EasyMock.replay(redStateMock, deckMock, cardMock, oreDeckMock, woolDeckMock, grainDeckMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+
+        DevelopmentCard result = model.buyDevCard(deckMock);
+        assertEquals(cardMock, result);
+
+        EasyMock.verify(redStateMock, deckMock, cardMock, oreDeckMock, woolDeckMock, grainDeckMock);
+    }
 }
