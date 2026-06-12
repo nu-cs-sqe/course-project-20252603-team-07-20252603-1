@@ -332,4 +332,6 @@ public List<Player> getOtherPlayers() {
 
     public void moveRobberAndSteal(){};
 
+    public void attemptPortTrade(){};
+
 }
