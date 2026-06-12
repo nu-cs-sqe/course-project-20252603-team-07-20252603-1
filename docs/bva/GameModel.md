@@ -208,9 +208,9 @@ Step 3:
 - Game phase: GENERAL_PLAY; BEFORE_ROLL (invalid);
 - Bank deck: 0 (empty, below boundary); 1 (at boundary); 19 (max/surplus)
 
-|             | State of the System                                      | Expected output                | Implemented? |
-|-------------|----------------------------------------------------------|--------------------------------|--------------|
-| Test Case 1 | GENERAL_PLAY, bank has 1 card (at boundary), valid trade | success                        | x            |
-| Test Case 2 | GENERAL_PLAY, bank has 0 cards (empty)                   | InsufficientResourcesException | x            |
-| Test Case 3 | GENERAL_PLAY, bank has 19 cards (max), valid trade       | success                        | x            |
-| Test Case 4 | BEFORE_ROLL (invalid phase)                              | IllegalGamePhaseException      | x            |
+|             | State of the System                                      | Expected output                | Implemented?       |
+|-------------|----------------------------------------------------------|--------------------------------|--------------------|
+| Test Case 1 | GENERAL_PLAY, bank has 1 card (at boundary), valid trade | success                        | :white_check_mark: |
+| Test Case 2 | GENERAL_PLAY, bank has 0 cards (empty)                   | InsufficientResourcesException | :white_check_mark: |
+| Test Case 3 | GENERAL_PLAY, bank has 19 cards (max), valid trade       | success                        | x                  |
+| Test Case 4 | BEFORE_ROLL (invalid phase)                              | IllegalGamePhaseException      | x                  |
