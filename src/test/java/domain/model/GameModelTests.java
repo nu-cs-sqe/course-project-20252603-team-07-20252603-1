@@ -886,6 +886,7 @@ public class GameModelTests {
                 grainDeckMock, oreDeckMock, woolDeckMock);
     }
 
+    // Test Case 2
     @Test
     void attemptPortTrade_test02_GeneralPlay_BankHasZeroCards_ExpectIllegalStateException() throws EmptyDeckException {
         Player redStateMock = EasyMock.createMock(Player.class);
@@ -911,6 +912,33 @@ public class GameModelTests {
                 () -> model.attemptPortTrade(portMock, Resource.WOOL, Resource.ORE));
 
         assertEquals("Bank has insufficient resources for this trade.", exception.getMessage());
+
+        EasyMock.verify(redStateMock, boardMock, portMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock, woolDeckMock);
+    }
+
+    // Test Case 3
+    @Test
+    void attemptPortTrade_test03_GeneralPlay_BankHasNineteenCards_ValidTrade_ExpectSuccess() throws EmptyDeckException {
+        Player redStateMock = EasyMock.createMock(Player.class);
+        Port portMock = EasyMock.createMock(Port.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.RED, redStateMock);
+
+        portMock.executePortTrade(
+                EasyMock.eq(redStateMock),
+                EasyMock.eq(boardMock),
+                EasyMock.anyObject(PortTradeRequest.class));
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(redStateMock, boardMock, portMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock, woolDeckMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        model.attemptPortTrade(portMock, Resource.WOOL, Resource.ORE);
 
         EasyMock.verify(redStateMock, boardMock, portMock, lumberDeckMock, brickDeckMock,
                 grainDeckMock, oreDeckMock, woolDeckMock);
