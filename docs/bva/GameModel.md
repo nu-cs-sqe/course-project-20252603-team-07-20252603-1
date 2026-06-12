@@ -330,10 +330,10 @@ Step 3:
 - Game phase: GENERAL_PLAY; BEFORE_ROLL (invalid);
 
 
-|             | State of the System            | Expected output           | Implemented?       |
-|-------------|--------------------------------|---------------------------|--------------------|
-| Test Case 1 | Currently no one, still no one | PlayerColor.setup         | :white_check_mark: |
-| Test Case 2 | BEFORE_ROLL (invalid phase)    | IllegalGamePhaseException | :white_check_mark: |
+|             | State of the System         | Expected output                  | Implemented?       |
+|-------------|-----------------------------|----------------------------------|--------------------|
+| Test Case 1 | GENERAL_PLAY, valid offer   | phase → OFFERING_TRADE, success  | :white_check_mark: |
+| Test Case 2 | BEFORE_ROLL (invalid phase) | IllegalGamePhaseException        | :white_check_mark: |
 
 
 ### Method under test: `acceptTrade(TradeOffer offer, Player acceptingPlayer)`
@@ -353,13 +353,13 @@ Step 2:
 
 Step 3:
 
-- Game phase: OFFERING_TRADE; BEFORE_ROLL (invalid);
+- Game phase: OFFERING_TRADE; GENERAL_PLAY (invalid);
 
 
-|             | State of the System                              | Expected output             | Implemented? |
-|-------------|--------------------------------------------------|-----------------------------|--------------|
-| Test Case 1 | OFFERING_TRADE, valid offer and accepting player | GENERAL_PLAY phase, success | x            |
-| Test Case 2 | BEFORE_ROLL (invalid phase)                      | IllegalGamePhaseException   | x            |
+|             | State of the System                              | Expected output             | Implemented?       |
+|-------------|--------------------------------------------------|-----------------------------|--------------------|
+| Test Case 1 | OFFERING_TRADE, valid offer and accepting player | GENERAL_PLAY phase, success | :white_check_mark: |
+| Test Case 2 | GENERAL_PLAY (invalid phase)                     | IllegalGamePhaseException   | x                  |
 
 
 ### Method under test: `clearOffers()`

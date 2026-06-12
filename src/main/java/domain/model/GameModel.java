@@ -335,7 +335,11 @@ public List<Player> getOtherPlayers() {
         currentGamePhase = GamePhase.OFFERING_TRADE;
     }
 
-    public void acceptTrade(TradeOffer offer, Player acceptingPlayer){};
+    public void acceptTrade(TradeOffer offer, Player acceptingPlayer) {
+        checkCurrentGamePhaseMatches(GamePhase.OFFERING_TRADE);
+        tradeManager.acceptTrade(offer, acceptingPlayer);
+        currentGamePhase = GamePhase.GENERAL_PLAY;
+    }
 
     public void clearOffers() {};
 
