@@ -1652,4 +1652,26 @@ public class GameModelTests {
 
         EasyMock.verify(redStateMock, deckMock, cardMock, oreDeckMock, woolDeckMock, grainDeckMock);
     }
+
+    // TC4: GENERAL_PLAY, ORE=1, WOOL=1, GRAIN=1, deck=0 (empty)
+    //      -> EmptyDeckException; player resources NOT deducted
+    @Test
+    void buyDevCard_EmptyDeck_ExpectEmptyDeckExceptionAndNoResourceDeduction() throws EmptyDeckException {
+        DevelopmentCardDeck deckMock = EasyMock.createMock(DevelopmentCardDeck.class);
+        Player redStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.RED, redStateMock);
+
+        EasyMock.expect(deckMock.drawCard(0)).andThrow(new EmptyDeckException("Cannot draw new DevelopmentCard, no cards remain."));
+
+        EasyMock.replay(redStateMock, deckMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+
+        assertThrows(EmptyDeckException.class, () -> model.buyDevCard(deckMock));
+
+        EasyMock.verify(redStateMock, deckMock);
+    }
 }
