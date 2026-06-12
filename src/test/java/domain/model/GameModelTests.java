@@ -1775,4 +1775,24 @@ public class GameModelTests {
 
         EasyMock.verify(redStateMock, deckMock);
     }
+
+    // TC9: MOVE_ROBBER (invalid phase)
+    //      -> IllegalGamePhaseException
+    @Test
+    void buyDevCard_MoveRobberPhase_ExpectIllegalGamePhaseException() throws EmptyDeckException {
+        DevelopmentCardDeck deckMock = EasyMock.createMock(DevelopmentCardDeck.class);
+        Player redStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.RED, redStateMock);
+
+        EasyMock.replay(redStateMock, deckMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.MOVE_ROBBER);
+
+        assertThrows(IllegalGamePhaseException.class, () -> model.buyDevCard(deckMock));
+
+        EasyMock.verify(redStateMock, deckMock);
+    }
 }
