@@ -92,3 +92,40 @@ Delegates directly to `model.attemptPortTrade(port, giving, receiving)`.
 |-------------|-----------------------|----------------------------------|--------------------|
 | Test Case 5 | In general play phase | model.attemptPortTrade is called | :white_check_mark: |
 
+
+---
+
+### Method under test: `buyDevCard(GameModel model, DevelopmentCardDeck deck, DevelopmentCardHandler handler)`
+
+Calls `model.getCurrentPlayer()` and `model.getCurrentRound()`, then delegates to
+`handler.buyDevelopmentCard(currentPlayer, deck, currentRound)` and returns the result.
+All precondition enforcement (resource checks, deck-empty check) lives in the handler;
+this controller only extracts the player/round from the model and relays whatever the
+handler returns or throws.
+
+Step 1:
+
+- Input: model, deck, handler
+- State: current player's resource holdings (ORE, WOOL, GRAIN); deck size
+- Output: DevelopmentCard returned from handler; or exception relayed
+
+Step 2:
+
+- model: Pointer (mock)
+- deck: Pointer (mock)
+- handler: Pointer (mock)
+- Output: delegation result or relayed exception
+
+Step 3:
+
+- Verify controller calls model.getCurrentPlayer() and model.getCurrentRound() and passes them to handler
+- Verify controller returns the DevelopmentCard that handler returns
+- Verify controller relays InsufficientResourcesException when handler throws it (buyer lacks ORE, WOOL, or GRAIN)
+- Verify controller relays EmptyDeckException when handler throws it (deck is empty)
+
+
+|             | System under test                                                                                   | Expected output                                                                                                   | Implemented? |
+| ----------- | --------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------ |
+| Test Case 5 | buyDevCard(model, deck, handler); handler returns a DevelopmentCard                                 | controller returns the same DevelopmentCard; verify handler called with currentPlayer, deck, and currentRound     | :white_check_mark: |
+| Test Case 6 | buyDevCard(model, deck, handler); handler throws InsufficientResourcesException (buyer lacks resources) | controller relays InsufficientResourcesException to caller                                                    | :white_check_mark: |
+| Test Case 7 | buyDevCard(model, deck, handler); handler throws EmptyDeckException (deck is empty)                 | controller relays EmptyDeckException to caller                                                                    | :white_check_mark: |
