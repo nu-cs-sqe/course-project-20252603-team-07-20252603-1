@@ -330,7 +330,21 @@ public List<Player> getOtherPlayers() {
 
     public void buyDevCard(){};
 
-    public void moveRobberAndSteal(){};
+    public void moveRobberAndSteal(int targetHexID, PlayerColor victimColor){
+        // Can use these methods to help
+        // checkCurrentGamePhaseMatches(GamePhase.MOVE_ROBBER);
+
+        // board.moveRobber(targetHexID);
+        // Set<Player> playersOnTargetHex = board.getPlayersOnHex(targetHexID);
+
+        // Player target = getArbitraryPlayer(victimColor);
+        // Map<Resource, Integer> targetResources = target.getResources();
+        // target.updateResources(random resource, -1)
+
+        // Player currentPlayer = getCurrentPlayer();
+        // currentPlayer.updateResources(same random resource, 1)
+
+    };
 
     public void attemptPortTrade(){};
 
