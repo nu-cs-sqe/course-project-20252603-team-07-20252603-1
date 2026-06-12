@@ -3,6 +3,7 @@ package domain.model;
 import domain.model.board.BoardHandler;
 import domain.model.development_cards.DevelopmentCard;
 import domain.model.development_cards.DevelopmentCardDeck;
+import domain.model.development_cards.DevelopmentCardType;
 import domain.model.board.Port;
 import domain.model.board.PortTradeRequest;
 import domain.model.exceptions.*;
@@ -1845,6 +1846,24 @@ public class GameModelTests {
                 () -> model.playDevCard(cardMock));
         assertEquals("Not proper phase for that action", exception.getMessage());
 
+        EasyMock.verify(boardMock, cardMock);
+    }
+
+    // TC3: GENERAL_PLAY, card type = KNIGHT
+    //      -> phase transitions to MOVE_ROBBER
+    @Test
+    void playDevCard_GeneralPlayKnightCard_ExpectPhaseMovesToMoveRobber() {
+        DevelopmentCard cardMock = EasyMock.createMock(DevelopmentCard.class);
+        EasyMock.expect(cardMock.getType()).andReturn(DevelopmentCardType.KNIGHT);
+        EasyMock.replay(boardMock, cardMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+
+        model.playDevCard(cardMock);
+
+        assertEquals(GamePhase.MOVE_ROBBER, model.getCurrentPhase());
         EasyMock.verify(boardMock, cardMock);
     }
 
