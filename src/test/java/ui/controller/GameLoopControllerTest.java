@@ -123,4 +123,26 @@ class GameLoopControllerTest {
 
         verify(mockModel, mockDeck, mockHandler, mockPlayer);
     }
+
+    // TC7: handler throws EmptyDeckException (deck is empty)
+    //      -> controller relays EmptyDeckException to caller
+    @Test
+    void buyDevCard_HandlerThrowsEmptyDeck_ExpectExceptionRelayed() throws EmptyDeckException {
+        DevelopmentCardDeck mockDeck = createMock(DevelopmentCardDeck.class);
+        DevelopmentCardHandler mockHandler = createMock(DevelopmentCardHandler.class);
+        Player mockPlayer = createMock(Player.class);
+        final int currentRound = 1;
+
+        expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
+        expect(mockModel.getCurrentRound()).andReturn(currentRound);
+        expect(mockHandler.buyDevelopmentCard(mockPlayer, mockDeck, currentRound))
+                .andThrow(new EmptyDeckException("Cannot draw new DevelopmentCard, no cards remain."));
+
+        replay(mockModel, mockDeck, mockHandler, mockPlayer);
+
+        assertThrows(EmptyDeckException.class,
+                () -> controller.buyDevCard(mockModel, mockDeck, mockHandler));
+
+        verify(mockModel, mockDeck, mockHandler, mockPlayer);
+    }
 }
