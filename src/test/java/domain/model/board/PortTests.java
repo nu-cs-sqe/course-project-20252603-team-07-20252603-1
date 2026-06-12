@@ -98,6 +98,7 @@ public class PortTests {
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
     EasyMock.expect(mockPlayer.getResourceCount(Resource.WOOL)).andReturn(3);
+    EasyMock.expect(mockReceivingDeck.getTotalCards()).andReturn(19);
     mockPlayer.updateResources(Resource.WOOL, -3);
     EasyMock.expectLastCall();
     mockGivingDeck.replenish(3);
@@ -122,6 +123,7 @@ public class PortTests {
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
     EasyMock.expect(mockPlayer.getResourceCount(Resource.LUMBER)).andReturn(3);
+    EasyMock.expect(mockReceivingDeck.getTotalCards()).andReturn(19);
     mockPlayer.updateResources(Resource.LUMBER, -3);
     EasyMock.expectLastCall();
     mockGivingDeck.replenish(3);
@@ -146,6 +148,7 @@ public class PortTests {
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
     EasyMock.expect(mockPlayer.getResourceCount(Resource.WOOL)).andReturn(2);
+    EasyMock.expect(mockReceivingDeck.getTotalCards()).andReturn(19);
     mockPlayer.updateResources(Resource.WOOL, -2);
     EasyMock.expectLastCall();
     mockGivingDeck.replenish(2);
@@ -170,6 +173,7 @@ public class PortTests {
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
     EasyMock.expect(mockPlayer.getResourceCount(Resource.ORE)).andReturn(2);
+    EasyMock.expect(mockReceivingDeck.getTotalCards()).andReturn(19);
     mockPlayer.updateResources(Resource.ORE, -2);
     EasyMock.expectLastCall();
     mockGivingDeck.replenish(2);
@@ -194,6 +198,7 @@ public class PortTests {
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
     EasyMock.expect(mockPlayer.getResourceCount(Resource.LUMBER)).andReturn(2);
+    EasyMock.expect(mockReceivingDeck.getTotalCards()).andReturn(19);
     mockPlayer.updateResources(Resource.LUMBER, -2);
     EasyMock.expectLastCall();
     mockGivingDeck.replenish(2);
@@ -218,6 +223,7 @@ public class PortTests {
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
     EasyMock.expect(mockPlayer.getResourceCount(Resource.GRAIN)).andReturn(2);
+    EasyMock.expect(mockReceivingDeck.getTotalCards()).andReturn(19);
     mockPlayer.updateResources(Resource.GRAIN, -2);
     EasyMock.expectLastCall();
     mockGivingDeck.replenish(2);
@@ -242,6 +248,7 @@ public class PortTests {
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
     EasyMock.expect(mockPlayer.getResourceCount(Resource.BRICK)).andReturn(2);
+    EasyMock.expect(mockReceivingDeck.getTotalCards()).andReturn(19);
     mockPlayer.updateResources(Resource.BRICK, -2);
     EasyMock.expectLastCall();
     mockGivingDeck.replenish(2);
@@ -344,23 +351,13 @@ public class PortTests {
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
     EasyMock.expect(mockPlayer.getResourceCount(Resource.WOOL)).andReturn(3);
-    mockPlayer.updateResources(Resource.WOOL, -3);
-    EasyMock.expectLastCall();
-    mockGivingDeck.replenish(3);
-    EasyMock.expectLastCall();
-    EasyMock.expect(mockReceivingDeck.draw()).andThrow(
-            new EmptyDeckException("Cannot draw new ORE card, no cards remain."));
-    mockPlayer.updateResources(Resource.WOOL, 3);
-    EasyMock.expectLastCall();
-    EasyMock.expect(mockGivingDeck.drawMultiple(3)).andReturn(3);
+    EasyMock.expect(mockReceivingDeck.getTotalCards()).andReturn(0);
 
     EasyMock.replay(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
 
-    Exception exception = assertThrows(EmptyDeckException.class, () ->
+    assertThrows(EmptyDeckException.class, () ->
             port.executePortTrade(mockPlayer, mockBoard,
                     buildRequest(Resource.WOOL, Resource.ORE)));
-
-    assertEquals("Cannot draw new ORE card, no cards remain.", exception.getMessage());
 
     EasyMock.verify(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
   }
@@ -373,6 +370,7 @@ public class PortTests {
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
     EasyMock.expect(mockPlayer.getResourceCount(Resource.WOOL)).andReturn(3);
+    EasyMock.expect(mockReceivingDeck.getTotalCards()).andReturn(1);
     mockPlayer.updateResources(Resource.WOOL, -3);
     EasyMock.expectLastCall();
     mockGivingDeck.replenish(3);
@@ -397,6 +395,7 @@ public class PortTests {
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
     EasyMock.expect(mockPlayer.getResourceCount(Resource.WOOL)).andReturn(19);
+    EasyMock.expect(mockReceivingDeck.getTotalCards()).andReturn(19);
     mockPlayer.updateResources(Resource.WOOL, -3);
     EasyMock.expectLastCall();
     mockGivingDeck.replenish(3);

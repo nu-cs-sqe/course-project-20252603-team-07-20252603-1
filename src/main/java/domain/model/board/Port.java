@@ -11,8 +11,6 @@ import java.util.List;
  * to trade resources at a favorable ratio with the bank.
  */
 public class Port {
-  private static final int TWO_TO_ONE_RATIO = 2;
-  private static final int THREE_TO_ONE_RATIO = 3;
   private static final int RECEIVE_AMOUNT = 1;
 
   private final int tradeRatio;
@@ -58,19 +56,12 @@ public class Port {
    */
   public void executePortTrade(Player player, BoardHandler board, PortTradeRequest request)
           throws EmptyDeckException {
-    validatePortAccess(player, board);
+    if (!playerCanUsePort(board, player)) {
+      throw new IllegalStateException("Player does not have access to this port.");
+    }
     validateTradeResources(request.getGivingResource(), request.getReceivingResource());
     validatePlayerResources(player, request.getGivingResource());
     performTrade(player, request);
-  }
-
-  private void validatePortAccess(Player player, BoardHandler board) {
-    for (int nodeId : nodeIds) {
-      if (board.checkPlayerOwnsNode(player.getColor(), nodeId)) {
-        return;
-      }
-    }
-    throw new IllegalStateException("Player does not have access to this port.");
   }
 
   private void validateTradeResources(Resource givingResource, Resource receivingResource) {
@@ -96,17 +87,17 @@ public class Port {
     ResourceDeck givingDeck = request.getDecks().get(givingResource);
     ResourceDeck receivingDeck = request.getDecks().get(receivingResource);
 
+    validateDeckHasResources(receivingDeck);
+
     player.updateResources(givingResource, -tradeRatio);
     givingDeck.replenish(tradeRatio);
-
-    try {
-      receivingDeck.draw();
-    } catch (EmptyDeckException e) {
-      player.updateResources(givingResource, tradeRatio);
-      givingDeck.drawMultiple(tradeRatio);
-      throw e;
-    }
-
+    receivingDeck.draw();
     player.updateResources(receivingResource, RECEIVE_AMOUNT);
+  }
+
+  private void validateDeckHasResources(ResourceDeck deck) throws EmptyDeckException {
+    if (deck.getTotalCards() <= 0) {
+      throw new EmptyDeckException("Bank has insufficient resources for this trade.");
+    }
   }
 }
