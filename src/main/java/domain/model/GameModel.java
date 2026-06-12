@@ -1,16 +1,15 @@
 package domain.model;
 
 import domain.model.board.BoardHandler;
-import domain.model.exceptions.IllegalCityPlacementException;
-import domain.model.exceptions.IllegalGamePhaseException;
-import domain.model.exceptions.IllegalSettlementPlacementException;
+import domain.model.board.Port;
+import domain.model.board.PortTradeRequest;
+import domain.model.exceptions.*;
 import domain.model.player.PlayerColor;
 import domain.model.resources.ResourceDeck;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import domain.model.player.Player;
 import domain.model.resources.Resource;
 
-import domain.model.exceptions.InsufficientResourcesException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -240,6 +239,15 @@ public class GameModel {
 
     public void moveRobberAndSteal(){};
 
-    public void attemptPortTrade(){};
+    // TODO: UI can call board to get list of available ports, and then upon the user clicking a port, it will be passed into this function
+    public void attemptPortTrade(Port port, Resource giving, Resource receiving) {
+        checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY);
+        PortTradeRequest request = new PortTradeRequest(giving, receiving, decks);
+        try {
+            port.executePortTrade(getCurrentPlayer(), board, request);
+        } catch (EmptyDeckException e) {
+            throw new IllegalStateException("Bank has insufficient resources for this trade.");
+        }
+    }
 
 }

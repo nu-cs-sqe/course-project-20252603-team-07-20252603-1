@@ -1,6 +1,8 @@
 package domain.model;
 
 import domain.model.board.BoardHandler;
+import domain.model.board.Port;
+import domain.model.board.PortTradeRequest;
 import domain.model.exceptions.*;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
@@ -853,5 +855,34 @@ public class GameModelTests {
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
         model.attemptBuildCity(0);
         EasyMock.verify(playerMock, boardMock, oreDeckMock, grainDeckMock);
+    }
+
+    // Attempt Port Trade Tests
+
+    // Test Case 1
+    @Test
+    void attemptPortTrade_test01_GeneralPlay_BankHasOneCard_ValidTrade_ExpectSuccess() throws EmptyDeckException {
+        Player redStateMock = EasyMock.createMock(Player.class);
+        Port portMock = EasyMock.createMock(Port.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.RED, redStateMock);
+
+        portMock.executePortTrade(
+                EasyMock.eq(redStateMock),
+                EasyMock.eq(boardMock),
+                EasyMock.anyObject(PortTradeRequest.class));
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(redStateMock, boardMock, portMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock, woolDeckMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        model.attemptPortTrade(portMock, Resource.WOOL, Resource.ORE);
+
+        EasyMock.verify(redStateMock, boardMock, portMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock, woolDeckMock);
     }
 }
