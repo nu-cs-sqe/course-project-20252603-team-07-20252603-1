@@ -28,6 +28,7 @@ public class GameModel {
     private final BoardHandler board;
     private GamePhase currentGamePhase;
     private int currentPlayerIndex;
+    private int currentRound = 0;
     private List<PlayerColor> playerColors;
     private PlayerColor currentPlayerColor;
     private Map<PlayerColor, Player> playerColorToPlayerObject = new HashMap<>();
@@ -106,6 +107,17 @@ public class GameModel {
 
     public Player getCurrentPlayer() {
         return playerColorToPlayerObject.get(currentPlayerColor);
+    }
+
+    public int getCurrentRound() {
+        return currentRound;
+    }
+
+public List<Player> getOtherPlayers() {
+        Player current = getCurrentPlayer();
+        return playerColorToPlayerObject.values().stream()
+                .filter(p -> p != current)
+                .collect(Collectors.toList());
     }
 
     public PlayerColor getCurrentPlayerColor() { return this.currentPlayerColor; }
