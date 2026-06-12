@@ -1,6 +1,9 @@
 package domain.model;
 
 import domain.model.board.BoardHandler;
+import domain.model.development_cards.DevelopmentCard;
+import domain.model.development_cards.DevelopmentCardDeck;
+import domain.model.exceptions.EmptyDeckException;
 import domain.model.board.Port;
 import domain.model.board.PortTradeRequest;
 import domain.model.exceptions.*;
@@ -22,6 +25,7 @@ public class GameModel {
     private static final int MIN_POINTS_TO_WIN_GAME = 10;
     private static final int POINTS_FOR_SETTLEMENT = 1;
     private static final int POINTS_FOR_CITY = 1;
+    private static final int DEV_CARD_COST = 1;
     private static final int POINTS_FOR_LONGEST_ROAD = 2;
 
     @SuppressFBWarnings(value = "EI_EXPOSE_REP2",
@@ -349,7 +353,27 @@ public List<Player> getOtherPlayers() {
 
     public void playDevCard(){};
 
-    public void buyDevCard(){};
+    public DevelopmentCard buyDevCard(DevelopmentCardDeck deck) throws EmptyDeckException {
+        checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY);
+        checkPlayerOwnsEnoughResources(currentPlayerColor, Resource.ORE, DEV_CARD_COST);
+        checkPlayerOwnsEnoughResources(currentPlayerColor, Resource.WOOL, DEV_CARD_COST);
+        checkPlayerOwnsEnoughResources(currentPlayerColor, Resource.GRAIN, DEV_CARD_COST);
+        
+        DevelopmentCard card = deck.drawCard(currentRound);
+        
+        Player player = getCurrentPlayer();
+        player.updateResources(Resource.ORE, -DEV_CARD_COST);
+        player.updateResources(Resource.WOOL, -DEV_CARD_COST);
+        player.updateResources(Resource.GRAIN, -DEV_CARD_COST);
+        
+        oreDeck.replenish();
+        woolDeck.replenish();
+        grainDeck.replenish();
+       
+        player.addDevelopmentCard(card);
+        
+        return card;
+    }
 
     public void moveRobberAndSteal(){};
 

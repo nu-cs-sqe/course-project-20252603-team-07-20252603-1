@@ -1,6 +1,10 @@
 package ui.controller;
 
+import domain.model.DevelopmentCardHandler;
 import domain.model.GameModel;
+import domain.model.development_cards.DevelopmentCard;
+import domain.model.development_cards.DevelopmentCardDeck;
+import domain.model.exceptions.EmptyDeckException;
 import domain.model.game_pieces.DiceHandler;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
@@ -30,5 +34,12 @@ public class GameLoopController {
 
     public void endTurn(GameModel model) {
         model.endTurn();
+    }
+
+    public DevelopmentCard buyDevCard(GameModel model, DevelopmentCardDeck deck, DevelopmentCardHandler handler) throws EmptyDeckException {
+        Player player = model.getCurrentPlayer();
+        int round = model.getCurrentRound();
+        
+        return handler.buyDevelopmentCard(player, deck, round);
     }
 }
