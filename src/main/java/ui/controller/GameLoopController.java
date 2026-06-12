@@ -40,4 +40,8 @@ public class GameLoopController {
     public void acceptTrade(GameModel model, TradeOffer offer, Player acceptingPlayer) {
         model.acceptTrade(offer, acceptingPlayer);
     }
+
+    public void clearOffers(GameModel model) {
+        model.clearOffers();
+    }
 }

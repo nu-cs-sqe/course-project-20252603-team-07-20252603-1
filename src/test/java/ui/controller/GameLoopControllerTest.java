@@ -100,5 +100,16 @@ class GameLoopControllerTest {
         verify(mockModel, mockOffer, mockPlayer);
     }
 
+    @Test
+    void testClearOffersDelegatesToModel() {
+        mockModel.clearOffers();
+        expectLastCall();
+        replay(mockModel);
+
+        controller.clearOffers(mockModel);
+
+        verify(mockModel);
+    }
+
 
 }

@@ -80,9 +80,9 @@ Delegates directly to `model.acceptTrade(offer, acceptingPlayer)`.
 
 Delegates directly to `model.clearOffers()`.
 
-|             | State of the System | Expected output             | Implemented? |
-|-------------|---------------------|-----------------------------|--------------|
-| Test Case 5 | In trade phase      | model.clearOffers is called | x            |
+|             | State of the System | Expected output             | Implemented?       |
+|-------------|---------------------|-----------------------------|--------------------|
+| Test Case 5 | In trade phase      | model.clearOffers is called | :white_check_mark: |
 
 ### Method under test: `attemptPortTrade(model, port, giving, receiving)`
 
