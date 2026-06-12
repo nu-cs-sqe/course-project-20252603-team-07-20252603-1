@@ -1921,6 +1921,24 @@ public class GameModelTests {
         EasyMock.verify(boardMock, cardMock);
     }
 
+    // TC7: GENERAL_PLAY, card type = VICTORY_POINT
+    //      -> phase unchanged (remains GENERAL_PLAY)
+    @Test
+    void playDevCard_GeneralPlayVictoryPointCard_ExpectPhaseUnchanged() {
+        DevelopmentCard cardMock = EasyMock.createMock(DevelopmentCard.class);
+        EasyMock.expect(cardMock.getType()).andReturn(DevelopmentCardType.VICTORY_POINT);
+        EasyMock.replay(boardMock, cardMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+
+        model.playDevCard(cardMock);
+
+        assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+        EasyMock.verify(boardMock, cardMock);
+    }
+
   // Attempt Port Trade Tests
 
   // Test Case 1
