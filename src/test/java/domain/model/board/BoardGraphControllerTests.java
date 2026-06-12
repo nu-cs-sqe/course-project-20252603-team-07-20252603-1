@@ -312,7 +312,4 @@ public class BoardGraphControllerTests {
 
         EasyMock.verify(boardMock);
     }
-
 }
-
-

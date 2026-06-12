@@ -12,21 +12,34 @@ import java.util.List;
 import java.util.Map;   
 
 
+import domain.model.board.Edge;
+import domain.model.board.Vertex;
+import domain.model.development_cards.DevelopmentCard;
+import domain.model.exceptions.InsufficientResourcesException;
+import domain.model.game_pieces.Settlement;
+import domain.model.resources.Resource;
+
 public class Player {
     private final List<Settlement> settlements;
     private final List<Road> roads;
     private final Map<Resource, Integer> resources;
+    private final List<DevelopmentCard> developmentCards;
     private PlayerColor color;
     private String name;
     private int numSettlement;
+    private boolean hasPlayedDevCardThisTurn = false;
+    private int knightCount = 0;
+    private int numVictoryPoints;
 
     public Player(String name, PlayerColor color) {
         this.settlements = new ArrayList<>();
         this.roads = new ArrayList<>();
         this.resources = new HashMap<>();
+        this.developmentCards = new ArrayList<>();
         this.color = color;
         this.name = name;
         this.numSettlement = 0;
+        this.numVictoryPoints = 0;
     }
 
     public Map<Resource, Integer> getResources() {
@@ -105,4 +118,46 @@ public class Player {
     public int getSettlementCount() {
         return this.numSettlement;
     }
+
+    public void addDevelopmentCard(DevelopmentCard card) {
+        this.developmentCards.add(card);
+    }
+
+    public List<DevelopmentCard> getDevelopmentCards() {
+        return Collections.unmodifiableList(developmentCards);
+    }
+
+    public boolean hasPlayedDevCardThisTurn() {
+        return hasPlayedDevCardThisTurn;
+    }
+
+    public void setHasPlayedDevCardThisTurn(boolean played) {
+        hasPlayedDevCardThisTurn = played;
+    }
+
+    public boolean isAdjacentToHex(int hexId) {
+        return false;
+    }
+
+    public void removeDevelopmentCard(DevelopmentCard card) {
+        developmentCards.remove(card);
+    }
+
+    public void incrementKnightCount() {
+        knightCount++;
+    }
+
+    public int getKnightCount() {
+        return knightCount;
+    }
+
+
+    public void updateVictoryPoints(int amount) {
+        this.numVictoryPoints += amount;
+    }
+
+    public int getVictoryPoints() {
+        return this.numVictoryPoints;
+    }
 }
+ 

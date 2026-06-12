@@ -4,20 +4,17 @@ import domain.model.board.BoardHandler;
 import domain.model.exceptions.*;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
-import domain.model.player.Player;
 import domain.model.resources.Resource;
 import domain.model.resources.ResourceDeck;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class GameModelTests {
@@ -76,6 +73,14 @@ public class GameModelTests {
 
         redStateMock.increaseSettlementCount();
         EasyMock.expectLastCall();
+
+        redStateMock.updateVictoryPoints(1);
+        EasyMock.expect(
+                boardMock.calculateLongestRoad(
+                        EasyMock.<List<Player>>anyObject(),
+                        EasyMock.eq(PlayerColor.SETUP)
+                )
+        ).andReturn(PlayerColor.SETUP);
 
         EasyMock.replay(redStateMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock,
                 woolDeckMock);
@@ -203,6 +208,13 @@ public class GameModelTests {
 
         blueStateMock.increaseSettlementCount();
         EasyMock.expectLastCall();
+        blueStateMock.updateVictoryPoints(1);
+        EasyMock.expect(
+                boardMock.calculateLongestRoad(
+                        EasyMock.<List<Player>>anyObject(),
+                        EasyMock.eq(PlayerColor.SETUP)
+                )
+        ).andReturn(PlayerColor.SETUP);
 
         EasyMock.replay(blueStateMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock,
                 woolDeckMock);
@@ -252,7 +264,6 @@ public class GameModelTests {
         for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER)) {
             EasyMock.expect(redStateMock.getResourceCount(r)).andReturn(1);
         }
-
         boardMock.addRoad(redStateMock, 0, 1);
         EasyMock.expectLastCall();
 
@@ -262,6 +273,12 @@ public class GameModelTests {
             decks.get(r).replenish();
             EasyMock.expectLastCall();
         }
+        EasyMock.expect(
+                boardMock.calculateLongestRoad(
+                        EasyMock.<List<Player>>anyObject(),
+                        EasyMock.eq(PlayerColor.SETUP)
+                )
+        ).andReturn(PlayerColor.SETUP);
 
         EasyMock.replay(redStateMock, lumberDeckMock, brickDeckMock, grainDeckMock,
                 oreDeckMock, woolDeckMock, boardMock);
@@ -372,22 +389,17 @@ public class GameModelTests {
         Player playerMock = EasyMock.createMock(Player.class);
         ColorToPlayerObjMock = Map.of(PlayerColor.RED, playerMock);
 
-        for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER)) {
-            EasyMock.expect(playerMock.getResourceCount(r)).andReturn(1);
-        }
-
         boardMock.addRoad(playerMock, 0, 1);
         EasyMock.expectLastCall();
 
-        for (Resource r : EnumSet.of(Resource.BRICK, Resource.LUMBER)) {
-            playerMock.updateResources(r, -1);
-            EasyMock.expectLastCall();
-            decks.get(r).replenish();
-            EasyMock.expectLastCall();
-        }
+        EasyMock.expect(
+                boardMock.calculateLongestRoad(
+                        EasyMock.<List<Player>>anyObject(),
+                        EasyMock.eq(PlayerColor.SETUP)
+                )
+        ).andReturn(PlayerColor.SETUP);
 
-        EasyMock.replay(playerMock, lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, boardMock);
+        EasyMock.replay(playerMock, boardMock);
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
                 oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
@@ -396,8 +408,7 @@ public class GameModelTests {
         model.setCurrentGamePhase(GamePhase.ROAD_BUILDING_DEV_CARD);
         model.attemptBuildRoad(0, 1);
 
-        EasyMock.verify(playerMock, lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, boardMock);
+        EasyMock.verify(playerMock, boardMock);
     }
 
     @Test
@@ -422,6 +433,8 @@ public class GameModelTests {
         EasyMock.expectLastCall();
         grainDeckMock.replenish(2);
         EasyMock.expectLastCall();
+
+        redStateMock.updateVictoryPoints(1);
 
         EasyMock.replay(redStateMock, boardMock, oreDeckMock, grainDeckMock);
 
@@ -518,8 +531,6 @@ public class GameModelTests {
         ColorToPlayerObjMock = Map.of(
                 PlayerColor.ORANGE, blueStateMock
         );;
-
-
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
                 oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
@@ -749,6 +760,13 @@ public class GameModelTests {
         }
         playerMock.increaseSettlementCount();
         EasyMock.expectLastCall();
+        playerMock.updateVictoryPoints(1);
+        EasyMock.expect(
+                boardMock.calculateLongestRoad(
+                        EasyMock.<List<Player>>anyObject(),
+                        EasyMock.eq(PlayerColor.SETUP)
+                )
+        ).andReturn(PlayerColor.SETUP);
         EasyMock.replay(playerMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, woolDeckMock);
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
                 oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
@@ -756,6 +774,32 @@ public class GameModelTests {
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
         model.attemptBuildSettlement(0);
         EasyMock.verify(playerMock, boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, woolDeckMock);
+    }
+
+    @Test
+    void attemptBuildSettlement_SetupPhase_ExpectSuccess_ExpectNoResourcesReduced(){
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        Player redStateMock = EasyMock.createMock(Player.class);
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock.put(PlayerColor.BLUE, blueStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.RED, redStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.WHITE, whiteStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.ORANGE, orangeStateMock);
+
+        boardMock.buildSetupSettlement(blueStateMock, 0);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(boardMock, blueStateMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        model.setCurrentGamePhase(GamePhase.SETUP_PHASE);
+        model.setCurrentPlayerColor(PlayerColor.BLUE);
+        model.attemptBuildSettlement(0);
+
+        EasyMock.verify(boardMock, blueStateMock);
     }
 
     // --- BVA: resource amount boundaries for attemptBuildRoad ---
@@ -791,6 +835,12 @@ public class GameModelTests {
             decks.get(r).replenish();
             EasyMock.expectLastCall();
         }
+        EasyMock.expect(
+                boardMock.calculateLongestRoad(
+                        EasyMock.<List<Player>>anyObject(),
+                        EasyMock.eq(PlayerColor.SETUP)
+                )
+        ).andReturn(PlayerColor.SETUP);
         EasyMock.replay(playerMock, lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock, woolDeckMock, boardMock);
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
                 oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
@@ -799,6 +849,68 @@ public class GameModelTests {
         model.attemptBuildRoad(0, 1);
         EasyMock.verify(playerMock, lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock, woolDeckMock, boardMock);
     }
+
+    @Test
+    void attemptBuildRoad_RoadBuildingDevCardPhase_ExpectSuccess_ExpectNoResourcesReduced(){
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        Player redStateMock = EasyMock.createMock(Player.class);
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock.put(PlayerColor.BLUE, blueStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.RED, redStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.WHITE, whiteStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.ORANGE, orangeStateMock);
+
+        boardMock.addRoad(blueStateMock, 0, 3);
+        EasyMock.expectLastCall();
+        EasyMock.expect(
+                boardMock.calculateLongestRoad(
+                        EasyMock.<List<Player>>anyObject(),
+                        EasyMock.eq(PlayerColor.SETUP)
+                )
+        ).andReturn(PlayerColor.SETUP);
+
+        EasyMock.replay(boardMock, blueStateMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        model.setCurrentGamePhase(GamePhase.ROAD_BUILDING_DEV_CARD);
+        model.setCurrentPlayerColor(PlayerColor.BLUE);
+        model.attemptBuildRoad(0, 3);
+
+        EasyMock.verify(boardMock, blueStateMock);
+    }
+
+    @Test
+    void attemptBuildRoad_SetupPhase_ExpectSuccess_ExpectNoResourcesReduced(){
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        Player redStateMock = EasyMock.createMock(Player.class);
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock.put(PlayerColor.BLUE, blueStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.RED, redStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.WHITE, whiteStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.ORANGE, orangeStateMock);
+
+        boardMock.buildSetupSettlement(blueStateMock, 0);
+        EasyMock.expectLastCall();
+        boardMock.buildSetupRoad(blueStateMock, 0, 0, 3);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(boardMock, blueStateMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        model.setCurrentGamePhase(GamePhase.SETUP_PHASE);
+        model.setCurrentPlayerColor(PlayerColor.BLUE);
+        model.attemptBuildSettlement(0);
+        model.attemptBuildRoad(0, 3);
+
+        EasyMock.verify(boardMock, blueStateMock);
+    }
+
 
     // --- BVA: resource amount boundaries for attemptBuildCity ---
 
@@ -849,6 +961,7 @@ public class GameModelTests {
         EasyMock.expectLastCall();
         grainDeckMock.replenish(2);
         EasyMock.expectLastCall();
+        playerMock.updateVictoryPoints(1);
         EasyMock.replay(playerMock, boardMock, oreDeckMock, grainDeckMock);
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
                 oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
@@ -1035,5 +1148,591 @@ public class GameModelTests {
         assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
         EasyMock.verify(redMock, blueMock, boardMock, woolDeckMock, lumberDeckMock,
                 brickDeckMock, grainDeckMock, oreDeckMock);
+    @Test
+    void updateVictoryPoints_RedReceives1_ExpectSuccess() {
+        Player redStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
+                PlayerColor.RED, redStateMock
+        );;
+
+        redStateMock.updateVictoryPoints(1);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(redStateMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        model.updateVictoryPoints(PlayerColor.RED, 1);
+
+        EasyMock.verify(redStateMock);
+
+    }
+
+    @Test
+    void updateVictoryPoints_OrangeReceives2_ExpectSuccess() {
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
+                PlayerColor.ORANGE, orangeStateMock
+        );;
+
+        orangeStateMock.updateVictoryPoints(2);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(orangeStateMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        model.updateVictoryPoints(PlayerColor.ORANGE, 2);
+
+        EasyMock.verify(orangeStateMock);
+    }
+
+    @Test
+    void updateVictoryPoints_WhiteLoses2_ExpectSuccess() {
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
+                PlayerColor.WHITE, whiteStateMock
+        );;
+
+        whiteStateMock.updateVictoryPoints(-2);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(whiteStateMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        model.updateVictoryPoints(PlayerColor.WHITE, -2);
+
+        EasyMock.verify(whiteStateMock);
+    }
+
+    @Test
+    void updateVictoryPoints_BlueGains2_ExpectSuccess() {
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
+                PlayerColor.BLUE, blueStateMock
+        );;
+
+        blueStateMock.updateVictoryPoints(2);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(blueStateMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        model.updateVictoryPoints(PlayerColor.BLUE, 2);
+
+        EasyMock.verify(blueStateMock);
+    }
+
+    // checkCurrentPlayerHasTenOrMoreVictoryPoints()
+
+    @Test
+    void checkCurrentPlayer10OrMorePoints_RedHas0_ExpectSamePhase() {
+        Player redStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
+                PlayerColor.RED, redStateMock
+        );
+
+        EasyMock.expect(redStateMock.getVictoryPoints()).andReturn(0);
+
+        EasyMock.replay(redStateMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        model.checkCurrentPlayerHasTenOrMoreVictoryPoints();
+        assertEquals(GamePhase.GENERAL_PLAY,model.getCurrentPhase());
+
+        EasyMock.verify(redStateMock);
+    }
+
+    @Test
+    void checkCurrentPlayer10OrMorePoints_WhiteHas9_ExpectSamePhase() {
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
+                PlayerColor.WHITE, whiteStateMock
+        );
+
+        EasyMock.expect(whiteStateMock.getVictoryPoints()).andReturn(0);
+
+        EasyMock.replay(whiteStateMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        model.setCurrentPlayerColor(PlayerColor.WHITE);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        model.checkCurrentPlayerHasTenOrMoreVictoryPoints();
+        assertEquals(GamePhase.GENERAL_PLAY,model.getCurrentPhase());
+
+        EasyMock.verify(whiteStateMock);
+    }
+
+    @Test
+    void checkCurrentPlayer10OrMorePoints_OrangeHas10_ExpectEndPhase() {
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
+                PlayerColor.ORANGE, orangeStateMock
+        );
+
+        EasyMock.expect(orangeStateMock.getVictoryPoints()).andReturn(10);
+
+        EasyMock.replay(orangeStateMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        model.setCurrentPlayerColor(PlayerColor.ORANGE);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        model.checkCurrentPlayerHasTenOrMoreVictoryPoints();
+
+        assertEquals(GamePhase.END_GAME, model.getCurrentPhase());
+
+        EasyMock.verify(orangeStateMock);
+    }
+
+    @Test
+    void checkCurrentPlayer10OrMorePoints_BlueHas11_ExpectEndPhase() {
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
+                PlayerColor.BLUE, blueStateMock
+        );
+
+        EasyMock.expect(blueStateMock.getVictoryPoints()).andReturn(11);
+
+        EasyMock.replay(blueStateMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        model.setCurrentPlayerColor(PlayerColor.BLUE);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        model.checkCurrentPlayerHasTenOrMoreVictoryPoints();
+
+        assertEquals(GamePhase.END_GAME, model.getCurrentPhase());
+
+        EasyMock.verify(blueStateMock);
+    }
+
+    // endTurn() tests
+
+    @Test
+    void endTurn_RedHasEnoughVictoryPoints_ExpectEndGame() {
+        Player redStateMock = EasyMock.createMock(Player.class);
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
+                PlayerColor.RED, redStateMock,
+                PlayerColor.ORANGE, orangeStateMock,
+                PlayerColor.WHITE, whiteStateMock,
+                PlayerColor.BLUE, blueStateMock
+        );
+
+        EasyMock.expect(redStateMock.getVictoryPoints()).andReturn(10);
+
+        EasyMock.replay(redStateMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.endTurn();
+
+        assertEquals(PlayerColor.RED, model.getCurrentPlayerColor());
+        assertEquals(GamePhase.END_GAME, model.getCurrentPhase());
+    }
+
+    @Test
+    void endTurn_OrangeHasEnoughVictoryPoints_ExpectEndGame() {
+        Player redStateMock = EasyMock.createMock(Player.class);
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(
+                PlayerColor.RED, redStateMock,
+                PlayerColor.ORANGE, orangeStateMock,
+                PlayerColor.WHITE, whiteStateMock,
+                PlayerColor.BLUE, blueStateMock
+        );
+
+        EasyMock.expect(orangeStateMock.getVictoryPoints()).andReturn(11);
+
+        EasyMock.replay(orangeStateMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        model.setCurrentPlayerColor(PlayerColor.ORANGE);
+        model.endTurn();
+
+        assertEquals(PlayerColor.ORANGE, model.getCurrentPlayerColor());
+        assertEquals(GamePhase.END_GAME, model.getCurrentPhase());
+    }
+
+    @Test
+    void endTurn_WhiteDoesNotHaveEnoughVictoryPoints_ExpectNextTurn() {
+        Player redStateMock = EasyMock.createMock(Player.class);
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        List<Player> playerList = List.of(redStateMock, orangeStateMock, whiteStateMock, blueStateMock);
+        BoardHandler boardStub = EasyMock.createNiceMock(BoardHandler.class);
+
+        EasyMock.expect(redStateMock.getColor()).andReturn(PlayerColor.RED);
+        EasyMock.expect(orangeStateMock.getColor()).andReturn(PlayerColor.ORANGE);
+        EasyMock.expect(whiteStateMock.getColor()).andReturn(PlayerColor.WHITE);
+        EasyMock.expect(blueStateMock.getColor()).andReturn(PlayerColor.BLUE);
+
+        EasyMock.expect(whiteStateMock.getVictoryPoints()).andReturn(9);
+
+        EasyMock.replay(whiteStateMock, blueStateMock, redStateMock, orangeStateMock);
+
+        GameModel model = new GameModel(playerList, boardStub);
+
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        model.setCurrentPlayerColor(PlayerColor.WHITE);
+        model.setCurrentPlayerIndex(2);
+        model.endTurn();
+
+        assertEquals(PlayerColor.BLUE, model.getCurrentPlayerColor());
+        assertEquals(GamePhase.BEFORE_ROLL, model.getCurrentPhase());
+
+        EasyMock.verify(whiteStateMock);
+    }
+
+    @Test
+    void endTurn_BlueDoesNotHaveEnoughVictoryPoints_ExpectNextTurn() {
+        Player redStateMock = EasyMock.createMock(Player.class);
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        List<Player> playerList = List.of(redStateMock, orangeStateMock, whiteStateMock, blueStateMock);
+        BoardHandler boardStub = EasyMock.createNiceMock(BoardHandler.class);
+
+        EasyMock.expect(redStateMock.getColor()).andReturn(PlayerColor.RED);
+        EasyMock.expect(orangeStateMock.getColor()).andReturn(PlayerColor.ORANGE);
+        EasyMock.expect(whiteStateMock.getColor()).andReturn(PlayerColor.WHITE);
+        EasyMock.expect(blueStateMock.getColor()).andReturn(PlayerColor.BLUE);
+
+        EasyMock.expect(blueStateMock.getVictoryPoints()).andReturn(9);
+
+        EasyMock.replay(whiteStateMock, blueStateMock, redStateMock, orangeStateMock);
+
+        GameModel model = new GameModel(playerList, boardStub);
+
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        model.setCurrentPlayerColor(PlayerColor.BLUE);
+        model.setCurrentPlayerIndex(3);
+        model.endTurn();
+
+        assertEquals(PlayerColor.RED, model.getCurrentPlayerColor());
+        assertEquals(GamePhase.BEFORE_ROLL, model.getCurrentPhase());
+
+        EasyMock.verify(blueStateMock);
+    }
+
+    @Test
+    void endTurn_RedDoesNotHaveEnoughVictoryPoints_ExpectNextTurn() {
+        Player redStateMock = EasyMock.createMock(Player.class);
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        List<Player> playerList = List.of(redStateMock, orangeStateMock, whiteStateMock, blueStateMock);
+        BoardHandler boardStub = EasyMock.createNiceMock(BoardHandler.class);
+
+        EasyMock.expect(redStateMock.getColor()).andReturn(PlayerColor.RED);
+        EasyMock.expect(orangeStateMock.getColor()).andReturn(PlayerColor.ORANGE);
+        EasyMock.expect(whiteStateMock.getColor()).andReturn(PlayerColor.WHITE);
+        EasyMock.expect(blueStateMock.getColor()).andReturn(PlayerColor.BLUE);
+
+        EasyMock.expect(redStateMock.getVictoryPoints()).andReturn(9);
+
+        EasyMock.replay(whiteStateMock, blueStateMock, redStateMock, orangeStateMock);
+
+        GameModel model = new GameModel(playerList, boardStub);
+
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentPlayerIndex(0);
+        model.endTurn();
+
+        assertEquals(PlayerColor.ORANGE, model.getCurrentPlayerColor());
+        assertEquals(GamePhase.BEFORE_ROLL, model.getCurrentPhase());
+
+        EasyMock.verify(redStateMock);
+    }
+
+    @Test
+    void endTurn_OrangeDoesNotHaveEnoughVictoryPoints_ExpectNextTurn() {
+        Player redStateMock = EasyMock.createMock(Player.class);
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        List<Player> playerList = List.of(redStateMock, orangeStateMock, whiteStateMock, blueStateMock);
+        BoardHandler boardStub = EasyMock.createNiceMock(BoardHandler.class);
+
+        EasyMock.expect(redStateMock.getColor()).andReturn(PlayerColor.RED);
+        EasyMock.expect(orangeStateMock.getColor()).andReturn(PlayerColor.ORANGE);
+        EasyMock.expect(whiteStateMock.getColor()).andReturn(PlayerColor.WHITE);
+        EasyMock.expect(blueStateMock.getColor()).andReturn(PlayerColor.BLUE);
+
+        EasyMock.expect(orangeStateMock.getVictoryPoints()).andReturn(9);
+
+        EasyMock.replay(whiteStateMock, blueStateMock, redStateMock, orangeStateMock);
+
+        GameModel model = new GameModel(playerList, boardStub);
+
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+        model.setCurrentPlayerColor(PlayerColor.ORANGE);
+        model.setCurrentPlayerIndex(1);
+        model.endTurn();
+
+        assertEquals(PlayerColor.WHITE, model.getCurrentPlayerColor());
+        assertEquals(GamePhase.BEFORE_ROLL, model.getCurrentPhase());
+
+        EasyMock.verify(orangeStateMock);
+    }
+    @ParameterizedTest
+    @EnumSource(value = GamePhase.class, names = {
+            "BEFORE_ROLL",
+            "RESOURCE_PRODUCTION",
+            "MOVE_ROBBER",
+            "MONOPOLY_DEV_CARD",
+            "ROAD_BUILDING_DEV_CARD",
+            "OFFERING_TRADE"})
+    void endTurn_WrongPhase_ExpectError(GamePhase phase) {
+        Player redStateMock = EasyMock.createMock(Player.class);
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        List<Player> playerList = List.of(redStateMock, orangeStateMock, whiteStateMock, blueStateMock);
+        BoardHandler boardStub = EasyMock.createNiceMock(BoardHandler.class);
+
+        EasyMock.expect(redStateMock.getColor()).andReturn(PlayerColor.RED);
+        EasyMock.expect(orangeStateMock.getColor()).andReturn(PlayerColor.ORANGE);
+        EasyMock.expect(whiteStateMock.getColor()).andReturn(PlayerColor.WHITE);
+        EasyMock.expect(blueStateMock.getColor()).andReturn(PlayerColor.BLUE);
+
+        GameModel model = new GameModel(playerList, boardStub);
+
+        model.setCurrentGamePhase(phase);
+        model.setCurrentPlayerColor(PlayerColor.ORANGE);
+        model.setCurrentPlayerIndex(1);
+        Exception exception = assertThrows(IllegalGamePhaseException.class,
+            model::endTurn);
+
+        assertEquals("Not proper phase for that action", exception.getMessage());
+        assertEquals(PlayerColor.ORANGE, model.getCurrentPlayerColor());
+        assertEquals(phase, model.getCurrentPhase());
+    }
+
+    // handleLongestRoad()
+
+    @Test
+    void handleLongestRoad_NoOneQualifies_ExpectPlayerSetup() {
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        Player redStateMock = EasyMock.createMock(Player.class);
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock.put(PlayerColor.BLUE, blueStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.RED, redStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.WHITE, whiteStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.ORANGE, orangeStateMock);
+
+        EasyMock.expect(
+                boardMock.calculateLongestRoad(
+                        EasyMock.<List<Player>>anyObject(),
+                        EasyMock.eq(PlayerColor.SETUP)
+                )
+        ).andReturn(PlayerColor.SETUP);
+
+        EasyMock.replay(boardMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        assertEquals(PlayerColor.SETUP, model.getCurrentLongestRoadPlayerColor());
+
+        model.handleLongestRoad();
+
+        assertEquals(PlayerColor.SETUP, model.getCurrentLongestRoadPlayerColor());
+
+        EasyMock.verify(boardMock);
+    }
+
+    @Test
+    void handleLongestRoad_RedQualifies_RedStillQualifies_ExpectPlayerRED() {
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        Player redStateMock = EasyMock.createMock(Player.class);
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock.put(PlayerColor.BLUE, blueStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.RED, redStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.WHITE, whiteStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.ORANGE, orangeStateMock);
+
+        EasyMock.expect(
+                boardMock.calculateLongestRoad(
+                        EasyMock.<List<Player>>anyObject(),
+                        EasyMock.eq(PlayerColor.RED)
+                )
+        ).andReturn(PlayerColor.RED);
+
+        EasyMock.replay(boardMock, redStateMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        model.setCurrentLongestRoadPlayerColor(PlayerColor.RED);
+
+        model.handleLongestRoad();
+
+        assertEquals(PlayerColor.RED, model.getCurrentLongestRoadPlayerColor());
+
+        EasyMock.verify(boardMock, redStateMock);
+    }
+
+    @Test
+    void handleLongestRoad_CurrentlySetup_BecomesWhite_ExpectPlayerWhite_WhiteGains2Points() {
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        Player redStateMock = EasyMock.createMock(Player.class);
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock.put(PlayerColor.BLUE, blueStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.RED, redStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.WHITE, whiteStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.ORANGE, orangeStateMock);
+
+        EasyMock.expect(
+                boardMock.calculateLongestRoad(
+                        EasyMock.<List<Player>>anyObject(),
+                        EasyMock.eq(PlayerColor.SETUP)
+                )
+        ).andReturn(PlayerColor.WHITE);
+
+        whiteStateMock.updateVictoryPoints(2);
+        EasyMock.expectLastCall();
+        EasyMock.replay(boardMock, whiteStateMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+
+        model.handleLongestRoad();
+
+        assertEquals(PlayerColor.WHITE, model.getCurrentLongestRoadPlayerColor());
+
+        EasyMock.verify(boardMock, whiteStateMock);
+    }
+
+    @Test
+    void handleLongestRoad_CurrentlyBlue_BecomesOrange_ExpectPlayerOrange_OrangeGains2Points_BlueLoses2Points() {
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        Player redStateMock = EasyMock.createMock(Player.class);
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock.put(PlayerColor.BLUE, blueStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.RED, redStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.WHITE, whiteStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.ORANGE, orangeStateMock);
+
+        EasyMock.expect(
+                boardMock.calculateLongestRoad(
+                        EasyMock.<List<Player>>anyObject(),
+                        EasyMock.eq(PlayerColor.BLUE)
+                )
+        ).andReturn(PlayerColor.ORANGE);
+        orangeStateMock.updateVictoryPoints(2);
+        EasyMock.expectLastCall();
+        blueStateMock.updateVictoryPoints(-2);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(boardMock, orangeStateMock, blueStateMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentLongestRoadPlayerColor(PlayerColor.BLUE);
+        model.handleLongestRoad();
+
+        assertEquals(PlayerColor.ORANGE, model.getCurrentLongestRoadPlayerColor());
+
+        EasyMock.verify(boardMock, orangeStateMock, blueStateMock);
+    }
+
+    @Test
+    void handleLongestRoad_CurrentlyOrange_BecomesBlue_ExpectPlayerBlue_BlueGains2Points_OrangeLoses2Points() {
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        Player redStateMock = EasyMock.createMock(Player.class);
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock.put(PlayerColor.BLUE, blueStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.RED, redStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.WHITE, whiteStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.ORANGE, orangeStateMock);
+
+        EasyMock.expect(
+                boardMock.calculateLongestRoad(
+                        EasyMock.<List<Player>>anyObject(),
+                        EasyMock.eq(PlayerColor.ORANGE)
+                )
+        ).andReturn(PlayerColor.BLUE);
+        blueStateMock.updateVictoryPoints(2);
+        EasyMock.expectLastCall();
+        orangeStateMock.updateVictoryPoints(-2);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(boardMock, orangeStateMock, blueStateMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentLongestRoadPlayerColor(PlayerColor.ORANGE);
+        model.handleLongestRoad();
+
+        assertEquals(PlayerColor.BLUE, model.getCurrentLongestRoadPlayerColor());
+
+        EasyMock.verify(boardMock, orangeStateMock, blueStateMock);
+    }
+
+    @Test
+    void handleLongestRoad_CurrentlyWhite_BecomesRed_ExpectPlayerRed_RedGains2Points_WhiteLoses2Points() {
+        Player blueStateMock = EasyMock.createMock(Player.class);
+        Player redStateMock = EasyMock.createMock(Player.class);
+        Player whiteStateMock = EasyMock.createMock(Player.class);
+        Player orangeStateMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock.put(PlayerColor.BLUE, blueStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.RED, redStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.WHITE, whiteStateMock);
+        ColorToPlayerObjMock.put(PlayerColor.ORANGE, orangeStateMock);
+
+        EasyMock.expect(
+                boardMock.calculateLongestRoad(
+                        EasyMock.<List<Player>>anyObject(),
+                        EasyMock.eq(PlayerColor.WHITE)
+                )
+        ).andReturn(PlayerColor.RED);
+        redStateMock.updateVictoryPoints(2);
+        EasyMock.expectLastCall();
+        whiteStateMock.updateVictoryPoints(-2);
+        EasyMock.expectLastCall();
+
+        EasyMock.replay(boardMock, redStateMock, whiteStateMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+        model.setCurrentLongestRoadPlayerColor(PlayerColor.WHITE);
+        model.handleLongestRoad();
+
+        assertEquals(PlayerColor.RED, model.getCurrentLongestRoadPlayerColor());
+
+        EasyMock.verify(boardMock, redStateMock, whiteStateMock);
     }
 }
