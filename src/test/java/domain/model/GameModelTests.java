@@ -1682,7 +1682,8 @@ public class GameModelTests {
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
 
-        assertThrows(EmptyDeckException.class, () -> model.buyDevCard(deckMock));
+        Exception exception = assertThrows(EmptyDeckException.class, () -> model.buyDevCard(deckMock));
+        assertEquals("Cannot draw new DevelopmentCard, no cards remain.", exception.getMessage());
 
         EasyMock.verify(redStateMock, deckMock);
     }
@@ -1704,7 +1705,8 @@ public class GameModelTests {
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
 
-        assertThrows(InsufficientResourcesException.class, () -> model.buyDevCard(deckMock));
+        Exception exception = assertThrows(InsufficientResourcesException.class, () -> model.buyDevCard(deckMock));
+        assertEquals("Insufficient resources", exception.getMessage());
 
         EasyMock.verify(redStateMock, deckMock);
     }
@@ -1727,7 +1729,8 @@ public class GameModelTests {
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
 
-        assertThrows(InsufficientResourcesException.class, () -> model.buyDevCard(deckMock));
+        Exception exception = assertThrows(InsufficientResourcesException.class, () -> model.buyDevCard(deckMock));
+        assertEquals("Insufficient resources", exception.getMessage());
 
         EasyMock.verify(redStateMock, deckMock);
     }
@@ -1751,7 +1754,8 @@ public class GameModelTests {
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
 
-        assertThrows(InsufficientResourcesException.class, () -> model.buyDevCard(deckMock));
+        Exception exception = assertThrows(InsufficientResourcesException.class, () -> model.buyDevCard(deckMock));
+        assertEquals("Insufficient resources", exception.getMessage());
 
         EasyMock.verify(redStateMock, deckMock);
     }
@@ -1771,7 +1775,8 @@ public class GameModelTests {
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
 
-        assertThrows(IllegalGamePhaseException.class, () -> model.buyDevCard(deckMock));
+        Exception exception = assertThrows(IllegalGamePhaseException.class, () -> model.buyDevCard(deckMock));
+        assertEquals("Not proper phase for that action", exception.getMessage());
 
         EasyMock.verify(redStateMock, deckMock);
     }
@@ -1791,7 +1796,8 @@ public class GameModelTests {
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.MOVE_ROBBER);
 
-        assertThrows(IllegalGamePhaseException.class, () -> model.buyDevCard(deckMock));
+        Exception exception = assertThrows(IllegalGamePhaseException.class, () -> model.buyDevCard(deckMock));
+        assertEquals("Not proper phase for that action", exception.getMessage());
 
         EasyMock.verify(redStateMock, deckMock);
     }

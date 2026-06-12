@@ -118,8 +118,9 @@ class GameLoopControllerTest {
 
         replay(mockModel, mockDeck, mockHandler, mockPlayer);
 
-        assertThrows(InsufficientResourcesException.class,
+        Exception exception = assertThrows(InsufficientResourcesException.class,
                 () -> controller.buyDevCard(mockModel, mockDeck, mockHandler));
+        assertEquals("Insufficient resources", exception.getMessage());
 
         verify(mockModel, mockDeck, mockHandler, mockPlayer);
     }
@@ -140,8 +141,9 @@ class GameLoopControllerTest {
 
         replay(mockModel, mockDeck, mockHandler, mockPlayer);
 
-        assertThrows(EmptyDeckException.class,
+        Exception exception = assertThrows(EmptyDeckException.class,
                 () -> controller.buyDevCard(mockModel, mockDeck, mockHandler));
+        assertEquals("Cannot draw new DevelopmentCard, no cards remain.", exception.getMessage());
 
         verify(mockModel, mockDeck, mockHandler, mockPlayer);
     }
