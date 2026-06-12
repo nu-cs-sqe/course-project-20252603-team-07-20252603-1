@@ -4,16 +4,17 @@ import domain.model.board.BoardHandler;
 import domain.model.development_cards.DevelopmentCard;
 import domain.model.development_cards.DevelopmentCardDeck;
 import domain.model.exceptions.EmptyDeckException;
-import domain.model.exceptions.IllegalCityPlacementException;
-import domain.model.exceptions.IllegalGamePhaseException;
-import domain.model.exceptions.IllegalSettlementPlacementException;
+import domain.model.board.Port;
+import domain.model.board.PortTradeRequest;
+import domain.model.exceptions.*;
 import domain.model.player.PlayerColor;
+import domain.model.player.TradeManager;
+import domain.model.player.TradeOffer;
 import domain.model.resources.ResourceDeck;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import domain.model.player.Player;
 import domain.model.resources.Resource;
 
-import domain.model.exceptions.InsufficientResourcesException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -46,13 +47,15 @@ public class GameModel {
     private final ResourceDeck oreDeck;
     private final ResourceDeck woolDeck;
     private final Map<Resource, ResourceDeck> decks;
+    private final TradeManager tradeManager;
 
     //constructor for injecting mocks/stubs
     GameModel(ResourceDeck lumberDeck, ResourceDeck brickDeck,
               ResourceDeck grainDeck, ResourceDeck oreDeck,
               ResourceDeck woolDeck,
               Map<PlayerColor, Player> playerColorToPlayerObject,
-              BoardHandler board) {
+              BoardHandler board,
+              TradeManager tradeManager) {
         this.lumberDeck = lumberDeck;
         this.brickDeck = brickDeck;
         this.grainDeck = grainDeck;
@@ -68,6 +71,7 @@ public class GameModel {
         this.playerColorToPlayerObject = playerColorToPlayerObject;
         this.board = board;
         this.currentLongestRoadPlayerColor = PlayerColor.SETUP;
+        this.tradeManager = tradeManager;
     }
 
     public GameModel(List<Player> players, BoardHandler board) {
@@ -97,6 +101,7 @@ public class GameModel {
         this.currentPlayerColor = playerColors.get(0);
         this.currentLongestRoadPlayerColor = PlayerColor.SETUP;
         this.currentGamePhase = GamePhase.BEFORE_ROLL;
+        this.tradeManager = new TradeManager();
     }
 
     public List<Player> getTurnOrder() {
@@ -328,7 +333,23 @@ public List<Player> getOtherPlayers() {
         }
     }
 
-    public void attemptTrade(){};
+    public void offerTrade(TradeOffer offer) {
+        checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY);
+        tradeManager.offerTrade(offer);
+        currentGamePhase = GamePhase.OFFERING_TRADE;
+    }
+
+    public void acceptTrade(TradeOffer offer, Player acceptingPlayer) {
+        checkCurrentGamePhaseMatches(GamePhase.OFFERING_TRADE);
+        tradeManager.acceptTrade(offer, acceptingPlayer);
+        currentGamePhase = GamePhase.GENERAL_PLAY;
+    }
+
+    public void clearOffers() {
+        checkCurrentGamePhaseMatches(GamePhase.OFFERING_TRADE);
+        tradeManager.clearOffers();
+        currentGamePhase = GamePhase.GENERAL_PLAY;
+    }
 
     public void playDevCard(){};
 
@@ -355,5 +376,16 @@ public List<Player> getOtherPlayers() {
     }
 
     public void moveRobberAndSteal(){};
+
+    // TODO: UI can call board to get list of available ports, and then upon the user clicking a port, it will be passed into this function
+    public void attemptPortTrade(Port port, Resource giving, Resource receiving) {
+        checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY);
+        PortTradeRequest request = new PortTradeRequest(giving, receiving, decks);
+        try {
+            port.executePortTrade(getCurrentPlayer(), board, request);
+        } catch (EmptyDeckException e) {
+            throw new IllegalStateException("Bank has insufficient resources for this trade.");
+        }
+    }
 
 }

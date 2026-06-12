@@ -298,3 +298,31 @@ Step 3:
 | Test Case 55 | WHITE holds longest road  | calculateLongestRoad is called, returns WHITE  | :white_check_mark: |
 | Test Case 56 | BLUE holds longest road   | calculateLongestRoad is called, returns BLUE   | :white_check_mark: |
 | Test Case 57 | SETUP holds longest road  | calculateLongestRoad is called, returns SETUP  | :white_check_mark: |
+
+
+### Method under test: `getAvailablePorts(Player player)`
+
+Step 1:
+- Input: Player
+- Input: Ports
+- Input: State of the board
+- Output: List of available ports
+
+Step 2:
+- Input - Cases
+- Input - Collection
+- Input - Cases
+- Output - Collection
+
+Step 3:
+- Input: RED, ORANGE, BLUE, WHITE 
+- Input: Collection - Will always be list of 9 created ports
+- Input: Player owns nodes next to number of ports
+- Output: empty collection, contains just one element, contains more than one element, duplicate elements (not feasible), max possible size (7)
+
+|              | System under test                                                            | Expected output                | Implemented?       |
+|--------------|------------------------------------------------------------------------------|--------------------------------|--------------------|
+| Test Case 58 | RED has settlement on node 23                                                | Returns empty list             | :white_check_mark: |
+| Test Case 59 | ORANGE has settlement on node 0                                              | Returns the one port on node 0 | :white_check_mark: |
+| Test Case 60 | WHITE has claimed 0, 5, 11, 15, 32, 38, and 46 (can maximally claim 7 nodes) | Returns 7 ports                | :white_check_mark: |
+
