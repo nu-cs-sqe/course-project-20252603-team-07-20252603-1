@@ -1885,6 +1885,24 @@ public class GameModelTests {
         EasyMock.verify(boardMock, cardMock);
     }
 
+    // TC5: GENERAL_PLAY, card type = MONOPOLY
+    //      -> phase transitions to MONOPOLY_DEV_CARD
+    @Test
+    void playDevCard_GeneralPlayMonopolyCard_ExpectPhaseMovesToMonopolyDevCard() {
+        DevelopmentCard cardMock = EasyMock.createMock(DevelopmentCard.class);
+        EasyMock.expect(cardMock.getType()).andReturn(DevelopmentCardType.MONOPOLY);
+        EasyMock.replay(boardMock, cardMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+
+        model.playDevCard(cardMock);
+
+        assertEquals(GamePhase.MONOPOLY_DEV_CARD, model.getCurrentPhase());
+        EasyMock.verify(boardMock, cardMock);
+    }
+
   // Attempt Port Trade Tests
 
   // Test Case 1

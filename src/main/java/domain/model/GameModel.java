@@ -362,6 +362,8 @@ public List<Player> getOtherPlayers() {
             currentGamePhase = GamePhase.MOVE_ROBBER;
         } else if (type == DevelopmentCardType.ROAD_BUILDER) {
             currentGamePhase = GamePhase.ROAD_BUILDING_DEV_CARD;
+        } else if (type == DevelopmentCardType.MONOPOLY) {
+            currentGamePhase = GamePhase.MONOPOLY_DEV_CARD;
         }
     }
 
