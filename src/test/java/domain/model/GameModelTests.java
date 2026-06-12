@@ -1594,7 +1594,7 @@ public class GameModelTests {
         EasyMock.replay(redStateMock, deckMock, cardMock, oreDeckMock, woolDeckMock, grainDeckMock);
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
 
@@ -1628,7 +1628,7 @@ public class GameModelTests {
         EasyMock.replay(redStateMock, deckMock, cardMock, oreDeckMock, woolDeckMock, grainDeckMock);
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
 
@@ -1662,7 +1662,7 @@ public class GameModelTests {
         EasyMock.replay(redStateMock, deckMock, cardMock, oreDeckMock, woolDeckMock, grainDeckMock);
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
 
@@ -1688,7 +1688,7 @@ public class GameModelTests {
         EasyMock.replay(redStateMock, deckMock);
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
 
@@ -1711,7 +1711,7 @@ public class GameModelTests {
         EasyMock.replay(redStateMock, deckMock);
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
 
@@ -1735,7 +1735,7 @@ public class GameModelTests {
         EasyMock.replay(redStateMock, deckMock);
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
 
@@ -1760,7 +1760,7 @@ public class GameModelTests {
         EasyMock.replay(redStateMock, deckMock);
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
 
@@ -1781,7 +1781,7 @@ public class GameModelTests {
         EasyMock.replay(redStateMock, deckMock);
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
 
@@ -1802,7 +1802,7 @@ public class GameModelTests {
         EasyMock.replay(redStateMock, deckMock);
 
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.MOVE_ROBBER);
 
