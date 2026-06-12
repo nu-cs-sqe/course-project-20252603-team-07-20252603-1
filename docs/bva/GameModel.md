@@ -377,7 +377,7 @@ Step 3:
 | Test Case 5 | GENERAL_PLAY, card type = MONOPOLY          | phase → MONOPOLY_DEV_CARD                                            | :white_check_mark: |
 | Test Case 6 | GENERAL_PLAY, card type = YEAR_OF_PLENTY    | phase unchanged (GENERAL_PLAY)                                       | :white_check_mark: |
 | Test Case 7 | GENERAL_PLAY, card type = VICTORY_POINT     | phase unchanged (GENERAL_PLAY)                                       | :white_check_mark: |
-| Test Case 8 | BEFORE_ROLL, card type = KNIGHT             | phase → MOVE_ROBBER                                                  | :x:          |
+| Test Case 8 | BEFORE_ROLL, card type = KNIGHT             | phase → MOVE_ROBBER                                                  | :white_check_mark: |
 
 ---
 

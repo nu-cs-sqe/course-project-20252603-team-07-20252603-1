@@ -1939,6 +1939,24 @@ public class GameModelTests {
         EasyMock.verify(boardMock, cardMock);
     }
 
+    // TC8: BEFORE_ROLL, card type = KNIGHT
+    //      -> phase transitions to MOVE_ROBBER
+    @Test
+    void playDevCard_BeforeRollKnightCard_ExpectPhaseMovesToMoveRobber() {
+        DevelopmentCard cardMock = EasyMock.createMock(DevelopmentCard.class);
+        EasyMock.expect(cardMock.getType()).andReturn(DevelopmentCardType.KNIGHT);
+        EasyMock.replay(boardMock, cardMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+
+        model.playDevCard(cardMock);
+
+        assertEquals(GamePhase.MOVE_ROBBER, model.getCurrentPhase());
+        EasyMock.verify(boardMock, cardMock);
+    }
+
   // Attempt Port Trade Tests
 
   // Test Case 1
