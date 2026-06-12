@@ -360,6 +360,8 @@ public List<Player> getOtherPlayers() {
         DevelopmentCardType type = card.getType();
         if (type == DevelopmentCardType.KNIGHT) {
             currentGamePhase = GamePhase.MOVE_ROBBER;
+        } else if (type == DevelopmentCardType.ROAD_BUILDER) {
+            currentGamePhase = GamePhase.ROAD_BUILDING_DEV_CARD;
         }
     }
 
