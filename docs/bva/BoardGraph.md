@@ -178,7 +178,7 @@ Recursive depth-first search that computes the longest connected road for `color
 
 |             | State of the System                                                                          | Expected output                               | Implemented?       |
 |-------------|----------------------------------------------------------------------------------------------|-----------------------------------------------|--------------------|
-| Test Case 1 | intermediate node has own (friendly) settlement                                              | road continues through own settlement         | :x: |
+| Test Case 1 | intermediate node has own (friendly) settlement                                              | road continues through own settlement         | :white_check_mark: |
 | Test Case 2 | intermediate node has enemy settlement                                                       | road is blocked; search stops at that node    | :x: |
 | Test Case 3 | node has an unvisited edge owned by an enemy color                                           | enemy edge not traversed                      | :x: |
 

@@ -2268,4 +2268,14 @@ public class BoardGraphTests {
     EasyMock.verify(nodeMock);
   }
 
+  // ← REDUCES CXTY
+  @Test
+  void edgeCheckPlayerOwnsNeighboringEdge_StartingNodeEdgeOwnedByColor_ExpectTrue() {
+    BoardGraph b = new BoardGraph();
+    b.buildBoard();
+    b.claimGraphEdgeObject(PlayerColor.RED, 0, 3);
+    assertTrue(b.edgeCheckPlayerOwnsNeighboringEdge(PlayerColor.RED, 0, 3));
+  }
+
+
 }
