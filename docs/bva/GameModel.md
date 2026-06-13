@@ -18,7 +18,7 @@ mutations to `BoardHandler`, and deducts resources from the current player.
 
 |             | State of the System          | Expected output | Implemented?       |
 |-------------|------------------------------|-----------------|--------------------|
-| Test Case 1 | fresh model after construction | 0             | :x: |
+| Test Case 1 | fresh model after construction | 0             | :white_check_mark: |
 
 ---
 

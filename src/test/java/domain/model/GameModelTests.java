@@ -2226,4 +2226,19 @@ public class GameModelTests {
     EasyMock.verify(redStateMock, boardMock, tradeManagerMock,
             lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock, woolDeckMock);
   }
+
+  // ← REDUCES CXTY
+  @Test
+  void getCurrentPlayerIndex_AfterConstruction_ExpectZero() {
+    EasyMock.replay(boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock,
+        woolDeckMock, tradeManagerMock);
+
+    GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+        oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+
+    assertEquals(0, model.getCurrentPlayerIndex());
+
+    EasyMock.verify(boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock,
+        woolDeckMock, tradeManagerMock);
+  }
 }
