@@ -1,6 +1,8 @@
 package domain.model.exceptions;
 
-/** Thrown when drawing from an empty development card deck. */
+/**
+ * Thrown when drawing from an empty development card deck.
+ */
 public class EmptyDeckException extends Exception {
 
   /**

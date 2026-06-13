@@ -16,38 +16,45 @@ import javafx.scene.layout.VBox;
  */
 public class ResourcePickDialog {
 
-    private static final int SPACING_PX = 10;
+  private static final int SPACING_PX = 10;
 
-    private final Dialog<List<Resource>> dialog;
+  private final Dialog<List<Resource>> dialog;
 
-    public ResourcePickDialog(ResourceBundle labels, int resourceCount) {
-        List<ComboBox<Resource>> pickers = new ArrayList<>();
-        VBox content = new VBox();
-        content.setSpacing(SPACING_PX);
-        for (int i = 0; i < resourceCount; i++) {
-            ComboBox<Resource> picker = DialogSupport.resourceComboBox(labels);
-            pickers.add(picker);
-            content.getChildren().add(picker);
-        }
-
-        dialog = new Dialog<>();
-        dialog.setTitle(labels.getString(resourceCount > 1
-                ? "devcard.pickTwoResources" : "devcard.pickResource"));
-        dialog.getDialogPane().setContent(content);
-        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-        dialog.setResultConverter(button -> {
-            if (button != ButtonType.OK) {
-                return null;
-            }
-            List<Resource> picked = new ArrayList<>();
-            for (ComboBox<Resource> picker : pickers) {
-                picked.add(picker.getValue());
-            }
-            return picked;
-        });
+  /**
+   * Creates the resource-pick dialog.
+   *
+   * @param labels the localized label bundle
+   * @param resourceCount how many resources the player must pick (1 or 2)
+   */
+  public ResourcePickDialog(ResourceBundle labels, int resourceCount) {
+    List<ComboBox<Resource>> pickers = new ArrayList<>();
+    VBox content = new VBox();
+    content.setSpacing(SPACING_PX);
+    for (int i = 0; i < resourceCount; i++) {
+      ComboBox<Resource> picker = DialogSupport.resourceComboBox(labels);
+      pickers.add(picker);
+      content.getChildren().add(picker);
     }
 
-    public Optional<List<Resource>> showAndPick() {
-        return dialog.showAndWait();
-    }
+    dialog = new Dialog<>();
+    dialog.setTitle(labels.getString(resourceCount > 1
+        ? "devcard.pickTwoResources" : "devcard.pickResource"));
+    dialog.getDialogPane().setContent(content);
+    dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+    dialog.setResultConverter(button -> {
+      if (button != ButtonType.OK) {
+        return null;
+      }
+      List<Resource> picked = new ArrayList<>();
+      for (ComboBox<Resource> picker : pickers) {
+        picked.add(picker.getValue());
+      }
+      return picked;
+    });
+  }
+
+  /** Shows the dialog and returns the chosen resources, or empty if cancelled. */
+  public Optional<List<Resource>> showAndPick() {
+    return dialog.showAndWait();
+  }
 }

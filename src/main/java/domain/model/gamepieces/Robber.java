@@ -1,6 +1,8 @@
 package domain.model.gamepieces;
 
-/** Represents the robber piece that blocks resource production on a hex. */
+/**
+ * Represents the robber piece that blocks resource production on a hex.
+ */
 public class Robber {
 
   private static final int MIN_HEX_ID = 0;
@@ -17,7 +19,9 @@ public class Robber {
     currentHexId = initialId;
   }
 
-  /** Returns the hex ID where the robber is currently located. */
+  /**
+   * Returns the hex ID where the robber is currently located.
+   */
   public int getRobberLocation() {
     return currentHexId;
   }

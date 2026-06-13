@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/** Represents a hexagonal tile on the game board, tracking its resource type and occupants. */
+/**
+ * Represents a hexagonal tile on the game board, tracking its resource type and occupants.
+ */
 public class Hex {
   private static final int MIN_HEX_ID = 0;
   private static final int MAX_HEX_ID = 18;

@@ -1,6 +1,8 @@
 package domain.model.exceptions;
 
-/** Thrown when a player lacks the resources required for an action. */
+/**
+ * Thrown when a player lacks the resources required for an action.
+ */
 public class InsufficientResourcesException extends RuntimeException {
 
   /**

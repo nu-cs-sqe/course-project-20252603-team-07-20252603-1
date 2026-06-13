@@ -31,15 +31,13 @@ Step 3:
 - Input type (Case): KNIGHT; VICTORY_POINT; ROAD_BUILDER; YEAR_OF_PLENTY; MONOPOLY; null (CAN'T SET — enum)
 - Input currentRoundNumber (Interval [0, ∞)): 0 (LOW); 1 (LOW + ε); large value (e.g. 100)
 
-
-|             | System under test                                        | Expected output                                     | Implemented?                    |
-| ----------- | -------------------------------------------------------- | --------------------------------------------------- |---------------------------------|
-| Test Case 1 | new DevelopmentCard(KNIGHT, 0)                           | card.getType() == KNIGHT, roundDrawnAt == 0         | :white_check_mark:              |
-| Test Case 2 | new DevelopmentCard(VICTORY_POINT, 5)                    | card.getType() == VICTORY_POINT, roundDrawnAt == 5  | :white_check_mark:              |
-| Test Case 3 | new DevelopmentCard(ROAD_BUILDER, 1)                     | card.getType() == ROAD_BUILDER, roundDrawnAt == 1   | :white_check_mark:              |
-| Test Case 4 | new DevelopmentCard(YEAR_OF_PLENTY, 10)                  | card.getType() == YEAR_OF_PLENTY, roundDrawnAt == 10| :white_check_mark:                              |
-| Test Case 5 | new DevelopmentCard(MONOPOLY, 3)                         | card.getType() == MONOPOLY, roundDrawnAt == 3       | :white_check_mark:                              |
-
+|             | System under test                       | Expected output                                      | Implemented?       |
+|-------------|-----------------------------------------|------------------------------------------------------|--------------------|
+| Test Case 1 | new DevelopmentCard(KNIGHT, 0)          | card.getType() == KNIGHT, roundDrawnAt == 0          | :white_check_mark: |
+| Test Case 2 | new DevelopmentCard(VICTORY_POINT, 5)   | card.getType() == VICTORY_POINT, roundDrawnAt == 5   | :white_check_mark: |
+| Test Case 3 | new DevelopmentCard(ROAD_BUILDER, 1)    | card.getType() == ROAD_BUILDER, roundDrawnAt == 1    | :white_check_mark: |
+| Test Case 4 | new DevelopmentCard(YEAR_OF_PLENTY, 10) | card.getType() == YEAR_OF_PLENTY, roundDrawnAt == 10 | :white_check_mark: |
+| Test Case 5 | new DevelopmentCard(MONOPOLY, 3)        | card.getType() == MONOPOLY, roundDrawnAt == 3        | :white_check_mark: |
 
 ---
 
@@ -58,14 +56,13 @@ Step 3:
 
 - Each Case value is tested via the constructor tests above (Test Cases 1–5).
 
-| | System under test | Expected output | Implemented?        |
-| ----------- | ----------------------------------------------- | --------------- |---------------------|
-| Test Case 6 | getType() on KNIGHT card | KNIGHT | :white_check_mark: (covered by TC1) |
-| Test Case 7 | getType() on VICTORY_POINT card | VICTORY_POINT | :white_check_mark: (covered by TC2) |
-| Test Case 8 | getType() on ROAD_BUILDER card | ROAD_BUILDER | :white_check_mark: (covered by TC3) |
-| Test Case 9 | getType() on YEAR_OF_PLENTY card | YEAR_OF_PLENTY | :white_check_mark: (covered by TC4) |
-| Test Case 10 | getType() on MONOPOLY card | MONOPOLY | :white_check_mark: (covered by TC5) |
-
+|              | System under test                | Expected output | Implemented?                        |
+|--------------|----------------------------------|-----------------|-------------------------------------|
+| Test Case 6  | getType() on KNIGHT card         | KNIGHT          | :white_check_mark: (covered by TC1) |
+| Test Case 7  | getType() on VICTORY_POINT card  | VICTORY_POINT   | :white_check_mark: (covered by TC2) |
+| Test Case 8  | getType() on ROAD_BUILDER card   | ROAD_BUILDER    | :white_check_mark: (covered by TC3) |
+| Test Case 9  | getType() on YEAR_OF_PLENTY card | YEAR_OF_PLENTY  | :white_check_mark: (covered by TC4) |
+| Test Case 10 | getType() on MONOPOLY card       | MONOPOLY        | :white_check_mark: (covered by TC5) |
 
 ---
 
@@ -93,15 +90,16 @@ Step 2:
 Step 3:
 
 - Card type = VICTORY_POINT: always returns true regardless of round comparison
-- Card type ≠ VICTORY_POINT, Pair (currentRoundNumber vs roundDrawnAt): currentRoundNumber < roundDrawnAt (not playable); currentRoundNumber == roundDrawnAt (NOT playable — same turn purchased); currentRoundNumber > roundDrawnAt (playable)
+- Card type ≠ VICTORY_POINT, Pair (currentRoundNumber vs roundDrawnAt): currentRoundNumber < roundDrawnAt (not
+  playable); currentRoundNumber == roundDrawnAt (NOT playable — same turn purchased); currentRoundNumber >
+  roundDrawnAt (playable)
 
-
-|              | System under test                                                                  | Expected output | Implemented? |
-| ------------ | ---------------------------------------------------------------------------------- | --------------- | ------------ |
-| Test Case 11 | isPlayable(4), KNIGHT card drawn at round 5 (currentRound < roundDrawnAt)          | false           | :white_check_mark: |
-| Test Case 12 | isPlayable(5), KNIGHT card drawn at round 5 (currentRound == roundDrawnAt)         | false           | :white_check_mark: |
-| Test Case 13 | isPlayable(6), KNIGHT card drawn at round 5 (currentRound > roundDrawnAt)          | true            | :white_check_mark: |
-| Test Case 14 | isPlayable(0), MONOPOLY card drawn at round 0 (both at LOW boundary)               | false           | :white_check_mark: |
-| Test Case 15 | isPlayable(1), ROAD_BUILDER card drawn at round 0 (LOW + ε vs LOW)                 | true            | :white_check_mark: |
-| Test Case 16 | isPlayable(5), VICTORY_POINT card drawn at round 5 (same turn — VP exception)      | true            | :white_check_mark: |
-| Test Case 17 | isPlayable(0), VICTORY_POINT card drawn at round 0 (LOW boundary — VP exception)   | true            | :white_check_mark: |
+|              | System under test                                                                | Expected output | Implemented?       |
+|--------------|----------------------------------------------------------------------------------|-----------------|--------------------|
+| Test Case 11 | isPlayable(4), KNIGHT card drawn at round 5 (currentRound < roundDrawnAt)        | false           | :white_check_mark: |
+| Test Case 12 | isPlayable(5), KNIGHT card drawn at round 5 (currentRound == roundDrawnAt)       | false           | :white_check_mark: |
+| Test Case 13 | isPlayable(6), KNIGHT card drawn at round 5 (currentRound > roundDrawnAt)        | true            | :white_check_mark: |
+| Test Case 14 | isPlayable(0), MONOPOLY card drawn at round 0 (both at LOW boundary)             | false           | :white_check_mark: |
+| Test Case 15 | isPlayable(1), ROAD_BUILDER card drawn at round 0 (LOW + ε vs LOW)               | true            | :white_check_mark: |
+| Test Case 16 | isPlayable(5), VICTORY_POINT card drawn at round 5 (same turn — VP exception)    | true            | :white_check_mark: |
+| Test Case 17 | isPlayable(0), VICTORY_POINT card drawn at round 0 (LOW boundary — VP exception) | true            | :white_check_mark: |

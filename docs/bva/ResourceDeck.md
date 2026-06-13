@@ -8,11 +8,11 @@ Methods under test: constructor, `draw()`, `drawMultiple(n)`, `replenish()`, `re
 
 ### Constructor and type
 
-|             | State of the System               | Expected output                          | Implemented?       |
-|-------------|-----------------------------------|------------------------------------------|--------------------|
-| Test Case 1 | new ResourceDeck(Resource.LUMBER) | getType() returns LUMBER                 | :white_check_mark: |
-| Test Case 11 | new ResourceDeck(Resource.DESERT) | IllegalArgumentException thrown          | :white_check_mark: |
-| Test Case 12 | new ResourceDeck(Resource.LUMBER) | getTotalCards() returns 19               | :white_check_mark: |
+|              | State of the System               | Expected output                 | Implemented?       |
+|--------------|-----------------------------------|---------------------------------|--------------------|
+| Test Case 1  | new ResourceDeck(Resource.LUMBER) | getType() returns LUMBER        | :white_check_mark: |
+| Test Case 11 | new ResourceDeck(Resource.DESERT) | IllegalArgumentException thrown | :white_check_mark: |
+| Test Case 12 | new ResourceDeck(Resource.LUMBER) | getTotalCards() returns 19      | :white_check_mark: |
 
 ---
 
@@ -20,10 +20,10 @@ Methods under test: constructor, `draw()`, `drawMultiple(n)`, `replenish()`, `re
 
 These tests exist solely to trigger the static initializer blocks that JaCoCo tracks.
 
-|              | State of the System                  | Expected output                          | Implemented?       |
-|--------------|--------------------------------------|------------------------------------------|--------------------|
-| Test Case 13 | reference ResourceType.WOOD          | enum loads; values().length == 6         | :white_check_mark: |
-| Test Case 14 | reference Resources.values()         | empty array returned; length == 0        | :white_check_mark: |
+|              | State of the System          | Expected output                   | Implemented?       |
+|--------------|------------------------------|-----------------------------------|--------------------|
+| Test Case 13 | reference ResourceType.WOOD  | enum loads; values().length == 6  | :white_check_mark: |
+| Test Case 14 | reference Resources.values() | empty array returned; length == 0 | :white_check_mark: |
 
 ---
 
@@ -44,10 +44,10 @@ Step 3:
 - remaining = 19 (full deck, LOW+): card returned
 - remaining = 0 (empty, boundary): EmptyDeckException with resource name in message
 
-|             | State of the System                                  | Expected output                                     | Implemented?       |
-|-------------|------------------------------------------------------|-----------------------------------------------------|--------------------|
-| Test Case 2 | deck full (19 cards remaining)                       | returns correct Resource, one card consumed         | :white_check_mark: |
-| Test Case 3 | deck empty (0 remaining)                             | EmptyDeckException; message contains resource name  | :white_check_mark: |
+|             | State of the System            | Expected output                                    | Implemented?       |
+|-------------|--------------------------------|----------------------------------------------------|--------------------|
+| Test Case 2 | deck full (19 cards remaining) | returns correct Resource, one card consumed        | :white_check_mark: |
+| Test Case 3 | deck empty (0 remaining)       | EmptyDeckException; message contains resource name | :white_check_mark: |
 
 ---
 
@@ -70,11 +70,11 @@ Step 3:
 - n > remaining (capped): returns remaining
 - n > 0, remaining = 0 (empty deck): returns 0
 
-|             | State of the System                                  | Expected output                      | Implemented?       |
-|-------------|------------------------------------------------------|--------------------------------------|--------------------|
-| Test Case 4 | draw 5 from full deck (5 < 19)                       | returns 5                            | :white_check_mark: |
-| Test Case 5 | draw 15, then draw 10 (4 remain, 10 > 4)             | second draw returns 4                | :white_check_mark: |
-| Test Case 6 | draw all 19, then drawMultiple(5) (0 remain)         | returns 0                            | :white_check_mark: |
+|             | State of the System                          | Expected output       | Implemented?       |
+|-------------|----------------------------------------------|-----------------------|--------------------|
+| Test Case 4 | draw 5 from full deck (5 < 19)               | returns 5             | :white_check_mark: |
+| Test Case 5 | draw 15, then draw 10 (4 remain, 10 > 4)     | second draw returns 4 | :white_check_mark: |
+| Test Case 6 | draw all 19, then drawMultiple(5) (0 remain) | returns 0             | :white_check_mark: |
 
 ---
 
@@ -93,9 +93,9 @@ Step 3:
 
 - remaining = 0 (empty, LOW): replenish returns deck to 1; subsequent draw succeeds
 
-|             | State of the System                                  | Expected output                           | Implemented?       |
-|-------------|------------------------------------------------------|-------------------------------------------|--------------------|
-| Test Case 7 | draw all 19, then replenish()                        | deck has 1 card; draw() succeeds          | :white_check_mark: |
+|             | State of the System           | Expected output                  | Implemented?       |
+|-------------|-------------------------------|----------------------------------|--------------------|
+| Test Case 7 | draw all 19, then replenish() | deck has 1 card; draw() succeeds | :white_check_mark: |
 
 ---
 
@@ -118,10 +118,10 @@ Step 3:
 - n = 5, remaining = 0: exact replenish to 5
 - n = 10, remaining = 14 (would be 24, caps at 19): drawMultiple(20) returns 19
 
-|             | State of the System                                        | Expected output                           | Implemented?       |
-|-------------|-------------------------------------------------------------|-------------------------------------------|--------------------|
-| Test Case 8 | draw all 19, replenish(5)                                  | can draw exactly 5                        | :white_check_mark: |
-| Test Case 9 | draw 5 (14 remain), replenish(10) (would exceed 19)        | drawMultiple(20) returns 19 (capped)      | :white_check_mark: |
+|             | State of the System                                 | Expected output                      | Implemented?       |
+|-------------|-----------------------------------------------------|--------------------------------------|--------------------|
+| Test Case 8 | draw all 19, replenish(5)                           | can draw exactly 5                   | :white_check_mark: |
+| Test Case 9 | draw 5 (14 remain), replenish(10) (would exceed 19) | drawMultiple(20) returns 19 (capped) | :white_check_mark: |
 
 ---
 
@@ -140,6 +140,6 @@ Step 3:
 
 - remaining = 9 (arbitrary partial): replenishAll → 19 cards available
 
-|              | State of the System                           | Expected output                | Implemented?       |
-|--------------|-----------------------------------------------|--------------------------------|--------------------|
-| Test Case 10 | draw 10, then replenishAll()                  | can draw all 19                | :white_check_mark: |
+|              | State of the System          | Expected output | Implemented?       |
+|--------------|------------------------------|-----------------|--------------------|
+| Test Case 10 | draw 10, then replenishAll() | can draw all 19 | :white_check_mark: |

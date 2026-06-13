@@ -3,15 +3,15 @@ package domain.IntegrationTests;
 // Tests for Feature 5:
 // Ability to roll dice and distribute resources to players based on settlements and cities adjacent to matching number tokens, excluding robber-blocked hexes
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import domain.model.board.BoardHandler;
 import domain.model.gamepieces.DiceHandler;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 import domain.model.resources.Resource;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class F5Tests {
   // Test Case 1 - rollTwoDice

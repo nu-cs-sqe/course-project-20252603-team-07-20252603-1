@@ -1,6 +1,7 @@
 ### Method under test: `addPlayerSettlementToHex(String playerName)`
 
 Step 1:
+
 - Input: playerColor
 - Input: state of the list
 - Input: values of the list
@@ -9,6 +10,7 @@ Step 1:
 - Output: exception
 
 Step 2:
+
 - playerName - Enums/Cases
 - State - collection
 - Values - Enums/Cases
@@ -16,6 +18,7 @@ Step 2:
 - totalBuildingsOnHex - interval
 
 Step 3:
+
 - Input: All four possibilities, an impossible case
 - Input: empty collection, contains just one element, contains more than one element, duplicate elements,
 - max possible size
@@ -24,7 +27,6 @@ Step 3:
 - Output: empty collection, contains just one element, contains more than one element, duplicate elements,
 - max possible size
 - Output: "Already three settlements on hex.", "Adding invalid player name to Hex."
-
 
 |             | System under test                       | Expected output                              | Implemented?       |
 |-------------|-----------------------------------------|----------------------------------------------|--------------------|
@@ -35,10 +37,10 @@ Step 3:
 | Test Case 5 | add NULL to a list                      | error - "Adding invalid player name to Hex." | :white_check_mark: |
 | Test Case 6 | add three cities, try to add settlement | error - "Already three buildings on hex."    | :white_check_mark: |
 
-
 ### Method under test: `removePlayerSettlementFromHex(String playerName)`
 
 Step 1:
+
 - Input: playerColor
 - Input: state of the list
 - Input: values of the list
@@ -47,6 +49,7 @@ Step 1:
 - Output: exception
 
 Step 2:
+
 - playerName - PlayerColor enum / cases
 - State - collection
 - Values - PlayerColor enum / cases
@@ -54,13 +57,15 @@ Step 2:
 - totalBuildingsOnHex - interval
 
 Step 3:
+
 - Input: All four possibilities, an impossible case
-- Input: empty collection, contains just one element, contains more than one element, duplicate elements, max possible size
+- Input: empty collection, contains just one element, contains more than one element, duplicate elements, max possible
+  size
 - Input: All four possibilities, an impossible case
 - Input: size of totalBuildingsOnHex is 0, max, -1 (not feasible), 4 (not feasible)
-- Output: empty collection, contains just one element, contains more than one element, duplicate elements, max possible size -> not possible
+- Output: empty collection, contains just one element, contains more than one element, duplicate elements, max possible
+  size -> not possible
 - Output: "Player does not have a building on hex."
-
 
 |              | System under test                            | Expected output                                     | Implemented?       |
 |--------------|----------------------------------------------|-----------------------------------------------------|--------------------|
@@ -73,7 +78,9 @@ Step 3:
 | Test Case 13 | remove settlement from hex with three cities | error - "Player does not have a settlement on hex." | :white_check_mark: |
 
 ### Method under test: `addPlayerCityToHex(String playerName)`
+
 Step 1:
+
 - Input: playerNColor
 - Input: state of the list
 - Input: values of the list
@@ -82,6 +89,7 @@ Step 1:
 - Output: exception
 
 Step 2:
+
 - playerName - enum / cases
 - State - collection
 - Values - enum / cases
@@ -89,13 +97,15 @@ Step 2:
 - totalBuildingsOnHex - interval
 
 Step 3:
+
 - Input: all possible inputs, impossible input
-- Input: empty collection, contains just one element, contains more than one element, duplicate elements, max possible size
+- Input: empty collection, contains just one element, contains more than one element, duplicate elements, max possible
+  size
 - Input: all possible inputs, impossible input
 - Input: size of totalBuildingsOnHex is 0, max, -1 (not feasible), 4 (not feasible)
-- Output: empty collection, contains just one element, contains more than one element, duplicate elements, max possible size
+- Output: empty collection, contains just one element, contains more than one element, duplicate elements, max possible
+  size
 - Output: "Already three buildings on hex.", "Adding invalid player name to Hex."
-
 
 |              | System under test                                 | Expected output                              | Implemented?       |
 |--------------|---------------------------------------------------|----------------------------------------------|--------------------|
@@ -106,24 +116,28 @@ Step 3:
 | Test Case 18 | add NULL to a list                                | error - "Adding invalid player name to Hex." | :white_check_mark: |
 | Test Case 19 | add three settlements, remove one, add two cities | error - "Already three buildings on hex."    | :white_check_mark: |
 
-
 ### Method under test: `awardSettlementResources()`
+
 Step 1:
+
 - Input: state of the list
 - Input: resource
 - Input: values of the list
 - Output: state of the list
 
 Step 2:
+
 - State - collection
 - Resource - cases / enums
 - Values - cases / enums
 
 Step 3:
-- Input: empty collection, contains just one element, contains more than one element, duplicate elements, max possible size
-- Input: all possible inputs, impossible inputs - not feasible
-- Output: empty collection, contains just one element, contains more than one element, duplicate elements, max possible size
 
+- Input: empty collection, contains just one element, contains more than one element, duplicate elements, max possible
+  size
+- Input: all possible inputs, impossible inputs - not feasible
+- Output: empty collection, contains just one element, contains more than one element, duplicate elements, max possible
+  size
 
 |              | System under test                   | Expected output                      | Implemented?       |
 |--------------|-------------------------------------|--------------------------------------|--------------------|
@@ -136,22 +150,27 @@ Step 3:
 | Test Case 26 | list with ORANGE, desert            | no update                            | :white_check_mark: |
 
 ### Method under test: `awardCityResources()`
+
 Step 1:
+
 - Input: state of the list
 - Input: resource
 - Input: values of the list
 - Output: state of the list
 
 Step 2:
+
 - State - collection
 - Resource - cases / enums
 - Values - cases / enums
 
 Step 3:
-- Input: empty collection, contains just one element, contains more than one element, duplicate elements, max possible size
-- Input: all possible inputs, impossible inputs - not feasible
-- Output: empty collection, contains just one element, contains more than one element, duplicate elements, max possible size
 
+- Input: empty collection, contains just one element, contains more than one element, duplicate elements, max possible
+  size
+- Input: all possible inputs, impossible inputs - not feasible
+- Output: empty collection, contains just one element, contains more than one element, duplicate elements, max possible
+  size
 
 |              | System under test                   | Expected output                      | Implemented?       |
 |--------------|-------------------------------------|--------------------------------------|--------------------|
@@ -166,6 +185,7 @@ Step 3:
 ### Method under test: `public Hex(int hexId, Resource resource, int rollNumber)`
 
 Step 1:
+
 - Input: hexId
 - Input: resource
 - Input: rollNumber
@@ -173,6 +193,7 @@ Step 1:
 - Output: error
 
 Step 2:
+
 - hexId - interval
 - resource - cases
 - rollNumber - interval
@@ -180,12 +201,13 @@ Step 2:
 - Error - invalid rollNumber, invalid hexId
 
 Step 3:
+
 - Input: hexId: 0, 18, -1, 19
 - Input: BRICK, GRAIN, LUMBER, ORE, WOOL, DESERT, NULL (not needed to check)
 - Input: rollNumber: 2, 12, 1, 13
-- Output: cases of hexes, no need to exhaustively test all 1,254  possibilities
-- Output: "Invalid Hex - rollNumber must be within [2, 12].", "Invalid Hex - hexId must be within [0, 18]." "Invalid Hex - Only Desert Hex can have rollNumber 7". "Invalid Hex - Desert Hex must have rollNumber 7."
-
+- Output: cases of hexes, no need to exhaustively test all 1,254 possibilities
+- Output: "Invalid Hex - rollNumber must be within [2, 12].", "Invalid Hex - hexId must be within [0, 18]." "Invalid
+  Hex - Only Desert Hex can have rollNumber 7". "Invalid Hex - Desert Hex must have rollNumber 7."
 
 |              | System under test                           | Expected output                                                | Implemented?       |
 |--------------|---------------------------------------------|----------------------------------------------------------------|--------------------|

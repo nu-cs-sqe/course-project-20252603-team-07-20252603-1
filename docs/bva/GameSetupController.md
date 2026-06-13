@@ -20,6 +20,7 @@ EasyMock expectations (`isNameAvailable`, `isColorAvailable`, `addPlayer`,
 ### Method under test: `addPlayerWithFullValidation(GameSetupModel model, String name, PlayerColor color)`
 
 Step 1:
+
 - Input: model
 - Input: name
 - Input: color (PlayerColor)
@@ -28,6 +29,7 @@ Step 1:
 - Output: call to model.addPlayer(trimmedName, color) — on SUCCESS only
 
 Step 2:
+
 - model - GameSetupModel (object reference); cases: any non-null model
 - name - String; cases: null, "" (empty), whitespace-only, non-empty after trim
 - color - PlayerColor; cases: null, non-null
@@ -41,6 +43,7 @@ Step 2:
   color), not invoked at all
 
 Step 3:
+
 - Input name: null, "" (lower invalid boundary, length 0), " "
   (single-space whitespace), " \t\n " (mixed whitespace), "A" (lower valid
   boundary, length 1 after trim), "Alice" (typical), "  Alice  "
@@ -56,34 +59,37 @@ Step 3:
   SUCCESS, addPlayer(trimmed, color) is invoked exactly once; on any
   non-SUCCESS, addPlayer is NOT invoked
 
-|              | System under test                                                              | Expected output                                            | Implemented?       |
-|--------------|--------------------------------------------------------------------------------|------------------------------------------------------------|--------------------|
-| Test Case 1  | empty model; name=null, color=RED                                              | NAME_EMPTY; no model interaction                           | :white_check_mark: |
-| Test Case 2  | empty model; name="", color=RED                                                | NAME_EMPTY; no model interaction                           | :white_check_mark: |
-| Test Case 3  | empty model; name=" ", color=RED                                               | NAME_EMPTY; no model interaction                           | :white_check_mark: |
-| Test Case 4  | empty model; name=" \t\n ", color=RED                                          | NAME_EMPTY; no model interaction                           | :white_check_mark: |
-| Test Case 5  | empty model; name="A", color=RED                                               | SUCCESS; addPlayer("A", RED) invoked                       | :white_check_mark: |
-| Test Case 6  | empty model; name="  Alice  ", color=RED                                       | SUCCESS; addPlayer("Alice", RED) invoked (trimmed)         | :white_check_mark: |
-| Test Case 7  | model.usedNames contains "Alice"; name="Alice", color=RED                      | NAME_TAKEN; no color check, no addPlayer                   | :white_check_mark: |
-| Test Case 8  | empty model; name="Alice", color=null                                          | COLOR_EMPTY; no addPlayer                                  | :white_check_mark: |
-| Test Case 9  | model.usedColors contains RED; name="Alice", color=RED                         | COLOR_TAKEN; no addPlayer                                  | :white_check_mark: |
-| Test Case 10 | empty model; name="Alice", color=RED                                           | SUCCESS; addPlayer("Alice", RED) invoked                   | :white_check_mark: |
-| Test Case 11 | empty model; name="", color=null                                               | NAME_EMPTY (color check not reached)                       | :white_check_mark: |
-| Test Case 12 | model.usedNames contains "Alice"; name="Alice", color=RED                      | NAME_TAKEN (color check not reached)                       | :white_check_mark: |
+|              | System under test                                         | Expected output                                    | Implemented?       |
+|--------------|-----------------------------------------------------------|----------------------------------------------------|--------------------|
+| Test Case 1  | empty model; name=null, color=RED                         | NAME_EMPTY; no model interaction                   | :white_check_mark: |
+| Test Case 2  | empty model; name="", color=RED                           | NAME_EMPTY; no model interaction                   | :white_check_mark: |
+| Test Case 3  | empty model; name=" ", color=RED                          | NAME_EMPTY; no model interaction                   | :white_check_mark: |
+| Test Case 4  | empty model; name=" \t\n ", color=RED                     | NAME_EMPTY; no model interaction                   | :white_check_mark: |
+| Test Case 5  | empty model; name="A", color=RED                          | SUCCESS; addPlayer("A", RED) invoked               | :white_check_mark: |
+| Test Case 6  | empty model; name="  Alice  ", color=RED                  | SUCCESS; addPlayer("Alice", RED) invoked (trimmed) | :white_check_mark: |
+| Test Case 7  | model.usedNames contains "Alice"; name="Alice", color=RED | NAME_TAKEN; no color check, no addPlayer           | :white_check_mark: |
+| Test Case 8  | empty model; name="Alice", color=null                     | COLOR_EMPTY; no addPlayer                          | :white_check_mark: |
+| Test Case 9  | model.usedColors contains RED; name="Alice", color=RED    | COLOR_TAKEN; no addPlayer                          | :white_check_mark: |
+| Test Case 10 | empty model; name="Alice", color=RED                      | SUCCESS; addPlayer("Alice", RED) invoked           | :white_check_mark: |
+| Test Case 11 | empty model; name="", color=null                          | NAME_EMPTY (color check not reached)               | :white_check_mark: |
+| Test Case 12 | model.usedNames contains "Alice"; name="Alice", color=RED | NAME_TAKEN (color check not reached)               | :white_check_mark: |
 
 ---
 
 ### Method under test: `clearPlayers(GameSetupModel model)`
 
 Step 1:
+
 - Input: model
 - Output: call to model.clearPlayers()
 
 Step 2:
+
 - model - GameSetupModel (object reference); cases: any non-null model
 - model.clearPlayers() side effect - cases: invoked exactly once
 
 Step 3:
+
 - Input: any model reference
 - Output: model.clearPlayers() invoked exactly once
 
@@ -99,21 +105,24 @@ Valid player range is [3, 4]. BVA tests the two valid boundary values and the
 adjacent-invalid values on each side.
 
 Step 1:
+
 - Input: model
 - Output: boolean (true if count in [3, 4], false otherwise)
 
 Step 2:
+
 - count: Interval [3, 4]; values 2 (below) and 5 (above) are representative invalids
 
 Step 3:
+
 - count: 2 (LOW−1), 3 (LOW), 4 (HIGH), 5 (HIGH+1)
 
-|              | System under test         | Expected output | Implemented?       |
-|--------------|---------------------------|-----------------|-------------------|
-| Test Case 14 | model.getPlayerCount() = 3 (lower boundary valid) | true | :white_check_mark: |
-| Test Case 15 | model.getPlayerCount() = 4 (upper boundary valid) | true | :white_check_mark: |
-| Test Case 16 | model.getPlayerCount() = 2 (below lower boundary) | false | :white_check_mark: |
-| Test Case 17 | model.getPlayerCount() = 5 (above upper boundary) | false | :white_check_mark: |
+|              | System under test                                 | Expected output | Implemented?       |
+|--------------|---------------------------------------------------|-----------------|--------------------|
+| Test Case 14 | model.getPlayerCount() = 3 (lower boundary valid) | true            | :white_check_mark: |
+| Test Case 15 | model.getPlayerCount() = 4 (upper boundary valid) | true            | :white_check_mark: |
+| Test Case 16 | model.getPlayerCount() = 2 (below lower boundary) | false           | :white_check_mark: |
+| Test Case 17 | model.getPlayerCount() = 5 (above upper boundary) | false           | :white_check_mark: |
 
 ---
 
@@ -121,9 +130,9 @@ Step 3:
 
 Delegates directly to `model.addPlayer(name, color)`.
 
-|              | System under test                        | Expected output                        | Implemented?       |
-|--------------|------------------------------------------|----------------------------------------|--------------------|
-| Test Case 18 | any name and color                       | model.addPlayer(name, color) invoked   | :white_check_mark: |
+|              | System under test  | Expected output                      | Implemented?       |
+|--------------|--------------------|--------------------------------------|--------------------|
+| Test Case 18 | any name and color | model.addPlayer(name, color) invoked | :white_check_mark: |
 
 ---
 
@@ -131,10 +140,10 @@ Delegates directly to `model.addPlayer(name, color)`.
 
 Checks `model.isColorAvailable(color)` before adding. Returns true on success, false if color taken.
 
-|              | System under test                                     | Expected output                                | Implemented?       |
-|--------------|-------------------------------------------------------|------------------------------------------------|--------------------|
-| Test Case 19 | model.isColorAvailable(RED) = true                    | model.addPlayer invoked; returns true          | :white_check_mark: |
-| Test Case 20 | model.isColorAvailable(RED) = false                   | model.addPlayer not invoked; returns false     | :white_check_mark: |
+|              | System under test                   | Expected output                            | Implemented?       |
+|--------------|-------------------------------------|--------------------------------------------|--------------------|
+| Test Case 19 | model.isColorAvailable(RED) = true  | model.addPlayer invoked; returns true      | :white_check_mark: |
+| Test Case 20 | model.isColorAvailable(RED) = false | model.addPlayer not invoked; returns false | :white_check_mark: |
 
 ---
 
@@ -142,9 +151,9 @@ Checks `model.isColorAvailable(color)` before adding. Returns true on success, f
 
 Delegates to `model.getPlayer(index).getName()`.
 
-|              | System under test                                       | Expected output | Implemented?       |
-|--------------|---------------------------------------------------------|-----------------|--------------------|
-| Test Case 21 | model.getPlayer(0).getName() returns "Alice"            | returns "Alice" | :white_check_mark: |
+|              | System under test                            | Expected output | Implemented?       |
+|--------------|----------------------------------------------|-----------------|--------------------|
+| Test Case 21 | model.getPlayer(0).getName() returns "Alice" | returns "Alice" | :white_check_mark: |
 
 ---
 
@@ -152,9 +161,9 @@ Delegates to `model.getPlayer(index).getName()`.
 
 Delegates to `model.getPlayerCount()`.
 
-|              | System under test                   | Expected output | Implemented?       |
-|--------------|-------------------------------------|-----------------|--------------------|
-| Test Case 22 | model.getPlayerCount() returns 4    | returns 4       | :white_check_mark: |
+|              | System under test                | Expected output | Implemented?       |
+|--------------|----------------------------------|-----------------|--------------------|
+| Test Case 22 | model.getPlayerCount() returns 4 | returns 4       | :white_check_mark: |
 
 ---
 
@@ -162,9 +171,9 @@ Delegates to `model.getPlayerCount()`.
 
 Delegates to `board.getHexCount()`.
 
-|              | System under test                  | Expected output | Implemented?       |
-|--------------|------------------------------------|-----------------|--------------------|
-| Test Case 23 | board.getHexCount() returns 19     | returns 19      | :white_check_mark: |
+|              | System under test              | Expected output | Implemented?       |
+|--------------|--------------------------------|-----------------|--------------------|
+| Test Case 23 | board.getHexCount() returns 19 | returns 19      | :white_check_mark: |
 
 ---
 
@@ -172,9 +181,9 @@ Delegates to `board.getHexCount()`.
 
 Delegates to `board.getHexOrder()`.
 
-|              | System under test                           | Expected output          | Implemented?       |
-|--------------|---------------------------------------------|--------------------------|--------------------|
-| Test Case 24 | board.getHexOrder() returns a non-empty list | returns the same list    | :white_check_mark: |
+|              | System under test                            | Expected output       | Implemented?       |
+|--------------|----------------------------------------------|-----------------------|--------------------|
+| Test Case 24 | board.getHexOrder() returns a non-empty list | returns the same list | :white_check_mark: |
 
 ---
 
@@ -182,9 +191,9 @@ Delegates to `board.getHexOrder()`.
 
 Delegates to `model.getResourceDeck()`.
 
-|              | System under test                            | Expected output            | Implemented?       |
-|--------------|----------------------------------------------|----------------------------|--------------------|
-| Test Case 25 | model.getResourceDeck() returns a deck object | returns the same deck      | :white_check_mark: |
+|              | System under test                             | Expected output       | Implemented?       |
+|--------------|-----------------------------------------------|-----------------------|--------------------|
+| Test Case 25 | model.getResourceDeck() returns a deck object | returns the same deck | :white_check_mark: |
 
 ---
 
@@ -192,8 +201,8 @@ Delegates to `model.getResourceDeck()`.
 
 Calls `model.setResourceDeck(new ResourceDeck())`.
 
-|              | System under test | Expected output                        | Implemented?       |
-|--------------|-------------------|----------------------------------------|--------------------|
+|              | System under test | Expected output                         | Implemented?       |
+|--------------|-------------------|-----------------------------------------|--------------------|
 | Test Case 26 | any model         | model.setResourceDeck(...) invoked once | :white_check_mark: |
 
 ---
@@ -202,9 +211,9 @@ Calls `model.setResourceDeck(new ResourceDeck())`.
 
 Delegates to `model.getDevelopmentCardDeck()`.
 
-|              | System under test                                     | Expected output          | Implemented?       |
-|--------------|-------------------------------------------------------|--------------------------|--------------------|
-| Test Case 27 | model.getDevelopmentCardDeck() returns a deck object  | returns the same deck    | :white_check_mark: |
+|              | System under test                                    | Expected output       | Implemented?       |
+|--------------|------------------------------------------------------|-----------------------|--------------------|
+| Test Case 27 | model.getDevelopmentCardDeck() returns a deck object | returns the same deck | :white_check_mark: |
 
 ---
 
@@ -212,8 +221,8 @@ Delegates to `model.getDevelopmentCardDeck()`.
 
 Calls `model.setDevelopmentCardDeck(new DevelopmentCardDeck())`.
 
-|              | System under test | Expected output                             | Implemented?       |
-|--------------|-------------------|---------------------------------------------|--------------------|
+|              | System under test | Expected output                                | Implemented?       |
+|--------------|-------------------|------------------------------------------------|--------------------|
 | Test Case 28 | any model         | model.setDevelopmentCardDeck(...) invoked once | :white_check_mark: |
 
 ---
@@ -222,9 +231,9 @@ Calls `model.setDevelopmentCardDeck(new DevelopmentCardDeck())`.
 
 Delegates to `model.determineTurnOrder()`.
 
-|              | System under test | Expected output                          | Implemented?       |
-|--------------|-------------------|------------------------------------------|--------------------|
-| Test Case 29 | any model         | model.determineTurnOrder() invoked once  | :white_check_mark: |
+|              | System under test | Expected output                         | Implemented?       |
+|--------------|-------------------|-----------------------------------------|--------------------|
+| Test Case 29 | any model         | model.determineTurnOrder() invoked once | :white_check_mark: |
 
 ---
 
@@ -232,6 +241,6 @@ Delegates to `model.determineTurnOrder()`.
 
 Delegates to `model.getTurnOrder()`.
 
-|              | System under test                                 | Expected output         | Implemented?       |
-|--------------|---------------------------------------------------|-------------------------|--------------------|
-| Test Case 30 | model.getTurnOrder() returns a non-empty list     | returns the same list   | :white_check_mark: |
+|              | System under test                             | Expected output       | Implemented?       |
+|--------------|-----------------------------------------------|-----------------------|--------------------|
+| Test Case 30 | model.getTurnOrder() returns a non-empty list | returns the same list | :white_check_mark: |

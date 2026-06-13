@@ -1,78 +1,82 @@
 package domain.model;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import domain.model.developmentcards.DevelopmentCardDeck;
 import domain.model.player.PlayerColor;
+import domain.model.resources.ResourceDeck;
+import org.easymock.EasyMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import domain.model.developmentcards.DevelopmentCardDeck;
-import domain.model.resources.ResourceDeck;
-import org.easymock.EasyMock;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 class GameSetupModelTest {
 
-    private GameSetupModel model;
+  private GameSetupModel model;
 
-    @BeforeEach
-    void setUp() {
-        model = new GameSetupModel();
-    }
+  @BeforeEach
+  void setUp() {
+    model = new GameSetupModel();
+  }
 
-    @Test
-    void testIsNameAvailableForUnusedNameReturnsTrue() {
-        assertTrue(model.isNameAvailable("Alice"));
-    }
+  @Test
+  void testIsNameAvailableForUnusedNameReturnsTrue() {
+    assertTrue(model.isNameAvailable("Alice"));
+  }
 
-    @Test
-    void testIsNameAvailableAfterAddReturnsFalse() {
-        model.addPlayer("Alice", PlayerColor.RED);
-        assertFalse(model.isNameAvailable("Alice"));
-    }
+  @Test
+  void testIsNameAvailableAfterAddReturnsFalse() {
+    model.addPlayer("Alice", PlayerColor.RED);
+    assertFalse(model.isNameAvailable("Alice"));
+  }
 
-    @Test
-    void testIsNameAvailableIsCaseSensitive() {
-        model.addPlayer("Alice", PlayerColor.RED);
-        assertTrue(model.isNameAvailable("alice"));
-    }
+  @Test
+  void testIsNameAvailableIsCaseSensitive() {
+    model.addPlayer("Alice", PlayerColor.RED);
+    assertTrue(model.isNameAvailable("alice"));
+  }
 
-    @Test
-    void testIsNameAvailableForEmptyStringReturnsTrue() {
-        assertTrue(model.isNameAvailable(""));
-    }
+  @Test
+  void testIsNameAvailableForEmptyStringReturnsTrue() {
+    assertTrue(model.isNameAvailable(""));
+  }
 
-    @Test
-    void testIsNameAvailableDistinguishesAcrossNames() {
-        model.addPlayer("Alice", PlayerColor.RED);
-        assertFalse(model.isNameAvailable("Alice"));
-        assertTrue(model.isNameAvailable("Bob"));
-    }
+  @Test
+  void testIsNameAvailableDistinguishesAcrossNames() {
+    model.addPlayer("Alice", PlayerColor.RED);
+    assertFalse(model.isNameAvailable("Alice"));
+    assertTrue(model.isNameAvailable("Bob"));
+  }
 
-    @Test
-    void testClearPlayersResetsAllSetupPlayerState() {
-        model.addPlayer("Alice", PlayerColor.RED);
-        model.addPlayer("Bob", PlayerColor.BLUE);
-        model.determineTurnOrder();
+  @Test
+  void testClearPlayersResetsAllSetupPlayerState() {
+    model.addPlayer("Alice", PlayerColor.RED);
+    model.addPlayer("Bob", PlayerColor.BLUE);
+    model.determineTurnOrder();
 
-        model.clearPlayers();
+    model.clearPlayers();
 
-        assertEquals(0, model.getPlayerCount());
-        assertTrue(model.isNameAvailable("Alice"));
-        assertTrue(model.isColorAvailable(PlayerColor.RED));
-        assertTrue(model.getTurnOrder().isEmpty());
-    }
+    assertEquals(0, model.getPlayerCount());
+    assertTrue(model.isNameAvailable("Alice"));
+    assertTrue(model.isColorAvailable(PlayerColor.RED));
+    assertTrue(model.getTurnOrder().isEmpty());
+  }
 
-    @Test
-    void testClearPlayersAllowsReusingNamesAndColors() {
-        model.addPlayer("Alice", PlayerColor.RED);
-        model.clearPlayers();
+  @Test
+  void testClearPlayersAllowsReusingNamesAndColors() {
+    model.addPlayer("Alice", PlayerColor.RED);
+    model.clearPlayers();
 
-        model.addPlayer("Alice", PlayerColor.RED);
+    model.addPlayer("Alice", PlayerColor.RED);
 
-        assertEquals(1, model.getPlayerCount());
-        assertEquals("Alice", model.getPlayer(0).getName());
-        assertEquals(PlayerColor.RED, model.getPlayer(0).getColor());
-    }
+    assertEquals(1, model.getPlayerCount());
+    assertEquals("Alice", model.getPlayer(0).getName());
+    assertEquals(PlayerColor.RED, model.getPlayer(0).getColor());
+  }
 
   // TC8 ← REDUCES CXTY
   @Test

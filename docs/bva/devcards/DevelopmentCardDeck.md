@@ -26,18 +26,17 @@ Step 2:
 Step 3:
 
 - Output deck size: 25; 24 (not feasible); 26 (not feasible)
-- Output composition: exactly 14 KNIGHT, exactly 2 ROAD_BUILDER, exactly 2 YEAR_OF_PLENTY, exactly 2 MONOPOLY, exactly 5 VICTORY_POINT
+- Output composition: exactly 14 KNIGHT, exactly 2 ROAD_BUILDER, exactly 2 YEAR_OF_PLENTY, exactly 2 MONOPOLY, exactly 5
+  VICTORY_POINT
 
-
-|             | System under test          | Expected output                                    | Implemented? |
-| ----------- | -------------------------- | -------------------------------------------------- | ------------ |
-| Test Case 1 | new DevelopmentCardDeck()  | deck countRemaining() is 25                        | :white_check_mark: |
-| Test Case 2 | new DevelopmentCardDeck()  | deck contains exactly 14 KNIGHT cards              | :white_check_mark: |
-| Test Case 3 | new DevelopmentCardDeck()  | deck contains exactly 2 ROAD_BUILDER cards         | :white_check_mark: |
-| Test Case 4 | new DevelopmentCardDeck()  | deck contains exactly 2 YEAR_OF_PLENTY cards       | :white_check_mark: |
-| Test Case 5 | new DevelopmentCardDeck()  | deck contains exactly 2 MONOPOLY cards             | :white_check_mark: |
-| Test Case 6 | new DevelopmentCardDeck()  | deck contains exactly 5 VICTORY_POINT cards        | :white_check_mark: |
-
+|             | System under test         | Expected output                              | Implemented?       |
+|-------------|---------------------------|----------------------------------------------|--------------------|
+| Test Case 1 | new DevelopmentCardDeck() | deck countRemaining() is 25                  | :white_check_mark: |
+| Test Case 2 | new DevelopmentCardDeck() | deck contains exactly 14 KNIGHT cards        | :white_check_mark: |
+| Test Case 3 | new DevelopmentCardDeck() | deck contains exactly 2 ROAD_BUILDER cards   | :white_check_mark: |
+| Test Case 4 | new DevelopmentCardDeck() | deck contains exactly 2 YEAR_OF_PLENTY cards | :white_check_mark: |
+| Test Case 5 | new DevelopmentCardDeck() | deck contains exactly 2 MONOPOLY cards       | :white_check_mark: |
+| Test Case 6 | new DevelopmentCardDeck() | deck contains exactly 5 VICTORY_POINT cards  | :white_check_mark: |
 
 ---
 
@@ -65,17 +64,16 @@ Step 2:
 
 Step 3:
 
-- State deck size (Interval [0, 25]): −1 (CAN'T SET); 0 (empty — cannot draw); 1 (last card that can be drawn); 25 (full deck); 26 (CAN'T SET)
+- State deck size (Interval [0, 25]): −1 (CAN'T SET); 0 (empty — cannot draw); 1 (last card that can be drawn); 25 (full
+  deck); 26 (CAN'T SET)
 - Output: card returned with roundDrawnAt == currentRound, countRemaining() decremented by 1
 - Output: EmptyDeckException "Cannot draw new DevelopmentCard, no cards remain."
 
-
-|              | System under test                                        | Expected output                                                                          | Implemented? |
-| ------------ | -------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ------------ |
-| Test Case 7  | drawCard(3) from full deck (size 25)                     | card returned (non-null with valid type, roundDrawnAt == 3); countRemaining() is 24      | :white_check_mark: |
-| Test Case 8  | drawCard(7) from deck with 1 card remaining              | card returned (roundDrawnAt == 7); countRemaining() is 0                                 | :white_check_mark: |
-| Test Case 9  | drawCard(1) from empty deck (size 0)                     | EmptyDeckException: "Cannot draw new DevelopmentCard, no cards remain."                  | :white_check_mark: |
-
+|             | System under test                           | Expected output                                                                     | Implemented?       |
+|-------------|---------------------------------------------|-------------------------------------------------------------------------------------|--------------------|
+| Test Case 7 | drawCard(3) from full deck (size 25)        | card returned (non-null with valid type, roundDrawnAt == 3); countRemaining() is 24 | :white_check_mark: |
+| Test Case 8 | drawCard(7) from deck with 1 card remaining | card returned (roundDrawnAt == 7); countRemaining() is 0                            | :white_check_mark: |
+| Test Case 9 | drawCard(1) from empty deck (size 0)        | EmptyDeckException: "Cannot draw new DevelopmentCard, no cards remain."             | :white_check_mark: |
 
 ---
 
@@ -92,15 +90,14 @@ Step 2:
 
 Step 3:
 
-- State deck size (Size of Collection): 25 (full deck — order randomized); 1 (single card — trivially unchanged); 0 (empty — no-op)
+- State deck size (Size of Collection): 25 (full deck — order randomized); 1 (single card — trivially unchanged); 0 (
+  empty — no-op)
 
-
-|              | System under test              | Expected output                              | Implemented? |
-| ------------ | ------------------------------ | -------------------------------------------- | ------------ |
-| Test Case 10 | shuffle() on full deck (25)    | card order is randomized; countRemaining() still 25 | :white_check_mark: |
-| Test Case 11 | shuffle() on deck with 1 card  | deck unchanged; countRemaining() still 1     | :white_check_mark: |
-| Test Case 12 | shuffle() on empty deck (0)    | deck remains empty; no error                 | :white_check_mark: |
-
+|              | System under test             | Expected output                                     | Implemented?       |
+|--------------|-------------------------------|-----------------------------------------------------|--------------------|
+| Test Case 10 | shuffle() on full deck (25)   | card order is randomized; countRemaining() still 25 | :white_check_mark: |
+| Test Case 11 | shuffle() on deck with 1 card | deck unchanged; countRemaining() still 1            | :white_check_mark: |
+| Test Case 12 | shuffle() on empty deck (0)   | deck remains empty; no error                        | :white_check_mark: |
 
 ---
 
@@ -120,9 +117,8 @@ Step 3:
 
 - State deck size (Interval [0, 25]): 0 (LOW); 1 (LOW + ε); 25 (HIGH)
 
-
-|              | System under test                      | Expected output | Implemented? |
-| ------------ | -------------------------------------- | --------------- | ------------ |
-| Test Case 13 | countRemaining() on new deck           | 25              | :white_check_mark: (covered by TC1) |
-| Test Case 14 | countRemaining() after drawing 1 card  | 24              | :white_check_mark: |
-| Test Case 15 | countRemaining() after drawing all 25  | 0               | :white_check_mark: |
+|              | System under test                     | Expected output | Implemented?                        |
+|--------------|---------------------------------------|-----------------|-------------------------------------|
+| Test Case 13 | countRemaining() on new deck          | 25              | :white_check_mark: (covered by TC1) |
+| Test Case 14 | countRemaining() after drawing 1 card | 24              | :white_check_mark:                  |
+| Test Case 15 | countRemaining() after drawing all 25 | 0               | :white_check_mark:                  |

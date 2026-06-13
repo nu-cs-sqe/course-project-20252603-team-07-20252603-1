@@ -19,27 +19,34 @@ import javafx.scene.control.Label;
  */
 public class VictimPickDialog {
 
-    private final Dialog<Player> dialog;
+  private final Dialog<Player> dialog;
 
-    public VictimPickDialog(ResourceBundle labels, List<Player> candidates) {
-        dialog = new Dialog<>();
-        dialog.setTitle(labels.getString("robber.title"));
-        dialog.getDialogPane().setContent(new Label(labels.getString("robber.chooseVictim")));
+  /**
+   * Creates the victim-pick dialog.
+   *
+   * @param labels the localized label bundle
+   * @param candidates the players the current player may steal from
+   */
+  public VictimPickDialog(ResourceBundle labels, List<Player> candidates) {
+    dialog = new Dialog<>();
+    dialog.setTitle(labels.getString("robber.title"));
+    dialog.getDialogPane().setContent(new Label(labels.getString("robber.chooseVictim")));
 
-        Map<ButtonType, Player> buttonToVictim = new LinkedHashMap<>();
-        for (Player candidate : candidates) {
-            ButtonType button = new ButtonType(candidate.getName(), ButtonBar.ButtonData.OK_DONE);
-            buttonToVictim.put(button, candidate);
-            dialog.getDialogPane().getButtonTypes().add(button);
-        }
-        ButtonType noVictim = new ButtonType(
-                labels.getString("robber.noVictim"), ButtonBar.ButtonData.CANCEL_CLOSE);
-        dialog.getDialogPane().getButtonTypes().add(noVictim);
-
-        dialog.setResultConverter(buttonToVictim::get);
+    Map<ButtonType, Player> buttonToVictim = new LinkedHashMap<>();
+    for (Player candidate : candidates) {
+      ButtonType button = new ButtonType(candidate.getName(), ButtonBar.ButtonData.OK_DONE);
+      buttonToVictim.put(button, candidate);
+      dialog.getDialogPane().getButtonTypes().add(button);
     }
+    ButtonType noVictim = new ButtonType(
+        labels.getString("robber.noVictim"), ButtonBar.ButtonData.CANCEL_CLOSE);
+    dialog.getDialogPane().getButtonTypes().add(noVictim);
 
-    public Optional<Player> showAndPick() {
-        return dialog.showAndWait();
-    }
+    dialog.setResultConverter(buttonToVictim::get);
+  }
+
+  /** Shows the dialog and returns the chosen victim, or empty for no theft. */
+  public Optional<Player> showAndPick() {
+    return dialog.showAndWait();
+  }
 }

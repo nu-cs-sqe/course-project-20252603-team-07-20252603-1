@@ -1,6 +1,8 @@
 package domain.model.resources;
 
-/** Immutable value object representing a quantity of a specific resource. */
+/**
+ * Immutable value object representing a quantity of a specific resource.
+ */
 public class ResourceQuantity {
 
   private final Resource resource;

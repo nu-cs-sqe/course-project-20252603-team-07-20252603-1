@@ -1,10 +1,11 @@
 [![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-2972f46106e565e64193e422d61a12cf1da4916b45550586e14ef0a7c637dd04.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=23630237)
 
-
 ![Gradle Build](https://github.com/nu-cs-sqe/course-project-20252603-team-07-20252603-1/actions/workflows/main.yml/badge.svg)
+
 # Catan
 
 ## Contributors
+
 - Connor Lai
 - Benjamin Auby
 - Kevin Wang
@@ -12,16 +13,24 @@
 - Theodore Maurino
 
 ## Dependencies
+
 - JDK 11
 - JUnit 5.10
 - Gradle 8.10
 - SpotBugs Annotations 4.7.3
 
 ## JavaFX
-We have decided to use JavaFX as the core GUI engine for this project, because JavaFX is the modern successor of Swing and we're hoping to leverage its expanded feature set and more flexible support for styling and animations. 
+
+We have decided to use JavaFX as the core GUI engine for this project, because JavaFX is the modern successor of Swing
+and we're hoping to leverage its expanded feature set and more flexible support for styling and animations.
 
 ## Acknowledgements
+
 Professor Yiji Zhang, Northwestern CS 380
 
 ## Rule Exceptions
-In our development of Catan, there were certain rules that were not implemented. For one, when a 7 is rolled, the player is not currently forced to discard any resources if their resource count is higher than 7. Similarly, players are not immediately granted resources when placing their second settlement. To the best of our knowledge, all other rules of the game are implemented. 
+
+In our development of Catan, there were certain rules that were not implemented. For one, when a 7 is rolled, the player
+is not currently forced to discard any resources if their resource count is higher than 7. Similarly, players are not
+immediately granted resources when placing their second settlement. To the best of our knowledge, all other rules of the
+game are implemented. 

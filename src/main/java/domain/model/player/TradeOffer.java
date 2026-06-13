@@ -2,7 +2,9 @@ package domain.model.player;
 
 import domain.model.resources.ResourceQuantity;
 
-/** Represents a trade proposal from one player to others. */
+/**
+ * Represents a trade proposal from one player to others.
+ */
 public class TradeOffer {
 
   private final Player offeringPlayer;
@@ -20,8 +22,8 @@ public class TradeOffer {
    * Creates a new trade offer with validation.
    *
    * @param offeringPlayer the player making the offer
-   * @param giving the resource the offerer gives
-   * @param receiving the resource the offerer wants in return
+   * @param giving         the resource the offerer gives
+   * @param receiving      the resource the offerer wants in return
    * @return a new TradeOffer
    */
   public static TradeOffer create(

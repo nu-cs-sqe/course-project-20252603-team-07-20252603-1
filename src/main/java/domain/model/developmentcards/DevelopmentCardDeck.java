@@ -4,7 +4,9 @@ import domain.model.exceptions.EmptyDeckException;
 import java.util.Collections;
 import java.util.Stack;
 
-/** Represents the deck of development cards used during the game. */
+/**
+ * Represents the deck of development cards used during the game.
+ */
 public class DevelopmentCardDeck {
 
   private Stack<DevelopmentCard> deck;
@@ -16,7 +18,9 @@ public class DevelopmentCardDeck {
   private int yearOfPlentyCount;
   private int monopolyCount;
 
-  /** Creates and shuffles a full development card deck with standard card counts. */
+  /**
+   * Creates and shuffles a full development card deck with standard card counts.
+   */
   public DevelopmentCardDeck() {
     this.deck = new Stack<DevelopmentCard>();
     this.cardsLeft = 25;
@@ -54,7 +58,9 @@ public class DevelopmentCardDeck {
     this.shuffle();
   }
 
-  /** Shuffles the deck. */
+  /**
+   * Shuffles the deck.
+   */
   public void shuffle() {
     Collections.shuffle(this.deck);
   }

@@ -1,6 +1,8 @@
 package domain.model.exceptions;
 
-/** Thrown when a road is placed on an already-occupied edge. */
+/**
+ * Thrown when a road is placed on an already-occupied edge.
+ */
 public class EdgeAlreadyClaimedException extends RuntimeException {
 
   /**

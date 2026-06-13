@@ -1,19 +1,21 @@
 package domain.model.board;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import domain.model.exceptions.EmptyDeckException;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 import domain.model.resources.Resource;
 import domain.model.resources.ResourceDeck;
-import org.easymock.EasyMock;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.easymock.EasyMock;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class PortTests {
 
@@ -110,7 +112,7 @@ public class PortTests {
     EasyMock.replay(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
 
     port.executePortTrade(mockPlayer, mockBoard,
-            buildRequest(Resource.WOOL, Resource.ORE));
+        buildRequest(Resource.WOOL, Resource.ORE));
 
     EasyMock.verify(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
   }
@@ -135,7 +137,7 @@ public class PortTests {
     EasyMock.replay(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
 
     port.executePortTrade(mockPlayer, mockBoard,
-            buildRequest(Resource.LUMBER, Resource.GRAIN));
+        buildRequest(Resource.LUMBER, Resource.GRAIN));
 
     EasyMock.verify(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
   }
@@ -160,7 +162,7 @@ public class PortTests {
     EasyMock.replay(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
 
     port.executePortTrade(mockPlayer, mockBoard,
-            buildRequest(Resource.WOOL, Resource.ORE));
+        buildRequest(Resource.WOOL, Resource.ORE));
 
     EasyMock.verify(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
   }
@@ -185,7 +187,7 @@ public class PortTests {
     EasyMock.replay(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
 
     port.executePortTrade(mockPlayer, mockBoard,
-            buildRequest(Resource.ORE, Resource.BRICK));
+        buildRequest(Resource.ORE, Resource.BRICK));
 
     EasyMock.verify(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
   }
@@ -210,7 +212,7 @@ public class PortTests {
     EasyMock.replay(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
 
     port.executePortTrade(mockPlayer, mockBoard,
-            buildRequest(Resource.LUMBER, Resource.GRAIN));
+        buildRequest(Resource.LUMBER, Resource.GRAIN));
 
     EasyMock.verify(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
   }
@@ -235,7 +237,7 @@ public class PortTests {
     EasyMock.replay(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
 
     port.executePortTrade(mockPlayer, mockBoard,
-            buildRequest(Resource.GRAIN, Resource.WOOL));
+        buildRequest(Resource.GRAIN, Resource.WOOL));
 
     EasyMock.verify(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
   }
@@ -260,7 +262,7 @@ public class PortTests {
     EasyMock.replay(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
 
     port.executePortTrade(mockPlayer, mockBoard,
-            buildRequest(Resource.BRICK, Resource.LUMBER));
+        buildRequest(Resource.BRICK, Resource.LUMBER));
 
     EasyMock.verify(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
   }
@@ -276,8 +278,8 @@ public class PortTests {
     EasyMock.replay(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
 
     Exception exception = assertThrows(IllegalArgumentException.class, () ->
-            port.executePortTrade(mockPlayer, mockBoard,
-                    buildRequest(Resource.ORE, Resource.WOOL)));
+        port.executePortTrade(mockPlayer, mockBoard,
+            buildRequest(Resource.ORE, Resource.WOOL)));
 
     assertEquals("This port only accepts WOOL for 2:1 trades.", exception.getMessage());
 
@@ -295,8 +297,8 @@ public class PortTests {
     EasyMock.replay(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
 
     Exception exception = assertThrows(IllegalArgumentException.class, () ->
-            port.executePortTrade(mockPlayer, mockBoard,
-                    buildRequestSameResource(Resource.WOOL)));
+        port.executePortTrade(mockPlayer, mockBoard,
+            buildRequestSameResource(Resource.WOOL)));
 
     assertEquals("Cannot trade a resource for itself.", exception.getMessage());
 
@@ -315,8 +317,8 @@ public class PortTests {
     EasyMock.replay(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
 
     Exception exception = assertThrows(IllegalStateException.class, () ->
-            port.executePortTrade(mockPlayer, mockBoard,
-                    buildRequest(Resource.WOOL, Resource.ORE)));
+        port.executePortTrade(mockPlayer, mockBoard,
+            buildRequest(Resource.WOOL, Resource.ORE)));
 
     assertEquals("Player has insufficient resources for this trade.", exception.getMessage());
 
@@ -335,8 +337,8 @@ public class PortTests {
     EasyMock.replay(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
 
     Exception exception = assertThrows(IllegalStateException.class, () ->
-            port.executePortTrade(mockPlayer, mockBoard,
-                    buildRequest(Resource.WOOL, Resource.ORE)));
+        port.executePortTrade(mockPlayer, mockBoard,
+            buildRequest(Resource.WOOL, Resource.ORE)));
 
     assertEquals("Player does not have access to this port.", exception.getMessage());
 
@@ -356,8 +358,8 @@ public class PortTests {
     EasyMock.replay(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
 
     assertThrows(EmptyDeckException.class, () ->
-            port.executePortTrade(mockPlayer, mockBoard,
-                    buildRequest(Resource.WOOL, Resource.ORE)));
+        port.executePortTrade(mockPlayer, mockBoard,
+            buildRequest(Resource.WOOL, Resource.ORE)));
 
     EasyMock.verify(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
   }
@@ -382,7 +384,7 @@ public class PortTests {
     EasyMock.replay(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
 
     port.executePortTrade(mockPlayer, mockBoard,
-            buildRequest(Resource.WOOL, Resource.ORE));
+        buildRequest(Resource.WOOL, Resource.ORE));
 
     EasyMock.verify(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
   }
@@ -407,7 +409,7 @@ public class PortTests {
     EasyMock.replay(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
 
     port.executePortTrade(mockPlayer, mockBoard,
-            buildRequest(Resource.WOOL, Resource.ORE));
+        buildRequest(Resource.WOOL, Resource.ORE));
 
     EasyMock.verify(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
   }
@@ -423,8 +425,8 @@ public class PortTests {
     EasyMock.replay(mockBoard, mockPlayer, mockGivingDeck, mockReceivingDeck);
 
     Exception exception = assertThrows(IllegalArgumentException.class, () ->
-            port.executePortTrade(mockPlayer, mockBoard,
-                    buildRequestSameResource(Resource.WOOL)));
+        port.executePortTrade(mockPlayer, mockBoard,
+            buildRequestSameResource(Resource.WOOL)));
 
     assertEquals("Cannot trade a resource for itself.", exception.getMessage());
 

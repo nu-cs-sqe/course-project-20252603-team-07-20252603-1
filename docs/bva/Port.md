@@ -1,17 +1,21 @@
 ### Method under test: `playerCanUsePort(BoardHandler board, Player player)`
 
 Step 1:
+
 - Input: State of the board
 - Input: Player
 - Output: True/False
 
 Step 2:
+
 - State - Cases (claimed or not)
 - Player - Cases
 - True/False - Boolean
 
 Step 3:
-- Input: Player doesn't own any of the ports, player owns port 1, player owns port 2, player owns both ports (not feasible)
+
+- Input: Player doesn't own any of the ports, player owns port 1, player owns port 2, player owns both ports (not
+  feasible)
 - Input: RED, WHITE, ORANGE, BLUE (all the same functionality)
 - Output: True, False
 
@@ -21,10 +25,11 @@ Step 3:
 | Test Case 2 | Player owns port node 1               | true            | :white_check_mark: |
 | Test Case 3 | Player owns port node 2               | true            | :white_check_mark: |
 
-
-### Method under test: `executePortTrade(Player player, BoardHandler board, Resource givingResource, Resource receivingResource)`
+### Method under test:
+`executePortTrade(Player player, BoardHandler board, Resource givingResource, Resource receivingResource)`
 
 Step 1:
+
 - Input: Player
 - Input: BoardHandler
 - Input: givingResource
@@ -37,6 +42,7 @@ Step 1:
 - Output: Error
 
 Step 2:
+
 - Player - Player class
 - BoardHandler - Cases
 - givingResource - Cases
@@ -49,6 +55,7 @@ Step 2:
 - Error - Exception
 
 Step 3:
+
 - Input: RED, WHITE, ORANGE, BLUE (all the same, will just use RED for simplicity)
 - Input: playerCanUsePort - true or false
 - Input: BRICK, LUMBER, GRAIN, ORE, WOOL
@@ -60,7 +67,6 @@ Step 3:
 - Output: player resources updated correctly
 - Output: bank resources updated correctly
 - Output: Exceptions
-
 
 |              | System under test                                                                 | Expected output                                                                                                                                                                                 | Implemented?       |
 |--------------|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------|

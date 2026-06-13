@@ -1,36 +1,36 @@
-
 ### Method under test: `addGraphNodeObject(int NodeID)`
 
 #### Inputs:
 
 - NodeID -> Integer -> Interval [0, 53] -> (checking ID is responsibility of separate GraphNode class)
 - Internal Map of NodeIDs to Object -> Collection
-  - Duplicates impossible, NodeIDs are unique
+    - Duplicates impossible, NodeIDs are unique
 
 #### Outputs:
 
 - Change of state of Internal Map
-  - Update -> upon doing BVA for addGraphConnection(), needs to update BOTH maps
+    - Update -> upon doing BVA for addGraphConnection(), needs to update BOTH maps
 - Boolean to represent success
-  - Upon failure -> insertion of a duplicate, error with message "Node already exists"
+    - Upon failure -> insertion of a duplicate, error with message "Node already exists"
 
-|             | State of the System                                        | Expected output                                  | Implemented?       |
-|-------------|------------------------------------------------------------|--------------------------------------------------|--------------------|
-| Test Case 1 | Empty collection, adding NodeID 0                          | Updated Map, True                                | :white_check_mark: |
-| Test Case 2 | Collection with one element, adding NodeID 53              | Updated Map, True                                | :white_check_mark: |
-| Test Case 3 | Collection with multiple elements, adding NodeID 53        | Updated Map, True                                | :white_check_mark: |
-| Test Case 4 | Collection with multiple elements, adding duplicate node 0 | Map Stays the same, Error "Node already exists"  | :white_check_mark: |
+|             | State of the System                                        | Expected output                                 | Implemented?       |
+|-------------|------------------------------------------------------------|-------------------------------------------------|--------------------|
+| Test Case 1 | Empty collection, adding NodeID 0                          | Updated Map, True                               | :white_check_mark: |
+| Test Case 2 | Collection with one element, adding NodeID 53              | Updated Map, True                               | :white_check_mark: |
+| Test Case 3 | Collection with multiple elements, adding NodeID 53        | Updated Map, True                               | :white_check_mark: |
+| Test Case 4 | Collection with multiple elements, adding duplicate node 0 | Map Stays the same, Error "Node already exists" | :white_check_mark: |
 
 ### Method under test: `getGraphNodeByID(int NodeID)`
 
 #### Inputs:
+
 - State of map -> NodeID exists or not
 - Collection, one element, multiple elements, empty collection
 
 #### Outputs:
+
 - GraphNode Obj if it exists
 - If not, error "Node does not exist"
-
 
 |             | State of the System                                 | Expected output | Implemented?       |
 |-------------|-----------------------------------------------------|-----------------|--------------------|
@@ -41,15 +41,16 @@
 ### Method under test: `checkPlayerOwnsGraphNodeObject(PlayerColor color, int NodeID)`
 
 #### Inputs:
+
 - Player color -> RED, ORANGE, WHITE, BLUE
 - State of map
-  - NodeID exists or not
-  - Player color owns it, or not
+    - NodeID exists or not
+    - Player color owns it, or not
 
 #### Outputs:
+
 - Boolean
 - Error -> "Node does not exist"
-
 
 |             | State of the System                           | Expected output             | Implemented?       |
 |-------------|-----------------------------------------------|-----------------------------|--------------------|
@@ -61,17 +62,18 @@
 ### Method under test: `claimGraphNodeObject(PlayerColor color, int NodeID)`
 
 #### Inputs:
+
 - Player color -> RED, ORANGE, WHITE, BLUE
-- State of map 
-  - NodeID exists or not
-  - NodeIS claimed
+- State of map
+    - NodeID exists or not
+    - NodeIS claimed
 - Collection, one element, multiple elements, empty collection
 
 #### Outputs:
+
 - Calls claimGraphNode() on Node Object -> use mocking to verify
 - Error 1 -> "Node does not exist"
 - Error 2 -> "Node already claimed"
-
 
 |             | State of the System                                     | Expected output | Implemented?       |
 |-------------|---------------------------------------------------------|-----------------|--------------------|
@@ -83,16 +85,17 @@
 ### Method under test: `claimGraphEdgeObject(PlayerColor color, int startingNodeID, int endingNodeID)`
 
 #### Inputs:
+
 - Player color -> Red, Blue, White, Orange
 - States of Graph -> Edge exists, edge does not exist, edge is unclaimed/claimed
-  - WhiteBox: edge will be in set -> collection -> empty, one item, multiple
+    - WhiteBox: edge will be in set -> collection -> empty, one item, multiple
 
 #### Outputs:
+
 - Bool -> success or not
 - Edge Color is changed -> need to Mock to make sure call is made on Edge
 - Error 1 -> "Edge does not exist"
 - Error 2 -> "Edge already claimed"
-
 
 |             | State of the System                                              | Expected output | Implemented?       |
 |-------------|------------------------------------------------------------------|-----------------|--------------------|
@@ -101,18 +104,19 @@
 | Test Case 3 | Orange Claims edge52to53, edge does not exist, empty set         | Error 1         | :white_check_mark: |
 | Test Case 4 | White Claims edge50to53, edge already claimed, multiple item set | Error 2         | :white_check_mark: |
 
-
 ### Method under test: `addGraphNodeConnection(int nodeID, GraphEdge connectingEdge)`
 
 #### inputs:
+
 - nodeID -> cases -> nodeID exists in map, or it does not (also covers cases for state of map)
 - connectingEdge -> cases -> new edge, or duplicate edge
+
 #### outputs
+
 - boolean -> success on new edge
 - error 1 -> edge already exists with that node "Node already has specified edge"
 - error 2 -> node does not exist "Node does not exist"
 - state of map -> new edge added
-
 
 |             | State of the System                               | Expected output                 | Implemented?       |
 |-------------|---------------------------------------------------|---------------------------------|--------------------|
@@ -124,15 +128,16 @@
 ### Method under test: `getConnectingEdgesByID(int NodeID)`
 
 #### Inputs:
+
 - State of map -> NodeID exists or not
-  - Collection, one element, multiple elements, empty collection
+    - Collection, one element, multiple elements, empty collection
 - State of respective set (i.e the set of Edges for NodeID 0)
-  - Collection -> empty, one element, multiple elements
+    - Collection -> empty, one element, multiple elements
 
 #### Outputs:
+
 - Set of Edges -> collection -> empty, one element, multiple elements
 - If not, error "Node does not exist"
-
 
 |             | State of the System                                              | Expected output      | Implemented?       |
 |-------------|------------------------------------------------------------------|----------------------|--------------------|
@@ -141,18 +146,18 @@
 | Test Case 3 | Get ID 53, multiple Nodes Exist, ID 53 has set of one edge       | One element set      | :white_check_mark: |
 | Test Case 4 | Get ID 53, multiple Nodes Exist, ID 53 has set of multiple edges | Multiple Element set | :white_check_mark: |
 
-
 ### Method under test: `getCorrectEdgeFromSet(Set<GraphEdge> connectingEdges, int startingNodeID, int endingNodeID)`
 
 #### Inputs:
+
 - set of Graph Edges -> collection -> empty, one element, multiple elements
 - startingNodeID + endingNodeID -> both are integers, but technically they collectively serve as an "ID" of the node
-  - Cases -> Edge with "ID" exist, edge without "ID" exists
+    - Cases -> Edge with "ID" exist, edge without "ID" exists
 
 #### Outputs:
+
 - GraphEdge Object (if it exists)
 - Error "Edge does not exist"
-
 
 |             | State of the System                       | Expected output | Implemented?       |
 |-------------|-------------------------------------------|-----------------|--------------------|
@@ -165,22 +170,23 @@
 
 Returns true if the node at nodeID is occupied by any player.
 
-|             | State of the System                               | Expected output | Implemented?       |
-|-------------|---------------------------------------------------|-----------------|--------------------|
-| Test Case 1 | node exists; node is not occupied                 | false           | :white_check_mark: |
-| Test Case 2 | node exists; node is occupied                     | true            | :white_check_mark: |
+|             | State of the System               | Expected output | Implemented?       |
+|-------------|-----------------------------------|-----------------|--------------------|
+| Test Case 1 | node exists; node is not occupied | false           | :white_check_mark: |
+| Test Case 2 | node exists; node is occupied     | true            | :white_check_mark: |
 
 ---
 
 ### Method under test: `dfs(int nodeId, PlayerColor color, Set<GraphEdge> visited)`
 
-Recursive depth-first search that computes the longest connected road for `color`, skipping enemy-owned edges and stopping at enemy-occupied intermediate nodes.
+Recursive depth-first search that computes the longest connected road for `color`, skipping enemy-owned edges and
+stopping at enemy-occupied intermediate nodes.
 
-|             | State of the System                                                                          | Expected output                               | Implemented?       |
-|-------------|----------------------------------------------------------------------------------------------|-----------------------------------------------|--------------------|
-| Test Case 1 | intermediate node has own (friendly) settlement                                              | road continues through own settlement         | :white_check_mark: |
-| Test Case 2 | intermediate node has enemy settlement                                                       | road is blocked; search stops at that node    | :white_check_mark: |
-| Test Case 3 | node has an unvisited edge owned by an enemy color                                           | enemy edge not traversed                      | :white_check_mark: |
+|             | State of the System                                                                                        | Expected output                                                              | Implemented?       |
+|-------------|------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|--------------------|
+| Test Case 1 | intermediate node has own (friendly) settlement                                                            | road continues through own settlement                                        | :white_check_mark: |
+| Test Case 2 | intermediate node has enemy settlement                                                                     | road is blocked; search stops at that node                                   | :white_check_mark: |
+| Test Case 3 | node has an unvisited edge owned by an enemy color                                                         | enemy edge not traversed                                                     | :white_check_mark: |
 | Test Case 4 | friendly settlement at intermediate node (RED edges 0-3, 3-7; RED node 3); player passed via activePlayers | DFS traverses through node 3; road length = 2, no longest road awarded (< 5) | :white_check_mark: |
 
 ---
@@ -188,13 +194,15 @@ Recursive depth-first search that computes the longest connected road for `color
 ### Method under test: `edgeCheckPlayerOwnsNeighboringEdge(PlayerColor color, int startingNodeID, int endingNodeID)`
 
 #### Inputs:
+
 - PlayerColor -> RED, WHITE, BLUE, ORANGE
 - System State -> Cases
-  - Player owns no adjacent edges
-  - Player owns edge connecting to starting Node
-  - Player owns edge connecting to ending node
+    - Player owns no adjacent edges
+    - Player owns edge connecting to starting Node
+    - Player owns edge connecting to ending node
 
 #### Outputs:
+
 - Boolean
 
 |             | State of the System                                                     | Expected output | Implemented?       |
@@ -204,18 +212,19 @@ Recursive depth-first search that computes the longest connected road for `color
 | Test Case 3 | Blue, checking edge [52, 53], does not own any connecting edges         | False           | :white_check_mark: |
 | Test Case 4 | Orange, checking edge [52, 53], owns edges connecting to both 52 and 53 | True            | :white_check_mark: |
 
-
 ### Method under test: `edgeCheckPlayerOwnsNeighboringNode(PlayerColor color, int startingNodeID, int endingNodeID)`
 
 #### Inputs:
+
 - PlayerColor -> RED, WHITE, BLUE, ORANGE
 - System State -> Cases
-  - Player owns startingNode
-  - Player owns endingNode
-  - Player owns both
-  - Player owns neither
+    - Player owns startingNode
+    - Player owns endingNode
+    - Player owns both
+    - Player owns neither
 
 #### Outputs:
+
 - Boolean
 
 |             | State of the System                                             | Expected output | Implemented?       |
@@ -226,13 +235,16 @@ Recursive depth-first search that computes the longest connected road for `color
 | Test Case 4 | Orange, checking edge [52, 53], owns both nodes                 | True            | :white_check_mark: |
 
 ### Method under test: `nodeCheckPlayerOwnsNeighboringEdge(PlayerColor color, int nodeID)`
+
 #### Inputs:
+
 - PlayerColor -> RED, WHITE, BLUE, ORANGE
 - System State/Graph Topology -> Cases
-  - Player owns no adjacent edge
-  - Player owns adjacent edge
+    - Player owns no adjacent edge
+    - Player owns adjacent edge
 
 #### Outputs:
+
 - Boolean
 
 |             | State of the System                                         | Expected output | Implemented?       |
@@ -245,14 +257,16 @@ Recursive depth-first search that computes the longest connected road for `color
 ### Method under test: `checkIfAdjacentNodesNotClaimed(int nodeID)`
 
 #### Inputs:
+
 - state of system -> cases
-  - No adjacent nodes are claimed
-  - One adjacent node is claimed
-    - With Whitebox analysis
-      - One adjacent node is claimed, and is the "endingNode" in the edge connected with nodeID
-      - One adjacent node is claimed, and is the "startingNode" in the edge connected with nodeID
+    - No adjacent nodes are claimed
+    - One adjacent node is claimed
+        - With Whitebox analysis
+            - One adjacent node is claimed, and is the "endingNode" in the edge connected with nodeID
+            - One adjacent node is claimed, and is the "startingNode" in the edge connected with nodeID
 
 #### Outputs:
+
 - Boolean
 
 |             | State of the System                                           | Expected output | Implemented?       |
@@ -262,13 +276,14 @@ Recursive depth-first search that computes the longest connected road for `color
 | Test Case 3 | Node 53, adjacent node 50 is claimed ("startingNode" of edge) | False           | :white_check_mark: |
 | Test Case 4 | Node 49, adjacemt nodes 45 and 53 are claimed                 | False           | :white_check_mark: |
 
-
 ### Method under test: `buildGameGraph()`
 
 #### Inputs:
+
 - None -> this function builds the graph for our specified rule Set
 
 #### Outputs:
+
 - Updated Maps -> store all nodes and graph edges
 
 |             | State of the System | Expected output   | Implemented?       |
@@ -280,17 +295,17 @@ Recursive depth-first search that computes the longest connected road for `color
 #### Inputs:
 
 - Players -> List<Player> -> Collection of players to check
-- PreviousWinner -> PlayerColor -> the player who currently holds longest road 
-  - PlayerColor.SETUP if nobody holds it yet
+- PreviousWinner -> PlayerColor -> the player who currently holds longest road
+    - PlayerColor.SETUP if nobody holds it yet
 - Internal graph edge state -> each edge has an owning PlayerColor
 - Road length -> Integer -> [0, 15] max possible roads in Catan
 
 #### Outputs:
 
 - PlayerColor of the player with the longest road
-  - Returns PlayerColor.SETUP if no player has 5+ roads 
-  - Returns the max owning player's color if they have 5+ roads 
-  - In case of tie -> returns previous owner of longest road
+    - Returns PlayerColor.SETUP if no player has 5+ roads
+    - Returns the max owning player's color if they have 5+ roads
+    - In case of tie -> returns previous owner of longest road
 
 |             | State of the System                                                                            | Expected output    | Implemented?       |
 |-------------|------------------------------------------------------------------------------------------------|--------------------|--------------------|

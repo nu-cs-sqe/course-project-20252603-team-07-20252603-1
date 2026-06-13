@@ -1,11 +1,13 @@
 package domain.model.developmentcards;
 
-import org.easymock.EasyMock;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import domain.model.exceptions.EmptyDeckException;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class DevelopmentCardDeckTest {
   static final int DECK_SIZE = 25;
@@ -13,9 +15,9 @@ class DevelopmentCardDeckTest {
   // TC1, TC13: new DevelopmentCardDeck() -> countRemaining() == 25
   @Test
   void constructDeck_OnNewDeck_ExpectTwentyFiveCards() {
-      DevelopmentCardDeck deck = new DevelopmentCardDeck();
+    DevelopmentCardDeck deck = new DevelopmentCardDeck();
 
-      assertEquals(DECK_SIZE, deck.countRemaining());
+    assertEquals(DECK_SIZE, deck.countRemaining());
   }
 
   // TC2: new DevelopmentCardDeck() -> deck contains exactly 14 KNIGHT cards
@@ -26,7 +28,9 @@ class DevelopmentCardDeckTest {
 
     int knightCount = 0;
     for (int i = 0; i < DECK_SIZE; i++) {
-      if (deck.drawCard(0).getType() == DevelopmentCardType.KNIGHT) knightCount++;
+      if (deck.drawCard(0).getType() == DevelopmentCardType.KNIGHT) {
+        knightCount++;
+      }
     }
 
     assertEquals(expectedKnightCount, knightCount);
@@ -40,7 +44,9 @@ class DevelopmentCardDeckTest {
 
     int roadBuilderCount = 0;
     for (int i = 0; i < DECK_SIZE; i++) {
-      if (deck.drawCard(0).getType() == DevelopmentCardType.ROAD_BUILDER) roadBuilderCount++;
+      if (deck.drawCard(0).getType() == DevelopmentCardType.ROAD_BUILDER) {
+        roadBuilderCount++;
+      }
     }
 
     assertEquals(expectedRoadBuilderCount, roadBuilderCount);
@@ -54,7 +60,9 @@ class DevelopmentCardDeckTest {
 
     int yearOfPlentyCount = 0;
     for (int i = 0; i < DECK_SIZE; i++) {
-      if (deck.drawCard(0).getType() == DevelopmentCardType.YEAR_OF_PLENTY) yearOfPlentyCount++;
+      if (deck.drawCard(0).getType() == DevelopmentCardType.YEAR_OF_PLENTY) {
+        yearOfPlentyCount++;
+      }
     }
 
     assertEquals(expectedYearOfPlentyCount, yearOfPlentyCount);
@@ -68,7 +76,9 @@ class DevelopmentCardDeckTest {
 
     int monopolyCount = 0;
     for (int i = 0; i < DECK_SIZE; i++) {
-      if (deck.drawCard(0).getType() == DevelopmentCardType.MONOPOLY) monopolyCount++;
+      if (deck.drawCard(0).getType() == DevelopmentCardType.MONOPOLY) {
+        monopolyCount++;
+      }
     }
 
     assertEquals(expectedMonopolyCount, monopolyCount);
@@ -82,7 +92,9 @@ class DevelopmentCardDeckTest {
 
     int victoryPointCount = 0;
     for (int i = 0; i < DECK_SIZE; i++) {
-      if (deck.drawCard(0).getType() == DevelopmentCardType.VICTORY_POINT) victoryPointCount++;
+      if (deck.drawCard(0).getType() == DevelopmentCardType.VICTORY_POINT) {
+        victoryPointCount++;
+      }
     }
 
     assertEquals(expectedVictoryPointCount, victoryPointCount);
@@ -90,7 +102,8 @@ class DevelopmentCardDeckTest {
 
   // TC7: drawCard(3) from full deck (size 25) -> card non-null with valid type, roundDrawnAt == 3, countRemaining() == 24
   @Test
-  void drawCard_FromFullDeck_ExpectValidCardStampedWithRoundAndCountDecremented() throws EmptyDeckException {
+  void drawCard_FromFullDeck_ExpectValidCardStampedWithRoundAndCountDecremented()
+      throws EmptyDeckException {
     final int currentRound = 3;
     final int expectedRemaining = 24;
 
@@ -99,19 +112,22 @@ class DevelopmentCardDeckTest {
 
     assertNotNull(card);
     assertNotNull(card.getType());
-    
+
     assertEquals(currentRound, card.getRoundDrawnAt());
     assertEquals(expectedRemaining, deck.countRemaining());
   }
 
   // TC8: drawCard(7) from deck with 1 card remaining -> card returned (roundDrawnAt == 7), countRemaining() == 0
   @Test
-  void drawCard_FromDeckWithOneCardRemaining_ExpectCardStampedWithRoundAndCountZero() throws EmptyDeckException {
+  void drawCard_FromDeckWithOneCardRemaining_ExpectCardStampedWithRoundAndCountZero()
+      throws EmptyDeckException {
     final int currentRound = 7;
     final int expectedRemaining = 0;
 
     DevelopmentCardDeck deck = new DevelopmentCardDeck();
-    for (int i = 0; i < 24; i++) deck.drawCard(0);
+    for (int i = 0; i < 24; i++) {
+      deck.drawCard(0);
+    }
 
     DevelopmentCard card = deck.drawCard(currentRound);
 
@@ -124,7 +140,9 @@ class DevelopmentCardDeckTest {
   @Test
   void drawCard_FromEmptyDeck_ExpectEmptyDeckException() throws EmptyDeckException {
     DevelopmentCardDeck deck = new DevelopmentCardDeck();
-    for (int i = 0; i < DECK_SIZE; i++) deck.drawCard(0);
+    for (int i = 0; i < DECK_SIZE; i++) {
+      deck.drawCard(0);
+    }
 
     Exception exception = assertThrows(EmptyDeckException.class, () -> deck.drawCard(1));
     assertEquals("Cannot draw new DevelopmentCard, no cards remain.", exception.getMessage());
@@ -149,7 +167,10 @@ class DevelopmentCardDeckTest {
 
     boolean isDifferent = false;
     for (int i = 0; i < DECK_SIZE; i++) {
-      if (order1[i] != order2[i]) { isDifferent = true; break; }
+      if (order1[i] != order2[i]) {
+        isDifferent = true;
+        break;
+      }
     }
     assertTrue(isDifferent);
   }
@@ -158,7 +179,9 @@ class DevelopmentCardDeckTest {
   @Test
   void shuffle_OnDeckWithOneCard_ExpectCountUnchanged() throws EmptyDeckException {
     DevelopmentCardDeck deck = new DevelopmentCardDeck();
-    for (int i = 0; i < 24; i++) deck.drawCard(0);
+    for (int i = 0; i < 24; i++) {
+      deck.drawCard(0);
+    }
 
     deck.shuffle();
 
@@ -170,7 +193,9 @@ class DevelopmentCardDeckTest {
   @Test
   void shuffle_OnEmptyDeck_ExpectNoErrorAndCountZero() throws EmptyDeckException {
     DevelopmentCardDeck deck = new DevelopmentCardDeck();
-    for (int i = 0; i < DECK_SIZE; i++) deck.drawCard(0);
+    for (int i = 0; i < DECK_SIZE; i++) {
+      deck.drawCard(0);
+    }
 
     assertDoesNotThrow(deck::shuffle);
     assertEquals(0, deck.countRemaining());
@@ -193,7 +218,9 @@ class DevelopmentCardDeckTest {
     DevelopmentCardDeck deck = new DevelopmentCardDeck();
     final int expectedRemaining = 0;
 
-    for (int i = 0; i < DECK_SIZE; i++) deck.drawCard(0);
+    for (int i = 0; i < DECK_SIZE; i++) {
+      deck.drawCard(0);
+    }
 
     assertEquals(expectedRemaining, deck.countRemaining());
   }

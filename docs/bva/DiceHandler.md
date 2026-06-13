@@ -5,19 +5,21 @@
 ### Method under test: `rollTwoDice()`
 
 Step 1:
+
 - Input: Die
 - Input: Dice rolls
 - Output: number 2-12
 
 Step 2:
+
 - Die - implemented class
 - Roll - interval
 
 Step 3:
+
 - Input: Die class, already unit tested, can assume works as intended
 - Input: Die roll of 1, 6, 0 (not feasible), 7 (not feasible)
 - Output: 2, 12, 1 (not feasible), 13 (not feasible)
-
 
 |             | System under test                                            | Expected output | Implemented?       |
 |-------------|--------------------------------------------------------------|-----------------|--------------------|

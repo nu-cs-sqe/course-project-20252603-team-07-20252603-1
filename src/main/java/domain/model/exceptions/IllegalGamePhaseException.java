@@ -1,6 +1,8 @@
 package domain.model.exceptions;
 
-/** Thrown when an action is attempted in the wrong game phase. */
+/**
+ * Thrown when an action is attempted in the wrong game phase.
+ */
 public class IllegalGamePhaseException extends RuntimeException {
 
   /**

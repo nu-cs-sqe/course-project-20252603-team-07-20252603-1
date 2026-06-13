@@ -16,7 +16,9 @@ import domain.model.resources.Resource;
 import java.util.List;
 import java.util.Set;
 
-/** Controller for the main game loop, delegating game actions to the model. */
+/**
+ * Controller for the main game loop, delegating game actions to the model.
+ */
 public class GameLoopController {
 
   /**
@@ -44,7 +46,7 @@ public class GameLoopController {
    *
    * @param model the game model
    * @param color the player color to query
-   * @param type the resource type to count
+   * @param type  the resource type to count
    * @return the resource count
    */
   public int getResourceCount(GameModel model, PlayerColor color, Resource type) {
@@ -55,7 +57,7 @@ public class GameLoopController {
   /**
    * Rolls the dice, distributes resources, and returns the roll result.
    *
-   * @param model the game model
+   * @param model  the game model
    * @param roller the dice handler
    * @return the dice roll total
    */
@@ -87,8 +89,8 @@ public class GameLoopController {
   /**
    * Accepts a trade offer on behalf of the accepting player.
    *
-   * @param model the game model
-   * @param offer the trade offer being accepted
+   * @param model           the game model
+   * @param offer           the trade offer being accepted
    * @param acceptingPlayer the player accepting the trade
    */
   public void acceptTrade(GameModel model, TradeOffer offer, Player acceptingPlayer) {
@@ -107,28 +109,28 @@ public class GameLoopController {
   /**
    * Attempts a port trade for the current player.
    *
-   * @param model the game model
-   * @param port the port to trade at
-   * @param giving the resource being given
+   * @param model     the game model
+   * @param port      the port to trade at
+   * @param giving    the resource being given
    * @param receiving the resource being received
    */
   public void attemptPortTrade(
-          GameModel model, Port port, Resource giving, Resource receiving) {
+      GameModel model, Port port, Resource giving, Resource receiving) {
     model.attemptPortTrade(port, giving, receiving);
   }
 
   /**
    * Purchases a development card for the current player.
    *
-   * @param model the game model
-   * @param deck the development card deck to draw from
+   * @param model   the game model
+   * @param deck    the development card deck to draw from
    * @param handler the development card handler
    * @return the drawn development card
    * @throws EmptyDeckException if the deck has no cards remaining
    */
   public DevelopmentCard buyDevCard(
-          GameModel model, DevelopmentCardDeck deck, DevelopmentCardHandler handler)
-          throws EmptyDeckException {
+      GameModel model, DevelopmentCardDeck deck, DevelopmentCardHandler handler)
+      throws EmptyDeckException {
     Player player = model.getCurrentPlayer();
     int round = model.getCurrentRound();
     return handler.buyDevelopmentCard(player, deck, round);
@@ -137,7 +139,7 @@ public class GameLoopController {
   /**
    * Moves the robber to the target hex and steals from the victim of the given color.
    *
-   * @param model the game model
+   * @param model       the game model
    * @param targetHexId the hex to move the robber to
    * @param victimColor the color of the player to steal from, or null
    */
@@ -176,7 +178,7 @@ public class GameLoopController {
   /**
    * Sets the current player by turn-order index.
    *
-   * @param model the game model
+   * @param model       the game model
    * @param playerIndex the index in turn order
    */
   public void setCurrentPlayer(GameModel model, int playerIndex) {
@@ -207,7 +209,7 @@ public class GameLoopController {
   /**
    * Attempts to build a settlement at the given node.
    *
-   * @param model the game model
+   * @param model  the game model
    * @param nodeId the node to build at
    */
   public void attemptBuildSettlement(GameModel model, int nodeId) {
@@ -217,7 +219,7 @@ public class GameLoopController {
   /**
    * Attempts to build a road between the two given nodes.
    *
-   * @param model the game model
+   * @param model   the game model
    * @param nodeId1 the first endpoint node
    * @param nodeId2 the second endpoint node
    */
@@ -228,7 +230,7 @@ public class GameLoopController {
   /**
    * Attempts to build a city at the given node.
    *
-   * @param model the game model
+   * @param model  the game model
    * @param nodeId the node to build at
    */
   public void attemptBuildCity(GameModel model, int nodeId) {
@@ -250,7 +252,7 @@ public class GameLoopController {
   /**
    * Returns the ports available to the given player.
    *
-   * @param board the game board
+   * @param board  the game board
    * @param player the player to query
    * @return the list of available ports
    */
@@ -262,7 +264,7 @@ public class GameLoopController {
    * Plays a development card for the current player.
    *
    * @param model the game model
-   * @param card the development card to play
+   * @param card  the development card to play
    */
   public void playDevCard(GameModel model, DevelopmentCard card) {
     model.playDevCard(card);

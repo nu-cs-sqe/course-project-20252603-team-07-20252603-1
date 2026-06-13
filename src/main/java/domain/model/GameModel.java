@@ -18,106 +18,113 @@ import domain.model.player.TradeOffer;
 import domain.model.resources.Resource;
 import domain.model.resources.ResourceDeck;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-/** Represents the full state of a Catan game, including board, players, and game phase. */
+/**
+ * Represents the full state of a Catan game, including board, players, and game phase.
+ */
 public class GameModel {
 
-    private static final int ROBBER_ROLL_VALUE = 7;
-    private static final int MAX_AMOUNT_SETTLEMENTS = 5;
-    private static final int MIN_POINTS_TO_WIN_GAME = 10;
-    private static final int POINTS_FOR_SETTLEMENT = 1;
-    private static final int POINTS_FOR_CITY = 1;
-    private static final int DEV_CARD_COST = 1;
-    private static final int POINTS_FOR_LONGEST_ROAD = 2;
+  private static final int ROBBER_ROLL_VALUE = 7;
+  private static final int MAX_AMOUNT_SETTLEMENTS = 5;
+  private static final int MIN_POINTS_TO_WIN_GAME = 10;
+  private static final int POINTS_FOR_SETTLEMENT = 1;
+  private static final int POINTS_FOR_CITY = 1;
+  private static final int DEV_CARD_COST = 1;
+  private static final int POINTS_FOR_LONGEST_ROAD = 2;
 
-    @SuppressFBWarnings(value = "EI_EXPOSE_REP2",
-            justification = "BoardHandler is intentionally shared between GameSetupModel and GameModel as it represents the single game board state")
-    private final BoardHandler board;
-    private GamePhase currentGamePhase;
-    private int currentPlayerIndex;
-    private int currentRound = 0;
-    private List<PlayerColor> playerColors;
-    private PlayerColor currentPlayerColor;
-    private Map<PlayerColor, Player> playerColorToPlayerObject = new HashMap<>();
-    private Map<PlayerColor, Integer> playerColorToLastClaimedNodeId = new HashMap<>();
-    private PlayerColor currentLongestRoadPlayerColor;
+  @SuppressFBWarnings(value = "EI_EXPOSE_REP2",
+      justification = "BoardHandler is shared; it is the single board state instance")
+  private final BoardHandler board;
+  private GamePhase currentGamePhase;
+  private int currentPlayerIndex;
+  private int currentRound = 0;
+  private List<PlayerColor> playerColors;
+  private PlayerColor currentPlayerColor;
+  private Map<PlayerColor, Player> playerColorToPlayerObject = new HashMap<>();
+  private Map<PlayerColor, Integer> playerColorToLastClaimedNodeId = new HashMap<>();
+  private PlayerColor currentLongestRoadPlayerColor;
 
 
-    private final ResourceDeck lumberDeck;
-    private final ResourceDeck brickDeck;
-    private final ResourceDeck grainDeck;
-    private final ResourceDeck oreDeck;
-    private final ResourceDeck woolDeck;
-    private final Map<Resource, ResourceDeck> decks;
-    private final TradeManager tradeManager;
-    private final Random random;
+  private final ResourceDeck lumberDeck;
+  private final ResourceDeck brickDeck;
+  private final ResourceDeck grainDeck;
+  private final ResourceDeck oreDeck;
+  private final ResourceDeck woolDeck;
+  private final Map<Resource, ResourceDeck> decks;
+  private final TradeManager tradeManager;
+  private final Random random;
 
-    //constructor for injecting mocks/stubs
-    GameModel(ResourceDeck lumberDeck, ResourceDeck brickDeck,
-              ResourceDeck grainDeck, ResourceDeck oreDeck,
-              ResourceDeck woolDeck,
-              Map<PlayerColor, Player> playerColorToPlayerObject,
-              BoardHandler board,
-              TradeManager tradeManager,
-              Random random) {
-        this.lumberDeck = lumberDeck;
-        this.brickDeck = brickDeck;
-        this.grainDeck = grainDeck;
-        this.oreDeck = oreDeck;
-        this.woolDeck = woolDeck;
-        decks = Map.of(
-                Resource.LUMBER, lumberDeck,
-                Resource.BRICK, brickDeck,
-                Resource.GRAIN, grainDeck,
-                Resource.WOOL, woolDeck,
-                Resource.ORE, oreDeck
-        );
-        this.playerColorToPlayerObject = playerColorToPlayerObject;
-        this.board = board;
-        this.currentLongestRoadPlayerColor = PlayerColor.SETUP;
-        this.tradeManager = tradeManager;
-        this.random = random;
+  //constructor for injecting mocks/stubs
+  GameModel(ResourceDeck lumberDeck, ResourceDeck brickDeck,
+            ResourceDeck grainDeck, ResourceDeck oreDeck,
+            ResourceDeck woolDeck,
+            Map<PlayerColor, Player> playerColorToPlayerObject,
+            BoardHandler board,
+            TradeManager tradeManager,
+            Random random) {
+    this.lumberDeck = lumberDeck;
+    this.brickDeck = brickDeck;
+    this.grainDeck = grainDeck;
+    this.oreDeck = oreDeck;
+    this.woolDeck = woolDeck;
+    decks = Map.of(
+        Resource.LUMBER, lumberDeck,
+        Resource.BRICK, brickDeck,
+        Resource.GRAIN, grainDeck,
+        Resource.WOOL, woolDeck,
+        Resource.ORE, oreDeck
+    );
+    this.playerColorToPlayerObject = playerColorToPlayerObject;
+    this.board = board;
+    this.currentLongestRoadPlayerColor = PlayerColor.SETUP;
+    this.tradeManager = tradeManager;
+    this.random = random;
+  }
+
+  /**
+   * Creates a GameModel with the given players and board.
+   *
+   * @param players the list of players in turn order
+   * @param board   the game board
+   */
+  public GameModel(List<Player> players, BoardHandler board) {
+    this.board = board;
+    this.lumberDeck = new ResourceDeck(Resource.LUMBER);
+    this.brickDeck = new ResourceDeck(Resource.BRICK);
+    this.grainDeck = new ResourceDeck(Resource.GRAIN);
+    this.oreDeck = new ResourceDeck(Resource.ORE);
+    this.woolDeck = new ResourceDeck(Resource.WOOL);
+    decks = Map.of(
+        Resource.LUMBER, lumberDeck,
+        Resource.BRICK, brickDeck,
+        Resource.GRAIN, grainDeck,
+        Resource.WOOL, woolDeck,
+        Resource.ORE, oreDeck
+    );
+
+    playerColors = new ArrayList<>();
+    for (Player player : players) {
+
+      PlayerColor currentColor = player.getColor();
+      this.playerColorToLastClaimedNodeId.put(currentColor, -1);
+      this.playerColorToPlayerObject.put(currentColor, player);
+      playerColors.add(currentColor);
     }
-
-    /**
-     * Creates a GameModel with the given players and board.
-     *
-     * @param players the list of players in turn order
-     * @param board the game board
-     */
-    public GameModel(List<Player> players, BoardHandler board) {
-        this.board = board;
-        this.lumberDeck = new ResourceDeck(Resource.LUMBER);
-        this.brickDeck = new ResourceDeck(Resource.BRICK);
-        this.grainDeck = new ResourceDeck(Resource.GRAIN);
-        this.oreDeck = new ResourceDeck(Resource.ORE);
-        this.woolDeck = new ResourceDeck(Resource.WOOL);
-        decks = Map.of(
-                Resource.LUMBER, lumberDeck,
-                Resource.BRICK, brickDeck,
-                Resource.GRAIN, grainDeck,
-                Resource.WOOL, woolDeck,
-                Resource.ORE, oreDeck
-        );
-
-        playerColors = new ArrayList<>();
-        for (Player player : players) {
-
-            PlayerColor currentColor = player.getColor();
-            this.playerColorToLastClaimedNodeId.put(currentColor, -1);
-            this.playerColorToPlayerObject.put(currentColor, player);
-            playerColors.add(currentColor);
-        }
-        this.currentPlayerIndex = 0;
-        this.currentPlayerColor = playerColors.get(0);
-        this.currentLongestRoadPlayerColor = PlayerColor.SETUP;
-        this.currentGamePhase = GamePhase.BEFORE_ROLL;
-        this.tradeManager = new TradeManager();
-        this.random = new Random();
-    }
+    this.currentPlayerIndex = 0;
+    this.currentPlayerColor = playerColors.get(0);
+    this.currentLongestRoadPlayerColor = PlayerColor.SETUP;
+    this.currentGamePhase = GamePhase.BEFORE_ROLL;
+    this.tradeManager = new TradeManager();
+    this.random = new Random();
+  }
 
 
   /**
@@ -127,8 +134,8 @@ public class GameModel {
    */
   public List<Player> getTurnOrder() {
     return playerColors.stream()
-            .map(color -> playerColorToPlayerObject.get(color))
-            .collect(Collectors.toList());
+        .map(color -> playerColorToPlayerObject.get(color))
+        .collect(Collectors.toList());
   }
 
   /**
@@ -166,8 +173,8 @@ public class GameModel {
   public List<Player> getOtherPlayers() {
     Player current = getCurrentPlayer();
     return playerColorToPlayerObject.values().stream()
-            .filter(p -> p != current)
-            .collect(Collectors.toList());
+        .filter(p -> p != current)
+        .collect(Collectors.toList());
   }
 
   /**
@@ -251,70 +258,88 @@ public class GameModel {
     setCurrentGamePhase(GamePhase.BEFORE_ROLL);
   }
 
-    public void performTurn(int roll) {
-        checkCurrentGamePhaseMatches(GamePhase.BEFORE_ROLL);
+  /**
+   * Performs the current player's turn for a given dice roll.
+   *
+   * @param roll the dice roll value
+   */
+  public void performTurn(int roll) {
+    checkCurrentGamePhaseMatches(GamePhase.BEFORE_ROLL);
 
-        if (roll == ROBBER_ROLL_VALUE) {
-            currentGamePhase = GamePhase.MOVE_ROBBER;
-            return;
-        }
-        try {
-            distributeResources(roll);
-        } catch (EmptyDeckException e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
-        currentGamePhase = GamePhase.GENERAL_PLAY;
+    if (roll == ROBBER_ROLL_VALUE) {
+      currentGamePhase = GamePhase.MOVE_ROBBER;
+      return;
     }
-
-    private void distributeResources(int roll) throws EmptyDeckException {
-        Map<Resource, Map<Player, Integer>> demand = board.computeResourceDemand(roll);
-        for (Map.Entry<Resource, Map<Player, Integer>> resourceEntry : demand.entrySet()) {
-            distributeResourceToPlayers(resourceEntry.getKey(), resourceEntry.getValue());
-        }
+    try {
+      distributeResources(roll);
+    } catch (EmptyDeckException e) {
+      throw new IllegalArgumentException(e.getMessage());
     }
+    currentGamePhase = GamePhase.GENERAL_PLAY;
+  }
 
-    // if not enough to satisfy all players, no one gets anything; if only one player is requesting, they can get a partial amount
-    private void distributeResourceToPlayers(Resource resource, Map<Player, Integer> playerAmounts) throws EmptyDeckException {
-        ResourceDeck deck = decks.get(resource);
-        if (playerAmounts.size() > 1) {
-            int total = playerAmounts.values().stream().mapToInt(Integer::intValue).sum();
-            if (deck.getTotalCards() < total) return;
-        }
-        for (Map.Entry<Player, Integer> playerAmountEntry : playerAmounts.entrySet()) {
-            int drawn = deck.drawMultiple(playerAmountEntry.getValue());
-            if (drawn > 0) {
-                playerAmountEntry.getKey().updateResources(resource, drawn);
-            }
-        }
+  private void distributeResources(int roll) throws EmptyDeckException {
+    Map<Resource, Map<Player, Integer>> demand = board.computeResourceDemand(roll);
+    for (Map.Entry<Resource, Map<Player, Integer>> resourceEntry : demand.entrySet()) {
+      distributeResourceToPlayers(resourceEntry.getKey(), resourceEntry.getValue());
     }
-      
+  }
 
-    public void moveRobberAndSteal(int targetHexID, PlayerColor victimColor) {
-        checkCurrentGamePhaseMatches(GamePhase.MOVE_ROBBER);
-        board.moveRobber(targetHexID);
-
-        if (victimColor != null && victimColor != PlayerColor.SETUP) {
-            Player target = getArbitraryPlayer(victimColor);
-            Set<Player> playersOnHex = board.getPlayersOnHex(targetHexID);
-
-            if (!playersOnHex.contains(target)) {
-                throw new IllegalArgumentException("Victim is not on the target hex.");
-            }
-
-            Map<Resource, Integer> targetResources = target.getResources();
-            List<Resource> available = new ArrayList<>();
-            for (Map.Entry<Resource, Integer> entry : targetResources.entrySet()) {
-                if (entry.getValue() > 0) available.add(entry.getKey());
-            }
-
-            if (!available.isEmpty()) {
-                Resource stolen = available.get(random.nextInt(available.size()));
-                target.updateResources(stolen, -1);
-                getCurrentPlayer().updateResources(stolen, 1);
-            }
-        }
-        currentGamePhase = GamePhase.GENERAL_PLAY;
+  // if not enough to satisfy all players, no one gets anything;
+  // if only one player is requesting, they can get a partial amount
+  private void distributeResourceToPlayers(Resource resource, Map<Player, Integer> playerAmounts)
+      throws EmptyDeckException {
+    ResourceDeck deck = decks.get(resource);
+    if (playerAmounts.size() > 1) {
+      int total = playerAmounts.values().stream().mapToInt(Integer::intValue).sum();
+      if (deck.getTotalCards() < total) {
+        return;
+      }
     }
+    for (Map.Entry<Player, Integer> playerAmountEntry : playerAmounts.entrySet()) {
+      int drawn = deck.drawMultiple(playerAmountEntry.getValue());
+      if (drawn > 0) {
+        playerAmountEntry.getKey().updateResources(resource, drawn);
+      }
+    }
+  }
+
+
+  /**
+   * Moves the robber to the given hex and optionally steals from a victim.
+   *
+   * @param targetHexId the hex to move the robber to
+   * @param victimColor the player to steal from, or null for no theft
+   */
+  public void moveRobberAndSteal(int targetHexId, PlayerColor victimColor) {
+    checkCurrentGamePhaseMatches(GamePhase.MOVE_ROBBER);
+    board.moveRobber(targetHexId);
+
+    if (victimColor != null && victimColor != PlayerColor.SETUP) {
+      Player target = getArbitraryPlayer(victimColor);
+      Set<Player> playersOnHex = board.getPlayersOnHex(targetHexId);
+
+      if (!playersOnHex.contains(target)) {
+        throw new IllegalArgumentException("Victim is not on the target hex.");
+      }
+
+      Map<Resource, Integer> targetResources = target.getResources();
+      List<Resource> available = new ArrayList<>();
+      for (Map.Entry<Resource, Integer> entry : targetResources.entrySet()) {
+        if (entry.getValue() > 0) {
+          available.add(entry.getKey());
+        }
+      }
+
+      if (!available.isEmpty()) {
+        Resource stolen = available.get(random.nextInt(available.size()));
+        target.updateResources(stolen, -1);
+        getCurrentPlayer().updateResources(stolen, 1);
+      }
+    }
+    currentGamePhase = GamePhase.GENERAL_PLAY;
+  }
+
   /**
    * Attempts to build a settlement at the specified node for the current player.
    *
@@ -351,15 +376,15 @@ public class GameModel {
    * Attempts to build a road between the two specified nodes for the current player.
    *
    * @param startingNodeId one road endpoint
-   * @param endingNodeId the other road endpoint
+   * @param endingNodeId   the other road endpoint
    */
   public void attemptBuildRoad(int startingNodeId, int endingNodeId) {
     checkCurrentGamePhaseMatches(
-            GamePhase.GENERAL_PLAY, GamePhase.ROAD_BUILDING_DEV_CARD, GamePhase.SETUP_PHASE);
+        GamePhase.GENERAL_PLAY, GamePhase.ROAD_BUILDING_DEV_CARD, GamePhase.SETUP_PHASE);
     if (currentGamePhase == GamePhase.SETUP_PHASE) {
       board.buildSetupRoad(
-              getCurrentPlayer(), getPlayerLastClaimedNode(currentPlayerColor),
-              startingNodeId, endingNodeId);
+          getCurrentPlayer(), getPlayerLastClaimedNode(currentPlayerColor),
+          startingNodeId, endingNodeId);
       return;
     } else if (currentGamePhase == GamePhase.ROAD_BUILDING_DEV_CARD) {
       board.addRoad(getCurrentPlayer(), startingNodeId, endingNodeId);
@@ -414,7 +439,7 @@ public class GameModel {
   }
 
   private void checkPlayerOwnsEnoughResources(
-          PlayerColor playerColorOfInterest, Resource type, int amountNeeded) {
+      PlayerColor playerColorOfInterest, Resource type, int amountNeeded) {
     Player relevantPlayer = getArbitraryPlayer(playerColorOfInterest);
     int amountPlayerOwnsResource = relevantPlayer.getResourceCount(type);
     if (amountPlayerOwnsResource < amountNeeded) {
@@ -423,7 +448,7 @@ public class GameModel {
   }
 
   private void reducePlayerResources(
-          PlayerColor playerColorOfInterest, Resource type, int amount) {
+      PlayerColor playerColorOfInterest, Resource type, int amount) {
     Player relevantPlayer = playerColorToPlayerObject.get(playerColorOfInterest);
     relevantPlayer.updateResources(type, -amount);
   }
@@ -469,7 +494,7 @@ public class GameModel {
   public void handleLongestRoad() {
     List<Player> playerList = new ArrayList<>(playerColorToPlayerObject.values());
     PlayerColor newLongestRoadColor =
-            board.calculateLongestRoad(playerList, currentLongestRoadPlayerColor);
+        board.calculateLongestRoad(playerList, currentLongestRoadPlayerColor);
     if (newLongestRoadColor != this.currentLongestRoadPlayerColor) {
       Player playerToAwardPoints = getArbitraryPlayer(newLongestRoadColor);
       playerToAwardPoints.updateVictoryPoints(POINTS_FOR_LONGEST_ROAD);
@@ -484,7 +509,7 @@ public class GameModel {
   /**
    * Updates the victory points for the player with the given color.
    *
-   * @param color the player color
+   * @param color  the player color
    * @param amount the amount to add (positive or negative)
    */
   public void updateVictoryPoints(PlayerColor color, int amount) {
@@ -517,7 +542,7 @@ public class GameModel {
   /**
    * Accepts a trade offer on behalf of the accepting player.
    *
-   * @param offer the trade offer being accepted
+   * @param offer           the trade offer being accepted
    * @param acceptingPlayer the player accepting the trade
    */
   public void acceptTrade(TradeOffer offer, Player acceptingPlayer) {
@@ -582,8 +607,8 @@ public class GameModel {
   /**
    * Attempts a port trade for the current player, exchanging the given resource for another.
    *
-   * @param port the port to trade at
-   * @param giving the resource being given
+   * @param port      the port to trade at
+   * @param giving    the resource being given
    * @param receiving the resource being received
    */
   public void attemptPortTrade(Port port, Resource giving, Resource receiving) {

@@ -3,7 +3,9 @@ package domain.model.resources;
 import domain.model.exceptions.EmptyDeckException;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
-/** Represents a deck of one type of resource card. */
+/**
+ * Represents a deck of one type of resource card.
+ */
 public class ResourceDeck {
 
   private static final int TOTAL_NUMBER_OF_RESOURCES = 95;
@@ -12,7 +14,9 @@ public class ResourceDeck {
   private int count;
   private Resource type;
 
-  /** Creates a placeholder deck covering all resource types. */
+  /**
+   * Creates a placeholder deck covering all resource types.
+   */
   public ResourceDeck() {
     this.type = null;
     this.count = TOTAL_NUMBER_OF_RESOURCES;
@@ -43,24 +47,39 @@ public class ResourceDeck {
     return this.type;
   }
 
-    public Resource draw() throws EmptyDeckException {
-        // just instantiate a brand new one, decrease count
-        if (count > 0) {
-            this.count--;
-            return this.type; // caller will index into store and ++
-        } else {
-            throw new EmptyDeckException(String.format("Cannot draw new %s card, no cards remain.", this.type.name()));
-        }
+  /**
+   * Draws one card from this deck.
+   *
+   * @return the resource type of this deck
+   * @throws EmptyDeckException if no cards remain
+   */
+  public Resource draw() throws EmptyDeckException {
+    if (count > 0) {
+      this.count--;
+      return this.type; // caller will index into store and ++
+    } else {
+      throw new EmptyDeckException(
+          String.format("Cannot draw new %s card, no cards remain.", this.type.name()));
     }
+  }
 
 
-    public int drawMultiple(int numCards) throws EmptyDeckException {
-        int numCardsReturning = numCards <= this.count ? numCards : this.count;
-        this.count -= numCardsReturning;
-        return numCardsReturning;
-    }
+  /**
+   * Draws multiple cards from this deck, up to the available count.
+   *
+   * @param numCards the number of cards requested
+   * @return the number of cards actually drawn
+   * @throws EmptyDeckException if the deck is unexpectedly exhausted
+   */
+  public int drawMultiple(int numCards) throws EmptyDeckException {
+    int numCardsReturning = numCards <= this.count ? numCards : this.count;
+    this.count -= numCardsReturning;
+    return numCardsReturning;
+  }
 
-  /** Returns one card to this deck. */
+  /**
+   * Returns one card to this deck.
+   */
   public void replenish() {
     this.count++;
   }
@@ -78,7 +97,9 @@ public class ResourceDeck {
     }
   }
 
-  /** Replenishes this deck to its maximum capacity. */
+  /**
+   * Replenishes this deck to its maximum capacity.
+   */
   public void replenishAll() {
     this.replenish(NUMBER_OF_RESOURCES_PER_DECK);
   }
