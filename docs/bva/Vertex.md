@@ -8,7 +8,7 @@
 
 |             | System under test | Expected output             | Implemented?       |
 |-------------|-------------------|-----------------------------|--------------------|
-| Test Case 1 | new Vertex()      | non-null instance created   | :x: |
+| Test Case 1 | new Vertex()      | non-null instance created   | :white_check_mark: |
 
 ---
 
