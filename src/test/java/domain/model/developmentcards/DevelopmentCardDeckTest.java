@@ -197,4 +197,27 @@ class DevelopmentCardDeckTest {
 
     assertEquals(expectedRemaining, deck.countRemaining());
   }
+
+  // TC16: two fresh DevelopmentCardDecks (no explicit shuffle) should differ in card order.
+  // if the constructor omits the shuffle call, both decks emerge in identical insertion order
+  // (14 knights, then 5 vp, 2 road builders, 2 year-of-plenty, 2 monopoly) and the test fails.
+  // failure probability for a correct implementation: 1/25! ≈ 10^-25
+  @Test
+  void constructDeck_TwoFreshDecksNoExplicitShuffle_ExpectDifferentCardOrder() throws EmptyDeckException {
+    DevelopmentCardDeck deck1 = new DevelopmentCardDeck();
+    DevelopmentCardDeck deck2 = new DevelopmentCardDeck();
+
+    DevelopmentCardType[] order1 = new DevelopmentCardType[DECK_SIZE];
+    DevelopmentCardType[] order2 = new DevelopmentCardType[DECK_SIZE];
+    for (int i = 0; i < DECK_SIZE; i++) {
+      order1[i] = deck1.drawCard(0).getType();
+      order2[i] = deck2.drawCard(0).getType();
+    }
+
+    boolean isDifferent = false;
+    for (int i = 0; i < DECK_SIZE; i++) {
+      if (order1[i] != order2[i]) { isDifferent = true; break; }
+    }
+    assertTrue(isDifferent);
+  }
 }

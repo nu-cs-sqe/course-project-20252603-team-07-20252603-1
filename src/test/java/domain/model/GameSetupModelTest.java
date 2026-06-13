@@ -1,6 +1,9 @@
 package domain.model;
 
+import domain.model.developmentcards.DevelopmentCardDeck;
 import domain.model.player.PlayerColor;
+import domain.model.resources.Resource;
+import domain.model.resources.ResourceDeck;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -74,6 +77,40 @@ class GameSetupModelTest {
         assertEquals(PlayerColor.RED, model.getPlayer(0).getColor());
     }
 
+    @Test
+    void testIsColorAvailableAfterAddReturnsFalse() {
+        model.addPlayer("Alice", PlayerColor.BLUE);
+        assertFalse(model.isColorAvailable(PlayerColor.BLUE));
+    }
+
+    @Test
+    void testGetTurnOrderAfterDetermineIsNonEmpty() {
+        model.addPlayer("Alice", PlayerColor.RED);
+        model.addPlayer("Bob", PlayerColor.BLUE);
+        model.determineTurnOrder();
+        assertFalse(model.getTurnOrder().isEmpty());
+    }
+
+    @Test
+    void testGetResourceDeckReturnsTheSetDeck() {
+        ResourceDeck deck = new ResourceDeck(Resource.LUMBER);
+        model.setResourceDeck(deck);
+        assertSame(deck, model.getResourceDeck());
+    }
+
+    @Test
+    void testGetDevelopmentCardDeckReturnsTheSetDeck() {
+        DevelopmentCardDeck deck = new DevelopmentCardDeck();
+        model.setDevelopmentCardDeck(deck);
+        assertSame(deck, model.getDevelopmentCardDeck());
+    }
+
+    @Test
+    void testCreateGameModelWithPlayersReturnsNonNullModel() {
+        model.addPlayer("Alice", PlayerColor.RED);
+        model.addPlayer("Bob", PlayerColor.BLUE);
+        assertNotNull(model.createGameModel());
+    }
   // TC8 ← REDUCES CXTY
   @Test
   void isColorAvailable_UnusedColor_ExpectTrue() {
@@ -126,6 +163,11 @@ class GameSetupModelTest {
     model.addPlayer("Bob", PlayerColor.BLUE);
     GameModel gameModel = model.createGameModel();
     assertNotNull(gameModel);
+  }
+
+  @Test
+  void getBoard_FreshSetupModel_ReturnsNonNullBoard() {
+    assertNotNull(model.getBoard());
   }
 
   // TC15 ← REDUCES CXTY

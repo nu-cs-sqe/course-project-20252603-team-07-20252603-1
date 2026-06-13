@@ -24,12 +24,10 @@ public class GraphEdge {
     this.owningPlayerColor = PlayerColor.SETUP;
   }
 
-  private boolean assertValidNodeIdsOrdering(int startingNodeId, int endingNodeId) {
+  private void assertValidNodeIdsOrdering(int startingNodeId, int endingNodeId) {
     if (!(startingNodeId < endingNodeId)) {
       throw new IllegalNodeOrderingInEdgeException(
           "Starting nodeId must be lower than ending nodeId");
-    } else {
-      return true;
     }
   }
 

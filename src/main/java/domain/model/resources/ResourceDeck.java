@@ -53,12 +53,18 @@ public class ResourceDeck {
         }
     }
 
-
-    public int drawMultiple(int numCards) throws EmptyDeckException {
-        int numCardsReturning = numCards <= this.count ? numCards : this.count;
-        this.count -= numCardsReturning;
-        return numCardsReturning;
-    }
+  /**
+   * Draws up to the requested number of cards, returning however many were available.
+   *
+   * @param numCards number of cards requested
+   * @return number of cards actually drawn
+   * @throws EmptyDeckException if the deck has no cards remaining
+   */
+  public int drawMultiple(int numCards) throws EmptyDeckException {
+    int numCardsReturning = Math.min(numCards, this.count);
+    this.count -= numCardsReturning;
+    return numCardsReturning;
+  }
 
   /** Returns one card to this deck. */
   public void replenish() {
@@ -71,11 +77,7 @@ public class ResourceDeck {
    * @param numToReplenish number of cards to return
    */
   public void replenish(int numToReplenish) {
-    if (this.count + numToReplenish >= NUMBER_OF_RESOURCES_PER_DECK) {
-      this.count = NUMBER_OF_RESOURCES_PER_DECK;
-    } else {
-      this.count += numToReplenish;
-    }
+    this.count = Math.min(this.count + numToReplenish, NUMBER_OF_RESOURCES_PER_DECK);
   }
 
   /** Replenishes this deck to its maximum capacity. */

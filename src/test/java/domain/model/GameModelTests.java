@@ -925,6 +925,40 @@ public class GameModelTests {
     EasyMock.verify(boardMock, blueStateMock);
   }
 
+  // getPlayerLastClaimedNode: replaced int return with 0 mutation would always return 0.
+  // building a setup settlement at node 5 (non-zero) and then verifying buildSetupRoad
+  // receives 5 as the claimedNodeId distinguishes the real value from the constant 0.
+  @Test
+  void attemptBuildRoad_SetupPhaseNonZeroClaimedNode_UsesStoredNodeId() {
+    Player blueStateMock = EasyMock.createMock(Player.class);
+    Player redStateMock = EasyMock.createMock(Player.class);
+    Player whiteStateMock = EasyMock.createMock(Player.class);
+    Player orangeStateMock = EasyMock.createMock(Player.class);
+    ColorToPlayerObjMock.put(PlayerColor.BLUE, blueStateMock);
+    ColorToPlayerObjMock.put(PlayerColor.RED, redStateMock);
+    ColorToPlayerObjMock.put(PlayerColor.WHITE, whiteStateMock);
+    ColorToPlayerObjMock.put(PlayerColor.ORANGE, orangeStateMock);
+
+    boardMock.buildSetupSettlement(blueStateMock, 5);
+    EasyMock.expectLastCall();
+    blueStateMock.updateVictoryPoints(1);
+    EasyMock.expectLastCall();
+    boardMock.buildSetupRoad(blueStateMock, 5, 5, 9);
+    EasyMock.expectLastCall();
+
+    EasyMock.replay(boardMock, blueStateMock);
+
+    GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+            oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock, randomMock);
+
+    model.setCurrentGamePhase(GamePhase.SETUP_PHASE);
+    model.setCurrentPlayerColor(PlayerColor.BLUE);
+    model.attemptBuildSettlement(5);
+    model.attemptBuildRoad(5, 9);
+
+    EasyMock.verify(boardMock, blueStateMock);
+  }
+
 
   // --- BVA: resource amount boundaries for attemptBuildCity ---
 
@@ -2413,6 +2447,61 @@ public class GameModelTests {
             lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock, woolDeckMock);
   }
 
+  // getTurnOrder() / getCurrentPlayerIndex() / getOtherPlayers() tests
+
+  @Test
+  void getTurnOrder_TwoPlayers_ReturnsPlayersInTurnOrder() {
+    Player red = new Player("Red", PlayerColor.RED);
+    Player blue = new Player("Blue", PlayerColor.BLUE);
+    GameModel model = new GameModel(List.of(red, blue), new BoardHandler());
+
+    assertEquals(List.of(red, blue), model.getTurnOrder());
+  }
+
+  @Test
+  void getCurrentPlayerIndex_AfterSettingIndex_ReturnsThatIndex() {
+    Player red = new Player("Red", PlayerColor.RED);
+    Player blue = new Player("Blue", PlayerColor.BLUE);
+    GameModel model = new GameModel(List.of(red, blue), new BoardHandler());
+
+    model.setCurrentPlayerIndex(1);
+
+    assertEquals(1, model.getCurrentPlayerIndex());
+  }
+
+  @Test
+  void getOtherPlayers_TwoPlayers_ExcludesCurrentPlayer() {
+    Player red = new Player("Red", PlayerColor.RED);
+    Player blue = new Player("Blue", PlayerColor.BLUE);
+    GameModel model = new GameModel(List.of(red, blue), new BoardHandler());
+
+    // current player defaults to the first player (red)
+    List<Player> others = model.getOtherPlayers();
+
+    assertEquals(1, others.size());
+    assertTrue(others.contains(blue));
+    assertFalse(others.contains(red));
+  }
+
+  @Test
+  void advanceToNextPlayer_OnlyIncrementsRoundWhenWrappingToFirstPlayer() {
+    Player red = new Player("Red", PlayerColor.RED);
+    Player blue = new Player("Blue", PlayerColor.BLUE);
+    GameModel model = new GameModel(List.of(red, blue), new BoardHandler());
+
+    assertEquals(0, model.getCurrentRound());
+
+    // advancing to the second player does not complete a round
+    model.advanceToNextPlayer();
+    assertEquals(1, model.getCurrentPlayerIndex());
+    assertEquals(0, model.getCurrentRound());
+
+    // wrapping back to the first player completes a round
+    model.advanceToNextPlayer();
+    assertEquals(0, model.getCurrentPlayerIndex());
+    assertEquals(1, model.getCurrentRound());
+  }
+
   // enterSetupPhase() / completeSetupPhase() tests
 
   @Test
@@ -2899,5 +2988,35 @@ public class GameModelTests {
 
     EasyMock.verify(boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock,
             woolDeckMock, tradeManagerMock, redStateMock);
+  }
+
+  // Test Case 10
+  @Test
+  void moveRobberAndSteal_test10_VictimResourceCountZero_ExpectNoSteal() {
+    Player whiteStateMock = EasyMock.createMock(Player.class);
+    Player blueStateMock = EasyMock.createMock(Player.class);
+    ColorToPlayerObjMock = Map.of(PlayerColor.WHITE, whiteStateMock, PlayerColor.BLUE, blueStateMock);
+
+    boardMock.moveRobber(0);
+    EasyMock.expectLastCall();
+    EasyMock.expect(boardMock.getPlayersOnHex(0)).andReturn(Set.of(blueStateMock));
+    // a resource entry with a count of exactly 0 must NOT be stealable
+    EasyMock.expect(blueStateMock.getResources()).andReturn(Map.of(Resource.WOOL, 0));
+
+    EasyMock.replay(whiteStateMock, blueStateMock, boardMock, lumberDeckMock, brickDeckMock,
+            grainDeckMock, oreDeckMock, woolDeckMock);
+
+    GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+            oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock, randomMock);
+
+    model.setCurrentPlayerColor(PlayerColor.WHITE);
+    model.setCurrentGamePhase(GamePhase.MOVE_ROBBER);
+    model.moveRobberAndSteal(0, PlayerColor.BLUE);
+
+    // no resource is transferred, but the robber move still completes the action
+    assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+
+    EasyMock.verify(whiteStateMock, blueStateMock, boardMock, lumberDeckMock, brickDeckMock,
+            grainDeckMock, oreDeckMock, woolDeckMock);
   }
 }

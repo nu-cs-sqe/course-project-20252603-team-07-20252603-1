@@ -23,21 +23,18 @@ public class GraphNode {
     this.owningPlayerColor = PlayerColor.SETUP;
   }
 
-  private boolean assertValidNodeId(int nodeId) {
+  private void assertValidNodeId(int nodeId) {
     if (nodeId < MIN_NODE_ID || nodeId > MAX_NODE_ID) {
       throw new IllegalNodeIdException("Requested nodeId number illegal");
-    } else {
-      return true;
     }
   }
 
-  boolean playerClaimNode(PlayerColor color) {
+  void playerClaimNode(PlayerColor color) {
     if (checkOccupied()) {
       throw new IllegalArgumentException("Node Already Claimed");
     } else {
       this.occupied = true;
       this.owningPlayerColor = color;
-      return true;
     }
   }
 

@@ -130,6 +130,12 @@ class ResourceDeckTest {
         assertEquals(0, drawn);
     }
 
+    @Test
+    void testDrawDecrementsTotalCards() throws EmptyDeckException {
+        ResourceDeck deck = new ResourceDeck(Resource.LUMBER);
+        deck.draw();
+        assertEquals(18, deck.getTotalCards());
+    }
   // TC11 ← REDUCES CXTY
   @Test
   void constructor_DesertResource_ExpectIllegalArgumentException() {

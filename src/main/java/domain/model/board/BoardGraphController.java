@@ -16,9 +16,9 @@ public class BoardGraphController {
     this.boardGraph = b;
   }
 
-  boolean playerClaimStoredNodeSetupPhase(PlayerColor color, int nodeId) {
+  void playerClaimStoredNodeSetupPhase(PlayerColor color, int nodeId) {
     if (boardGraph.checkIfAdjacentNodesNotClaimed(nodeId)) {
-      return boardGraph.claimGraphNodeObject(color, nodeId);
+      boardGraph.claimGraphNodeObject(color, nodeId);
     } else {
       throw new AdjacentNodeAlreadyClaimed(
           "Can not claim node adjacent to node already claimed");

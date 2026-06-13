@@ -1,5 +1,6 @@
 package domain.model.player;
 
+import domain.model.developmentcards.DevelopmentCard;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 import domain.model.resources.Resource;
@@ -11,8 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PlayerTests {
 
@@ -264,6 +264,51 @@ public class PlayerTests {
         assertEquals(2, player.getVictoryPoints());
         player.updateVictoryPoints(-2);
         assertEquals(0, player.getVictoryPoints());
+    }
+
+    // increaseSettlementCount / getSettlementCount
+
+    @Test
+    void increaseSettlementCount_NewPlayer_ExpectCountOne() {
+        Player player = new Player("Dummy", PlayerColor.BLUE);
+        player.increaseSettlementCount();
+        assertEquals(1, player.getSettlementCount());
+    }
+
+    // hasPlayedDevCardThisTurn
+
+    @Test
+    void hasPlayedDevCardThisTurn_AfterSetTrue_ExpectTrue() {
+        Player player = new Player("Dummy", PlayerColor.ORANGE);
+        player.setHasPlayedDevCardThisTurn(true);
+        assertTrue(player.hasPlayedDevCardThisTurn());
+    }
+
+    // isAdjacentToHex
+
+    @Test
+    void isAdjacentToHex_AnyHex_ExpectFalse() {
+        Player player = new Player("Dummy", PlayerColor.WHITE);
+        assertFalse(player.isAdjacentToHex(0));
+    }
+
+    // incrementKnightCount
+
+    @Test
+    void incrementKnightCount_NewPlayer_ExpectCountOne() {
+        Player player = new Player("Dummy", PlayerColor.BLUE);
+        player.incrementKnightCount();
+        assertEquals(1, player.getKnightCount());
+    }
+
+    @Test
+    public void GetDevelopmentCards_AfterAddingOne_ContainsThatCard() {
+        Player player = new Player("Dummy", PlayerColor.RED);
+        DevelopmentCard card = DevelopmentCard.createKnightDevelopmentCard(0);
+        player.addDevelopmentCard(card);
+
+        assertEquals(1, player.getDevelopmentCards().size());
+        assertTrue(player.getDevelopmentCards().contains(card));
     }
 
   // TC14

@@ -19,7 +19,6 @@ public class DevelopmentCardDeck {
   /** Creates and shuffles a full development card deck with standard card counts. */
   public DevelopmentCardDeck() {
     this.deck = new Stack<DevelopmentCard>();
-    this.cardsLeft = 25;
     this.knightCount = 14;
     this.victoryPointCount = 5;
     this.roadBuilderCount = 2;
@@ -51,6 +50,7 @@ public class DevelopmentCardDeck {
       this.deck.push(monopoly);
     }
 
+    this.cardsLeft = this.deck.size();
     this.shuffle();
   }
 
@@ -74,28 +74,6 @@ public class DevelopmentCardDeck {
     DevelopmentCard drawn = this.deck.pop();
     drawn.setRoundDrawnAt(currentRound);
     this.cardsLeft--;
-    DevelopmentCardType type = drawn.getType();
-
-    switch (type) {
-      case KNIGHT:
-        this.knightCount--;
-        break;
-      case VICTORY_POINT:
-        this.victoryPointCount--;
-        break;
-      case ROAD_BUILDER:
-        this.roadBuilderCount--;
-        break;
-      case YEAR_OF_PLENTY:
-        this.yearOfPlentyCount--;
-        break;
-      case MONOPOLY:
-        this.monopolyCount--;
-        break;
-      default:
-        break;
-    }
-
     return drawn;
   }
 

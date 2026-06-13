@@ -64,4 +64,10 @@ public class GraphEdgeTests {
         assertEquals("Starting nodeId must be lower than ending nodeId",
                 exception.getMessage());
     }
+
+    @Test
+    void checkRoadExists_NewEdge_ExpectFalse() {
+        GraphEdge e1 = new GraphEdge(0, 1);
+        assertFalse(e1.checkRoadExists());
+    }
 }

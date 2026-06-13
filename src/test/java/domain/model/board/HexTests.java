@@ -806,4 +806,28 @@ public class HexTests {
     String actualMessage = exception.getMessage();
     assertEquals(expectedMessage, actualMessage);
   }
+
+  @Test // Test Case 43
+  public void IsPlayerCityOnHex_PlayerNotOnHex_ExpectFalse() {
+    Hex h = new Hex(1, Resource.LUMBER, 9);
+
+    Player mockRedPlayer = EasyMock.createMock(Player.class);
+    Player mockBluePlayer = EasyMock.createMock(Player.class);
+
+    h.addPlayerCityToHex(mockRedPlayer);
+
+    assertFalse(h.isPlayerCityOnHex(mockBluePlayer));
+  }
+
+  @Test // Test Case 44
+  public void GetHexCityPlayers_AfterAddingCity_ExpectNonEmptyList() {
+    Hex h = new Hex(1, Resource.ORE, 9);
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+
+    h.addPlayerCityToHex(mockPlayer);
+
+    assertFalse(h.getHexCityPlayers().isEmpty());
+    assertEquals(1, h.getHexCityPlayers().size());
+  }
 }

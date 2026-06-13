@@ -208,18 +208,19 @@ public class GameModel {
       return;
     } else {
       advanceToNextPlayer();
-      if (currentPlayerIndex == 0) {
-        currentRound++;
-      }
       setCurrentGamePhase(GamePhase.BEFORE_ROLL);
     }
   }
 
   /**
-   * Advances the turn to the next player in order.
+   * Advances the turn to the next player in order. When the turn order wraps
+   * back to the first player, the round counter is incremented.
    */
   public void advanceToNextPlayer() {
     currentPlayerIndex = (currentPlayerIndex + 1) % playerColors.size();
+    if (currentPlayerIndex == 0) {
+      currentRound++;
+    }
     currentPlayerColor = playerColors.get(currentPlayerIndex);
   }
 

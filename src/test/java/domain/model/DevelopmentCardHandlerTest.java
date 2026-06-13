@@ -9,11 +9,11 @@ import domain.model.exceptions.EmptyDeckException;
 import domain.model.player.Player;
 import domain.model.resources.Resource;
 
- import java.util.LinkedHashMap;
- import java.util.Random;
-
+import java.util.LinkedHashMap;
+import java.util.Random;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import domain.model.developmentcards.DevelopmentCardType;
 import domain.model.exceptions.InsufficientResourcesException;
@@ -1492,6 +1492,58 @@ class DevelopmentCardHandlerTest {
         List.of(mockVP1, mockVP2, mockVP3, mockVP4, mockVP5)));
 
     EasyMock.verify(mockVP1, mockVP2, mockVP3, mockVP4, mockVP5);
+  }
+
+  // TC61: victim has {BRICK: 0, WOOL: 1}; the boundary `entry.getValue() > 0` means only
+  // WOOL (non-zero) goes into the available list; with the mutant `>= 0` BRICK (zero)
+  // would also be included, changing available.size() from 1 to 2 and causing
+  // random.nextInt(2) to be called instead of random.nextInt(1), which EasyMock rejects.
+  @Test
+  void playKnightCard_VictimHasMixedZeroAndNonZeroResources_StealNonZeroResource() {
+    final int currentRound = 2;
+    final int targetHexId = 5;
+
+    Random mockRandom = EasyMock.createMock(Random.class);
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+    Robber mockRobber = EasyMock.createMock(Robber.class);
+    Player mockVictim = EasyMock.createMock(Player.class);
+
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.KNIGHT);
+    EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
+    EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(3);
+    EasyMock.expect(mockVictim.isAdjacentToHex(targetHexId)).andReturn(true);
+    mockRobber.moveRobber(targetHexId);
+    EasyMock.expectLastCall();
+    EasyMock.expect(mockVictim.getTotalResourceCount()).andReturn(1);
+
+    // BRICK first so the mutant would include it (0 >= 0), making available.size() == 2
+    Map<Resource, Integer> victimResources = new LinkedHashMap<>();
+    victimResources.put(Resource.BRICK, 0);
+    victimResources.put(Resource.WOOL, 1);
+    EasyMock.expect(mockVictim.getResources()).andReturn(victimResources);
+
+    // original: only WOOL is available (size=1), so nextInt(1) is called
+    EasyMock.expect(mockRandom.nextInt(1)).andReturn(0);
+
+    mockVictim.updateResources(Resource.WOOL, -1);
+    EasyMock.expectLastCall();
+    mockPlayer.updateResources(Resource.WOOL, 1);
+    EasyMock.expectLastCall();
+    mockPlayer.incrementKnightCount();
+    EasyMock.expectLastCall();
+    mockPlayer.removeDevelopmentCard(mockCard);
+    EasyMock.expectLastCall();
+    mockPlayer.setHasPlayedDevCardThisTurn(true);
+    EasyMock.expectLastCall();
+
+    EasyMock.replay(mockRandom, mockPlayer, mockCard, mockRobber, mockVictim);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler(mockRandom);
+    handler.playKnightCard(mockPlayer, mockCard, currentRound, mockRobber, targetHexId, mockVictim);
+
+    EasyMock.verify(mockRandom, mockPlayer, mockCard, mockRobber, mockVictim);
   }
 
   // TC60: hand contains 3 KNIGHT, 1 MONOPOLY, 0 VICTORY_POINT cards -> 0
