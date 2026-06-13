@@ -1,17 +1,14 @@
 package domain.model.board;
 
-import domain.model.board.Hex;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import domain.model.player.Player;
 import domain.model.resources.Resource;
-import org.junit.jupiter.api.Test;
-
-import domain.model.board.Hex;
-import domain.model.player.Player;
-import domain.model.resources.Resource;
-
 import org.easymock.EasyMock;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 public class HexTests {
   @Test // Test Case 1

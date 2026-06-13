@@ -1,48 +1,45 @@
 package domain.model.gamepieces;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.Random;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
-import domain.model.gamepieces.Die;
-
-import java.util.Random;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 public class DieTests {
 
-    @Test // Test Case 1
-    public void InitDie_RandomZero_ExpectOne(){
-        Random randomMock = EasyMock.mock(Random.class);
+  @Test // Test Case 1
+  public void InitDie_RandomZero_ExpectOne() {
+    Random randomMock = EasyMock.mock(Random.class);
 
-        EasyMock.expect(randomMock.nextInt((6))).andReturn(0);
+    EasyMock.expect(randomMock.nextInt((6))).andReturn(0);
 
-        EasyMock.replay(randomMock);
+    EasyMock.replay(randomMock);
 
-        Die testDie = new Die(randomMock);
-        int expected = 1;
-        int actual = testDie.rollOneDie();
+    Die testDie = new Die(randomMock);
+    int expected = 1;
+    int actual = testDie.rollOneDie();
 
-        EasyMock.verify(randomMock);
+    EasyMock.verify(randomMock);
 
-        assertEquals(expected, actual);
+    assertEquals(expected, actual);
 
-    }
+  }
 
-    @Test // Test Case 2
-    public void InitDie_RandomFive_ExpectSix(){
-        Random randomMock = EasyMock.mock(Random.class);
+  @Test // Test Case 2
+  public void InitDie_RandomFive_ExpectSix() {
+    Random randomMock = EasyMock.mock(Random.class);
 
-        EasyMock.expect(randomMock.nextInt((6))).andReturn(5);
+    EasyMock.expect(randomMock.nextInt((6))).andReturn(5);
 
-        EasyMock.replay(randomMock);
+    EasyMock.replay(randomMock);
 
-        Die testDie = new Die(randomMock);
-        int expected = 6;
-        int actual = testDie.rollOneDie();
+    Die testDie = new Die(randomMock);
+    int expected = 6;
+    int actual = testDie.rollOneDie();
 
-        EasyMock.verify(randomMock);
+    EasyMock.verify(randomMock);
 
-        assertEquals(expected, actual);
-    }
+    assertEquals(expected, actual);
+  }
 }

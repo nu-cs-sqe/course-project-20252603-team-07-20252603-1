@@ -1,6 +1,8 @@
 package domain.model.exceptions;
 
-/** Thrown when a city is placed on an invalid or unowned node. */
+/**
+ * Thrown when a city is placed on an invalid or unowned node.
+ */
 public class IllegalCityPlacementException extends RuntimeException {
 
   /**

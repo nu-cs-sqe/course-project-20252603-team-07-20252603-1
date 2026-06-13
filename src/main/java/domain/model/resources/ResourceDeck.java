@@ -3,7 +3,9 @@ package domain.model.resources;
 import domain.model.exceptions.EmptyDeckException;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
-/** Represents a deck of one type of resource card. */
+/**
+ * Represents a deck of one type of resource card.
+ */
 public class ResourceDeck {
 
   private static final int TOTAL_NUMBER_OF_RESOURCES = 95;
@@ -12,7 +14,9 @@ public class ResourceDeck {
   private int count;
   private Resource type;
 
-  /** Creates a placeholder deck covering all resource types. */
+  /**
+   * Creates a placeholder deck covering all resource types.
+   */
   public ResourceDeck() {
     this.type = null;
     this.count = TOTAL_NUMBER_OF_RESOURCES;
@@ -43,15 +47,16 @@ public class ResourceDeck {
     return this.type;
   }
 
-    public Resource draw() throws EmptyDeckException {
-        // just instantiate a brand new one, decrease count
-        if (count > 0) {
-            this.count--;
-            return this.type; // caller will index into store and ++
-        } else {
-            throw new EmptyDeckException(String.format("Cannot draw new %s card, no cards remain.", this.type.name()));
-        }
+  public Resource draw() throws EmptyDeckException {
+    // just instantiate a brand new one, decrease count
+    if (count > 0) {
+      this.count--;
+      return this.type; // caller will index into store and ++
+    } else {
+      throw new EmptyDeckException(
+          String.format("Cannot draw new %s card, no cards remain.", this.type.name()));
     }
+  }
 
   /**
    * Draws up to the requested number of cards, returning however many were available.
@@ -66,7 +71,9 @@ public class ResourceDeck {
     return numCardsReturning;
   }
 
-  /** Returns one card to this deck. */
+  /**
+   * Returns one card to this deck.
+   */
   public void replenish() {
     this.count++;
   }
@@ -80,7 +87,9 @@ public class ResourceDeck {
     this.count = Math.min(this.count + numToReplenish, NUMBER_OF_RESOURCES_PER_DECK);
   }
 
-  /** Replenishes this deck to its maximum capacity. */
+  /**
+   * Replenishes this deck to its maximum capacity.
+   */
   public void replenishAll() {
     this.replenish(NUMBER_OF_RESOURCES_PER_DECK);
   }

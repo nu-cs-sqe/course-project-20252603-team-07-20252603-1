@@ -1,32 +1,30 @@
 package domain.model;
 
-import org.easymock.EasyMock;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import domain.model.developmentcards.DevelopmentCard;
 import domain.model.developmentcards.DevelopmentCardDeck;
+import domain.model.developmentcards.DevelopmentCardType;
 import domain.model.exceptions.EmptyDeckException;
+import domain.model.exceptions.InsufficientResourcesException;
+import domain.model.gamepieces.Robber;
 import domain.model.player.Player;
 import domain.model.resources.Resource;
-
 import java.util.LinkedHashMap;
-import java.util.Random;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
-import domain.model.developmentcards.DevelopmentCardType;
-import domain.model.exceptions.InsufficientResourcesException;
-import domain.model.gamepieces.Robber;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.easymock.EasyMock;
+import org.junit.jupiter.api.Test;
 
 class DevelopmentCardHandlerTest {
 
   // TC1: buyer has 1 ORE, 1 WOOL, 1 GRAIN (exact cost); deck full (25)
   //      -> card returned; buyer loses 1 ORE/WOOL/GRAIN; card added to hand; deck decremented
   @Test
-  void buyDevelopmentCard_BuyerHasExactResources_ExpectCardDrawnAndResourcesDecremented() throws EmptyDeckException {
+  void buyDevelopmentCard_BuyerHasExactResources_ExpectCardDrawnAndResourcesDecremented()
+      throws EmptyDeckException {
     final int currentRound = 1;
 
     Player mockBuyer = EasyMock.createMock(Player.class);
@@ -37,7 +35,7 @@ class DevelopmentCardHandlerTest {
     EasyMock.expect(mockBuyer.getResourceCount(Resource.WOOL)).andReturn(1);
     EasyMock.expect(mockBuyer.getResourceCount(Resource.GRAIN)).andReturn(1);
     EasyMock.expect(mockDeck.drawCard(currentRound)).andReturn(mockCard);
-    
+
     mockBuyer.updateResources(Resource.ORE, -1);
     EasyMock.expectLastCall();
     mockBuyer.updateResources(Resource.WOOL, -1);
@@ -59,7 +57,8 @@ class DevelopmentCardHandlerTest {
   // TC2: buyer has 3 ORE, 2 WOOL, 4 GRAIN (surplus); deck full (25)
   //      -> card returned; buyer's resources each decremented by 1; card added to hand
   @Test
-  void buyDevelopmentCard_BuyerHasSurplusResources_ExpectCardDrawnAndResourcesDecremented() throws EmptyDeckException {
+  void buyDevelopmentCard_BuyerHasSurplusResources_ExpectCardDrawnAndResourcesDecremented()
+      throws EmptyDeckException {
     final int currentRound = 1;
 
     Player mockBuyer = EasyMock.createMock(Player.class);
@@ -70,7 +69,7 @@ class DevelopmentCardHandlerTest {
     EasyMock.expect(mockBuyer.getResourceCount(Resource.WOOL)).andReturn(2);
     EasyMock.expect(mockBuyer.getResourceCount(Resource.GRAIN)).andReturn(4);
     EasyMock.expect(mockDeck.drawCard(currentRound)).andReturn(mockCard);
-    
+
     mockBuyer.updateResources(Resource.ORE, -1);
     EasyMock.expectLastCall();
     mockBuyer.updateResources(Resource.WOOL, -1);
@@ -183,7 +182,8 @@ class DevelopmentCardHandlerTest {
   // TC7: buyer has 1 ORE, 1 WOOL, 1 GRAIN; deck has 1 card remaining (last card)
   //      -> card returned; deck countRemaining() is 0
   @Test
-  void buyDevelopmentCard_DeckHasOneCardRemaining_ExpectLastCardDrawnAndResourcesDecremented() throws EmptyDeckException {
+  void buyDevelopmentCard_DeckHasOneCardRemaining_ExpectLastCardDrawnAndResourcesDecremented()
+      throws EmptyDeckException {
     final int currentRound = 1;
 
     Player mockBuyer = EasyMock.createMock(Player.class);
@@ -194,14 +194,14 @@ class DevelopmentCardHandlerTest {
     EasyMock.expect(mockBuyer.getResourceCount(Resource.WOOL)).andReturn(1);
     EasyMock.expect(mockBuyer.getResourceCount(Resource.GRAIN)).andReturn(1);
     EasyMock.expect(mockDeck.drawCard(currentRound)).andReturn(mockCard);
-    
+
     mockBuyer.updateResources(Resource.ORE, -1);
     EasyMock.expectLastCall();
     mockBuyer.updateResources(Resource.WOOL, -1);
     EasyMock.expectLastCall();
     mockBuyer.updateResources(Resource.GRAIN, -1);
     EasyMock.expectLastCall();
-    
+
     mockBuyer.addDevelopmentCard(mockCard);
     EasyMock.expectLastCall();
 
@@ -251,7 +251,8 @@ class DevelopmentCardHandlerTest {
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
     Exception exception = assertThrows(IllegalArgumentException.class,
-        () -> handler.playKnightCard(mockPlayer, mockCard, currentRound, mockRobber, 5, mockVictim));
+        () -> handler.playKnightCard(mockPlayer, mockCard, currentRound, mockRobber, 5,
+            mockVictim));
 
     EasyMock.verify(mockPlayer, mockCard, mockRobber, mockVictim);
     assertEquals("Card is not a Knight card.", exception.getMessage());
@@ -275,7 +276,8 @@ class DevelopmentCardHandlerTest {
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
     Exception exception = assertThrows(IllegalStateException.class,
-        () -> handler.playKnightCard(mockPlayer, mockCard, currentRound, mockRobber, 5, mockVictim));
+        () -> handler.playKnightCard(mockPlayer, mockCard, currentRound, mockRobber, 5,
+            mockVictim));
 
     EasyMock.verify(mockPlayer, mockCard, mockRobber, mockVictim);
     assertEquals("Card cannot be played the same turn it was purchased.", exception.getMessage());
@@ -300,7 +302,8 @@ class DevelopmentCardHandlerTest {
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
     Exception exception = assertThrows(IllegalStateException.class,
-        () -> handler.playKnightCard(mockPlayer, mockCard, currentRound, mockRobber, 5, mockVictim));
+        () -> handler.playKnightCard(mockPlayer, mockCard, currentRound, mockRobber, 5,
+            mockVictim));
 
     EasyMock.verify(mockPlayer, mockCard, mockRobber, mockVictim);
     assertEquals("Already played a development card this turn.", exception.getMessage());
@@ -453,7 +456,8 @@ class DevelopmentCardHandlerTest {
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
     Exception exception = assertThrows(IllegalArgumentException.class,
-        () -> handler.playKnightCard(mockPlayer, mockCard, currentRound, mockRobber, targetHexId, mockVictim));
+        () -> handler.playKnightCard(mockPlayer, mockCard, currentRound, mockRobber, targetHexId,
+            mockVictim));
 
     EasyMock.verify(mockPlayer, mockCard, mockRobber, mockVictim);
     assertEquals("Must move robber to a different hex.", exception.getMessage());
@@ -574,7 +578,8 @@ class DevelopmentCardHandlerTest {
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
     Exception exception = assertThrows(IllegalArgumentException.class,
-        () -> handler.playKnightCard(mockPlayer, mockCard, currentRound, mockRobber, targetHexId, mockVictim));
+        () -> handler.playKnightCard(mockPlayer, mockCard, currentRound, mockRobber, targetHexId,
+            mockVictim));
 
     EasyMock.verify(mockPlayer, mockCard, mockRobber, mockVictim);
     assertEquals("Victim must be adjacent to the robber's new hex.", exception.getMessage());
@@ -613,7 +618,8 @@ class DevelopmentCardHandlerTest {
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
     Exception exception = assertThrows(IllegalArgumentException.class,
-        () -> handler.playMonopolyCard(mockPlayer, mockCard, currentRound, Resource.ORE, List.of()));
+        () -> handler.playMonopolyCard(mockPlayer, mockCard, currentRound, Resource.ORE,
+            List.of()));
 
     EasyMock.verify(mockPlayer, mockCard);
     assertEquals("Card is not a Monopoly card.", exception.getMessage());
@@ -635,7 +641,8 @@ class DevelopmentCardHandlerTest {
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
     Exception exception = assertThrows(IllegalStateException.class,
-        () -> handler.playMonopolyCard(mockPlayer, mockCard, currentRound, Resource.ORE, List.of()));
+        () -> handler.playMonopolyCard(mockPlayer, mockCard, currentRound, Resource.ORE,
+            List.of()));
 
     EasyMock.verify(mockPlayer, mockCard);
     assertEquals("Card cannot be played the same turn it was purchased.", exception.getMessage());
@@ -658,7 +665,8 @@ class DevelopmentCardHandlerTest {
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
     Exception exception = assertThrows(IllegalStateException.class,
-        () -> handler.playMonopolyCard(mockPlayer, mockCard, currentRound, Resource.ORE, List.of()));
+        () -> handler.playMonopolyCard(mockPlayer, mockCard, currentRound, Resource.ORE,
+            List.of()));
 
     EasyMock.verify(mockPlayer, mockCard);
     assertEquals("Already played a development card this turn.", exception.getMessage());
@@ -704,7 +712,8 @@ class DevelopmentCardHandlerTest {
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
     Exception exception = assertThrows(IllegalArgumentException.class,
-        () -> handler.playMonopolyCard(mockPlayer, mockCard, currentRound, Resource.DESERT, List.of()));
+        () -> handler.playMonopolyCard(mockPlayer, mockCard, currentRound, Resource.DESERT,
+            List.of()));
 
     EasyMock.verify(mockPlayer, mockCard);
     assertEquals("Cannot monopolize DESERT.", exception.getMessage());
@@ -778,7 +787,8 @@ class DevelopmentCardHandlerTest {
     EasyMock.replay(mockPlayer, mockCard, mockOpponent);
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
-    handler.playMonopolyCard(mockPlayer, mockCard, currentRound, Resource.ORE, List.of(mockOpponent));
+    handler.playMonopolyCard(mockPlayer, mockCard, currentRound, Resource.ORE,
+        List.of(mockOpponent));
 
     EasyMock.verify(mockPlayer, mockCard, mockOpponent);
   }
@@ -803,7 +813,8 @@ class DevelopmentCardHandlerTest {
     EasyMock.replay(mockPlayer, mockCard, mockOpponent);
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
-    handler.playMonopolyCard(mockPlayer, mockCard, currentRound, Resource.WOOL, List.of(mockOpponent));
+    handler.playMonopolyCard(mockPlayer, mockCard, currentRound, Resource.WOOL,
+        List.of(mockOpponent));
 
     EasyMock.verify(mockPlayer, mockCard, mockOpponent);
   }
@@ -864,7 +875,8 @@ class DevelopmentCardHandlerTest {
     EasyMock.replay(mockPlayer, mockCard, mockOpponent);
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
-    handler.playMonopolyCard(mockPlayer, mockCard, currentRound, Resource.LUMBER, List.of(mockOpponent));
+    handler.playMonopolyCard(mockPlayer, mockCard, currentRound, Resource.LUMBER,
+        List.of(mockOpponent));
 
     EasyMock.verify(mockPlayer, mockCard, mockOpponent);
   }
@@ -904,7 +916,8 @@ class DevelopmentCardHandlerTest {
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
     Exception exception = assertThrows(IllegalArgumentException.class,
-        () -> handler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockModel, 0, 1, 1, 2));
+        () -> handler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockModel, 0, 1, 1,
+            2));
 
     EasyMock.verify(mockPlayer, mockCard, mockModel);
     assertEquals("Card is not a Road Builder card.", exception.getMessage());
@@ -927,7 +940,8 @@ class DevelopmentCardHandlerTest {
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
     Exception exception = assertThrows(IllegalStateException.class,
-        () -> handler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockModel, 0, 1, 1, 2));
+        () -> handler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockModel, 0, 1, 1,
+            2));
 
     EasyMock.verify(mockPlayer, mockCard, mockModel);
     assertEquals("Card cannot be played the same turn it was purchased.", exception.getMessage());
@@ -951,7 +965,8 @@ class DevelopmentCardHandlerTest {
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
     Exception exception = assertThrows(IllegalStateException.class,
-        () -> handler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockModel, 0, 1, 1, 2));
+        () -> handler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockModel, 0, 1, 1,
+            2));
 
     EasyMock.verify(mockPlayer, mockCard, mockModel);
     assertEquals("Already played a development card this turn.", exception.getMessage());
@@ -971,13 +986,15 @@ class DevelopmentCardHandlerTest {
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
     EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
     mockModel.attemptBuildRoad(-1, 1);
-    EasyMock.expectLastCall().andThrow(new IllegalArgumentException("Edge nodeId out of bounds. Must be within [0, 53]."));
+    EasyMock.expectLastCall().andThrow(
+        new IllegalArgumentException("Edge nodeId out of bounds. Must be within [0, 53]."));
 
     EasyMock.replay(mockPlayer, mockCard, mockModel);
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
     Exception exception = assertThrows(IllegalArgumentException.class,
-        () -> handler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockModel, -1, 1, 1, 2));
+        () -> handler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockModel, -1, 1, 1,
+            2));
 
     EasyMock.verify(mockPlayer, mockCard, mockModel);
     assertEquals("Edge nodeId out of bounds. Must be within [0, 53].", exception.getMessage());
@@ -1080,7 +1097,8 @@ class DevelopmentCardHandlerTest {
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
     Exception exception = assertThrows(IllegalStateException.class,
-        () -> handler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockModel, 0, 1, 1, 2));
+        () -> handler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockModel, 0, 1, 1,
+            2));
 
     EasyMock.verify(mockPlayer, mockCard, mockModel);
     assertEquals("No roads remaining.", exception.getMessage());
@@ -1106,7 +1124,8 @@ class DevelopmentCardHandlerTest {
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
     Exception exception = assertThrows(IllegalArgumentException.class,
-        () -> handler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockModel, 0, 1, 1, 2));
+        () -> handler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockModel, 0, 1, 1,
+            2));
 
     EasyMock.verify(mockPlayer, mockCard, mockModel);
     assertEquals("Edge is already occupied.", exception.getMessage());
@@ -1126,13 +1145,15 @@ class DevelopmentCardHandlerTest {
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
     EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
     mockModel.attemptBuildRoad(0, 1);
-    EasyMock.expectLastCall().andThrow(new IllegalArgumentException("Road must connect to player's existing network."));
+    EasyMock.expectLastCall()
+        .andThrow(new IllegalArgumentException("Road must connect to player's existing network."));
 
     EasyMock.replay(mockPlayer, mockCard, mockModel);
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
     Exception exception = assertThrows(IllegalArgumentException.class,
-        () -> handler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockModel, 0, 1, 1, 2));
+        () -> handler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockModel, 0, 1, 1,
+            2));
 
     EasyMock.verify(mockPlayer, mockCard, mockModel);
     assertEquals("Road must connect to player's existing network.", exception.getMessage());
@@ -1159,7 +1180,8 @@ class DevelopmentCardHandlerTest {
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
     Exception exception = assertThrows(IllegalArgumentException.class,
-        () -> handler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockModel, 0, 1, 1, 2));
+        () -> handler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockModel, 0, 1, 1,
+            2));
 
     EasyMock.verify(mockPlayer, mockCard, mockModel);
     assertEquals("Edge is already occupied.", exception.getMessage());
@@ -1180,13 +1202,15 @@ class DevelopmentCardHandlerTest {
     EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
     mockModel.attemptBuildRoad(0, 1);
     mockModel.attemptBuildRoad(1, 2);
-    EasyMock.expectLastCall().andThrow(new IllegalArgumentException("Road must connect to player's existing network."));
+    EasyMock.expectLastCall()
+        .andThrow(new IllegalArgumentException("Road must connect to player's existing network."));
 
     EasyMock.replay(mockPlayer, mockCard, mockModel);
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
     Exception exception = assertThrows(IllegalArgumentException.class,
-        () -> handler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockModel, 0, 1, 1, 2));
+        () -> handler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockModel, 0, 1, 1,
+            2));
 
     EasyMock.verify(mockPlayer, mockCard, mockModel);
     assertEquals("Road must connect to player's existing network.", exception.getMessage());
@@ -1204,7 +1228,8 @@ class DevelopmentCardHandlerTest {
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
     Exception exception = assertThrows(IllegalArgumentException.class,
-        () -> handler.playYearOfPlentyCard(mockPlayer, null, currentRound, Resource.BRICK, Resource.WOOL));
+        () -> handler.playYearOfPlentyCard(mockPlayer, null, currentRound, Resource.BRICK,
+            Resource.WOOL));
 
     EasyMock.verify(mockPlayer);
     assertEquals("Development card cannot be null.", exception.getMessage());
@@ -1225,7 +1250,8 @@ class DevelopmentCardHandlerTest {
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
     Exception exception = assertThrows(IllegalArgumentException.class,
-        () -> handler.playYearOfPlentyCard(mockPlayer, mockCard, currentRound, Resource.BRICK, Resource.WOOL));
+        () -> handler.playYearOfPlentyCard(mockPlayer, mockCard, currentRound, Resource.BRICK,
+            Resource.WOOL));
 
     EasyMock.verify(mockPlayer, mockCard);
     assertEquals("Card is not a Year of Plenty card.", exception.getMessage());
@@ -1247,7 +1273,8 @@ class DevelopmentCardHandlerTest {
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
     Exception exception = assertThrows(IllegalStateException.class,
-        () -> handler.playYearOfPlentyCard(mockPlayer, mockCard, currentRound, Resource.BRICK, Resource.WOOL));
+        () -> handler.playYearOfPlentyCard(mockPlayer, mockCard, currentRound, Resource.BRICK,
+            Resource.WOOL));
 
     EasyMock.verify(mockPlayer, mockCard);
     assertEquals("Card cannot be played the same turn it was purchased.", exception.getMessage());
@@ -1270,7 +1297,8 @@ class DevelopmentCardHandlerTest {
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
     Exception exception = assertThrows(IllegalStateException.class,
-        () -> handler.playYearOfPlentyCard(mockPlayer, mockCard, currentRound, Resource.BRICK, Resource.WOOL));
+        () -> handler.playYearOfPlentyCard(mockPlayer, mockCard, currentRound, Resource.BRICK,
+            Resource.WOOL));
 
     EasyMock.verify(mockPlayer, mockCard);
     assertEquals("Already played a development card this turn.", exception.getMessage());
@@ -1293,7 +1321,8 @@ class DevelopmentCardHandlerTest {
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
     Exception exception = assertThrows(IllegalArgumentException.class,
-        () -> handler.playYearOfPlentyCard(mockPlayer, mockCard, currentRound, null, Resource.BRICK));
+        () -> handler.playYearOfPlentyCard(mockPlayer, mockCard, currentRound, null,
+            Resource.BRICK));
 
     EasyMock.verify(mockPlayer, mockCard);
     assertEquals("Resource cannot be null.", exception.getMessage());
@@ -1316,7 +1345,8 @@ class DevelopmentCardHandlerTest {
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
     Exception exception = assertThrows(IllegalArgumentException.class,
-        () -> handler.playYearOfPlentyCard(mockPlayer, mockCard, currentRound, Resource.BRICK, null));
+        () -> handler.playYearOfPlentyCard(mockPlayer, mockCard, currentRound, Resource.BRICK,
+            null));
 
     EasyMock.verify(mockPlayer, mockCard);
     assertEquals("Resource cannot be null.", exception.getMessage());
@@ -1339,7 +1369,8 @@ class DevelopmentCardHandlerTest {
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
     Exception exception = assertThrows(IllegalArgumentException.class,
-        () -> handler.playYearOfPlentyCard(mockPlayer, mockCard, currentRound, Resource.DESERT, Resource.ORE));
+        () -> handler.playYearOfPlentyCard(mockPlayer, mockCard, currentRound, Resource.DESERT,
+            Resource.ORE));
 
     EasyMock.verify(mockPlayer, mockCard);
     assertEquals("Cannot take DESERT as a resource.", exception.getMessage());
@@ -1362,7 +1393,8 @@ class DevelopmentCardHandlerTest {
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
     Exception exception = assertThrows(IllegalArgumentException.class,
-        () -> handler.playYearOfPlentyCard(mockPlayer, mockCard, currentRound, Resource.LUMBER, Resource.DESERT));
+        () -> handler.playYearOfPlentyCard(mockPlayer, mockCard, currentRound, Resource.LUMBER,
+            Resource.DESERT));
 
     EasyMock.verify(mockPlayer, mockCard);
     assertEquals("Cannot take DESERT as a resource.", exception.getMessage());

@@ -82,7 +82,7 @@ public class Port {
    * @throws EmptyDeckException if the bank has insufficient resources
    */
   public void executePortTrade(Player player, BoardHandler board, PortTradeRequest request)
-          throws EmptyDeckException {
+      throws EmptyDeckException {
     if (!playerCanUsePort(board, player)) {
       throw new IllegalStateException("Player does not have access to this port.");
     }
@@ -97,7 +97,7 @@ public class Port {
     }
     if (resource != Resource.ANY && givingResource != resource) {
       throw new IllegalArgumentException(
-              "This port only accepts " + resource + " for " + tradeRatio + ":1 trades.");
+          "This port only accepts " + resource + " for " + tradeRatio + ":1 trades.");
     }
   }
 
@@ -108,7 +108,7 @@ public class Port {
   }
 
   private void performTrade(Player player, PortTradeRequest request)
-          throws EmptyDeckException {
+      throws EmptyDeckException {
     Resource givingResource = request.getGivingResource();
     Resource receivingResource = request.getReceivingResource();
     ResourceDeck givingDeck = request.getDecks().get(givingResource);

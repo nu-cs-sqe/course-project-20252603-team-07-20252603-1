@@ -1,6 +1,8 @@
 package domain.model.exceptions;
 
-/** Thrown when a node adjacent to an already-claimed node is claimed. */
+/**
+ * Thrown when a node adjacent to an already-claimed node is claimed.
+ */
 public class AdjacentNodeAlreadyClaimed extends RuntimeException {
 
   /**

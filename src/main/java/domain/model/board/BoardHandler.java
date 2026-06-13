@@ -13,7 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/** Handles all board-related operations for a game of Catan. */
+/**
+ * Handles all board-related operations for a game of Catan.
+ */
 public class BoardHandler {
 
   private static final int SETTLEMENT_LEVEL = 1;
@@ -32,7 +34,9 @@ public class BoardHandler {
   private Robber robber;
   private List<Port> ports;
 
-  /** Creates a new BoardHandler with a fresh board state. */
+  /**
+   * Creates a new BoardHandler with a fresh board state.
+   */
   public BoardHandler() {
     BoardGraph constructorGraph = new BoardGraph();
     constructorGraph.buildBoard();
@@ -47,11 +51,11 @@ public class BoardHandler {
   }
 
   private BoardHandler(
-          BoardGraphController boardGraphController,
-          List<Hex> hexes,
-          Map<Integer, List<Integer>> nodeIdToHexes,
-          Robber robber,
-          List<Port> ports) {
+      BoardGraphController boardGraphController,
+      List<Hex> hexes,
+      Map<Integer, List<Integer>> nodeIdToHexes,
+      Robber robber,
+      List<Port> ports) {
     this.boardGraphController = boardGraphController;
     this.hexes = hexes;
     this.nodeIdToHexes = nodeIdToHexes;
@@ -66,18 +70,18 @@ public class BoardHandler {
    * Creates a BoardHandler with injected dependencies for testing.
    *
    * @param boardGraphController the board graph controller
-   * @param hexes the list of hexes
-   * @param nodeIdToHexes mapping of node IDs to adjacent hex IDs
-   * @param robber the robber
-   * @param ports the list of ports
+   * @param hexes                the list of hexes
+   * @param nodeIdToHexes        mapping of node IDs to adjacent hex IDs
+   * @param robber               the robber
+   * @param ports                the list of ports
    * @return a new BoardHandler instance
    */
   public static BoardHandler createForTesting(
-          BoardGraphController boardGraphController,
-          List<Hex> hexes,
-          Map<Integer, List<Integer>> nodeIdToHexes,
-          Robber robber,
-          List<Port> ports) {
+      BoardGraphController boardGraphController,
+      List<Hex> hexes,
+      Map<Integer, List<Integer>> nodeIdToHexes,
+      Robber robber,
+      List<Port> ports) {
     return new BoardHandler(boardGraphController, hexes, nodeIdToHexes, robber, ports);
   }
 
@@ -87,7 +91,7 @@ public class BoardHandler {
    * @param player the player building the settlement
    * @param nodeId the ID of the node to build on, must be within [0, 53]
    * @throws IllegalArgumentException if the node ID is out of bounds
-   * @throws IllegalStateException if the player has no settlements remaining
+   * @throws IllegalStateException    if the player has no settlements remaining
    */
   public void buildSettlement(Player player, int nodeId) {
     if (nodeId < MIN_NODE_ID || nodeId > MAX_NODE_ID) {
@@ -111,7 +115,7 @@ public class BoardHandler {
    * Returns whether the given player color owns the specified node.
    *
    * @param playerColor the color to check
-   * @param nodeId the node to check
+   * @param nodeId      the node to check
    * @return true if the player owns the node
    */
   public boolean checkPlayerOwnsNode(PlayerColor playerColor, Integer nodeId) {
@@ -135,8 +139,8 @@ public class BoardHandler {
    * @param player the player building the city
    * @param nodeId the ID of the node to upgrade, must be within [0, 53]
    * @throws IllegalArgumentException if the node ID is out of bounds
-   * @throws IllegalStateException if the node is not owned by the player or
-   *     does not have a settlement to upgrade
+   * @throws IllegalStateException    if the node is not owned by the player or
+   *                                  does not have a settlement to upgrade
    */
   public void buildCity(Player player, int nodeId) {
     if (nodeId < MIN_NODE_ID || nodeId > MAX_NODE_ID) {
@@ -163,15 +167,15 @@ public class BoardHandler {
   /**
    * Places a road for the given player along the edge between two nodes.
    *
-   * @param player the player building the road
+   * @param player  the player building the road
    * @param nodeId1 the ID of the first node, must be within [0, 53]
    * @param nodeId2 the ID of the second node, must be within [0, 53]
    * @throws IllegalArgumentException if either node ID is out of bounds
-   * @throws IllegalStateException if the player has no roads remaining
+   * @throws IllegalStateException    if the player has no roads remaining
    */
   public void addRoad(Player player, int nodeId1, int nodeId2) {
     if (nodeId1 < MIN_NODE_ID || nodeId2 < MIN_NODE_ID
-            || nodeId1 > MAX_NODE_ID || nodeId2 > MAX_NODE_ID) {
+        || nodeId1 > MAX_NODE_ID || nodeId2 > MAX_NODE_ID) {
       throw new IllegalArgumentException("Edge nodeId out of bounds. Must be within [0, 53].");
     }
     PlayerColor claimingColor = player.getColor();
@@ -202,7 +206,7 @@ public class BoardHandler {
    *
    * @param hexId the ID of the hex to move the robber to, must be within [0, 18]
    * @throws IllegalArgumentException if the hex ID is out of bounds or the robber
-   *     is already at the specified hex
+   *                                  is already at the specified hex
    */
   public void moveRobber(int hexId) {
     if (hexId < MIN_HEX_ID || hexId > MAX_HEX_ID) {
@@ -238,10 +242,10 @@ public class BoardHandler {
   }
 
   private void deliverResourcesToCitiesAndSettlements(
-          List<Player> hexSettlementPlayers,
-          List<Player> hexCityPlayers,
-          Map<Resource, Map<Player, Integer>> demand,
-          Resource resource) {
+      List<Player> hexSettlementPlayers,
+      List<Player> hexCityPlayers,
+      Map<Resource, Map<Player, Integer>> demand,
+      Resource resource) {
     for (Player p : hexSettlementPlayers) {
       demand.computeIfAbsent(resource, k -> new HashMap<>()).merge(p, 1, Integer::sum);
     }
@@ -268,7 +272,7 @@ public class BoardHandler {
         List<Player> hexSettlementPlayers = hex.getHexSettlementPlayers();
         List<Player> hexCityPlayers = hex.getHexCityPlayers();
         deliverResourcesToCitiesAndSettlements(
-                hexSettlementPlayers, hexCityPlayers, demand, resource);
+            hexSettlementPlayers, hexCityPlayers, demand, resource);
       }
     }
     return demand;
@@ -282,7 +286,7 @@ public class BoardHandler {
    * @param player the player building the settlement
    * @param nodeId the ID of the node to build on, must be within [0, 53]
    * @throws IllegalArgumentException if the node ID is out of bounds
-   * @throws IllegalStateException if the player has no settlements remaining
+   * @throws IllegalStateException    if the player has no settlements remaining
    */
   public void buildSetupSettlement(Player player, int nodeId) {
     if (nodeId < MIN_NODE_ID || nodeId > MAX_NODE_ID) {
@@ -305,21 +309,21 @@ public class BoardHandler {
    * Places a road during the setup phase for the given player, anchored to a
    * previously claimed setup settlement node.
    *
-   * @param player the player building the road
+   * @param player        the player building the road
    * @param claimedNodeId the node ID of the player's most recently placed setup settlement
-   * @param nodeId1 the ID of the first node of the edge, must be within [0, 53]
-   * @param nodeId2 the ID of the second node of the edge, must be within [0, 53]
+   * @param nodeId1       the ID of the first node of the edge, must be within [0, 53]
+   * @param nodeId2       the ID of the second node of the edge, must be within [0, 53]
    * @throws IllegalArgumentException if either edge node ID is out of bounds
-   * @throws IllegalStateException if the player has no roads remaining
+   * @throws IllegalStateException    if the player has no roads remaining
    */
   public void buildSetupRoad(Player player, int claimedNodeId, int nodeId1, int nodeId2) {
     if (nodeId1 < MIN_NODE_ID || nodeId2 < MIN_NODE_ID
-            || nodeId1 > MAX_NODE_ID || nodeId2 > MAX_NODE_ID) {
+        || nodeId1 > MAX_NODE_ID || nodeId2 > MAX_NODE_ID) {
       throw new IllegalArgumentException("Edge nodeId out of bounds. Must be within [0, 53].");
     }
     PlayerColor claimingColor = player.getColor();
     boardGraphController.playerClaimStoredEdgeSetupPhase(
-            claimingColor, claimedNodeId, nodeId1, nodeId2);
+        claimingColor, claimedNodeId, nodeId1, nodeId2);
     player.placeRoad();
   }
 
@@ -327,11 +331,11 @@ public class BoardHandler {
    * Calculates and returns the color of the player with the longest road.
    * Returns {@link PlayerColor#SETUP} if no player has achieved the longest road yet.
    *
-   * @param players the list of all players in the game
+   * @param players        the list of all players in the game
    * @param previousWinner the color of the previous longest road holder,
-   *     or {@link PlayerColor#SETUP} if none
+   *                       or {@link PlayerColor#SETUP} if none
    * @return the color of the player with the longest road, or
-   *     {@link PlayerColor#SETUP} if no player qualifies
+   * {@link PlayerColor#SETUP} if no player qualifies
    */
   // Note: Returns SETUP PlayerColor if nobody has achieved longest road yet
   public PlayerColor calculateLongestRoad(List<Player> players, PlayerColor previousWinner) {
@@ -340,25 +344,25 @@ public class BoardHandler {
 
   private List<Hex> initHexes() {
     List<Hex> hexList = new ArrayList<>(List.of(
-            new Hex(0, Resource.ORE, 10),
-            new Hex(1, Resource.WOOL, 2),
-            new Hex(2, Resource.LUMBER, 9),
-            new Hex(3, Resource.GRAIN, 12),
-            new Hex(4, Resource.BRICK, 6),
-            new Hex(5, Resource.WOOL, 4),
-            new Hex(6, Resource.BRICK, 10),
-            new Hex(7, Resource.GRAIN, 9),
-            new Hex(8, Resource.LUMBER, 11),
-            new Hex(9, Resource.DESERT, 7),
-            new Hex(10, Resource.LUMBER, 3),
-            new Hex(11, Resource.ORE, 8),
-            new Hex(12, Resource.LUMBER, 8),
-            new Hex(13, Resource.ORE, 3),
-            new Hex(14, Resource.GRAIN, 4),
-            new Hex(15, Resource.WOOL, 5),
-            new Hex(16, Resource.BRICK, 5),
-            new Hex(17, Resource.GRAIN, 6),
-            new Hex(18, Resource.LUMBER, 11)
+        new Hex(0, Resource.ORE, 10),
+        new Hex(1, Resource.WOOL, 2),
+        new Hex(2, Resource.LUMBER, 9),
+        new Hex(3, Resource.GRAIN, 12),
+        new Hex(4, Resource.BRICK, 6),
+        new Hex(5, Resource.WOOL, 4),
+        new Hex(6, Resource.BRICK, 10),
+        new Hex(7, Resource.GRAIN, 9),
+        new Hex(8, Resource.LUMBER, 11),
+        new Hex(9, Resource.DESERT, 7),
+        new Hex(10, Resource.LUMBER, 3),
+        new Hex(11, Resource.ORE, 8),
+        new Hex(12, Resource.LUMBER, 8),
+        new Hex(13, Resource.ORE, 3),
+        new Hex(14, Resource.GRAIN, 4),
+        new Hex(15, Resource.WOOL, 5),
+        new Hex(16, Resource.BRICK, 5),
+        new Hex(17, Resource.GRAIN, 6),
+        new Hex(18, Resource.LUMBER, 11)
     ));
     return hexList;
   }
@@ -446,15 +450,15 @@ public class BoardHandler {
 
   List<Port> initPorts() {
     return List.of(
-            new Port(3, Resource.ANY, List.of(0, 3)),
-            new Port(2, Resource.GRAIN, List.of(1, 5)),
-            new Port(2, Resource.ORE, List.of(10, 15)),
-            new Port(2, Resource.LUMBER, List.of(11, 16)),
-            new Port(3, Resource.ANY, List.of(26, 32)),
-            new Port(2, Resource.BRICK, List.of(33, 38)),
-            new Port(2, Resource.WOOL, List.of(42, 46)),
-            new Port(3, Resource.ANY, List.of(47, 51)),
-            new Port(3, Resource.ANY, List.of(49, 52))
+        new Port(3, Resource.ANY, List.of(0, 3)),
+        new Port(2, Resource.GRAIN, List.of(1, 5)),
+        new Port(2, Resource.ORE, List.of(10, 15)),
+        new Port(2, Resource.LUMBER, List.of(11, 16)),
+        new Port(3, Resource.ANY, List.of(26, 32)),
+        new Port(2, Resource.BRICK, List.of(33, 38)),
+        new Port(2, Resource.WOOL, List.of(42, 46)),
+        new Port(3, Resource.ANY, List.of(47, 51)),
+        new Port(3, Resource.ANY, List.of(49, 52))
     );
   }
 
@@ -551,7 +555,7 @@ public class BoardHandler {
    * @return the robber
    */
   @SuppressFBWarnings(value = "EI_EXPOSE_REP",
-          justification = "Robber is intentionally shared so dev card handlers can move it")
+      justification = "Robber is intentionally shared so dev card handlers can move it")
   public Robber getRobber() {
     return robber;
   }

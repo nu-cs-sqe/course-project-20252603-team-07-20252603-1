@@ -8,7 +8,9 @@ import domain.model.player.PlayerColor;
 import domain.model.resources.ResourceDeck;
 import java.util.List;
 
-/** Controller for game setup following MVC pattern. */
+/**
+ * Controller for game setup following MVC pattern.
+ */
 public class GameSetupController {
 
   public static final int MIN_PLAYERS = 3;
@@ -29,7 +31,7 @@ public class GameSetupController {
    * Adds a player to the game.
    *
    * @param model the game setup model
-   * @param name the player's name
+   * @param name  the player's name
    * @param color the player's color
    */
   public void addPlayer(GameSetupModel model, String name, PlayerColor color) {
@@ -40,7 +42,7 @@ public class GameSetupController {
    * Adds a player with color validation to ensure exclusivity.
    *
    * @param model the game setup model
-   * @param name the player's name
+   * @param name  the player's name
    * @param color the player's color
    * @return true if player was added successfully, false if color is unavailable
    */
@@ -165,7 +167,7 @@ public class GameSetupController {
    * Adds a player with full name and color validation.
    *
    * @param model the game setup model
-   * @param name the player's name (trimmed)
+   * @param name  the player's name (trimmed)
    * @param color the player's color
    * @return the result of the add operation
    */

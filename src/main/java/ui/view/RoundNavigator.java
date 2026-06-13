@@ -1,7 +1,7 @@
 package ui.view;
 
 public interface RoundNavigator {
-    void goToGameRound();
+  void goToGameRound();
 
-    void goToHome();
+  void goToHome();
 }

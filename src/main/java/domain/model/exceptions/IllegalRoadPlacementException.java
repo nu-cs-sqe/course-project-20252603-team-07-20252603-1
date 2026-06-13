@@ -1,6 +1,8 @@
 package domain.model.exceptions;
 
-/** Thrown when a road is placed in an invalid location. */
+/**
+ * Thrown when a road is placed in an invalid location.
+ */
 public class IllegalRoadPlacementException extends RuntimeException {
 
   /**

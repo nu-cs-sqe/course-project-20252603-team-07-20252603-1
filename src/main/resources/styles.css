@@ -68,10 +68,23 @@
     -fx-pref-height: 16;
 }
 
-.swatch-red    { -fx-background-color: #d04040; }
-.swatch-blue   { -fx-background-color: #4070d0; }
-.swatch-white  { -fx-background-color: #ffffff; -fx-border-color: #888888; -fx-border-width: 1; }
-.swatch-orange { -fx-background-color: #e08020; }
+.swatch-red {
+    -fx-background-color: #d04040;
+}
+
+.swatch-blue {
+    -fx-background-color: #4070d0;
+}
+
+.swatch-white {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #888888;
+    -fx-border-width: 1;
+}
+
+.swatch-orange {
+    -fx-background-color: #e08020;
+}
 
 .game-root {
     -fx-padding: 12;
@@ -133,12 +146,29 @@
     -fx-stroke-width: 2;
 }
 
-.hex-fill-grain  { -fx-fill: #f5d76e; }
-.hex-fill-wool   { -fx-fill: #aedb6b; }
-.hex-fill-lumber { -fx-fill: #6da854; }
-.hex-fill-brick  { -fx-fill: #b9603d; }
-.hex-fill-ore    { -fx-fill: #888888; }
-.hex-fill-desert { -fx-fill: #e0c89d; }
+.hex-fill-grain {
+    -fx-fill: #f5d76e;
+}
+
+.hex-fill-wool {
+    -fx-fill: #aedb6b;
+}
+
+.hex-fill-lumber {
+    -fx-fill: #6da854;
+}
+
+.hex-fill-brick {
+    -fx-fill: #b9603d;
+}
+
+.hex-fill-ore {
+    -fx-fill: #888888;
+}
+
+.hex-fill-desert {
+    -fx-fill: #e0c89d;
+}
 
 /* hex-label and roll-token-text font sizes are set in code, scaled to the hex size */
 
@@ -156,20 +186,42 @@
     -fx-stroke-line-cap: round;
 }
 
-.road-red    { -fx-stroke: #d04040; }
-.road-blue   { -fx-stroke: #4070d0; }
-.road-white  { -fx-stroke: #f0f0f0; }
-.road-orange { -fx-stroke: #e08020; }
+.road-red {
+    -fx-stroke: #d04040;
+}
+
+.road-blue {
+    -fx-stroke: #4070d0;
+}
+
+.road-white {
+    -fx-stroke: #f0f0f0;
+}
+
+.road-orange {
+    -fx-stroke: #e08020;
+}
 
 .building {
     -fx-stroke: #333333;
     -fx-stroke-width: 1;
 }
 
-.building-red    { -fx-fill: #d04040; }
-.building-blue   { -fx-fill: #4070d0; }
-.building-white  { -fx-fill: #ffffff; }
-.building-orange { -fx-fill: #e08020; }
+.building-red {
+    -fx-fill: #d04040;
+}
+
+.building-blue {
+    -fx-fill: #4070d0;
+}
+
+.building-white {
+    -fx-fill: #ffffff;
+}
+
+.building-orange {
+    -fx-fill: #e08020;
+}
 
 .robber {
     -fx-fill: #3a3a3a;
@@ -217,12 +269,29 @@
 }
 
 /* lighter resource tints so the dark ratio text stays readable */
-.port-grain  { -fx-fill: #f5d76e; }
-.port-wool   { -fx-fill: #c4e89a; }
-.port-lumber { -fx-fill: #9ccc84; }
-.port-brick  { -fx-fill: #d99878; }
-.port-ore    { -fx-fill: #bcbcbc; }
-.port-any    { -fx-fill: #e8eef4; }
+.port-grain {
+    -fx-fill: #f5d76e;
+}
+
+.port-wool {
+    -fx-fill: #c4e89a;
+}
+
+.port-lumber {
+    -fx-fill: #9ccc84;
+}
+
+.port-brick {
+    -fx-fill: #d99878;
+}
+
+.port-ore {
+    -fx-fill: #bcbcbc;
+}
+
+.port-any {
+    -fx-fill: #e8eef4;
+}
 
 .port-dock {
     -fx-stroke: #8a7a55;

@@ -4,7 +4,9 @@ import domain.model.exceptions.IllegalNodeIdException;
 import domain.model.player.PlayerColor;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
-/** Represents a node (intersection) in the board graph. */
+/**
+ * Represents a node (intersection) in the board graph.
+ */
 public class GraphNode {
   private final int nodeId;
   private boolean occupied;

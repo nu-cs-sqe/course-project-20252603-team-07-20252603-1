@@ -1,6 +1,8 @@
 package domain.model.developmentcards;
 
-/** Represents a single development card with a type and the round it was drawn. */
+/**
+ * Represents a single development card with a type and the round it was drawn.
+ */
 public class DevelopmentCard {
 
   private DevelopmentCardType type;
@@ -9,7 +11,7 @@ public class DevelopmentCard {
   /**
    * Creates a development card of the given type drawn on the given round.
    *
-   * @param type the card type
+   * @param type               the card type
    * @param currentRoundNumber the round number when this card was created
    */
   public DevelopmentCard(DevelopmentCardType type, int currentRoundNumber) {
