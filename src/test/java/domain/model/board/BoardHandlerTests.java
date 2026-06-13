@@ -1543,4 +1543,21 @@ public class BoardHandlerTests {
             mockPort5, mockPort6, mockPort7, mockPort8, mockPort9);
   }
 
+  // TC61 ← REDUCES CXTY
+  @Test
+  void getHexOrder_WithNineteenHexes_ExpectListOfNineteenResourceNames() {
+    for (Hex hex : mockHexes) {
+      EasyMock.expect(hex.getHexResource()).andReturn(domain.model.resources.Resource.LUMBER);
+    }
+    EasyMock.replay(mockHexes.toArray());
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes,
+        nodeIdToHexes, mockRobber, ports);
+
+    List<String> order = b.getHexOrder();
+
+    assertEquals(19, order.size());
+    assertEquals("LUMBER", order.get(0));
+    EasyMock.verify(mockHexes.toArray());
+  }
 }
