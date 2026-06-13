@@ -46,10 +46,6 @@ public class Navigator implements SetupNavigator, RoundNavigator {
 
     @Override
     public void goToSetupSummary() {
-        GameSetupController setup = context.setup();
-        setup.initializeResourceDeck(setupModel);
-        setup.initializeDevelopmentCardDeck(setupModel);
-        setup.determineTurnOrder(setupModel);
         scene.setRoot(new SetupSummaryView(this, context, setupModel).getRoot());
     }
 

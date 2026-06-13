@@ -2,9 +2,12 @@ package ui.view;
 
 import domain.model.GameModel;
 import domain.model.board.BoardHandler;
+import domain.model.exceptions.IllegalGamePhaseException;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.text.MessageFormat;
+import java.util.ResourceBundle;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -23,12 +26,15 @@ public class GameRoundView {
     private static final String SECTION_CSS = "summary-section";
     private static final String BUTTON_BAR_CSS = "button-bar";
     private static final String DICE_READOUT_CSS = "dice-readout";
+    private static final String STATUS_CSS = "status";
+    private static final String ERROR_CSS = "error";
 
     private final GameModel model;
     private final ViewContext context;
 
     private final CurrentPlayerBanner banner;
     private final Label lastRollLabel;
+    private final Label statusLabel;
     private final PlayerResourcesPanel resourcesPanel;
     private final BorderPane root;
 
@@ -41,10 +47,11 @@ public class GameRoundView {
 
         this.banner = new CurrentPlayerBanner(context.labels());
         this.lastRollLabel = buildLastRollLabel();
+        this.statusLabel = buildStatusLabel();
         this.resourcesPanel = new PlayerResourcesPanel(context.loop(), model, context.labels());
         this.root = buildLayout(board);
 
-        beginTurn();
+        runSafely(this::beginTurn);
     }
 
     public Parent getRoot() {
@@ -57,7 +64,7 @@ public class GameRoundView {
         pane.setTop(banner.getRoot());
         pane.setCenter(new BoardPlaceholderView(board, context.labels()).getRoot());
         pane.setRight(buildResourcesSection());
-        pane.setBottom(buildControlsBar());
+        pane.setBottom(buildBottomSection());
         return pane;
     }
 
@@ -68,12 +75,16 @@ public class GameRoundView {
         return section;
     }
 
-    private HBox buildControlsBar() {
+    private VBox buildBottomSection() {
         Button endTurnButton = new Button(context.labels().getString("round.endTurn"));
         endTurnButton.setOnAction(e -> onEndTurn());
-        HBox bar = new HBox(lastRollLabel, endTurnButton);
-        bar.getStyleClass().add(BUTTON_BAR_CSS);
-        return bar;
+
+        HBox controlBar = new HBox(lastRollLabel, endTurnButton);
+        controlBar.getStyleClass().add(BUTTON_BAR_CSS);
+
+        VBox section = new VBox(controlBar, statusLabel);
+        section.setAlignment(Pos.CENTER);
+        return section;
     }
 
     private static Label buildLastRollLabel() {
@@ -82,9 +93,17 @@ public class GameRoundView {
         return label;
     }
 
+    private static Label buildStatusLabel() {
+        Label label = new Label();
+        label.getStyleClass().add(STATUS_CSS);
+        return label;
+    }
+
     private void onEndTurn() {
-        context.loop().endTurn(model);
-        beginTurn();
+        runSafely(() -> {
+            context.loop().endTurn(model);
+            beginTurn();
+        });
     }
 
     private void beginTurn() {
@@ -92,5 +111,32 @@ public class GameRoundView {
         lastRollLabel.setText(MessageFormat.format(context.labels().getString("round.rolled"), roll));
         banner.update(context.loop().getCurrentPlayer(model));
         resourcesPanel.refresh();
+    }
+
+    private void runSafely(Runnable action) {
+        try {
+            action.run();
+            clearStatus();
+        } catch (RuntimeException ex) {
+            showError(messageFor(ex));
+        }
+    }
+
+    private String messageFor(RuntimeException ex) {
+        ResourceBundle labels = context.labels();
+        if (ex instanceof IllegalGamePhaseException) {
+            return labels.getString("error.wrongPhase");
+        }
+        return MessageFormat.format(labels.getString("error.unexpected"), ex.getMessage());
+    }
+
+    private void showError(String message) {
+        statusLabel.getStyleClass().setAll(STATUS_CSS, ERROR_CSS);
+        statusLabel.setText(message);
+    }
+
+    private void clearStatus() {
+        statusLabel.getStyleClass().setAll(STATUS_CSS);
+        statusLabel.setText("");
     }
 }
