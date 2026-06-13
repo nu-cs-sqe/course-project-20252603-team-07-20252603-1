@@ -351,7 +351,7 @@ Step 3:
 
 |              | System under test                                                                      | Expected output                                                                      | Implemented? |
 |--------------|----------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|--------------|
-| Test Case 61 | victim's resource map has {ORE=0, WOOL=3}; random picks index 0 of non-zero entries   | ORE entry skipped; WOOL stolen; knight count incremented; card removed from hand     | :x: |
+| Test Case 61 | victim's resource map has {ORE=0, WOOL=3}; random picks index 0 of non-zero entries   | ORE entry skipped; WOOL stolen; knight count incremented; card removed from hand     | :white_check_mark: |
 
 #### `playRoadBuildingCard(Player, DevelopmentCard, int, GameModel, int, int, Integer, Integer)` — second road partially specified
 
