@@ -1,9 +1,9 @@
-package domain.model.game_pieces;
+package domain.model.gamepieces;
 
-import domain.model.game_pieces.Robber;
+import domain.model.gamepieces.Robber;
 import org.junit.jupiter.api.Test;
 
-import domain.model.game_pieces.Robber;
+import domain.model.gamepieces.Robber;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

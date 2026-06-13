@@ -2,7 +2,7 @@ package ui.controller;
 
 import domain.model.GameSetupModel;
 import domain.model.board.BoardHandler;
-import domain.model.development_cards.DevelopmentCardDeck;
+import domain.model.developmentcards.DevelopmentCardDeck;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 import domain.model.resources.ResourceDeck;
