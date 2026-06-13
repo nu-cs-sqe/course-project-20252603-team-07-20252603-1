@@ -95,6 +95,10 @@ public class BoardGraphController {
     return boardGraph.calculateLongestRoad(players, previousWinner);
   }
 
+  PlayerColor getEdgeOwner(int nodeId1, int nodeId2) {
+    return boardGraph.getEdgeOwner(nodeId1, nodeId2);
+  }
+
   /** Returns whether the specified edge is occupied by a road. */
   public boolean checkEdgeOccupied(int nodeId1, int nodeId2) {
     return boardGraph.checkEdgeOccupied(nodeId1, nodeId2);

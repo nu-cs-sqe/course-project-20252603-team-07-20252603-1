@@ -107,6 +107,12 @@ public class BoardGraph {
     return true;
   }
 
+  PlayerColor getEdgeOwner(int startingNodeId, int endingNodeId) {
+    Set<GraphEdge> setWithRelevantEdge = getConnectingEdgesById(startingNodeId);
+    GraphEdge edgeToCheck = getMatchingEdgeFromSet(setWithRelevantEdge, startingNodeId, endingNodeId);
+    return edgeToCheck.checkOwningColor();
+  }
+
   GraphEdge getMatchingEdgeFromSet(
       Set<GraphEdge> connectingEdges, int startingNodeId, int endingNodeId) {
     for (GraphEdge edge : connectingEdges) {

@@ -1769,6 +1769,111 @@ public class BoardHandlerTests {
             mockPort5, mockPort6, mockPort7, mockPort8, mockPort9);
   }
 
+  // getRobberLocation() tests
+
+  @Test
+  void getRobberLocation_FreshBoard_ReturnsNine() {
+    BoardHandler b = new BoardHandler();
+    assertEquals(9, b.getRobberLocation());
+  }
+
+  @Test
+  void getRobberLocation_AfterMoveRobber_ReturnsNewLocation() {
+    BoardHandler b = new BoardHandler();
+    b.moveRobber(5);
+    assertEquals(5, b.getRobberLocation());
+  }
+
+  // getRobber() tests
+
+  @Test
+  void getRobber_ReturnsRobberAtCurrentLocation() {
+    BoardHandler b = new BoardHandler();
+    assertEquals(b.getRobberLocation(), b.getRobber().getRobberLocation());
+  }
+
+  // getHexRollNumbers() tests
+
+  @Test
+  void getHexRollNumbers_FreshBoard_MatchesStandardLayout() {
+    BoardHandler b = new BoardHandler();
+    assertEquals(List.of(10, 2, 9, 12, 6, 4, 10, 9, 11, 7, 3, 8, 8, 3, 4, 5, 5, 6, 11),
+            b.getHexRollNumbers());
+  }
+
+  // getNodeOwner() tests
+
+  @Test
+  void getNodeOwner_UnownedNode_ReturnsSetup() {
+    BoardHandler b = new BoardHandler();
+    assertEquals(PlayerColor.SETUP, b.getNodeOwner(0));
+  }
+
+  @Test
+  void getNodeOwner_AfterSetupSettlement_ReturnsPlayerColor() {
+    BoardHandler b = new BoardHandler();
+    Player red = new Player("Red", PlayerColor.RED);
+    b.buildSetupSettlement(red, 0);
+    assertEquals(PlayerColor.RED, b.getNodeOwner(0));
+  }
+
+  @Test
+  void getNodeOwner_NodeIdOutOfBounds_ThrowsIllegalArgumentException() {
+    BoardHandler b = new BoardHandler();
+    assertThrows(IllegalArgumentException.class, () -> b.getNodeOwner(-1));
+    assertThrows(IllegalArgumentException.class, () -> b.getNodeOwner(54));
+  }
+
+  // getEdgeOwner() tests
+
+  @Test
+  void getEdgeOwner_UnownedEdge_ReturnsSetup() {
+    BoardHandler b = new BoardHandler();
+    assertEquals(PlayerColor.SETUP, b.getEdgeOwner(0, 3));
+  }
+
+  @Test
+  void getEdgeOwner_AfterSetupRoad_ReturnsPlayerColor() {
+    BoardHandler b = new BoardHandler();
+    Player red = new Player("Red", PlayerColor.RED);
+    b.buildSetupSettlement(red, 0);
+    b.buildSetupRoad(red, 0, 0, 3);
+    assertEquals(PlayerColor.RED, b.getEdgeOwner(0, 3));
+  }
+
+  @Test
+  void getEdgeOwner_NonexistentEdge_ThrowsIllegalArgumentException() {
+    BoardHandler b = new BoardHandler();
+    assertThrows(IllegalArgumentException.class, () -> b.getEdgeOwner(0, 1));
+  }
+
+  // Port accessor tests
+
+  @Test
+  void portAccessors_ReturnConstructorValues() {
+    Port port = new Port(2, domain.model.resources.Resource.GRAIN, List.of(1, 5));
+    assertEquals(2, port.getTradeRatio());
+    assertEquals(domain.model.resources.Resource.GRAIN, port.getResource());
+    assertEquals(List.of(1, 5), port.getNodeIds());
+  }
+
+  // getAllPorts() tests
+
+  @Test
+  void getAllPorts_FreshBoard_ReturnsAllNinePorts() {
+    BoardHandler b = new BoardHandler();
+    assertEquals(9, b.getAllPorts().size());
+  }
+
+  @Test
+  void getAllPorts_ReturnsPortsRegardlessOfOwnership() {
+    BoardHandler b = new BoardHandler();
+    // no player owns any node, so getAvailablePorts is empty but getAllPorts is not
+    Player red = new Player("Red", PlayerColor.RED);
+    assertEquals(0, b.getAvailablePorts(red).size());
+    assertEquals(9, b.getAllPorts().size());
+  }
+
   // TC61 ← REDUCES CXTY
   @Test
   void getHexOrder_WithNineteenHexes_ExpectListOfNineteenResourceNames() {

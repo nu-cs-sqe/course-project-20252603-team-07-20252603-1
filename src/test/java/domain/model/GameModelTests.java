@@ -2409,6 +2409,92 @@ public class GameModelTests {
             lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock, woolDeckMock);
   }
 
+  // enterSetupPhase() / completeSetupPhase() tests
+
+  @Test
+  void enterSetupPhase_test01_FromBeforeRoll_EntersSetupPhase() {
+    List<Player> players = List.of(
+            new Player("A", PlayerColor.RED),
+            new Player("B", PlayerColor.BLUE),
+            new Player("C", PlayerColor.WHITE));
+    GameModel model = new GameModel(players, boardMock);
+
+    model.enterSetupPhase();
+    assertEquals(GamePhase.SETUP_PHASE, model.getCurrentPhase());
+  }
+
+  @Test
+  void enterSetupPhase_test02_WrongPhase_ExpectIllegalGamePhaseException() {
+    List<Player> players = List.of(
+            new Player("A", PlayerColor.RED),
+            new Player("B", PlayerColor.BLUE),
+            new Player("C", PlayerColor.WHITE));
+    GameModel model = new GameModel(players, boardMock);
+    model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+
+    assertThrows(IllegalGamePhaseException.class, () -> model.enterSetupPhase());
+  }
+
+  @Test
+  void completeSetupPhase_test01_ResetsToFirstPlayerAndBeforeRoll() {
+    List<Player> players = List.of(
+            new Player("A", PlayerColor.RED),
+            new Player("B", PlayerColor.BLUE),
+            new Player("C", PlayerColor.WHITE));
+    GameModel model = new GameModel(players, boardMock);
+    model.enterSetupPhase();
+    model.setCurrentPlayerIndex(2);
+    model.setCurrentPlayerColor(PlayerColor.WHITE);
+
+    model.completeSetupPhase();
+
+    assertEquals(GamePhase.BEFORE_ROLL, model.getCurrentPhase());
+    assertEquals(0, model.getCurrentPlayerIndex());
+    assertEquals(PlayerColor.RED, model.getCurrentPlayerColor());
+  }
+
+  @Test
+  void completeSetupPhase_test02_WrongPhase_ExpectIllegalGamePhaseException() {
+    List<Player> players = List.of(
+            new Player("A", PlayerColor.RED),
+            new Player("B", PlayerColor.BLUE),
+            new Player("C", PlayerColor.WHITE));
+    GameModel model = new GameModel(players, boardMock);
+
+    assertThrows(IllegalGamePhaseException.class, () -> model.completeSetupPhase());
+  }
+
+  // endTurn() round-increment tests
+
+  @Test
+  void endTurn_test_RoundIncrementsWhenTurnOrderWraps() {
+    List<Player> players = List.of(
+            new Player("A", PlayerColor.RED),
+            new Player("B", PlayerColor.BLUE),
+            new Player("C", PlayerColor.WHITE));
+    GameModel model = new GameModel(players, boardMock);
+
+    assertEquals(0, model.getCurrentRound());
+    for (int turn = 0; turn < players.size(); turn++) {
+      model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+      model.endTurn();
+    }
+    assertEquals(1, model.getCurrentRound());
+  }
+
+  @Test
+  void endTurn_test_RoundUnchangedMidRound() {
+    List<Player> players = List.of(
+            new Player("A", PlayerColor.RED),
+            new Player("B", PlayerColor.BLUE),
+            new Player("C", PlayerColor.WHITE));
+    GameModel model = new GameModel(players, boardMock);
+
+    model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+    model.endTurn();
+    assertEquals(0, model.getCurrentRound());
+  }
+
   // moveRobberAndSteal(int targetHexID, PlayerColor victimColor) Test Cases
   // Test Case 1
   @Test

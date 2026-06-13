@@ -2,6 +2,8 @@ package ui.controller;
 
 import domain.model.DevelopmentCardHandler;
 import domain.model.GameModel;
+import domain.model.GamePhase;
+import domain.model.board.BoardHandler;
 import domain.model.board.Port;
 import domain.model.developmentcards.DevelopmentCard;
 import domain.model.developmentcards.DevelopmentCardDeck;
@@ -11,6 +13,8 @@ import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 import domain.model.player.TradeOffer;
 import domain.model.resources.Resource;
+import java.util.List;
+import java.util.Set;
 
 /** Controller for the main game loop, delegating game actions to the model. */
 public class GameLoopController {
@@ -130,9 +134,130 @@ public class GameLoopController {
     return handler.buyDevelopmentCard(player, deck, round);
   }
 
-  public void moveRobberAndSteal(GameModel model, int targetHexID, PlayerColor victimColor) {
-      model.moveRobberAndSteal(targetHexID, victimColor);
+  /**
+   * Moves the robber to the target hex and steals from the victim of the given color.
+   *
+   * @param model the game model
+   * @param targetHexId the hex to move the robber to
+   * @param victimColor the color of the player to steal from, or null
+   */
+  public void moveRobberAndSteal(GameModel model, int targetHexId, PlayerColor victimColor) {
+    model.moveRobberAndSteal(targetHexId, victimColor);
   }
+
+  /**
+   * Returns the current game phase.
+   *
+   * @param model the game model
+   * @return the current game phase
+   */
+  public GamePhase getCurrentPhase(GameModel model) {
+    return model.getCurrentPhase();
+  }
+
+  /**
+   * Enters the setup phase.
+   *
+   * @param model the game model
+   */
+  public void enterSetupPhase(GameModel model) {
+    model.enterSetupPhase();
+  }
+
+  /**
+   * Completes the setup phase.
+   *
+   * @param model the game model
+   */
+  public void completeSetupPhase(GameModel model) {
+    model.completeSetupPhase();
+  }
+
+  /**
+   * Sets the current player by turn-order index.
+   *
+   * @param model the game model
+   * @param playerIndex the index in turn order
+   */
+  public void setCurrentPlayer(GameModel model, int playerIndex) {
+    model.setCurrentPlayerIndex(playerIndex);
+    model.setCurrentPlayerColor(model.getTurnOrder().get(playerIndex).getColor());
+  }
+
+  /**
+   * Returns the current round number.
+   *
+   * @param model the game model
+   * @return the current round
+   */
+  public int getCurrentRound(GameModel model) {
+    return model.getCurrentRound();
+  }
+
+  /**
+   * Returns all players other than the current player.
+   *
+   * @param model the game model
+   * @return the list of other players
+   */
+  public List<Player> getOtherPlayers(GameModel model) {
+    return model.getOtherPlayers();
+  }
+
+  /**
+   * Attempts to build a settlement at the given node.
+   *
+   * @param model the game model
+   * @param nodeId the node to build at
+   */
+  public void attemptBuildSettlement(GameModel model, int nodeId) {
+    model.attemptBuildSettlement(nodeId);
+  }
+
+  /**
+   * Attempts to build a road between the two given nodes.
+   *
+   * @param model the game model
+   * @param nodeId1 the first endpoint node
+   * @param nodeId2 the second endpoint node
+   */
+  public void attemptBuildRoad(GameModel model, int nodeId1, int nodeId2) {
+    model.attemptBuildRoad(nodeId1, nodeId2);
+  }
+
+  /**
+   * Attempts to build a city at the given node.
+   *
+   * @param model the game model
+   * @param nodeId the node to build at
+   */
+  public void attemptBuildCity(GameModel model, int nodeId) {
+    model.attemptBuildCity(nodeId);
+  }
+
+
+  /**
+   * Returns the players with structures on the given hex.
+   *
+   * @param board the game board
+   * @param hexId the hex to query
+   * @return the set of players on the hex
+   */
+  public Set<Player> getPlayersOnHex(BoardHandler board, int hexId) {
+    return board.getPlayersOnHex(hexId);
+  }
+
+  /**
+   * Returns the ports available to the given player.
+   *
+   * @param board the game board
+   * @param player the player to query
+   * @return the list of available ports
+   */
+  public List<Port> getAvailablePorts(BoardHandler board, Player player) {
+    return board.getAvailablePorts(player);
+  }
+
   /**
    * Plays a development card for the current player.
    *
