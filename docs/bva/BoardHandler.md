@@ -31,12 +31,13 @@ Step 3:
 
 |             | System under test             | Expected output                                                                                                    | Implemented?       |
 |-------------|-------------------------------|--------------------------------------------------------------------------------------------------------------------|--------------------|
-| Test Case 1 | RED tries to claim node 0     | Calls to add RED settlement to hex 0 and claimStoredNode, node level is settlement, owned by RED                   | :white_check_mark: |
-| Test Case 2 | BLUE tries to claim node 53   | Calls to add BLUE settlement to hex 18 and claimStoredNode, node level is settlement, owned by BLUE                | :white_check_mark: |
-| Test Case 3 | ORANGE tries to claim node -1 | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNode and addPlayerSettlementToHex not called          | :white_check_mark: |
-| Test Case 4 | WHITE tries to claim node 54  | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNode and addPlayerSettlementToHex not called          | :white_check_mark: |
-| Test Case 5 | ORANGE tries to claim node 8  | Calls to add ORANGE settlement to hexes 0, 1, and 4 and claimStoredNode, node level is settlement, owned by ORANGE | :white_check_mark: |
-| Test Case 6 | BLUE tries to claim node 4    | Calls to add BLUE settlement to hexes 0 and 1 and claimStoredNode, node level is settlement, owned by BLUE         | :white_check_mark: |
+| Test Case 1  | RED tries to claim node 0                                                     | Calls to add RED settlement to hex 0 and claimStoredNode, node level is settlement, owned by RED                   | :white_check_mark: |
+| Test Case 2  | BLUE tries to claim node 53                                                   | Calls to add BLUE settlement to hex 18 and claimStoredNode, node level is settlement, owned by BLUE                | :white_check_mark: |
+| Test Case 3  | ORANGE tries to claim node -1                                                 | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNode and addPlayerSettlementToHex not called          | :white_check_mark: |
+| Test Case 4  | WHITE tries to claim node 54                                                  | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNode and addPlayerSettlementToHex not called          | :white_check_mark: |
+| Test Case 5  | ORANGE tries to claim node 8                                                  | Calls to add ORANGE settlement to hexes 0, 1, and 4 and claimStoredNode, node level is settlement, owned by ORANGE | :white_check_mark: |
+| Test Case 6  | BLUE tries to claim node 4                                                    | Calls to add BLUE settlement to hexes 0 and 1 and claimStoredNode, node level is settlement, owned by BLUE         | :white_check_mark: |
+| Test Case 69 | Controller rejects claim: adjacent node already claimed (distance rule fired) | IllegalSettlementPlacementException with message "Can not claim node adjacent to node already claimed" propagates  | :white_check_mark: |
 
 
 
@@ -100,18 +101,26 @@ Step 3:
 - Input: 0, 53, -1, 54
 - Input: 0, 53, -1, 54
 - Input: Edge claimed, edge unclaimed - Handled by BoardGraphController
+- Input: nodeId1 == nodeId2 (same start and end node) - Handled by BoardGraphController
+- Input: Non-existent edge (e.g., reversed direction such as [3, 0]) - Handled by BoardGraphController
 - Input: RED, BLUE, ORANGE, WHITE
 - Output: Edge claimed, edge unclaimed - Handled by BoardGraphController
 - Output: "Edge nodeId out of bounds. Must be within [0, 53]."
+- Output: IllegalArgumentException (same start/end or non-existent edge, thrown by BoardGraphController)
+- Output: IllegalEdgeClaim (already claimed edge, thrown by BoardGraphController)
 
-|              | System under test                 | Expected output                                      | Implemented?       |
-|--------------|-----------------------------------|------------------------------------------------------|--------------------|
-| Test Case 15 | RED claims edge [0,1]             | playerClaimStoredEdge is called                      | :white_check_mark: |
-| Test Case 16 | ORANGE claims edge [52, 53]       | playerClaimStoredEdge is called                      | :white_check_mark: |
-| Test Case 17 | WHITE tries to claim edge [-1, 0] | "Edge nodeId out of bounds. Must be within [0, 53]." | :white_check_mark: |
-| Test Case 18 | WHITE tries to claim edge [0, -1] | "Edge nodeId out of bounds. Must be within [0, 53]." | :white_check_mark: |
-| Test Case 19 | BLUE tries to claim edge [53, 54] | "Edge nodeId out of bounds. Must be within [0, 53]." | :white_check_mark: |
-| Test Case 20 | BLUE tries to claim edge [54, 53] | "Edge nodeId out of bounds. Must be within [0, 53]." | :white_check_mark: |
+|              | System under test                                                  | Expected output                                      | Implemented?       |
+|--------------|--------------------------------------------------------------------|------------------------------------------------------|--------------------|
+| Test Case 15 | RED claims edge [0,1]                                              | playerClaimStoredEdge is called                      | :white_check_mark: |
+| Test Case 16 | ORANGE claims edge [52, 53]                                        | playerClaimStoredEdge is called                      | :white_check_mark: |
+| Test Case 17 | WHITE tries to claim edge [-1, 0]                                  | "Edge nodeId out of bounds. Must be within [0, 53]." | :white_check_mark: |
+| Test Case 18 | WHITE tries to claim edge [0, -1]                                  | "Edge nodeId out of bounds. Must be within [0, 53]." | :white_check_mark: |
+| Test Case 19 | BLUE tries to claim edge [53, 54]                                  | "Edge nodeId out of bounds. Must be within [0, 53]." | :white_check_mark: |
+| Test Case 20 | BLUE tries to claim edge [54, 53]                                  | "Edge nodeId out of bounds. Must be within [0, 53]." | :white_check_mark: |
+| Test Case 65 | RED tries to claim edge [5, 5] (same start and end)                | IllegalArgumentException                             | :white_check_mark: |
+| Test Case 66 | RED tries to claim edge [3, 0] (non-existent edge)                 | IllegalArgumentException                             | :white_check_mark: |
+| Test Case 67 | RED claims edge [0, 1], then BLUE tries to claim edge [0, 1] again | IllegalEdgeClaim                                     | :white_check_mark: |
+| Test Case 70 | Controller rejects road: edge already claimed                       | IllegalEdgeClaim with message "Edge already claimed" propagates | :white_check_mark: |
 
 
 ### Method under test: `awardResources(int rollNum)`
@@ -226,18 +235,21 @@ Step 3:
 - Input: RED, BLUE, ORANGE, WHITE
 - Input: 0, 53, -1, 54
 - Input: Node is adjacent to 1, 2, or 3 hexes
+- Input: Node adjacent to an already-claimed node (adjacency constraint enforced by BoardGraphController)
 - Output: Node now occupied, node not occupied, node still occupied by other player (was already occupied)
 - Output: Hexes have player in list of settlements, hex player list not updated - For integration testing, not unit testable
 - Output: "Invalid NodeID - must be within [0, 53]."
+- Output: AdjacentNodeAlreadyClaimed (thrown by BoardGraphController when placing next to an owned node)
 
-|              | System under test             | Expected output                                                                                                              | Implemented?       |
-|--------------|-------------------------------|------------------------------------------------------------------------------------------------------------------------------|--------------------|
-| Test Case 41 | RED tries to claim node 0     | Calls to add RED settlement to hex 0 and claimStoredNodeSetupPhase, node level is settlement, owned by RED                   | :white_check_mark: |
-| Test Case 42 | BLUE tries to claim node 53   | Calls to add BLUE settlement to hex 18 and claimStoredNodeSetupPhase, node level is settlement, owned by BLUE                | :white_check_mark: |
-| Test Case 43 | ORANGE tries to claim node -1 | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNodeSetupPhase and addPlayerSettlementToHex not called          | :white_check_mark: |
-| Test Case 44 | WHITE tries to claim node 54  | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNodeSetupPhase and addPlayerSettlementToHex not called          | :white_check_mark: |
-| Test Case 45 | ORANGE tries to claim node 8  | Calls to add ORANGE settlement to hexes 0, 1, and 4 and claimStoredNodeSetupPhase, node level is settlement, owned by ORANGE | :white_check_mark: |
-| Test Case 46 | BLUE tries to claim node 4    | Calls to add BLUE settlement to hexes 0 and 1 and claimStoredNodeSetupPhase, node level is settlement, owned by BLUE         | :white_check_mark: |
+|              | System under test                                            | Expected output                                                                                                              | Implemented?       |
+|--------------|--------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------|--------------------|
+| Test Case 41 | RED tries to claim node 0                                    | Calls to add RED settlement to hex 0 and claimStoredNodeSetupPhase, node level is settlement, owned by RED                   | :white_check_mark: |
+| Test Case 42 | BLUE tries to claim node 53                                  | Calls to add BLUE settlement to hex 18 and claimStoredNodeSetupPhase, node level is settlement, owned by BLUE                | :white_check_mark: |
+| Test Case 43 | ORANGE tries to claim node -1                                | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNodeSetupPhase and addPlayerSettlementToHex not called          | :white_check_mark: |
+| Test Case 44 | WHITE tries to claim node 54                                 | "Invalid NodeID - must be within [0, 53].", playerClaimStoredNodeSetupPhase and addPlayerSettlementToHex not called          | :white_check_mark: |
+| Test Case 45 | ORANGE tries to claim node 8                                 | Calls to add ORANGE settlement to hexes 0, 1, and 4 and claimStoredNodeSetupPhase, node level is settlement, owned by ORANGE | :white_check_mark: |
+| Test Case 46 | BLUE tries to claim node 4                                   | Calls to add BLUE settlement to hexes 0 and 1 and claimStoredNodeSetupPhase, node level is settlement, owned by BLUE         | :white_check_mark: |
+| Test Case 68 | RED claims node 7, then BLUE tries to claim adjacent node 12 | AdjacentNodeAlreadyClaimed                                                                                                   | :white_check_mark: |
 
 
 
@@ -300,6 +312,44 @@ Step 3:
 | Test Case 57 | SETUP holds longest road  | calculateLongestRoad is called, returns SETUP  | :white_check_mark: |
 
 
+### Method under test: `computeResourceDemand(int rollNum)`
+
+Iterates all 19 hexes; a hex contributes when: `hex.rollNum == rollNum` AND `hex.id != robberLocation` AND `hex.resource != DESERT`. Settlements contribute 1 per player; cities contribute 2 per player. Players on multiple contributing hexes with the same resource have their amounts summed.
+
+Step 1:
+
+- Input: rollNum (the die value to match against hexes)
+- Input: Robber location (blocks a matching hex entirely)
+- Input: Settlement and city player lists on each hex
+- Output: `Map<Resource, Map<Player, Integer>>` — demand per resource per player
+
+Step 2:
+
+- rollNum: Interval [2, 12]; matches or does not match each hex's rollNum
+- Robber: Cases {on a matching hex (blocks it), not on any matching hex}
+- Hex resource: Cases {DESERT (skipped), non-DESERT (included)}
+- Settlement list per hex: Collection {empty, one player, multiple players}
+- City list per hex: Collection {empty, one player}
+- Same player on multiple matching hexes with same resource: amounts are summed
+
+Step 3:
+
+- rollNum: 2 (min valid), 12 (max valid); value that matches multiple hexes (e.g. 8 matches hex 11 ORE and hex 12 LUMBER)
+- Robber: on the only matching hex; on one of two matching hexes; not on any matching hex
+- Settlement: none on hex; 1 player; same player on 2 matching hexes same resource
+- City: 1 player on hex (produces 2 instead of 1)
+- No hexes match rollNum → empty result
+
+|              | State of the System                                                                        | Expected output                                          | Implemented?       |
+|--------------|--------------------------------------------------------------------------------------------|----------------------------------------------------------|--------------------|
+| Test Case 58 | Roll 2, hex 1 (WOOL, rollNum=2) has RED settlement; robber elsewhere                       | `{WOOL: {RED: 1}}`                                       | :white_check_mark: |
+| Test Case 59 | Roll 2, hex 1 (WOOL, rollNum=2) has RED settlement; robber on hex 1                        | `{}` (robber blocks)                                     | :white_check_mark: |
+| Test Case 60 | Roll 8, hex 11 (ORE) has RED settlement; hex 12 (LUMBER) has BLUE settlement; no robber    | `{ORE: {RED: 1}, LUMBER: {BLUE: 1}}`                     | :white_check_mark: |
+| Test Case 61 | Roll 2, hex 1 (WOOL) has RED city; robber elsewhere                                        | `{WOOL: {RED: 2}}` (city = 2x)                           | :white_check_mark: |
+| Test Case 62 | Roll 8, hex 11 (ORE) has RED settlement; hex 12 (ORE) has RED settlement; no robber        | `{ORE: {RED: 2}}` (same player, same resource, summed)   | :white_check_mark: |
+| Test Case 63 | Roll 6; all hexes configured with rollNum ≠ 6 (all hexes return 0)                         | `{}` (no hexes match)                                    | :white_check_mark: |
+| Test Case 64 | Roll 8, hex 11 (ORE) RED settlement; hex 12 (LUMBER) BLUE settlement; robber on hex 12     | `{ORE: {RED: 1}}` (only unblocked hex contributes)       | :white_check_mark: |
+| Test Case 65 | Roll 6, hex 3 (DESERT, rollNum=6); robber on hex 9 (not blocking hex 3)                    | `{}` (DESERT hex skipped even when roll matches)         | :white_check_mark: |
 ### Method under test: `getAvailablePorts(Player player)`
 
 Step 1:
@@ -325,4 +375,24 @@ Step 3:
 | Test Case 58 | RED has settlement on node 23                                                | Returns empty list             | :white_check_mark: |
 | Test Case 59 | ORANGE has settlement on node 0                                              | Returns the one port on node 0 | :white_check_mark: |
 | Test Case 60 | WHITE has claimed 0, 5, 11, 15, 32, 38, and 46 (can maximally claim 7 nodes) | Returns 7 ports                | :white_check_mark: |
+
+---
+
+### Method under test: `getHexOrder()`
+
+Returns a list of resource name strings for all 19 hexes, in order.
+
+|              | System under test                         | Expected output                                         | Implemented?       |
+|--------------|-------------------------------------------|---------------------------------------------------------|--------------------|
+| Test Case 61 | board with 19 hexes, each returning LUMBER | list of 19 strings; first element is "LUMBER"          | :white_check_mark: |
+
+---
+
+### Method under test: `getHexCount()`
+
+Returns the number of hexes on the board.
+
+|              | System under test   | Expected output | Implemented?       |
+|--------------|---------------------|-----------------|--------------------|
+| Test Case 62 | board with 19 hexes | 19              | :white_check_mark: |
 

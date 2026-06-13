@@ -4,7 +4,7 @@ package domain.IntegrationTests;
 // Ability to roll dice and distribute resources to players based on settlements and cities adjacent to matching number tokens, excluding robber-blocked hexes
 
 import domain.model.board.BoardHandler;
-import domain.model.game_pieces.DiceHandler;
+import domain.model.gamepieces.DiceHandler;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 import domain.model.resources.Resource;

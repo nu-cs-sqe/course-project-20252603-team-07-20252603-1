@@ -171,3 +171,12 @@ Delegates directly to `model.moveRobberAndSteal(int targetHexID, PlayerColor vic
 |             | State of the System   | Expected output                    | Implemented?       |
 |-------------|-----------------------|------------------------------------|--------------------|
 | Test Case 1 | In general play phase | model.moveRobberAndSteal is called | :white_check_mark: |
+
+
+### Method under test: `getResourceCount(GameModel model, PlayerColor color, Resource resource)`
+
+Delegates to `model.getArbitraryPlayer(color).getResourceCount(resource)`.
+
+|              | System under test                                              | Expected output                            | Implemented?       |
+|--------------|----------------------------------------------------------------|--------------------------------------------|--------------------|
+| Test Case 11 | model.getArbitraryPlayer(RED) returns mockPlayer; mockPlayer.getResourceCount(ORE) returns 5 | controller returns 5 | :white_check_mark: |

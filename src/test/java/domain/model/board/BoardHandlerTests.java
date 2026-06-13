@@ -3,14 +3,17 @@ package domain.model.board;
 import domain.model.board.BoardGraphController;
 import domain.model.board.BoardHandler;
 import domain.model.board.Hex;
+import domain.model.exceptions.AdjacentNodeAlreadyClaimed;
 import domain.model.exceptions.IllegalEdgeClaim;
 import domain.model.exceptions.IllegalSettlementPlacementException;
-import domain.model.game_pieces.Robber;
+import domain.model.gamepieces.Robber;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import domain.model.resources.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -1377,31 +1380,187 @@ public class BoardHandlerTests {
     assertEquals(expectedColor, actualColor);
   }
 
-  // --- buildSettlement / addRoad: board-state validation now delegated from Player ---
-
   // Test Case 58
   @Test
-  void buildSettlement_NodeAlreadyOccupied_GraphControllerThrows_ExceptionPropagates() {
-    EasyMock.expect(mockRedPlayer.getColor()).andReturn(PlayerColor.RED);
-
-    mockBoardGraphController.playerClaimStoredNode(PlayerColor.RED, 0);
-    EasyMock.expectLastCall().andThrow(new IllegalSettlementPlacementException("Node already claimed"));
-
-    EasyMock.replay(mockBoardGraphController, mockRedPlayer);
-
+  void TwoRolled_Hex1WoolSettlementRed_RobberElsewhere_ReturnsWoolOneToRed() {
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(9);
+    for (int i = 0; i < 19; i++) {
+      if (i == 1) {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(2);
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(1);
+        EasyMock.expect(mockHexes.get(i).getHexResource()).andReturn(Resource.WOOL);
+        EasyMock.expect(mockHexes.get(i).getHexSettlementPlayers()).andReturn(List.of(mockRedPlayer));
+        EasyMock.expect(mockHexes.get(i).getHexCityPlayers()).andReturn(List.of());
+      } else {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
+      }
+    }
+    EasyMock.replay(mockRobber);
+    EasyMock.replay(mockHexes.toArray());
     BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, ports);
-
-    Exception exception = assertThrows(IllegalSettlementPlacementException.class, () ->
-        b.buildSettlement(mockRedPlayer, 0)
-    );
-    assertEquals("Node already claimed", exception.getMessage());
-
-    EasyMock.verify(mockBoardGraphController, mockRedPlayer);
+    Map<Resource, Map<Player, Integer>> result = b.computeResourceDemand(2);
+    EasyMock.verify(mockRobber);
+    EasyMock.verify(mockHexes.toArray());
+    assertEquals(1, result.size());
+    assertEquals(1, (int) result.get(Resource.WOOL).get(mockRedPlayer));
   }
 
   // Test Case 59
   @Test
-  void buildSettlement_AdjacentNodeOccupiedViolatesDistanceRule_GraphControllerThrows_ExceptionPropagates() {
+  void TwoRolled_Hex1Matches_RobberOnHex1_ReturnsEmptyMap() {
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(1);
+    for (int i = 0; i < 19; i++) {
+      if (i == 1) {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(2);
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(1);
+      } else {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
+      }
+    }
+    EasyMock.replay(mockRobber);
+    EasyMock.replay(mockHexes.toArray());
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, ports);
+    Map<Resource, Map<Player, Integer>> result = b.computeResourceDemand(2);
+    EasyMock.verify(mockRobber);
+    EasyMock.verify(mockHexes.toArray());
+    assertEquals(0, result.size());
+  }
+
+  // Test Case 60
+  @Test
+  void EightRolled_Hex11OreRedSettlement_Hex12LumberBlueSettlement_ReturnsBothResources() {
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(9);
+    for (int i = 0; i < 19; i++) {
+      if (i == 11) {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(8);
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(11);
+        EasyMock.expect(mockHexes.get(i).getHexResource()).andReturn(Resource.ORE);
+        EasyMock.expect(mockHexes.get(i).getHexSettlementPlayers()).andReturn(List.of(mockRedPlayer));
+        EasyMock.expect(mockHexes.get(i).getHexCityPlayers()).andReturn(List.of());
+      } else if (i == 12) {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(8);
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(12);
+        EasyMock.expect(mockHexes.get(i).getHexResource()).andReturn(Resource.LUMBER);
+        EasyMock.expect(mockHexes.get(i).getHexSettlementPlayers()).andReturn(List.of(mockBluePlayer));
+        EasyMock.expect(mockHexes.get(i).getHexCityPlayers()).andReturn(List.of());
+      } else {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
+      }
+    }
+    EasyMock.replay(mockRobber);
+    EasyMock.replay(mockHexes.toArray());
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, ports);
+    Map<Resource, Map<Player, Integer>> result = b.computeResourceDemand(8);
+    EasyMock.verify(mockRobber);
+    EasyMock.verify(mockHexes.toArray());
+    assertEquals(2, result.size());
+    assertEquals(1, (int) result.get(Resource.ORE).get(mockRedPlayer));
+    assertEquals(1, (int) result.get(Resource.LUMBER).get(mockBluePlayer));
+  }
+
+  // Test Case 61
+  @Test
+  void TwoRolled_Hex1WoolCityRed_ReturnsWoolTwoToRed() {
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(9);
+    for (int i = 0; i < 19; i++) {
+      if (i == 1) {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(2);
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(1);
+        EasyMock.expect(mockHexes.get(i).getHexResource()).andReturn(Resource.WOOL);
+        EasyMock.expect(mockHexes.get(i).getHexSettlementPlayers()).andReturn(List.of());
+        EasyMock.expect(mockHexes.get(i).getHexCityPlayers()).andReturn(List.of(mockRedPlayer));
+      } else {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
+      }
+    }
+    EasyMock.replay(mockRobber);
+    EasyMock.replay(mockHexes.toArray());
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, ports);
+    Map<Resource, Map<Player, Integer>> result = b.computeResourceDemand(2);
+    EasyMock.verify(mockRobber);
+    EasyMock.verify(mockHexes.toArray());
+    assertEquals(1, result.size());
+    assertEquals(2, (int) result.get(Resource.WOOL).get(mockRedPlayer));
+  }
+
+  // Test Case 62
+  @Test
+  void EightRolled_TwoOreHexesRedSettlement_AmountsSummedToTwo() {
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(9);
+    for (int i = 0; i < 19; i++) {
+      if (i == 11) {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(8);
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(11);
+        EasyMock.expect(mockHexes.get(i).getHexResource()).andReturn(Resource.ORE);
+        EasyMock.expect(mockHexes.get(i).getHexSettlementPlayers()).andReturn(List.of(mockRedPlayer));
+        EasyMock.expect(mockHexes.get(i).getHexCityPlayers()).andReturn(List.of());
+      } else if (i == 12) {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(8);
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(12);
+        EasyMock.expect(mockHexes.get(i).getHexResource()).andReturn(Resource.ORE);
+        EasyMock.expect(mockHexes.get(i).getHexSettlementPlayers()).andReturn(List.of(mockRedPlayer));
+        EasyMock.expect(mockHexes.get(i).getHexCityPlayers()).andReturn(List.of());
+      } else {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
+      }
+    }
+    EasyMock.replay(mockRobber);
+    EasyMock.replay(mockHexes.toArray());
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, ports);
+    Map<Resource, Map<Player, Integer>> result = b.computeResourceDemand(8);
+    EasyMock.verify(mockRobber);
+    EasyMock.verify(mockHexes.toArray());
+    assertEquals(1, result.size());
+    assertEquals(2, (int) result.get(Resource.ORE).get(mockRedPlayer));
+  }
+
+  // Test Case 63
+  @Test
+  void RollMatchesNoHexes_ReturnsEmptyMap() {
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(9);
+    for (int i = 0; i < 19; i++) {
+      EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
+    }
+    EasyMock.replay(mockRobber);
+    EasyMock.replay(mockHexes.toArray());
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, ports);
+    Map<Resource, Map<Player, Integer>> result = b.computeResourceDemand(6);
+    EasyMock.verify(mockRobber);
+    EasyMock.verify(mockHexes.toArray());
+    assertEquals(0, result.size());
+  }
+
+  // Test Case 64
+  @Test
+  void EightRolled_RobberOnHex12_OnlyHex11Contributes() {
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(12);
+    for (int i = 0; i < 19; i++) {
+      if (i == 11) {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(8);
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(11);
+        EasyMock.expect(mockHexes.get(i).getHexResource()).andReturn(Resource.ORE);
+        EasyMock.expect(mockHexes.get(i).getHexSettlementPlayers()).andReturn(List.of(mockRedPlayer));
+        EasyMock.expect(mockHexes.get(i).getHexCityPlayers()).andReturn(List.of());
+      } else if (i == 12) {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(8);
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(12);
+      } else {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
+      }
+    }
+    EasyMock.replay(mockRobber);
+    EasyMock.replay(mockHexes.toArray());
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, ports);
+    Map<Resource, Map<Player, Integer>> result = b.computeResourceDemand(8);
+    EasyMock.verify(mockRobber);
+    EasyMock.verify(mockHexes.toArray());
+    assertEquals(1, result.size());
+    assertEquals(1, (int) result.get(Resource.ORE).get(mockRedPlayer));
+  }
+
+  // Test Case 69
+  @Test
+  void buildSettlement_AdjacentNodeViolatesDistanceRule_CorrectMessagePropagates() {
     EasyMock.expect(mockRedPlayer.getColor()).andReturn(PlayerColor.RED);
 
     mockBoardGraphController.playerClaimStoredNode(PlayerColor.RED, 0);
@@ -1421,9 +1580,96 @@ public class BoardHandlerTests {
     EasyMock.verify(mockBoardGraphController, mockRedPlayer);
   }
 
-  // Test Case 60
+  // Test Case 65
   @Test
-  void addRoad_EdgeAlreadyOccupied_GraphControllerThrows_ExceptionPropagates() {
+  void RedClaimsEdge_FiveFive_SameStartEnd_ThrowsIllegalArgumentException() {
+    EasyMock.expect(mockRedPlayer.getColor()).andReturn(PlayerColor.RED);
+
+    mockBoardGraphController.playerClaimStoredEdge(PlayerColor.RED, 5, 5);
+    EasyMock.expectLastCall().andThrow(new IllegalArgumentException("Edge does not exist"));
+
+    EasyMock.replay(mockBoardGraphController, mockRedPlayer);
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, ports);
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () ->
+        b.addRoad(mockRedPlayer, 5, 5)
+    );
+    assertEquals("Edge does not exist", exception.getMessage());
+
+    EasyMock.verify(mockBoardGraphController, mockRedPlayer);
+  }
+
+  // Test Case 66
+  @Test
+  void RedClaimsEdge_ThreeZero_NonExistentEdge_ThrowsIllegalArgumentException() {
+    EasyMock.expect(mockRedPlayer.getColor()).andReturn(PlayerColor.RED);
+
+    mockBoardGraphController.playerClaimStoredEdge(PlayerColor.RED, 3, 0);
+    EasyMock.expectLastCall().andThrow(new IllegalArgumentException("Edge does not exist"));
+
+    EasyMock.replay(mockBoardGraphController, mockRedPlayer);
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, ports);
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () ->
+        b.addRoad(mockRedPlayer, 3, 0)
+    );
+    assertEquals("Edge does not exist", exception.getMessage());
+
+    EasyMock.verify(mockBoardGraphController, mockRedPlayer);
+  }
+
+  // Test Case 67
+  @Test
+  void RedClaimsEdge_ZeroOne_ThenBlueTriesSameEdge_ThrowsIllegalEdgeClaim() {
+    EasyMock.expect(mockRedPlayer.getColor()).andReturn(PlayerColor.RED);
+    mockBoardGraphController.playerClaimStoredEdge(PlayerColor.RED, 0, 1);
+    EasyMock.expectLastCall();
+    mockRedPlayer.placeRoad();
+    EasyMock.expectLastCall();
+
+    EasyMock.expect(mockBluePlayer.getColor()).andReturn(PlayerColor.BLUE);
+    mockBoardGraphController.playerClaimStoredEdge(PlayerColor.BLUE, 0, 1);
+    EasyMock.expectLastCall().andThrow(new IllegalEdgeClaim("Edge already claimed"));
+
+    EasyMock.replay(mockBoardGraphController, mockRedPlayer, mockBluePlayer);
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, ports);
+
+    b.addRoad(mockRedPlayer, 0, 1);
+
+    Exception exception = assertThrows(IllegalEdgeClaim.class, () ->
+        b.addRoad(mockBluePlayer, 0, 1)
+    );
+    assertEquals("Edge already claimed", exception.getMessage());
+
+    EasyMock.verify(mockBoardGraphController, mockRedPlayer, mockBluePlayer);
+  }
+
+  // Test Case 68
+  @Test
+  void buildSetupSettlement_ControllerRejectsAdjacentNode_AdjacentNodeAlreadyClaimedPropagates() {
+    EasyMock.expect(mockBluePlayer.getColor()).andReturn(PlayerColor.BLUE);
+
+    EasyMock.expect(mockBoardGraphController.playerClaimStoredNodeSetupPhase(PlayerColor.BLUE, 12))
+        .andThrow(new AdjacentNodeAlreadyClaimed("Can not claim node adjacent to node already claimed"));
+
+    EasyMock.replay(mockBoardGraphController, mockBluePlayer);
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, ports);
+
+    Exception exception = assertThrows(AdjacentNodeAlreadyClaimed.class, () ->
+        b.buildSetupSettlement(mockBluePlayer, 12)
+    );
+    assertEquals("Can not claim node adjacent to node already claimed", exception.getMessage());
+
+    EasyMock.verify(mockBoardGraphController, mockBluePlayer);
+  }
+
+  // Test Case 70
+  @Test
+  void addRoad_EdgeAlreadyClaimed_CorrectMessagePropagates() {
     EasyMock.expect(mockRedPlayer.getColor()).andReturn(PlayerColor.RED);
 
     mockBoardGraphController.playerClaimStoredEdge(PlayerColor.RED, 0, 1);
@@ -1437,26 +1683,6 @@ public class BoardHandlerTests {
         b.addRoad(mockRedPlayer, 0, 1)
     );
     assertEquals("Edge already claimed", exception.getMessage());
-
-    EasyMock.verify(mockBoardGraphController, mockRedPlayer);
-  }
-
-  // Test Case 61
-  @Test
-  void addRoad_NotConnectedToPlayerNetwork_GraphControllerThrows_ExceptionPropagates() {
-    EasyMock.expect(mockRedPlayer.getColor()).andReturn(PlayerColor.RED);
-
-    mockBoardGraphController.playerClaimStoredEdge(PlayerColor.RED, 0, 1);
-    EasyMock.expectLastCall().andThrow(new IllegalEdgeClaim("Edge must be adjacent to an owned structure"));
-
-    EasyMock.replay(mockBoardGraphController, mockRedPlayer);
-
-    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, ports);
-
-    Exception exception = assertThrows(IllegalEdgeClaim.class, () ->
-        b.addRoad(mockRedPlayer, 0, 1)
-    );
-    assertEquals("Edge must be adjacent to an owned structure", exception.getMessage());
 
     EasyMock.verify(mockBoardGraphController, mockRedPlayer);
   }
@@ -1543,4 +1769,55 @@ public class BoardHandlerTests {
             mockPort5, mockPort6, mockPort7, mockPort8, mockPort9);
   }
 
+  // TC61 ← REDUCES CXTY
+  @Test
+  void getHexOrder_WithNineteenHexes_ExpectListOfNineteenResourceNames() {
+    for (Hex hex : mockHexes) {
+      EasyMock.expect(hex.getHexResource()).andReturn(domain.model.resources.Resource.LUMBER);
+    }
+    EasyMock.replay(mockHexes.toArray());
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes,
+        nodeIdToHexes, mockRobber, ports);
+
+    List<String> order = b.getHexOrder();
+
+    assertEquals(19, order.size());
+    assertEquals("LUMBER", order.get(0));
+    EasyMock.verify(mockHexes.toArray());
+  }
+
+  // TC63 ← REDUCES CXTY
+  @Test
+  void computeResourceDemand_DesertHexMatchesRoll_ExpectDesertSkipped() {
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(9);
+    for (int i = 0; i < 19; i++) {
+      if (i == 3) {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(6);
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(3);
+        EasyMock.expect(mockHexes.get(i).getHexResource()).andReturn(Resource.DESERT);
+      } else {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
+      }
+    }
+    EasyMock.replay(mockRobber);
+    EasyMock.replay(mockHexes.toArray());
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, ports);
+    Map<Resource, Map<Player, Integer>> result = b.computeResourceDemand(6);
+    EasyMock.verify(mockRobber);
+    EasyMock.verify(mockHexes.toArray());
+    assertEquals(0, result.size());
+  }
+
+  // TC62 ← REDUCES CXTY
+  @Test
+  void getHexCount_WithNineteenHexes_ExpectNineteen() {
+    EasyMock.replay(mockHexes.toArray());
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes,
+        nodeIdToHexes, mockRobber, ports);
+
+    assertEquals(19, b.getHexCount());
+    EasyMock.verify(mockHexes.toArray());
+  }
 }

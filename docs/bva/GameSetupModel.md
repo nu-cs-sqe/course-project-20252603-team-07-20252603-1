@@ -70,3 +70,40 @@ successfully after clear
 |-------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------|--------------------|
 | Test Case 6 | model has 2 players added and a determined turn order              | getPlayerCount() == 0; previously-used name and color available again; getTurnOrder() empty    | :white_check_mark: |
 | Test Case 7 | model previously had ("Alice", "Red"), then cleared                | re-adding ("Alice", "Red") succeeds and is reflected in getPlayer(0)                           | :white_check_mark: |
+
+---
+
+### Method under test: `isColorAvailable(PlayerColor color)`
+
+|             | System under test                              | Expected output | Implemented?       |
+|-------------|------------------------------------------------|-----------------|--------------------|
+| Test Case 8 | empty model; color = RED                       | true            | :white_check_mark: |
+| Test Case 9 | model has player with RED; color = RED         | false           | :white_check_mark: |
+
+---
+
+### Method under test: `setResourceDeck(ResourceDeck)` / `getResourceDeck()`
+
+|              | System under test                     | Expected output                          | Implemented?       |
+|--------------|---------------------------------------|------------------------------------------|--------------------|
+| Test Case 10 | setResourceDeck(mockDeck)             | getResourceDeck() returns same instance  | :white_check_mark: |
+| Test Case 11 | no deck set                           | getResourceDeck() returns null           | :white_check_mark: |
+
+---
+
+### Method under test: `setDevelopmentCardDeck(DevelopmentCardDeck)` / `getDevelopmentCardDeck()`
+
+|              | System under test                          | Expected output                                   | Implemented?       |
+|--------------|--------------------------------------------|---------------------------------------------------|--------------------|
+| Test Case 12 | setDevelopmentCardDeck(mockDeck)           | getDevelopmentCardDeck() returns same instance    | :white_check_mark: |
+| Test Case 13 | no deck set                                | getDevelopmentCardDeck() returns null             | :white_check_mark: |
+
+---
+
+### Method under test: `createGameModel()`
+
+Creates a `GameModel` from current players and board state.
+
+|              | System under test                              | Expected output            | Implemented?       |
+|--------------|------------------------------------------------|----------------------------|--------------------|
+| Test Case 14 | model has 2 players added (Alice/RED, Bob/BLUE) | returns non-null GameModel | :white_check_mark: |

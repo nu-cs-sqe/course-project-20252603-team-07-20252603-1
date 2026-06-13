@@ -24,7 +24,7 @@ class ResourceDeckTest {
     }
 
     @Test
-    void testDrawMultipleCards() {
+    void testDrawMultipleCards() throws EmptyDeckException {
         ResourceDeck deck = new ResourceDeck(Resource.WOOL);
         int drawn = deck.drawMultiple(5);
 
@@ -32,7 +32,7 @@ class ResourceDeckTest {
     }
 
     @Test
-    void testDrawMultipleCardsExceedingAvailable() {
+    void testDrawMultipleCardsExceedingAvailable() throws EmptyDeckException {
         ResourceDeck deck = new ResourceDeck(Resource.BRICK);
 
         // Draw 15 cards first, leaving 4
@@ -44,7 +44,7 @@ class ResourceDeckTest {
     }
 
     @Test
-    void testDrawFromEmptyDeckThrowsException() {
+    void testDrawFromEmptyDeckThrowsException() throws EmptyDeckException {
         ResourceDeck deck = new ResourceDeck(Resource.GRAIN);
 
         // Draw all 19 cards
@@ -119,7 +119,7 @@ class ResourceDeckTest {
     }
 
     @Test
-    void testDrawMultipleReturnsEmptyArrayWhenDeckEmpty() {
+    void testDrawMultipleReturnsEmptyArrayWhenDeckEmpty() throws EmptyDeckException {
         ResourceDeck deck = new ResourceDeck(Resource.GRAIN);
 
         // Draw all cards
@@ -129,4 +129,34 @@ class ResourceDeckTest {
         int drawn = deck.drawMultiple(5);
         assertEquals(0, drawn);
     }
+
+  // TC11 ← REDUCES CXTY
+  @Test
+  void constructor_DesertResource_ExpectIllegalArgumentException() {
+    assertThrows(IllegalArgumentException.class, () -> new ResourceDeck(Resource.DESERT));
+  }
+
+  // TC12 ← REDUCES CXTY
+  @Test
+  void getTotalCards_NewTypedDeck_ExpectNineteen() {
+    final int expectedCount = 19;
+    ResourceDeck deck = new ResourceDeck(Resource.LUMBER);
+    assertEquals(expectedCount, deck.getTotalCards());
+  }
+
+  // TC13 ← REDUCES CXTY
+  @Test
+  void resourceType_EnumValues_ExpectStaticInitializerLoads() {
+    assertNotNull(ResourceType.WOOD);
+    assertNotNull(ResourceType.DESERT);
+    assertEquals(6, ResourceType.values().length);
+  }
+
+  // TC14 ← REDUCES CXTY
+  @Test
+  void resources_EmptyEnum_ExpectStaticInitializerLoads() {
+    Resources[] values = Resources.values();
+    assertNotNull(values);
+    assertEquals(0, values.length);
+  }
 }

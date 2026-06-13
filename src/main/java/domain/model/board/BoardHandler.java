@@ -1,10 +1,9 @@
 package domain.model.board;
 
-import domain.model.game_pieces.Robber;
+import domain.model.gamepieces.Robber;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 import domain.model.resources.Resource;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,11 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Handles all board-related operations for a game of Catan.
- */
+/** Handles all board-related operations for a game of Catan. */
 public class BoardHandler {
-  // static fields to represent the type of building on a node
+
   private static final int SETTLEMENT_LEVEL = 1;
   private static final int CITY_LEVEL = 2;
   private static final int MIN_HEX_ID = 0;
@@ -34,9 +31,7 @@ public class BoardHandler {
   private Robber robber;
   private List<Port> ports;
 
-  /**
-   * Creates a new BoardHandler with a fresh board state.
-   */
+  /** Creates a new BoardHandler with a fresh board state. */
   public BoardHandler() {
     BoardGraph constructorGraph = new BoardGraph();
     constructorGraph.buildBoard();
@@ -50,12 +45,12 @@ public class BoardHandler {
     this.ports = initPorts();
   }
 
-  // private constructor for testing
-  private BoardHandler(BoardGraphController boardGraphController,
-                       List<Hex> hexes, Map<Integer,
-                  List<Integer>> nodeIdToHexes,
-                       Robber robber,
-                       List<Port> ports) {
+  private BoardHandler(
+          BoardGraphController boardGraphController,
+          List<Hex> hexes,
+          Map<Integer, List<Integer>> nodeIdToHexes,
+          Robber robber,
+          List<Port> ports) {
     this.boardGraphController = boardGraphController;
     this.hexes = hexes;
     this.nodeIdToHexes = nodeIdToHexes;
@@ -76,11 +71,12 @@ public class BoardHandler {
    * @param ports the list of ports
    * @return a new BoardHandler instance
    */
-  public static BoardHandler createForTesting(BoardGraphController boardGraphController,
-                                              List<Hex> hexes, Map<Integer,
-                  List<Integer>> nodeIdToHexes,
-                                              Robber robber,
-                                              List<Port> ports) {
+  public static BoardHandler createForTesting(
+          BoardGraphController boardGraphController,
+          List<Hex> hexes,
+          Map<Integer, List<Integer>> nodeIdToHexes,
+          Robber robber,
+          List<Port> ports) {
     return new BoardHandler(boardGraphController, hexes, nodeIdToHexes, robber, ports);
   }
 
@@ -111,22 +107,22 @@ public class BoardHandler {
   }
 
   /**
-   * Checks whether the given player color owns the node at the specified ID.
+   * Returns whether the given player color owns the specified node.
    *
-   * @param playerColor the color of the player to check
-   * @param nodeId the ID of the node to check
-   * @return {@code true} if the player owns the node, {@code false} otherwise
+   * @param playerColor the color to check
+   * @param nodeId the node to check
+   * @return true if the player owns the node
    */
   public boolean checkPlayerOwnsNode(PlayerColor playerColor, Integer nodeId) {
     return nodeOwners[nodeId] == playerColor;
   }
 
   /**
-   * Returns the building level at the specified node.
+   * Returns the building level at the specified node (0=empty, 1=settlement, 2=city).
    * A value of 0 indicates no building, 1 indicates a settlement, and 2 indicates a city.
    *
-   * @param nodeId the ID of the node to query
-   * @return the building level at the node
+   * @param nodeId the node to query
+   * @return the building level
    */
   public Integer getNodeBuildingLevel(Integer nodeId) {
     return nodeBuildingLevels[nodeId];
@@ -240,6 +236,43 @@ public class BoardHandler {
     return playersOnHex;
   }
 
+  private void deliverResourcesToCitiesAndSettlements(
+          List<Player> hexSettlementPlayers,
+          List<Player> hexCityPlayers,
+          Map<Resource, Map<Player, Integer>> demand,
+          Resource resource) {
+    for (Player p : hexSettlementPlayers) {
+      demand.computeIfAbsent(resource, k -> new HashMap<>()).merge(p, 1, Integer::sum);
+    }
+    for (Player p : hexCityPlayers) {
+      demand.computeIfAbsent(resource, k -> new HashMap<>()).merge(p, 2, Integer::sum);
+    }
+  }
+
+  /**
+   * Computes the resource demand for all players based on the given dice roll.
+   *
+   * @param rollNum the dice roll number to match against hex roll numbers
+   * @return a map of resource to a map of player to amount owed
+   */
+  public Map<Resource, Map<Player, Integer>> computeResourceDemand(int rollNum) {
+    Map<Resource, Map<Player, Integer>> demand = new HashMap<>();
+    int robberLocation = robber.getRobberLocation();
+    for (Hex hex : hexes) {
+      if (hex.getHexRollNum() == rollNum && hex.getHexId() != robberLocation) {
+        Resource resource = hex.getHexResource();
+        if (resource == Resource.DESERT) {
+          continue;
+        }
+        List<Player> hexSettlementPlayers = hex.getHexSettlementPlayers();
+        List<Player> hexCityPlayers = hex.getHexCityPlayers();
+        deliverResourcesToCitiesAndSettlements(
+                hexSettlementPlayers, hexCityPlayers, demand, resource);
+      }
+    }
+    return demand;
+  }
+
   /**
    * Places a settlement during the setup phase for the given player at the specified node.
    * Unlike {@link #buildSettlement}, this bypasses adjacency restrictions enforced
@@ -284,8 +317,8 @@ public class BoardHandler {
       throw new IllegalArgumentException("Edge nodeId out of bounds. Must be within [0, 53].");
     }
     PlayerColor claimingColor = player.getColor();
-    boardGraphController.playerClaimStoredEdgeSetupPhase(claimingColor,
-            claimedNodeId, nodeId1, nodeId2);
+    boardGraphController.playerClaimStoredEdgeSetupPhase(
+            claimingColor, claimedNodeId, nodeId1, nodeId2);
     player.placeRoad();
   }
 
@@ -305,7 +338,7 @@ public class BoardHandler {
   }
 
   private List<Hex> initHexes() {
-    List<Hex> hexes = new ArrayList<>(List.of(
+    List<Hex> hexList = new ArrayList<>(List.of(
             new Hex(0, Resource.ORE, 10),
             new Hex(1, Resource.WOOL, 2),
             new Hex(2, Resource.LUMBER, 9),
@@ -326,7 +359,7 @@ public class BoardHandler {
             new Hex(17, Resource.GRAIN, 6),
             new Hex(18, Resource.LUMBER, 11)
     ));
-    return hexes;
+    return hexList;
   }
 
   /**

@@ -5,6 +5,9 @@ import domain.model.player.PlayerColor;
 import domain.model.resources.Resource;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -263,5 +266,86 @@ public class PlayerTests {
         assertEquals(0, player.getVictoryPoints());
     }
 
+  // TC14
+  @Test
+  void increaseSettlementCount_FromZero_ExpectCountOne() {
+    Player player = new Player("Alice", PlayerColor.BLUE);
+    player.increaseSettlementCount();
+    assertEquals(1, player.getSettlementCount());
+  }
 
+  // TC15 — does NOT reduce missed cxty (already covered)
+  @Test
+  void getSettlementCount_NewPlayer_ExpectZero() {
+    Player player = new Player("Alice", PlayerColor.BLUE);
+    assertEquals(0, player.getSettlementCount());
+  }
+
+  // TC16 ← REDUCES CXTY
+  @Test
+  void incrementKnightCount_FromZero_ExpectCountOne() {
+    Player player = new Player("Alice", PlayerColor.BLUE);
+    player.incrementKnightCount();
+    assertEquals(1, player.getKnightCount());
+  }
+
+  // TC17 ← REDUCES CXTY
+  @Test
+  void getKnightCount_NewPlayer_ExpectZero() {
+    Player player = new Player("Alice", PlayerColor.BLUE);
+    assertEquals(0, player.getKnightCount());
+  }
+
+  // TC18 ← REDUCES CXTY
+  @Test
+  void addDevelopmentCard_ValidCard_ExpectCardInList() {
+    Player player = new Player("Alice", PlayerColor.BLUE);
+    domain.model.developmentcards.DevelopmentCard mockCard = org.easymock.EasyMock.createMock(domain.model.developmentcards.DevelopmentCard.class);
+    org.easymock.EasyMock.replay(mockCard);
+    player.addDevelopmentCard(mockCard);
+    assertEquals(1, player.getDevelopmentCards().size());
+    assertEquals(mockCard, player.getDevelopmentCards().get(0));
+    org.easymock.EasyMock.verify(mockCard);
+  }
+
+  // TC19 ← REDUCES CXTY
+  @Test
+  void removeDevelopmentCard_CardInList_ExpectCardRemoved() {
+    Player player = new Player("Alice", PlayerColor.BLUE);
+    domain.model.developmentcards.DevelopmentCard mockCard = org.easymock.EasyMock.createMock(domain.model.developmentcards.DevelopmentCard.class);
+    org.easymock.EasyMock.replay(mockCard);
+    player.addDevelopmentCard(mockCard);
+    player.removeDevelopmentCard(mockCard);
+    assertEquals(0, player.getDevelopmentCards().size());
+    org.easymock.EasyMock.verify(mockCard);
+  }
+
+  // TC20 ← REDUCES CXTY
+  @Test
+  void getDevelopmentCards_NewPlayer_ExpectEmptyList() {
+    Player player = new Player("Alice", PlayerColor.BLUE);
+    assertEquals(0, player.getDevelopmentCards().size());
+  }
+
+  // TC21 ← REDUCES CXTY
+  @Test
+  void setHasPlayedDevCardThisTurn_True_ExpectTrue() {
+    Player player = new Player("Alice", PlayerColor.BLUE);
+    player.setHasPlayedDevCardThisTurn(true);
+    assertTrue(player.hasPlayedDevCardThisTurn());
+  }
+
+  // TC22 ← REDUCES CXTY
+  @Test
+  void hasPlayedDevCardThisTurn_NewPlayer_ExpectFalse() {
+    Player player = new Player("Alice", PlayerColor.BLUE);
+    assertFalse(player.hasPlayedDevCardThisTurn());
+  }
+
+  // TC23 ← REDUCES CXTY
+  @Test
+  void isAdjacentToHex_AnyHexId_ExpectFalse() {
+    Player player = new Player("Alice", PlayerColor.BLUE);
+    assertFalse(player.isAdjacentToHex(5));
+  }
 }

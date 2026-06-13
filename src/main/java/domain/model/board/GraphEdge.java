@@ -3,64 +3,59 @@ package domain.model.board;
 import domain.model.exceptions.EdgeAlreadyClaimedException;
 import domain.model.exceptions.IllegalNodeOrderingInEdgeException;
 import domain.model.player.PlayerColor;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
-// TODO - ensure startingNodeID < endingNodeID; need to do additional BVA
+/** Represents a directed edge in the board graph, connecting two nodes. */
 public class GraphEdge {
-    // unique Edge_id
-    final private int startingNodeID;
-    final private int endingNodeID;
+  private final int startingNodeId;
+  private final int endingNodeId;
 
-    private boolean roadBuilt;
-    private PlayerColor owningPlayerColor;
+  private boolean roadBuilt;
+  private PlayerColor owningPlayerColor;
 
-    GraphEdge(int startingNodeID, int endingNodeID) {
-        assertValidNodeIDsOrdering(startingNodeID, endingNodeID);
-        this.startingNodeID = startingNodeID;
-        this.endingNodeID = endingNodeID;
-        this.roadBuilt = false;
-        this.owningPlayerColor = PlayerColor.SETUP;
+  @SuppressFBWarnings(
+      value = "CT_CONSTRUCTOR_THROW",
+      justification = "Validation in constructor is intentional; no finalizer risk")
+  GraphEdge(int startingNodeId, int endingNodeId) {
+    assertValidNodeIdsOrdering(startingNodeId, endingNodeId);
+    this.startingNodeId = startingNodeId;
+    this.endingNodeId = endingNodeId;
+    this.roadBuilt = false;
+    this.owningPlayerColor = PlayerColor.SETUP;
+  }
+
+  private boolean assertValidNodeIdsOrdering(int startingNodeId, int endingNodeId) {
+    if (!(startingNodeId < endingNodeId)) {
+      throw new IllegalNodeOrderingInEdgeException(
+          "Starting nodeId must be lower than ending nodeId");
+    } else {
+      return true;
     }
+  }
 
-    private boolean assertValidNodeIDsOrdering(int startingNodeID, int endingNodeID) {
-        if (!(startingNodeID < endingNodeID)){
-            throw new IllegalNodeOrderingInEdgeException("Starting nodeID must be lower than ending nodeID");
-        }
-        else {
-            return true;
-        }
+  boolean claimGraphEdge(PlayerColor color) {
+    if (this.roadBuilt) {
+      throw new EdgeAlreadyClaimedException("Edge already claimed");
+    } else {
+      this.roadBuilt = true;
+      this.owningPlayerColor = color;
+      return true;
     }
+  }
 
-    // need to be able to claim an edge
-    boolean claimGraphEdge(PlayerColor color) {
-        if (this.roadBuilt) {
-            // Edge already occupied
-            throw new EdgeAlreadyClaimedException("Edge already claimed");
-        }
-        else {
-            this.roadBuilt = true;
-            this.owningPlayerColor = color;
-            return true;
-        }
-    }
+  boolean checkRoadExists() {
+    return this.roadBuilt;
+  }
 
-    @Override
-    protected final void finalize() {
-        // intentionally empty — blocks finalizer attacks
-    }
+  PlayerColor checkOwningColor() {
+    return this.owningPlayerColor;
+  }
 
+  int getStartingNodeId() {
+    return this.startingNodeId;
+  }
 
-    boolean checkRoadExists() {
-        return this.roadBuilt;
-    }
-    PlayerColor checkOwningColor() {
-        return this.owningPlayerColor;
-    }
-
-    int getStartingNodeID(){
-        return this.startingNodeID;
-    }
-    int getEndingNodeID() {
-        return this.endingNodeID;
-    }
-
+  int getEndingNodeId() {
+    return this.endingNodeId;
+  }
 }

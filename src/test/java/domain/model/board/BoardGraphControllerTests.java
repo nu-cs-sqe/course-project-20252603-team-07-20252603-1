@@ -11,6 +11,9 @@ import domain.model.player.PlayerColor;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
+ import domain.model.player.Player;
+ import java.util.List;
+
 import domain.model.board.BoardGraph;
 import domain.model.board.BoardGraphController;
 import domain.model.board.GraphEdge;
@@ -102,7 +105,7 @@ public class BoardGraphControllerTests {
         BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
         BoardGraphController boardControl = new BoardGraphController(boardMock);
         EasyMock.expect(boardMock.checkPlayerOwnsGraphNodeObject(PlayerColor.BLUE, 2)).andReturn(true);
-        EasyMock.expect(boardMock.getConnectingEdgesByID(2)).andReturn(new HashSet<>());
+        EasyMock.expect(boardMock.getConnectingEdgesById(2)).andReturn(new HashSet<>());
         EasyMock.expect(boardMock.getMatchingEdgeFromSet(new HashSet<>(), 0, 3))
                 .andThrow(new IllegalArgumentException("Edge does not exist"));
         EasyMock.replay(boardMock);
@@ -121,7 +124,7 @@ public class BoardGraphControllerTests {
         BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
         BoardGraphController boardControl = new BoardGraphController(boardMock);
         EasyMock.expect(boardMock.checkPlayerOwnsGraphNodeObject(PlayerColor.ORANGE, 50)).andReturn(true);
-        EasyMock.expect(boardMock.getConnectingEdgesByID(50)).andReturn(new HashSet<>());
+        EasyMock.expect(boardMock.getConnectingEdgesById(50)).andReturn(new HashSet<>());
         EasyMock.expect(boardMock.getMatchingEdgeFromSet(new HashSet<>(), 50, 53)).andReturn(new GraphEdge(50, 53));
         EasyMock.expect(boardMock.claimGraphEdgeObject(PlayerColor.ORANGE, 50, 53))
                         .andThrow(new EdgeAlreadyClaimedException("Edge already claimed"));
@@ -312,4 +315,21 @@ public class BoardGraphControllerTests {
 
         EasyMock.verify(boardMock);
     }
+
+  // ← REDUCES CXTY
+  @Test
+  void calculateLongestRoad_DelegatesToBoardGraph_ExpectResultFromBoardGraph() {
+    BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
+    BoardGraphController controller = new BoardGraphController(boardMock);
+    List<Player> players = List.of();
+
+    EasyMock.expect(boardMock.calculateLongestRoad(players, PlayerColor.SETUP))
+        .andReturn(PlayerColor.RED);
+    EasyMock.replay(boardMock);
+
+    PlayerColor result = controller.calculateLongestRoad(players, PlayerColor.SETUP);
+
+    assertEquals(PlayerColor.RED, result);
+    EasyMock.verify(boardMock);
+  }
 }
