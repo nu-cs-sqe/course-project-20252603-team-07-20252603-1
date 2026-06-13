@@ -1,20 +1,25 @@
 package domain.model.board;
 
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import static org.junit.jupiter.api.Assertions.*;
+public class EdgeTests {
+  // TC1 ← REDUCES CXTY
+  @Test
+  void constructor_NewEdge_ExpectNotNull() {
+    assertNotNull(new Edge());
+  }
 
-class EdgeTests {
+  // TC2 ← REDUCES CXTY
+  @Test
+  void isOccupied_NewEdge_ExpectFalse() {
+    assertFalse(new Edge().isOccupied());
+  }
 
-    @Test
-    void isOccupied_NewEdge_ExpectFalse() {
-        Edge edge = new Edge();
-        assertFalse(edge.isOccupied());
-    }
-
-    @Test
-    void isConnectedToPlayerNetwork_NewEdge_ExpectFalse() {
-        Edge edge = new Edge();
-        assertFalse(edge.isConnectedToPlayerNetwork());
-    }
+  // TC3 ← REDUCES CXTY
+  @Test
+  void isConnectedToPlayerNetwork_NewEdge_ExpectFalse() {
+    assertFalse(new Edge().isConnectedToPlayerNetwork());
+  }
 }

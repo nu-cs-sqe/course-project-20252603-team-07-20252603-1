@@ -12,14 +12,6 @@ import domain.model.player.PlayerColor;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
-import domain.model.board.BoardGraph;
-import domain.model.board.BoardGraphController;
-import domain.model.board.GraphEdge;
-import domain.model.exceptions.AdjacentNodeAlreadyClaimed;
-import domain.model.exceptions.EdgeAlreadyClaimedException;
-import domain.model.exceptions.IllegalEdgeClaim;
-import domain.model.player.PlayerColor;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -345,4 +337,20 @@ public class BoardGraphControllerTests {
 
         EasyMock.verify(boardMock);
     }
+  // ← REDUCES CXTY
+  @Test
+  void calculateLongestRoad_DelegatesToBoardGraph_ExpectResultFromBoardGraph() {
+    BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
+    BoardGraphController controller = new BoardGraphController(boardMock);
+    List<Player> players = List.of();
+
+    EasyMock.expect(boardMock.calculateLongestRoad(players, PlayerColor.SETUP))
+        .andReturn(PlayerColor.RED);
+    EasyMock.replay(boardMock);
+
+    PlayerColor result = controller.calculateLongestRoad(players, PlayerColor.SETUP);
+
+    assertEquals(PlayerColor.RED, result);
+    EasyMock.verify(boardMock);
+  }
 }

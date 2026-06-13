@@ -14,10 +14,53 @@ mutations to `BoardHandler`, and deducts resources from the current player.
 
 ---
 
+### Method under test: `getCurrentPlayerIndex()`
+
+|             | State of the System          | Expected output | Implemented?       |
+|-------------|------------------------------|-----------------|--------------------|
+| Test Case 1 | fresh model after construction | 0             | :white_check_mark: |
+
+---
+
+### Method under test: `getCurrentRound()`
+
+|             | State of the System          | Expected output | Implemented?       |
+|-------------|------------------------------|-----------------|--------------------|
+| Test Case 1 | fresh model after construction | 0             | :white_check_mark: |
+
+---
+
+### Method under test: `moveRobberAndSteal()`
+
+|             | State of the System | Expected output      | Implemented?       |
+|-------------|---------------------|----------------------|--------------------|
+| Test Case 1 | any state           | no exception thrown  | :white_check_mark: |
+
+---
+
+### Method under test: `getTurnOrder()`
+
+|             | State of the System                | Expected output                            | Implemented?       |
+|-------------|------------------------------------|--------------------------------------------|---------------------|
+| Test Case 1 | model with RED and BLUE players    | list contains both players (size = 2)      | :white_check_mark: |
+
+---
+
+### Method under test: `getOtherPlayers()`
+
+Returns all players except the current player.
+
+|             | State of the System                                         | Expected output                       | Implemented?       |
+|-------------|-------------------------------------------------------------|---------------------------------------|--------------------|
+| Test Case 1 | current player = RED; players = [RED, BLUE]                 | list contains only BLUE (size = 1)    | :white_check_mark: |
+
+---
+
 ### Method under test: `performTurn(int roll)`
 
 Transitions phase from `BEFORE_ROLL` to `GENERAL_PLAY` (non-7) or `MOVE_ROBBER` (7).
 Throws `IllegalGamePhaseException` if called outside `BEFORE_ROLL`.
+Wraps `EmptyDeckException` as `IllegalArgumentException` if a resource deck is empty during distribution.
 
 Step 1:
 
@@ -36,12 +79,13 @@ Step 3:
 - roll: 2 (LOW), 7 (robber trigger), 12 (HIGH)
 - phase: BEFORE_ROLL (valid); GENERAL_PLAY (already rolled — invalid)
 
-|             | State of the System                             | Expected output                              | Implemented?       |
-|-------------|-------------------------------------------------|----------------------------------------------|--------------------|
-| Test Case 2 | BEFORE_ROLL, roll = 2 (minimum)                 | phase transitions to GENERAL_PLAY            | :white_check_mark: |
-| Test Case 3 | BEFORE_ROLL, roll = 12 (maximum)                | phase transitions to GENERAL_PLAY            | :white_check_mark: |
-| Test Case 4 | BEFORE_ROLL, roll = 7 (robber trigger)          | phase transitions to MOVE_ROBBER             | :white_check_mark: |
-| Test Case 5 | GENERAL_PLAY (already rolled), roll = 6         | IllegalGamePhaseException                    | :white_check_mark: |
+|             | State of the System                                          | Expected output                                              | Implemented?       |
+|-------------|--------------------------------------------------------------|--------------------------------------------------------------|--------------------|
+| Test Case 2 | BEFORE_ROLL, roll = 2 (minimum)                              | phase transitions to GENERAL_PLAY                            | :white_check_mark: |
+| Test Case 3 | BEFORE_ROLL, roll = 12 (maximum)                             | phase transitions to GENERAL_PLAY                            | :white_check_mark: |
+| Test Case 4 | BEFORE_ROLL, roll = 7 (robber trigger)                       | phase transitions to MOVE_ROBBER                             | :white_check_mark: |
+| Test Case 5 | GENERAL_PLAY (already rolled), roll = 6                      | IllegalGamePhaseException                                    | :white_check_mark: |
+| Test Case 6 | BEFORE_ROLL, roll = 6, WOOL resource deck throws EmptyDeckException | IllegalArgumentException with same message as EmptyDeckException | :white_check_mark: |
 
 ---
 
@@ -215,7 +259,7 @@ Step 3:
 | Test Case 1 | GENERAL_PLAY, bank has 1 card (at boundary), valid trade | success                        | :white_check_mark: |
 | Test Case 2 | GENERAL_PLAY, bank has 0 cards (empty)                   | InsufficientResourcesException | :white_check_mark: |
 | Test Case 3 | GENERAL_PLAY, bank has 19 cards (max), valid trade       | success                        | :white_check_mark: |
-| Test Case 4 | BEFORE_ROLL (invalid phase)                              | IllegalGamePhaseException      | x                  |
+| Test Case 4 | BEFORE_ROLL (invalid phase)                              | IllegalGamePhaseException      | :white_check_mark: |
 
 ---
 
@@ -405,6 +449,43 @@ Outputs:
 | Test Case 4 | Currently BLUE, Becomes ORANGE | PlayerColor.Orange, victory points awarded to Orange, taken from blue | :white_check_mark: |
 | Test Case 5 | Currently ORANGE, becomes BLUE | PlayerColor.Blue, victory points awarded to BLUE, taken from ORANGE   | :white_check_mark: |
 | Test Case 6 | Currently WHITE, becomes RED   | PlayerColor.Red, victory points awarded to RED, taken from white      | :white_check_mark: |
+
+
+### Method under test: `moveRobberAndSteal()`
+
+Handles moving robber after a 7 has been rolled
+
+Inputs:
+- State of System 
+  - GamePhase -> Needs to be GamePhase.MOVE_ROBBER
+  - int targetHexID -> [0, 18]
+  - target playerColor -> RED, WHITE, BLUE, ORANGE
+    - target has 0, 1, multiple resources,
+    - target exists or not
+  - Random -> roll based on victim resources
+  - Robber -> location [0, 18] -> unfeasible to be negative 1 or 19
+- Board state
+  - Is target on Hex?
+
+Outputs:
+- IllegalArgumentException -> 
+  - "Target must be on same hex as robber"
+  - "Invalid hex ID, must be in interval [0, 18]"
+  - "Invalid hex ID, robber can not be played on same hex"
+- Valid move
+  - Verify resources updated on players
+
+|             | State of the System                                                                             | Expected output                                 | Implemented?       |
+|-------------|-------------------------------------------------------------------------------------------------|-------------------------------------------------|--------------------|
+| Test Case 1 | GENERAL_PLAY Game phase                                                                         | IllegalGamePhaseException                       | :white_check_mark: |
+| Test Case 2 | MOVE_ROBBER phase, Red move Robber 0 to 18, null victim (can use PlayerColor.SETUP?)            | Robber Moved, no resources changed              | :white_check_mark: |
+| Test Case 3 | MOVE_ROBBER phase, Blue move Robber 18 to 0, Red victim exists on 0 with no resources           | Robber Moved, no resources changed              | :white_check_mark: |
+| Test Case 4 | MOVE_ROBBER phase, White move Robber 18 to 0, Blue victim exists on 0 with 1 resource           | Robber Moved, resource stolen                   | :white_check_mark: |
+| Test Case 5 | MOVE_ROBBER phase, Orange move Robber 18 to 0, White victim exists on 0 with multiple resources | Robber Moved, random resorce stolen (mock rand) | :white_check_mark: |
+| Test Case 6 | MOVE_ROBBER phase, Orange move Robber 0 to -1                                                   | IllegalArgumentException                        | :white_check_mark: |
+| Test Case 7 | MOVE_ROBBER phase, Orange move Robber 0 to 19                                                   | IllegalArgumentException                        | :white_check_mark: |
+| Test Case 8 | MOVE_ROBBER phase, Red move Robber 0 to 18, Orange victim on different HexID 5                  | IllegalArgumentException                        | :white_check_mark: |
+| Test Case 9 | MOVE_ROBBER phase, Red move Robber 0 to 0                                                       | IllegalArgumentExceptiom                        | :white_check_mark: |
 
 
 ### Method under test: `offerTrade(TradeOffer offer)`

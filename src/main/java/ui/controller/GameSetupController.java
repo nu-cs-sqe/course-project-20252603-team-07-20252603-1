@@ -75,6 +75,16 @@ public class GameSetupController {
   }
 
   /**
+   * Gets the game board from the setup model.
+   *
+   * @param model the game setup model
+   * @return the board handler
+   */
+  public BoardHandler getBoard(GameSetupModel model) {
+    return model.getBoard();
+  }
+
+  /**
    * Gets the number of hexes on the board.
    *
    * @param board the game board

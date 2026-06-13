@@ -2460,4 +2460,106 @@ public class BoardGraphTests {
     assertTrue(b.edgeCheckPlayerOwnsNeighboringEdge(PlayerColor.RED, 0, 1));
   }
 
+  // ← REDUCES CXTY
+  @Test
+  void checkNodeOccupied_NodeExists_NodeOccupied_ExpectTrue() {
+    BoardGraph b = new BoardGraph();
+    GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
+    EasyMock.expect(nodeMock.getNodeId()).andReturn(0);
+    EasyMock.expect(nodeMock.checkOccupied()).andReturn(true);
+    EasyMock.replay(nodeMock);
+
+    b.addGraphNodeObject(nodeMock);
+
+    assertTrue(b.checkNodeOccupied(0));
+    EasyMock.verify(nodeMock);
+  }
+
+  // ← REDUCES CXTY
+  @Test
+  void edgeCheckPlayerOwnsNeighboringEdge_StartingNodeEdgeOwnedByColor_ExpectTrue() {
+    BoardGraph b = new BoardGraph();
+    b.buildBoard();
+    b.claimGraphEdgeObject(PlayerColor.RED, 0, 3);
+    assertTrue(b.edgeCheckPlayerOwnsNeighboringEdge(PlayerColor.RED, 0, 3));
+  }
+
+  // ← REDUCES CXTY
+  @Test
+  void edgeCheckPlayerOwnsNeighboringEdge_EndingNodeEdgeOwnedByColor_ExpectTrue() {
+    BoardGraph b = new BoardGraph();
+    b.buildBoard();
+    b.claimGraphEdgeObject(PlayerColor.BLUE, 0, 4);
+    b.claimGraphEdgeObject(PlayerColor.RED, 3, 7);
+    assertTrue(b.edgeCheckPlayerOwnsNeighboringEdge(PlayerColor.RED, 0, 3));
+  }
+
+  // ← REDUCES CXTY
+  @Test
+  void dfs_FriendlySettlementAtIntermediateNode_ExpectRoadContinuesThroughOwnSettlement() {
+    BoardGraph b = new BoardGraph();
+    b.buildBoard();
+    b.claimGraphEdgeObject(PlayerColor.RED, 0, 3);
+    b.claimGraphEdgeObject(PlayerColor.RED, 3, 7);
+    b.claimGraphNodeObject(PlayerColor.RED, 3);
+
+    List<Player> players = List.of();
+    PlayerColor result = b.calculateLongestRoad(players, PlayerColor.SETUP);
+    assertEquals(PlayerColor.SETUP, result); // 2 roads < 5
+  }
+
+  // ← REDUCES CXTY
+  @Test
+  void dfs_EnemySettlementAtIntermediateNode_ExpectRoadBlockedAtEnemyNode() {
+    BoardGraph b = new BoardGraph();
+    b.buildBoard();
+    b.claimGraphEdgeObject(PlayerColor.RED, 0, 3);
+    b.claimGraphEdgeObject(PlayerColor.RED, 3, 7);
+    b.claimGraphNodeObject(PlayerColor.BLUE, 3);
+
+    List<Player> players = List.of();
+    PlayerColor result = b.calculateLongestRoad(players, PlayerColor.SETUP);
+    assertEquals(PlayerColor.SETUP, result);
+  }
+
+  // ← REDUCES CXTY
+  @Test
+  void dfs_FriendlySettlementAtIntermediateNode_PlayerInActivePlayers_ExpectDfsContinuesThroughFriendlyNode() {
+    BoardGraph b = new BoardGraph();
+    b.buildBoard();
+    b.claimGraphEdgeObject(PlayerColor.RED, 0, 3);
+    b.claimGraphEdgeObject(PlayerColor.RED, 3, 7);
+    b.claimGraphNodeObject(PlayerColor.RED, 3);
+
+    Player redPlayer = EasyMock.createMock(Player.class);
+    EasyMock.expect(redPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
+    EasyMock.replay(redPlayer);
+
+    List<Player> players = List.of(redPlayer);
+    PlayerColor result = b.calculateLongestRoad(players, PlayerColor.SETUP);
+    assertEquals(PlayerColor.SETUP, result); // 2 roads < 5, but DFS traverses through node 3
+    EasyMock.verify(redPlayer);
+  }
+
+  // ← REDUCES CXTY
+  @Test
+  void dfs_NodeHasUnvisitedEdgeOwnedByEnemy_ExpectEnemyEdgeNotTraversed() {
+    BoardGraph b = new BoardGraph();
+    b.buildBoard();
+    b.claimGraphEdgeObject(PlayerColor.RED, 0, 3);
+    b.claimGraphEdgeObject(PlayerColor.BLUE, 0, 4);
+    b.claimGraphEdgeObject(PlayerColor.RED, 3, 7);
+    b.claimGraphEdgeObject(PlayerColor.RED, 7, 11);
+    b.claimGraphEdgeObject(PlayerColor.RED, 11, 16);
+    b.claimGraphEdgeObject(PlayerColor.RED, 16, 21);
+
+    Player redPlayer = EasyMock.createMock(Player.class);
+    EasyMock.expect(redPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
+    EasyMock.replay(redPlayer);
+
+    List<Player> players = List.of(redPlayer);
+    PlayerColor result = b.calculateLongestRoad(players, PlayerColor.SETUP);
+    assertEquals(PlayerColor.RED, result);
+    EasyMock.verify(redPlayer);
+  }
 }

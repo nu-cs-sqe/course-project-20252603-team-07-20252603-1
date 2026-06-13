@@ -2,7 +2,8 @@ package ui.controller;
 
 import domain.model.DevelopmentCardHandler;
 import domain.model.GameModel;
-import domain.model.gamepieces.DiceHandler;
+import domain.model.GamePhase;
+import domain.model.board.BoardHandler;
 import domain.model.board.Port;
 import domain.model.developmentcards.DevelopmentCard;
 import domain.model.developmentcards.DevelopmentCardDeck;
@@ -12,6 +13,9 @@ import domain.model.exceptions.InsufficientResourcesException;
 import domain.model.gamepieces.DiceHandler;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
+
+import java.util.List;
+import java.util.Set;
 
 
 import domain.model.player.TradeOffer;
@@ -201,6 +205,145 @@ class GameLoopControllerTest {
         verify(mockModel, mockDeck, mockHandler, mockPlayer);
     }
 
+    @Test
+    void testGetCurrentPhaseDelegatesToModel() {
+        expect(mockModel.getCurrentPhase()).andReturn(GamePhase.GENERAL_PLAY);
+        replay(mockModel);
+
+        assertEquals(GamePhase.GENERAL_PLAY, controller.getCurrentPhase(mockModel));
+
+        verify(mockModel);
+    }
+
+    @Test
+    void testGetCurrentRoundDelegatesToModel() {
+        expect(mockModel.getCurrentRound()).andReturn(3);
+        replay(mockModel);
+
+        assertEquals(3, controller.getCurrentRound(mockModel));
+
+        verify(mockModel);
+    }
+
+    @Test
+    void testGetOtherPlayersDelegatesToModel() {
+        List<Player> others = List.of(new Player("Bob", PlayerColor.BLUE));
+        expect(mockModel.getOtherPlayers()).andReturn(others);
+        replay(mockModel);
+
+        assertEquals(others, controller.getOtherPlayers(mockModel));
+
+        verify(mockModel);
+    }
+
+    @Test
+    void testAttemptBuildSettlementDelegatesToModel() {
+        mockModel.attemptBuildSettlement(12);
+        expectLastCall();
+        replay(mockModel);
+
+        controller.attemptBuildSettlement(mockModel, 12);
+
+        verify(mockModel);
+    }
+
+    @Test
+    void testAttemptBuildSettlementPropagatesPhaseException() {
+        mockModel.attemptBuildSettlement(12);
+        expectLastCall().andThrow(new IllegalGamePhaseException("Not proper phase for that action"));
+        replay(mockModel);
+
+        assertThrows(IllegalGamePhaseException.class,
+                () -> controller.attemptBuildSettlement(mockModel, 12));
+
+        verify(mockModel);
+    }
+
+    @Test
+    void testAttemptBuildRoadDelegatesToModel() {
+        mockModel.attemptBuildRoad(0, 3);
+        expectLastCall();
+        replay(mockModel);
+
+        controller.attemptBuildRoad(mockModel, 0, 3);
+
+        verify(mockModel);
+    }
+
+    @Test
+    void testAttemptBuildCityDelegatesToModel() {
+        mockModel.attemptBuildCity(7);
+        expectLastCall();
+        replay(mockModel);
+
+        controller.attemptBuildCity(mockModel, 7);
+
+        verify(mockModel);
+    }
+
+    @Test
+    void testGetPlayersOnHexDelegatesToBoard() {
+        BoardHandler mockBoard = createMock(BoardHandler.class);
+        Set<Player> players = Set.of(new Player("Bob", PlayerColor.BLUE));
+        expect(mockBoard.getPlayersOnHex(5)).andReturn(players);
+        replay(mockBoard);
+
+        assertEquals(players, controller.getPlayersOnHex(mockBoard, 5));
+
+        verify(mockBoard);
+    }
+
+    @Test
+    void testEnterSetupPhaseDelegatesToModel() {
+        mockModel.enterSetupPhase();
+        expectLastCall();
+        replay(mockModel);
+
+        controller.enterSetupPhase(mockModel);
+
+        verify(mockModel);
+    }
+
+    @Test
+    void testCompleteSetupPhaseDelegatesToModel() {
+        mockModel.completeSetupPhase();
+        expectLastCall();
+        replay(mockModel);
+
+        controller.completeSetupPhase(mockModel);
+
+        verify(mockModel);
+    }
+
+    @Test
+    void testSetCurrentPlayerSetsIndexAndColor() {
+        Player bob = new Player("Bob", PlayerColor.BLUE);
+        mockModel.setCurrentPlayerIndex(1);
+        expectLastCall();
+        expect(mockModel.getTurnOrder()).andReturn(
+                List.of(new Player("Alice", PlayerColor.RED), bob));
+        mockModel.setCurrentPlayerColor(PlayerColor.BLUE);
+        expectLastCall();
+        replay(mockModel);
+
+        controller.setCurrentPlayer(mockModel, 1);
+
+        verify(mockModel);
+    }
+
+    @Test
+    void testGetAvailablePortsDelegatesToBoard() {
+        BoardHandler mockBoard = createMock(BoardHandler.class);
+        Player player = new Player("Bob", PlayerColor.BLUE);
+        List<Port> ports = List.of();
+        expect(mockBoard.getAvailablePorts(player)).andReturn(ports);
+        replay(mockBoard);
+
+        assertEquals(ports, controller.getAvailablePorts(mockBoard, player));
+
+        verify(mockBoard);
+    }
+
     // TC8: playDevCard(model, card); model completes normally
     //      -> model.playDevCard(card) called once; no exception
     @Test
@@ -231,6 +374,21 @@ class GameLoopControllerTest {
         verify(mockModel, mockCard);
     }
 
+    // TC11 ← REDUCES CXTY
+    // TC11: getResourceCount(model, RED, ORE); model.getArbitraryPlayer(RED) returns mockPlayer;
+    //       mockPlayer.getResourceCount(ORE) returns 5 -> controller returns 5
+    @Test
+    void getResourceCount_ArbitraryPlayerReturnsCount_ExpectCountRelayed() {
+        Player mockPlayer = createMock(Player.class);
+        expect(mockModel.getArbitraryPlayer(PlayerColor.RED)).andReturn(mockPlayer);
+        expect(mockPlayer.getResourceCount(Resource.ORE)).andReturn(5);
+        replay(mockModel, mockPlayer);
+
+        assertEquals(5, controller.getResourceCount(mockModel, PlayerColor.RED, Resource.ORE));
+
+        verify(mockModel, mockPlayer);
+    }
+
     // TC10: playDevCard(model, card); model throws IllegalArgumentException (null card)
     //       -> IllegalArgumentException relayed to caller
     @Test
@@ -245,5 +403,17 @@ class GameLoopControllerTest {
         assertEquals("Development card cannot be null.", exception.getMessage());
 
         verify(mockModel, mockCard);
+    }
+
+    //
+    @Test
+    void testMoveRobberAndStealDelegatesToModel() {
+        mockModel.moveRobberAndSteal(5, PlayerColor.RED);
+        expectLastCall();
+        replay(mockModel);
+
+        controller.moveRobberAndSteal(mockModel, 5, PlayerColor.RED);
+
+        verify(mockModel);
     }
 }
