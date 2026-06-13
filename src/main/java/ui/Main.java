@@ -12,7 +12,9 @@ import ui.controller.DevCardController;
 import ui.controller.GameLoopController;
 import ui.controller.GameSetupController;
 
-/** JavaFX application entry point that wires up the game and shows the window. */
+/**
+ * JavaFX application entry point that wires up the game and shows the window.
+ */
 public class Main extends Application {
 
   private static final int WINDOW_WIDTH = 960;
@@ -29,14 +31,14 @@ public class Main extends Application {
     ResourceBundle labels = ResourceBundle.getBundle(BUNDLE_BASE_NAME, locale);
 
     ViewContext context = new ViewContext(
-        new GameSetupController(),
-        new GameLoopController(),
-        new DevCardController(new DevelopmentCardHandler()),
-        new DiceHandler(),
-        labels
+            new GameSetupController(),
+            new GameLoopController(),
+            new DevCardController(new DevelopmentCardHandler()),
+            new DiceHandler(),
+            labels
     );
 
-    Navigator navigator = new Navigator(scene, context);
+    Navigator navigator = new Navigator(scene, stage, context);
     navigator.goToHome();
 
     stage.setTitle(labels.getString("app.title"));
@@ -44,7 +46,9 @@ public class Main extends Application {
     stage.show();
   }
 
-  /** Application main entry point. */
+  /**
+   * Application main entry point.
+   */
   public static void main(String[] args) {
     launch(args);
   }

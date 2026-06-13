@@ -1,19 +1,44 @@
 package ui.view;
 
-/** Navigation callbacks used during the game setup flow. */
+import java.util.Locale;
+
+/**
+ * Defines navigation actions available during game setup.
+ */
 public interface SetupNavigator {
-  /** Navigates to the home screen. */
+
+  /**
+   * Navigates to the home screen.
+   */
   void goToHome();
 
-  /** Navigates to the player count selection screen. */
+  /**
+   * Navigates to the player count selection screen.
+   */
   void goToPlayerCount();
 
-  /** Navigates to the player configuration screen for the given number of players. */
+  /**
+   * Navigates to the player configuration screen.
+   *
+   * @param count the number of players
+   */
   void goToPlayerConfig(int count);
 
-  /** Navigates to the setup summary screen. */
+  /**
+   * Navigates to the setup summary screen.
+   */
   void goToSetupSummary();
 
-  /** Starts the game and transitions to game play. */
+  /**
+   * Starts the game.
+   */
   void startGame();
+
+  /**
+   * Switches the application language.
+   *
+   * @param locale the new locale to apply
+   */
+  void changeLocale(Locale locale);
+
 }
