@@ -2317,6 +2317,25 @@ public class BoardGraphTests {
 
   // ← REDUCES CXTY
   @Test
+  void dfs_FriendlySettlementAtIntermediateNode_PlayerInActivePlayers_ExpectDfsContinuesThroughFriendlyNode() {
+    BoardGraph b = new BoardGraph();
+    b.buildBoard();
+    b.claimGraphEdgeObject(PlayerColor.RED, 0, 3);
+    b.claimGraphEdgeObject(PlayerColor.RED, 3, 7);
+    b.claimGraphNodeObject(PlayerColor.RED, 3);
+
+    Player redPlayer = EasyMock.createMock(Player.class);
+    EasyMock.expect(redPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
+    EasyMock.replay(redPlayer);
+
+    List<Player> players = List.of(redPlayer);
+    PlayerColor result = b.calculateLongestRoad(players, PlayerColor.SETUP);
+    assertEquals(PlayerColor.SETUP, result); // 2 roads < 5, but DFS traverses through node 3
+    EasyMock.verify(redPlayer);
+  }
+
+  // ← REDUCES CXTY
+  @Test
   void dfs_NodeHasUnvisitedEdgeOwnedByEnemy_ExpectEnemyEdgeNotTraversed() {
     BoardGraph b = new BoardGraph();
     b.buildBoard();
