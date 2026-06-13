@@ -941,6 +941,8 @@ public class GameModelTests {
 
     boardMock.buildSetupSettlement(blueStateMock, 5);
     EasyMock.expectLastCall();
+    blueStateMock.updateVictoryPoints(1);
+    EasyMock.expectLastCall();
     boardMock.buildSetupRoad(blueStateMock, 5, 5, 9);
     EasyMock.expectLastCall();
 
