@@ -2277,5 +2277,15 @@ public class BoardGraphTests {
     assertTrue(b.edgeCheckPlayerOwnsNeighboringEdge(PlayerColor.RED, 0, 3));
   }
 
+  // ← REDUCES CXTY
+  @Test
+  void edgeCheckPlayerOwnsNeighboringEdge_EndingNodeEdgeOwnedByColor_ExpectTrue() {
+    BoardGraph b = new BoardGraph();
+    b.buildBoard();
+    b.claimGraphEdgeObject(PlayerColor.BLUE, 0, 4);
+    b.claimGraphEdgeObject(PlayerColor.RED, 3, 7);
+    assertTrue(b.edgeCheckPlayerOwnsNeighboringEdge(PlayerColor.RED, 0, 3));
+  }
+
 
 }
