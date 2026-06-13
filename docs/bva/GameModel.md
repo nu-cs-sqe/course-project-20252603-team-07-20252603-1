@@ -42,7 +42,7 @@ mutations to `BoardHandler`, and deducts resources from the current player.
 
 |             | State of the System                | Expected output                            | Implemented?       |
 |-------------|------------------------------------|--------------------------------------------|---------------------|
-| Test Case 1 | model with RED and BLUE players    | list contains both players (size = 2)      | :x: |
+| Test Case 1 | model with RED and BLUE players    | list contains both players (size = 2)      | :white_check_mark: |
 
 ---
 

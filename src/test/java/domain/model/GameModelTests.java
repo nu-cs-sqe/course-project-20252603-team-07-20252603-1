@@ -2271,4 +2271,22 @@ public class GameModelTests {
     EasyMock.verify(boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock,
         woolDeckMock, tradeManagerMock);
   }
+
+  // ← REDUCES CXTY
+  @Test
+  void getTurnOrder_TwoPlayers_ExpectBothPlayersReturned() {
+    Player redMock = EasyMock.createMock(Player.class);
+    Player blueMock = EasyMock.createMock(Player.class);
+    EasyMock.expect(redMock.getColor()).andReturn(PlayerColor.RED);
+    EasyMock.expect(blueMock.getColor()).andReturn(PlayerColor.BLUE);
+    EasyMock.replay(redMock, blueMock, boardMock);
+
+    GameModel model = new GameModel(List.of(redMock, blueMock), boardMock);
+    List<Player> order = model.getTurnOrder();
+
+    assertEquals(2, order.size());
+    assertTrue(order.contains(redMock));
+    assertTrue(order.contains(blueMock));
+    EasyMock.verify(redMock, blueMock, boardMock);
+  }
 }
