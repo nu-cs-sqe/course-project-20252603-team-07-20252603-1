@@ -167,7 +167,7 @@ Returns true if the node at nodeID is occupied by any player.
 
 |             | State of the System                               | Expected output | Implemented?       |
 |-------------|---------------------------------------------------|-----------------|--------------------|
-| Test Case 1 | node exists; node is not occupied                 | false           | :x: |
+| Test Case 1 | node exists; node is not occupied                 | false           | :white_check_mark: |
 | Test Case 2 | node exists; node is occupied                     | true            | :x: |
 
 ---

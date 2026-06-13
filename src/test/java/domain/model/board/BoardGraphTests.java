@@ -2238,4 +2238,18 @@ public class BoardGraphTests {
             mockRedPlayer, mockBluePlayer, mockOrangePlayer, mockWhitePlayer);
   }
 
+  // ← REDUCES CXTY
+  @Test
+  void checkNodeOccupied_NodeExists_NodeNotOccupied_ExpectFalse() {
+    BoardGraph b = new BoardGraph();
+    GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
+    EasyMock.expect(nodeMock.getNodeID()).andReturn(0);
+    EasyMock.expect(nodeMock.checkOccupied()).andReturn(false);
+    EasyMock.replay(nodeMock);
+
+    b.addGraphNodeObject(nodeMock);
+
+    assertFalse(b.checkNodeOccupied(0));
+    EasyMock.verify(nodeMock);
+  }
 }
