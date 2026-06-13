@@ -106,4 +106,4 @@ Creates a `GameModel` from current players and board state.
 
 |              | System under test                              | Expected output            | Implemented?       |
 |--------------|------------------------------------------------|----------------------------|--------------------|
-| Test Case 14 | model has 2 players added (Alice/RED, Bob/BLUE) | returns non-null GameModel | :x: |
+| Test Case 14 | model has 2 players added (Alice/RED, Bob/BLUE) | returns non-null GameModel | :white_check_mark: |

@@ -118,4 +118,14 @@ class GameSetupModelTest {
   void getDevelopmentCardDeck_BeforeSet_ExpectNull() {
     assertNull(model.getDevelopmentCardDeck());
   }
+
+  // TC14 ← REDUCES CXTY
+  @Test
+  void createGameModel_WithTwoPlayers_ExpectNonNullGameModel() {
+    model.addPlayer("Alice", PlayerColor.RED);
+    model.addPlayer("Bob", PlayerColor.BLUE);
+    GameModel gameModel = model.createGameModel();
+    assertNotNull(gameModel);
+  }
+
 }
