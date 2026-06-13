@@ -2,7 +2,6 @@ package domain.model.board;
 
 import domain.model.resources.Resource;
 import domain.model.resources.ResourceDeck;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;

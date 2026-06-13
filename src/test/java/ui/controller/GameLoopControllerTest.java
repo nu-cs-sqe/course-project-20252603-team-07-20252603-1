@@ -2,13 +2,14 @@ package ui.controller;
 
 import domain.model.DevelopmentCardHandler;
 import domain.model.GameModel;
+import domain.model.gamepieces.DiceHandler;
 import domain.model.board.Port;
-import domain.model.development_cards.DevelopmentCard;
-import domain.model.development_cards.DevelopmentCardDeck;
+import domain.model.developmentcards.DevelopmentCard;
+import domain.model.developmentcards.DevelopmentCardDeck;
 import domain.model.exceptions.EmptyDeckException;
 import domain.model.exceptions.IllegalGamePhaseException;
 import domain.model.exceptions.InsufficientResourcesException;
-import domain.model.game_pieces.DiceHandler;
+import domain.model.gamepieces.DiceHandler;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 
