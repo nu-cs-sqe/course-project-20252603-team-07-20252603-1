@@ -85,4 +85,19 @@ public class TradeOfferTests {
     assertSame(mockPlayer, offer.getOfferingPlayer());
     EasyMock.verify(mockPlayer);
   }
+
+  // TC7 ← REDUCES CXTY
+  @Test
+  public void getGiving_ValidOffer_ExpectSameGivingQuantity() {
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    ResourceQuantity giving = ResourceQuantity.create(Resource.BRICK, 2);
+    ResourceQuantity receiving = ResourceQuantity.create(Resource.GRAIN, 1);
+    EasyMock.replay(mockPlayer);
+
+    TradeOffer offer = TradeOffer.create(mockPlayer, giving, receiving);
+
+    assertSame(giving, offer.getGiving());
+    EasyMock.verify(mockPlayer);
+  }
 }
+

@@ -56,5 +56,5 @@ Accessor methods that return the fields set by `create()`.
 |             | System under test                                 | Expected output                                   | Implemented?       |
 |-------------|---------------------------------------------------|---------------------------------------------------|--------------------|
 | Test Case 6 | valid offer (mockPlayer, ORE×1, WOOL×1)           | getOfferingPlayer() returns same mockPlayer       | :white_check_mark: |
-| Test Case 7 | valid offer (mockPlayer, BRICK×2, GRAIN×1)        | getGiving() returns same ResourceQuantity         | :x: |
+| Test Case 7 | valid offer (mockPlayer, BRICK×2, GRAIN×1)        | getGiving() returns same ResourceQuantity         | :white_check_mark: |
 | Test Case 8 | valid offer (mockPlayer, LUMBER×1, ORE×3)         | getReceiving() returns same ResourceQuantity      | :x: |
