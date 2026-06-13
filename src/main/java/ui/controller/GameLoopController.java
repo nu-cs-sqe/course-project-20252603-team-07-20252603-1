@@ -130,6 +130,9 @@ public class GameLoopController {
     return handler.buyDevelopmentCard(player, deck, round);
   }
 
+  public void moveRobberAndSteal(GameModel model, int targetHexID, PlayerColor victimColor) {
+      model.moveRobberAndSteal(targetHexID, victimColor);
+  }
   /**
    * Plays a development card for the current player.
    *

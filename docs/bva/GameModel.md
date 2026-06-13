@@ -451,6 +451,43 @@ Outputs:
 | Test Case 6 | Currently WHITE, becomes RED   | PlayerColor.Red, victory points awarded to RED, taken from white      | :white_check_mark: |
 
 
+### Method under test: `moveRobberAndSteal()`
+
+Handles moving robber after a 7 has been rolled
+
+Inputs:
+- State of System 
+  - GamePhase -> Needs to be GamePhase.MOVE_ROBBER
+  - int targetHexID -> [0, 18]
+  - target playerColor -> RED, WHITE, BLUE, ORANGE
+    - target has 0, 1, multiple resources,
+    - target exists or not
+  - Random -> roll based on victim resources
+  - Robber -> location [0, 18] -> unfeasible to be negative 1 or 19
+- Board state
+  - Is target on Hex?
+
+Outputs:
+- IllegalArgumentException -> 
+  - "Target must be on same hex as robber"
+  - "Invalid hex ID, must be in interval [0, 18]"
+  - "Invalid hex ID, robber can not be played on same hex"
+- Valid move
+  - Verify resources updated on players
+
+|             | State of the System                                                                             | Expected output                                 | Implemented?       |
+|-------------|-------------------------------------------------------------------------------------------------|-------------------------------------------------|--------------------|
+| Test Case 1 | GENERAL_PLAY Game phase                                                                         | IllegalGamePhaseException                       | :white_check_mark: |
+| Test Case 2 | MOVE_ROBBER phase, Red move Robber 0 to 18, null victim (can use PlayerColor.SETUP?)            | Robber Moved, no resources changed              | :white_check_mark: |
+| Test Case 3 | MOVE_ROBBER phase, Blue move Robber 18 to 0, Red victim exists on 0 with no resources           | Robber Moved, no resources changed              | :white_check_mark: |
+| Test Case 4 | MOVE_ROBBER phase, White move Robber 18 to 0, Blue victim exists on 0 with 1 resource           | Robber Moved, resource stolen                   | :white_check_mark: |
+| Test Case 5 | MOVE_ROBBER phase, Orange move Robber 18 to 0, White victim exists on 0 with multiple resources | Robber Moved, random resorce stolen (mock rand) | :white_check_mark: |
+| Test Case 6 | MOVE_ROBBER phase, Orange move Robber 0 to -1                                                   | IllegalArgumentException                        | :white_check_mark: |
+| Test Case 7 | MOVE_ROBBER phase, Orange move Robber 0 to 19                                                   | IllegalArgumentException                        | :white_check_mark: |
+| Test Case 8 | MOVE_ROBBER phase, Red move Robber 0 to 18, Orange victim on different HexID 5                  | IllegalArgumentException                        | :white_check_mark: |
+| Test Case 9 | MOVE_ROBBER phase, Red move Robber 0 to 0                                                       | IllegalArgumentExceptiom                        | :white_check_mark: |
+
+
 ### Method under test: `offerTrade(TradeOffer offer)`
 
 Step 1:

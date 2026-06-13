@@ -261,4 +261,16 @@ class GameLoopControllerTest {
 
         verify(mockModel, mockCard);
     }
+
+    //
+    @Test
+    void testMoveRobberAndStealDelegatesToModel() {
+        mockModel.moveRobberAndSteal(5, PlayerColor.RED);
+        expectLastCall();
+        replay(mockModel);
+
+        controller.moveRobberAndSteal(mockModel, 5, PlayerColor.RED);
+
+        verify(mockModel);
+    }
 }
