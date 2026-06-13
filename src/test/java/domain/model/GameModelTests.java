@@ -2925,4 +2925,34 @@ public class GameModelTests {
     EasyMock.verify(boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock,
             woolDeckMock, tradeManagerMock, redStateMock);
   }
+
+  // Test Case 10
+  @Test
+  void moveRobberAndSteal_test10_VictimResourceCountZero_ExpectNoSteal() {
+    Player whiteStateMock = EasyMock.createMock(Player.class);
+    Player blueStateMock = EasyMock.createMock(Player.class);
+    ColorToPlayerObjMock = Map.of(PlayerColor.WHITE, whiteStateMock, PlayerColor.BLUE, blueStateMock);
+
+    boardMock.moveRobber(0);
+    EasyMock.expectLastCall();
+    EasyMock.expect(boardMock.getPlayersOnHex(0)).andReturn(Set.of(blueStateMock));
+    // a resource entry with a count of exactly 0 must NOT be stealable
+    EasyMock.expect(blueStateMock.getResources()).andReturn(Map.of(Resource.WOOL, 0));
+
+    EasyMock.replay(whiteStateMock, blueStateMock, boardMock, lumberDeckMock, brickDeckMock,
+            grainDeckMock, oreDeckMock, woolDeckMock);
+
+    GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+            oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock, randomMock);
+
+    model.setCurrentPlayerColor(PlayerColor.WHITE);
+    model.setCurrentGamePhase(GamePhase.MOVE_ROBBER);
+    model.moveRobberAndSteal(0, PlayerColor.BLUE);
+
+    // no resource is transferred, but the robber move still completes the action
+    assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+
+    EasyMock.verify(whiteStateMock, blueStateMock, boardMock, lumberDeckMock, brickDeckMock,
+            grainDeckMock, oreDeckMock, woolDeckMock);
+  }
 }

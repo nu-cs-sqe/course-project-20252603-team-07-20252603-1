@@ -1890,6 +1890,13 @@ public class BoardHandlerTests {
     assertThrows(IllegalArgumentException.class, () -> b.getNodeOwner(54));
   }
 
+  @Test
+  void getNodeOwner_MaxNodeId_FreshBoard_ReturnsSetup() {
+    BoardHandler b = new BoardHandler();
+    // node 53 is the upper bound and must be valid (not throw)
+    assertEquals(PlayerColor.SETUP, b.getNodeOwner(53));
+  }
+
   // getEdgeOwner() tests
 
   @Test

@@ -165,4 +165,9 @@ class GameSetupModelTest {
     assertNotNull(gameModel);
   }
 
+  @Test
+  void getBoard_FreshSetupModel_ReturnsNonNullBoard() {
+    assertNotNull(model.getBoard());
+  }
+
 }
