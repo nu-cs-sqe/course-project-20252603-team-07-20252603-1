@@ -2,14 +2,20 @@ package ui.controller;
 
 import domain.model.DevelopmentCardHandler;
 import domain.model.GameModel;
+import domain.model.GamePhase;
+import domain.model.board.BoardHandler;
 import domain.model.board.Port;
 import domain.model.development_cards.DevelopmentCard;
 import domain.model.development_cards.DevelopmentCardDeck;
 import domain.model.exceptions.EmptyDeckException;
+import domain.model.exceptions.IllegalGamePhaseException;
 import domain.model.exceptions.InsufficientResourcesException;
 import domain.model.game_pieces.DiceHandler;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
+
+import java.util.List;
+import java.util.Set;
 
 
 import domain.model.player.TradeOffer;
@@ -197,5 +203,156 @@ class GameLoopControllerTest {
         assertEquals("Cannot draw new DevelopmentCard, no cards remain.", exception.getMessage());
 
         verify(mockModel, mockDeck, mockHandler, mockPlayer);
+    }
+
+    @Test
+    void testGetCurrentPhaseDelegatesToModel() {
+        expect(mockModel.getCurrentPhase()).andReturn(GamePhase.GENERAL_PLAY);
+        replay(mockModel);
+
+        assertEquals(GamePhase.GENERAL_PLAY, controller.getCurrentPhase(mockModel));
+
+        verify(mockModel);
+    }
+
+    @Test
+    void testGetCurrentRoundDelegatesToModel() {
+        expect(mockModel.getCurrentRound()).andReturn(3);
+        replay(mockModel);
+
+        assertEquals(3, controller.getCurrentRound(mockModel));
+
+        verify(mockModel);
+    }
+
+    @Test
+    void testGetOtherPlayersDelegatesToModel() {
+        List<Player> others = List.of(new Player("Bob", PlayerColor.BLUE));
+        expect(mockModel.getOtherPlayers()).andReturn(others);
+        replay(mockModel);
+
+        assertEquals(others, controller.getOtherPlayers(mockModel));
+
+        verify(mockModel);
+    }
+
+    @Test
+    void testAttemptBuildSettlementDelegatesToModel() {
+        mockModel.attemptBuildSettlement(12);
+        expectLastCall();
+        replay(mockModel);
+
+        controller.attemptBuildSettlement(mockModel, 12);
+
+        verify(mockModel);
+    }
+
+    @Test
+    void testAttemptBuildSettlementPropagatesPhaseException() {
+        mockModel.attemptBuildSettlement(12);
+        expectLastCall().andThrow(new IllegalGamePhaseException("Not proper phase for that action"));
+        replay(mockModel);
+
+        assertThrows(IllegalGamePhaseException.class,
+                () -> controller.attemptBuildSettlement(mockModel, 12));
+
+        verify(mockModel);
+    }
+
+    @Test
+    void testAttemptBuildRoadDelegatesToModel() {
+        mockModel.attemptBuildRoad(0, 3);
+        expectLastCall();
+        replay(mockModel);
+
+        controller.attemptBuildRoad(mockModel, 0, 3);
+
+        verify(mockModel);
+    }
+
+    @Test
+    void testAttemptBuildCityDelegatesToModel() {
+        mockModel.attemptBuildCity(7);
+        expectLastCall();
+        replay(mockModel);
+
+        controller.attemptBuildCity(mockModel, 7);
+
+        verify(mockModel);
+    }
+
+    @Test
+    void testMoveRobberAndStealDelegatesToModel() {
+        Player victim = new Player("Bob", PlayerColor.BLUE);
+        mockModel.moveRobberAndSteal(5, victim);
+        expectLastCall();
+        replay(mockModel);
+
+        controller.moveRobberAndSteal(mockModel, 5, victim);
+
+        verify(mockModel);
+    }
+
+    @Test
+    void testGetPlayersOnHexDelegatesToBoard() {
+        BoardHandler mockBoard = createMock(BoardHandler.class);
+        Set<Player> players = Set.of(new Player("Bob", PlayerColor.BLUE));
+        expect(mockBoard.getPlayersOnHex(5)).andReturn(players);
+        replay(mockBoard);
+
+        assertEquals(players, controller.getPlayersOnHex(mockBoard, 5));
+
+        verify(mockBoard);
+    }
+
+    @Test
+    void testEnterSetupPhaseDelegatesToModel() {
+        mockModel.enterSetupPhase();
+        expectLastCall();
+        replay(mockModel);
+
+        controller.enterSetupPhase(mockModel);
+
+        verify(mockModel);
+    }
+
+    @Test
+    void testCompleteSetupPhaseDelegatesToModel() {
+        mockModel.completeSetupPhase();
+        expectLastCall();
+        replay(mockModel);
+
+        controller.completeSetupPhase(mockModel);
+
+        verify(mockModel);
+    }
+
+    @Test
+    void testSetCurrentPlayerSetsIndexAndColor() {
+        Player bob = new Player("Bob", PlayerColor.BLUE);
+        mockModel.setCurrentPlayerIndex(1);
+        expectLastCall();
+        expect(mockModel.getTurnOrder()).andReturn(
+                List.of(new Player("Alice", PlayerColor.RED), bob));
+        mockModel.setCurrentPlayerColor(PlayerColor.BLUE);
+        expectLastCall();
+        replay(mockModel);
+
+        controller.setCurrentPlayer(mockModel, 1);
+
+        verify(mockModel);
+    }
+
+    @Test
+    void testGetAvailablePortsDelegatesToBoard() {
+        BoardHandler mockBoard = createMock(BoardHandler.class);
+        Player player = new Player("Bob", PlayerColor.BLUE);
+        List<Port> ports = List.of();
+        expect(mockBoard.getAvailablePorts(player)).andReturn(ports);
+        replay(mockBoard);
+
+        assertEquals(ports, controller.getAvailablePorts(mockBoard, player));
+
+        verify(mockBoard);
     }
 }
