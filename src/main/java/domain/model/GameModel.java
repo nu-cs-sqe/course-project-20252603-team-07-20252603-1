@@ -389,23 +389,27 @@ public List<Player> getOtherPlayers() {
         return card;
     }
 
-    public void moveRobberAndSteal(int targetHexID, PlayerColor victimColor){
+  public void moveRobberAndSteal(int targetHexID, PlayerColor victimColor) {
+    checkCurrentGamePhaseMatches(GamePhase.MOVE_ROBBER);
+    board.moveRobber(targetHexID);
 
-      checkCurrentGamePhaseMatches(GamePhase.MOVE_ROBBER);
-      board.moveRobber(targetHexID);
-      currentGamePhase = GamePhase.GENERAL_PLAY;
+    if (victimColor != null && victimColor != PlayerColor.SETUP) {
+      Player target = getArbitraryPlayer(victimColor);
+      Set<Player> playersOnHex = board.getPlayersOnHex(targetHexID);
 
-        // board.moveRobber(targetHexID);
-        // Set<Player> playersOnTargetHex = board.getPlayersOnHex(targetHexID);
+      if (!playersOnHex.contains(target)) {
+        throw new IllegalArgumentException("Victim is not on the target hex.");
+      }
 
-        // Player target = getArbitraryPlayer(victimColor);
-        // Map<Resource, Integer> targetResources = target.getResources();
-        // target.updateResources(random resource, -1)
+      Map<Resource, Integer> targetResources = target.getResources();
+      List<Resource> available = new ArrayList<>();
+      for (Map.Entry<Resource, Integer> entry : targetResources.entrySet()) {
+        if (entry.getValue() > 0) available.add(entry.getKey());
+      }
+    }
 
-        // Player currentPlayer = getCurrentPlayer();
-        // currentPlayer.updateResources(same random resource, 1)
-
-    };
+    currentGamePhase = GamePhase.GENERAL_PLAY;
+  }
 
     // TODO: UI can call board to get list of available ports, and then upon the user clicking a port, it will be passed into this function
     public void attemptPortTrade(Port port, Resource giving, Resource receiving) {
