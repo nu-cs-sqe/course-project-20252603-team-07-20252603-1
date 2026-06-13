@@ -95,7 +95,7 @@ successfully after clear
 
 |              | System under test                          | Expected output                                   | Implemented?       |
 |--------------|--------------------------------------------|---------------------------------------------------|--------------------|
-| Test Case 12 | setDevelopmentCardDeck(mockDeck)           | getDevelopmentCardDeck() returns same instance    | :x: |
+| Test Case 12 | setDevelopmentCardDeck(mockDeck)           | getDevelopmentCardDeck() returns same instance    | :white_check_mark: |
 | Test Case 13 | no deck set                                | getDevelopmentCardDeck() returns null             | :x: |
 
 ---
