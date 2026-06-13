@@ -2749,6 +2749,31 @@ public class GameModelTests {
             grainDeckMock, oreDeckMock, woolDeckMock);
   }
 
+  // Test Case 10
+  @Test
+  void moveRobberAndSteal_test10_NullVictimColor_ExpectRobberMovedNoSteal() {
+    Player redStateMock = EasyMock.createMock(Player.class);
+    ColorToPlayerObjMock = Map.of(PlayerColor.RED, redStateMock);
+
+    boardMock.moveRobber(18);
+    EasyMock.expectLastCall();
+
+    EasyMock.replay(redStateMock, boardMock, lumberDeckMock, brickDeckMock,
+            grainDeckMock, oreDeckMock, woolDeckMock);
+
+    GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+            oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock, randomMock);
+
+    model.setCurrentPlayerColor(PlayerColor.RED);
+    model.setCurrentGamePhase(GamePhase.MOVE_ROBBER);
+    model.moveRobberAndSteal(18, null);
+
+    assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+
+    EasyMock.verify(redStateMock, boardMock, lumberDeckMock, brickDeckMock,
+            grainDeckMock, oreDeckMock, woolDeckMock);
+  }
+
   // ← REDUCES CXTY
   @Test
   void getCurrentPlayerIndex_AfterConstruction_ExpectZero() {
