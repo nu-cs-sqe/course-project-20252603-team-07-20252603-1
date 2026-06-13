@@ -2315,6 +2315,25 @@ public class BoardGraphTests {
     assertEquals(PlayerColor.SETUP, result);
   }
 
+  // ← REDUCES CXTY
+  @Test
+  void dfs_NodeHasUnvisitedEdgeOwnedByEnemy_ExpectEnemyEdgeNotTraversed() {
+    BoardGraph b = new BoardGraph();
+    b.buildBoard();
+    b.claimGraphEdgeObject(PlayerColor.RED, 0, 3);
+    b.claimGraphEdgeObject(PlayerColor.BLUE, 0, 4);
+    b.claimGraphEdgeObject(PlayerColor.RED, 3, 7);
+    b.claimGraphEdgeObject(PlayerColor.RED, 7, 11);
+    b.claimGraphEdgeObject(PlayerColor.RED, 11, 16);
+    b.claimGraphEdgeObject(PlayerColor.RED, 16, 21);
 
+    Player redPlayer = EasyMock.createMock(Player.class);
+    EasyMock.expect(redPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
+    EasyMock.replay(redPlayer);
 
+    List<Player> players = List.of(redPlayer);
+    PlayerColor result = b.calculateLongestRoad(players, PlayerColor.SETUP);
+    assertEquals(PlayerColor.RED, result);
+    EasyMock.verify(redPlayer);
+  }
 }
