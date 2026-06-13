@@ -170,7 +170,7 @@ Output
 |              | System under test                               | Expected output                    | Implemented?       |
 |--------------|-------------------------------------------------|------------------------------------|--------------------|
 | Test Case 21 | fresh player; setHasPlayedDevCardThisTurn(true) | hasPlayedDevCardThisTurn() = true  | :white_check_mark: |
-| Test Case 22 | fresh player; no call                           | hasPlayedDevCardThisTurn() = false | :x: |
+| Test Case 22 | fresh player; no call                           | hasPlayedDevCardThisTurn() = false | :white_check_mark: |
 
 ---
 

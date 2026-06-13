@@ -334,4 +334,11 @@ public class PlayerTests {
     player.setHasPlayedDevCardThisTurn(true);
     assertTrue(player.hasPlayedDevCardThisTurn());
   }
+
+  // TC22 ← REDUCES CXTY
+  @Test
+  void hasPlayedDevCardThisTurn_NewPlayer_ExpectFalse() {
+    Player player = new Player("Alice", PlayerColor.BLUE);
+    assertFalse(player.hasPlayedDevCardThisTurn());
+  }
 }
