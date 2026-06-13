@@ -112,4 +112,10 @@ class GameSetupModelTest {
     assertSame(mockDeck, model.getDevelopmentCardDeck());
     EasyMock.verify(mockDeck);
   }
+
+  // TC13 ← REDUCES CXTY
+  @Test
+  void getDevelopmentCardDeck_BeforeSet_ExpectNull() {
+    assertNull(model.getDevelopmentCardDeck());
+  }
 }
