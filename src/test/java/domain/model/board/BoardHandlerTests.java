@@ -1560,4 +1560,16 @@ public class BoardHandlerTests {
     assertEquals("LUMBER", order.get(0));
     EasyMock.verify(mockHexes.toArray());
   }
+
+  // TC62 ← REDUCES CXTY
+  @Test
+  void getHexCount_WithNineteenHexes_ExpectNineteen() {
+    EasyMock.replay(mockHexes.toArray());
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes,
+        nodeIdToHexes, mockRobber, ports);
+
+    assertEquals(19, b.getHexCount());
+    EasyMock.verify(mockHexes.toArray());
+  }
 }

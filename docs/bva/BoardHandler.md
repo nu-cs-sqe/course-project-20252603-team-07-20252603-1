@@ -344,5 +344,5 @@ Returns the number of hexes on the board.
 
 |              | System under test   | Expected output | Implemented?       |
 |--------------|---------------------|-----------------|--------------------|
-| Test Case 62 | board with 19 hexes | 19              | :x: |
+| Test Case 62 | board with 19 hexes | 19              | :white_check_mark: |
 
