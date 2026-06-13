@@ -5,8 +5,8 @@ package ui.view.board;
  * if any, the user is currently being asked to pick.
  */
 public enum BoardSelectionMode {
-    INERT,
-    PICK_NODE,
-    PICK_EDGE,
-    PICK_HEX
+  INERT,
+  PICK_NODE,
+  PICK_EDGE,
+  PICK_HEX
 }

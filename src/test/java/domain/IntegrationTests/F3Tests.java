@@ -1,7 +1,11 @@
-package domain.IntegrationTests;
+package domain.integrationtests;
 
 // Tests for Feature 3:
 // Ability to place initial settlements and roads during the setup phase according to setup rules
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import domain.model.board.BoardHandler;
 import domain.model.exceptions.AdjacentNodeAlreadyClaimed;
@@ -10,8 +14,7 @@ import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+/** Test class. */
 public class F3Tests {
   // Test Case 1
   @Test
@@ -46,7 +49,7 @@ public class F3Tests {
     Player orangePlayer = new Player("Ben", PlayerColor.ORANGE);
 
     Exception exception = assertThrows(IllegalArgumentException.class, () ->
-            b.buildSetupSettlement(orangePlayer, -1));
+        b.buildSetupSettlement(orangePlayer, -1));
 
     assertEquals("Invalid NodeID - must be within [0, 53].", exception.getMessage());
   }
@@ -58,7 +61,7 @@ public class F3Tests {
     Player whitePlayer = new Player("Spencer", PlayerColor.WHITE);
 
     Exception exception = assertThrows(IllegalArgumentException.class, () ->
-            b.buildSetupSettlement(whitePlayer, 54));
+        b.buildSetupSettlement(whitePlayer, 54));
 
     assertEquals("Invalid NodeID - must be within [0, 53].", exception.getMessage());
   }
@@ -102,7 +105,7 @@ public class F3Tests {
     b.buildSetupSettlement(redPlayer, 0);
 
     Exception exception = assertThrows(AdjacentNodeAlreadyClaimed.class, () ->
-            b.buildSetupSettlement(bluePlayer, 3));
+        b.buildSetupSettlement(bluePlayer, 3));
 
     assertEquals("Can not claim node adjacent to node already claimed", exception.getMessage());
   }
@@ -138,7 +141,7 @@ public class F3Tests {
     Player whitePlayer = new Player("Dummy", PlayerColor.WHITE);
 
     Exception exception = assertThrows(IllegalArgumentException.class, () ->
-            b.buildSetupRoad(whitePlayer, 0, -1, 0));
+        b.buildSetupRoad(whitePlayer, 0, -1, 0));
 
     assertEquals("Edge nodeId out of bounds. Must be within [0, 53].", exception.getMessage());
   }
@@ -150,7 +153,7 @@ public class F3Tests {
     Player whitePlayer = new Player("Dummy", PlayerColor.WHITE);
 
     Exception exception = assertThrows(IllegalArgumentException.class, () ->
-            b.buildSetupRoad(whitePlayer, 0, 0, -1));
+        b.buildSetupRoad(whitePlayer, 0, 0, -1));
 
     assertEquals("Edge nodeId out of bounds. Must be within [0, 53].", exception.getMessage());
   }
@@ -162,7 +165,7 @@ public class F3Tests {
     Player bluePlayer = new Player("Dummy", PlayerColor.BLUE);
 
     Exception exception = assertThrows(IllegalArgumentException.class, () ->
-            b.buildSetupRoad(bluePlayer, 53, 53, 54));
+        b.buildSetupRoad(bluePlayer, 53, 53, 54));
 
     assertEquals("Edge nodeId out of bounds. Must be within [0, 53].", exception.getMessage());
   }
@@ -174,7 +177,7 @@ public class F3Tests {
     Player bluePlayer = new Player("Dummy", PlayerColor.BLUE);
 
     Exception exception = assertThrows(IllegalArgumentException.class, () ->
-            b.buildSetupRoad(bluePlayer, 53, 54, 53));
+        b.buildSetupRoad(bluePlayer, 53, 54, 53));
 
     assertEquals("Edge nodeId out of bounds. Must be within [0, 53].", exception.getMessage());
   }
@@ -188,7 +191,7 @@ public class F3Tests {
     b.buildSetupSettlement(redPlayer, 0);
 
     Exception exception = assertThrows(IllegalEdgeClaim.class, () ->
-            b.buildSetupRoad(redPlayer, 0, 0, 1));
+        b.buildSetupRoad(redPlayer, 0, 0, 1));
 
     assertEquals("Edge must be adjacent to just placed settlement", exception.getMessage());
   }
@@ -206,7 +209,7 @@ public class F3Tests {
     b.buildSetupSettlement(whitePlayer, 20);
 
     Exception exception = assertThrows(IllegalEdgeClaim.class, () ->
-            b.buildSetupRoad(whitePlayer, 20, 0, 4));
+        b.buildSetupRoad(whitePlayer, 20, 0, 4));
 
     assertEquals("Edge must be adjacent to just placed settlement", exception.getMessage());
   }
@@ -220,7 +223,7 @@ public class F3Tests {
     b.buildSetupSettlement(bluePlayer, 8);
 
     Exception exception = assertThrows(IllegalEdgeClaim.class, () ->
-            b.buildSetupRoad(bluePlayer, 8, 0, 4));
+        b.buildSetupRoad(bluePlayer, 8, 0, 4));
 
     assertEquals("Edge must be adjacent to just placed settlement", exception.getMessage());
   }
@@ -374,7 +377,7 @@ public class F3Tests {
     b.buildSetupRoad(redPlayer, 0, 0, 4);
 
     Exception exception = assertThrows(AdjacentNodeAlreadyClaimed.class, () ->
-            b.buildSetupSettlement(redPlayer, 3));
+        b.buildSetupSettlement(redPlayer, 3));
 
     assertEquals("Can not claim node adjacent to node already claimed", exception.getMessage());
   }
@@ -389,9 +392,10 @@ public class F3Tests {
     b.buildSetupRoad(redPlayer, 0, 0, 4);
 
     Exception exception = assertThrows(IllegalEdgeClaim.class, () ->
-            b.buildSetupRoad(redPlayer, 35, 35, 40));
+        b.buildSetupRoad(redPlayer, 35, 35, 40));
 
-    assertEquals("During setup phase, player must own node next to edge they want to claim", exception.getMessage());
+    assertEquals("During setup phase, player must own node next to edge they want to claim",
+        exception.getMessage());
   }
 
   // Test Case 22
@@ -404,7 +408,7 @@ public class F3Tests {
     b.buildSetupSettlement(redPlayer, 0);
 
     Exception exception = assertThrows(IllegalArgumentException.class, () ->
-            b.buildSetupSettlement(bluePlayer, 0));
+        b.buildSetupSettlement(bluePlayer, 0));
 
     assertEquals("Node Already Claimed", exception.getMessage());
   }
@@ -418,10 +422,8 @@ public class F3Tests {
     b.buildSetupSettlement(redPlayer, 0);
 
     Exception exception = assertThrows(IllegalEdgeClaim.class, () ->
-            b.buildSetupRoad(redPlayer, 0, 4, 0));
+        b.buildSetupRoad(redPlayer, 0, 4, 0));
 
     assertEquals("Edge must be adjacent to just placed settlement", exception.getMessage());
   }
 }
-
-

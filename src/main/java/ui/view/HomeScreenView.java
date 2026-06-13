@@ -8,29 +8,32 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import ui.ViewContext;
 
+/** The initial home screen view shown when the application starts. */
 @SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"},
-        justification = "UI classes intentionally share JavaFX nodes, controllers, and models by reference")
+    justification = "UI classes intentionally share JavaFX nodes, controllers, and "
+        + "models by reference")
 public class HomeScreenView {
 
-    private final VBox root;
+  private final VBox root;
 
-    public HomeScreenView(SetupNavigator navigator, ViewContext context) {
-        ResourceBundle labels = context.labels();
+  /** Constructs the home screen view. */
+  public HomeScreenView(SetupNavigator navigator, ViewContext context) {
+    ResourceBundle labels = context.labels();
 
-        Label title = new Label(labels.getString("home.title"));
-        title.getStyleClass().add("title");
+    Label title = new Label(labels.getString("home.title"));
+    title.getStyleClass().add("title");
 
-        Label subtitle = new Label(labels.getString("home.subtitle"));
-        subtitle.getStyleClass().add("subtitle");
+    Label subtitle = new Label(labels.getString("home.subtitle"));
+    subtitle.getStyleClass().add("subtitle");
 
-        Button startButton = new Button(labels.getString("common.startGame"));
-        startButton.setOnAction(e -> navigator.goToPlayerCount());
+    Button startButton = new Button(labels.getString("common.startGame"));
+    startButton.setOnAction(e -> navigator.goToPlayerCount());
 
-        root = new VBox(title, subtitle, startButton);
-        root.getStyleClass().add("screen");
-    }
+    root = new VBox(title, subtitle, startButton);
+    root.getStyleClass().add("screen");
+  }
 
-    public Parent getRoot() {
-        return root;
-    }
+  public Parent getRoot() {
+    return root;
+  }
 }

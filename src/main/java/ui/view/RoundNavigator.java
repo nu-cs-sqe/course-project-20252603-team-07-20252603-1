@@ -1,7 +1,10 @@
 package ui.view;
 
+/** Navigation callbacks used during the main game round. */
 public interface RoundNavigator {
-    void goToGameRound();
+  /** Navigates to the game round view. */
+  void goToGameRound();
 
-    void goToHome();
+  /** Navigates back to the home screen. */
+  void goToHome();
 }

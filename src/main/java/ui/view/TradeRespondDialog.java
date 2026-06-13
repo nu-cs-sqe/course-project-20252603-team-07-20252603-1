@@ -19,39 +19,42 @@ import javafx.scene.control.Label;
  */
 public class TradeRespondDialog {
 
-    private final Dialog<Player> dialog;
+  private final Dialog<Player> dialog;
 
-    public TradeRespondDialog(ResourceBundle labels, Player offeringPlayer,
-                              TradeOffer offer, List<Player> otherPlayers) {
-        dialog = new Dialog<>();
-        dialog.setTitle(labels.getString("trade.title"));
-        dialog.getDialogPane().setContent(new Label(buildSummary(labels, offeringPlayer, offer)));
+  /** Constructs the trade respond dialog. */
+  public TradeRespondDialog(ResourceBundle labels, Player offeringPlayer,
+                            TradeOffer offer, List<Player> otherPlayers) {
+    dialog = new Dialog<>();
+    dialog.setTitle(labels.getString("trade.title"));
+    dialog.getDialogPane().setContent(new Label(buildSummary(labels, offeringPlayer, offer)));
 
-        Map<ButtonType, Player> buttonToPlayer = new LinkedHashMap<>();
-        for (Player player : otherPlayers) {
-            ButtonType button = new ButtonType(
-                    MessageFormat.format(labels.getString("trade.acceptAs"), player.getName()),
-                    ButtonBar.ButtonData.OK_DONE);
-            buttonToPlayer.put(button, player);
-            dialog.getDialogPane().getButtonTypes().add(button);
-        }
-        ButtonType declineAll = new ButtonType(labels.getString("trade.declineAll"),
-                ButtonBar.ButtonData.CANCEL_CLOSE);
-        dialog.getDialogPane().getButtonTypes().add(declineAll);
-
-        dialog.setResultConverter(buttonToPlayer::get);
+    Map<ButtonType, Player> buttonToPlayer = new LinkedHashMap<>();
+    for (Player player : otherPlayers) {
+      ButtonType button = new ButtonType(
+          MessageFormat.format(labels.getString("trade.acceptAs"), player.getName()),
+          ButtonBar.ButtonData.OK_DONE);
+      buttonToPlayer.put(button, player);
+      dialog.getDialogPane().getButtonTypes().add(button);
     }
+    ButtonType declineAll = new ButtonType(labels.getString("trade.declineAll"),
+        ButtonBar.ButtonData.CANCEL_CLOSE);
+    dialog.getDialogPane().getButtonTypes().add(declineAll);
 
-    private static String buildSummary(ResourceBundle labels, Player offeringPlayer, TradeOffer offer) {
-        return MessageFormat.format(labels.getString("trade.summary"),
-                offeringPlayer.getName(),
-                offer.getGiving().getQuantity(),
-                DialogSupport.resourceName(labels, offer.getGiving().getResource()),
-                offer.getReceiving().getQuantity(),
-                DialogSupport.resourceName(labels, offer.getReceiving().getResource()));
-    }
+    dialog.setResultConverter(buttonToPlayer::get);
+  }
 
-    public Optional<Player> showAndRespond() {
-        return dialog.showAndWait();
-    }
+  private static String buildSummary(ResourceBundle labels, Player offeringPlayer,
+                                     TradeOffer offer) {
+    return MessageFormat.format(labels.getString("trade.summary"),
+        offeringPlayer.getName(),
+        offer.getGiving().getQuantity(),
+        DialogSupport.resourceName(labels, offer.getGiving().getResource()),
+        offer.getReceiving().getQuantity(),
+        DialogSupport.resourceName(labels, offer.getReceiving().getResource()));
+  }
+
+  /** Shows the dialog and returns the accepting player, or empty if all decline. */
+  public Optional<Player> showAndRespond() {
+    return dialog.showAndWait();
+  }
 }

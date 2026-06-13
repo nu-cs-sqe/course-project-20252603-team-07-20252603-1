@@ -1,6 +1,8 @@
 package domain.model.exceptions;
 
-/** Thrown when a settlement is placed in an invalid location. */
+/**
+ * Thrown when a settlement is placed in an invalid location.
+ */
 public class IllegalSettlementPlacementException extends RuntimeException {
 
   /**

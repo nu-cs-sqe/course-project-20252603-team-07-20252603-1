@@ -13,7 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-/** Handles all development card purchase and play logic. */
+/**
+ * Handles all development card purchase and play logic.
+ */
 public class DevelopmentCardHandler {
 
   private final Random random;
@@ -22,7 +24,9 @@ public class DevelopmentCardHandler {
     this.random = random;
   }
 
-  /** Creates a DevelopmentCardHandler with a default random source. */
+  /**
+   * Creates a DevelopmentCardHandler with a default random source.
+   */
   public DevelopmentCardHandler() {
     this(new Random());
   }
@@ -30,8 +34,8 @@ public class DevelopmentCardHandler {
   /**
    * Purchases a development card for the buyer, deducting resources and adding the card to hand.
    *
-   * @param buyer the player buying the card
-   * @param deck the development card deck to draw from
+   * @param buyer        the player buying the card
+   * @param deck         the development card deck to draw from
    * @param currentRound the current round number
    * @return the drawn card
    * @throws EmptyDeckException if the deck is empty
@@ -58,10 +62,10 @@ public class DevelopmentCardHandler {
   /**
    * Plays a Monopoly card, taking all of the chosen resource from all other players.
    *
-   * @param player the playing player
-   * @param card the Monopoly card to play
+   * @param player       the playing player
+   * @param card         the Monopoly card to play
    * @param currentRound the current round number
-   * @param resource the resource to monopolize
+   * @param resource     the resource to monopolize
    * @param otherPlayers all other active players
    */
   public void playMonopolyCard(
@@ -104,14 +108,14 @@ public class DevelopmentCardHandler {
   /**
    * Plays a Road Building card, allowing the player to build up to two free roads.
    *
-   * @param player the playing player
-   * @param card the Road Builder card to play
+   * @param player       the playing player
+   * @param card         the Road Builder card to play
    * @param currentRound the current round number
-   * @param model the game model used to build the roads
-   * @param road1Node1 first endpoint of the first road
-   * @param road1Node2 second endpoint of the first road
-   * @param road2Node1 first endpoint of the second road (nullable)
-   * @param road2Node2 second endpoint of the second road (nullable)
+   * @param model        the game model used to build the roads
+   * @param road1Node1   first endpoint of the first road
+   * @param road1Node2   second endpoint of the first road
+   * @param road2Node1   first endpoint of the second road (nullable)
+   * @param road2Node2   second endpoint of the second road (nullable)
    */
   public void playRoadBuildingCard(
       Player player, DevelopmentCard card, int currentRound, GameModel model,
@@ -140,12 +144,12 @@ public class DevelopmentCardHandler {
   /**
    * Plays a Knight card, moving the robber and optionally stealing from a victim.
    *
-   * @param player the playing player
-   * @param card the Knight card to play
+   * @param player       the playing player
+   * @param card         the Knight card to play
    * @param currentRound the current round number
-   * @param robber the robber piece
-   * @param targetHexId the hex to move the robber to
-   * @param victim the player to steal from (nullable)
+   * @param robber       the robber piece
+   * @param targetHexId  the hex to move the robber to
+   * @param victim       the player to steal from (nullable)
    */
   public void playKnightCard(
       Player player, DevelopmentCard card, int currentRound,
@@ -194,11 +198,11 @@ public class DevelopmentCardHandler {
   /**
    * Plays a Year of Plenty card, granting the player two free resources.
    *
-   * @param player the playing player
-   * @param card the Year of Plenty card to play
+   * @param player       the playing player
+   * @param card         the Year of Plenty card to play
    * @param currentRound the current round number
-   * @param resource1 the first resource to receive
-   * @param resource2 the second resource to receive
+   * @param resource1    the first resource to receive
+   * @param resource2    the second resource to receive
    */
   public void playYearOfPlentyCard(
       Player player, DevelopmentCard card, int currentRound,
