@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PlayerTests {
 
@@ -261,6 +260,67 @@ public class PlayerTests {
         assertEquals(2, player.getVictoryPoints());
         player.updateVictoryPoints(-2);
         assertEquals(0, player.getVictoryPoints());
+    }
+
+    // increaseSettlementCount / getSettlementCount
+
+    @Test
+    void increaseSettlementCount_NewPlayer_ExpectCountOne() {
+        Player player = new Player("Dummy", PlayerColor.BLUE);
+        player.increaseSettlementCount();
+        assertEquals(1, player.getSettlementCount());
+    }
+
+    @Test
+    void getSettlementCount_NewPlayer_ExpectZero() {
+        Player player = new Player("Dummy", PlayerColor.BLUE);
+        assertEquals(0, player.getSettlementCount());
+    }
+
+    // getDevelopmentCards
+
+    @Test
+    void getDevelopmentCards_NewPlayer_ExpectEmptyList() {
+        Player player = new Player("Dummy", PlayerColor.RED);
+        assertTrue(player.getDevelopmentCards().isEmpty());
+    }
+
+    // hasPlayedDevCardThisTurn
+
+    @Test
+    void hasPlayedDevCardThisTurn_NewPlayer_ExpectFalse() {
+        Player player = new Player("Dummy", PlayerColor.ORANGE);
+        assertFalse(player.hasPlayedDevCardThisTurn());
+    }
+
+    @Test
+    void hasPlayedDevCardThisTurn_AfterSetTrue_ExpectTrue() {
+        Player player = new Player("Dummy", PlayerColor.ORANGE);
+        player.setHasPlayedDevCardThisTurn(true);
+        assertTrue(player.hasPlayedDevCardThisTurn());
+    }
+
+    // isAdjacentToHex
+
+    @Test
+    void isAdjacentToHex_AnyHex_ExpectFalse() {
+        Player player = new Player("Dummy", PlayerColor.WHITE);
+        assertFalse(player.isAdjacentToHex(0));
+    }
+
+    // incrementKnightCount / getKnightCount
+
+    @Test
+    void getKnightCount_NewPlayer_ExpectZero() {
+        Player player = new Player("Dummy", PlayerColor.BLUE);
+        assertEquals(0, player.getKnightCount());
+    }
+
+    @Test
+    void incrementKnightCount_NewPlayer_ExpectCountOne() {
+        Player player = new Player("Dummy", PlayerColor.BLUE);
+        player.incrementKnightCount();
+        assertEquals(1, player.getKnightCount());
     }
 
 

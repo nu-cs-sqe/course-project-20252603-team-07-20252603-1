@@ -1742,6 +1742,39 @@ public class BoardHandlerTests {
             mockPort5, mockPort6, mockPort7, mockPort8, mockPort9);
   }
 
+  // Test Case 71
+  // before any settlement is built, every node should be owned by SETUP.
+  // the private and public constructors both call Arrays.fill(nodeOwners, PlayerColor.SETUP).
+  // removing that call leaves all entries null, so checkPlayerOwnsNode(SETUP, n) would return false.
+  @Test
+  void CheckPlayerOwnsNode_FreshBoard_DefaultOwnerIsSetup() {
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, ports);
+    assertTrue(b.checkPlayerOwnsNode(PlayerColor.SETUP, 0));
+    assertTrue(b.checkPlayerOwnsNode(PlayerColor.SETUP, 27));
+    assertTrue(b.checkPlayerOwnsNode(PlayerColor.SETUP, 53));
+  }
+
+  // Test Case 72
+  @Test
+  void InitPorts_ReturnsNinePorts() {
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, ports);
+    List<Port> portList = b.initPorts();
+    assertFalse(portList.isEmpty());
+    assertEquals(9, portList.size());
+  }
+
+  // Test Case 73
+  @Test
+  void CheckEdgeOccupied_MockControllerReturnsNotOccupied_ExpectFalse() {
+    EasyMock.expect(mockBoardGraphController.checkEdgeOccupied(0, 1)).andReturn(false);
+    EasyMock.replay(mockBoardGraphController);
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, ports);
+    assertFalse(b.checkEdgeOccupied(0, 1));
+
+    EasyMock.verify(mockBoardGraphController);
+  }
+
   // Test Case 60
   @Test
   void WhiteHasSettlementsOnMaxPossiblePortNodes_ReturnsSevenPorts() {

@@ -69,4 +69,18 @@ class GameSetupModelTest {
         assertEquals("Alice", model.getPlayer(0).getName());
         assertEquals(PlayerColor.RED, model.getPlayer(0).getColor());
     }
+
+    @Test
+    void testIsColorAvailableAfterAddReturnsFalse() {
+        model.addPlayer("Alice", PlayerColor.BLUE);
+        assertFalse(model.isColorAvailable(PlayerColor.BLUE));
+    }
+
+    @Test
+    void testGetTurnOrderAfterDetermineIsNonEmpty() {
+        model.addPlayer("Alice", PlayerColor.RED);
+        model.addPlayer("Bob", PlayerColor.BLUE);
+        model.determineTurnOrder();
+        assertFalse(model.getTurnOrder().isEmpty());
+    }
 }

@@ -129,4 +129,11 @@ class ResourceDeckTest {
         int drawn = deck.drawMultiple(5);
         assertEquals(0, drawn);
     }
+
+    @Test
+    void testDrawDecrementsTotalCards() throws EmptyDeckException {
+        ResourceDeck deck = new ResourceDeck(Resource.LUMBER);
+        deck.draw();
+        assertEquals(18, deck.getTotalCards());
+    }
 }

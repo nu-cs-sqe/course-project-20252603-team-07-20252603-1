@@ -919,6 +919,38 @@ public class GameModelTests {
     EasyMock.verify(boardMock, blueStateMock);
   }
 
+  // getPlayerLastClaimedNode: replaced int return with 0 mutation would always return 0.
+  // building a setup settlement at node 5 (non-zero) and then verifying buildSetupRoad
+  // receives 5 as the claimedNodeId distinguishes the real value from the constant 0.
+  @Test
+  void attemptBuildRoad_SetupPhaseNonZeroClaimedNode_UsesStoredNodeId() {
+    Player blueStateMock = EasyMock.createMock(Player.class);
+    Player redStateMock = EasyMock.createMock(Player.class);
+    Player whiteStateMock = EasyMock.createMock(Player.class);
+    Player orangeStateMock = EasyMock.createMock(Player.class);
+    ColorToPlayerObjMock.put(PlayerColor.BLUE, blueStateMock);
+    ColorToPlayerObjMock.put(PlayerColor.RED, redStateMock);
+    ColorToPlayerObjMock.put(PlayerColor.WHITE, whiteStateMock);
+    ColorToPlayerObjMock.put(PlayerColor.ORANGE, orangeStateMock);
+
+    boardMock.buildSetupSettlement(blueStateMock, 5);
+    EasyMock.expectLastCall();
+    boardMock.buildSetupRoad(blueStateMock, 5, 5, 9);
+    EasyMock.expectLastCall();
+
+    EasyMock.replay(boardMock, blueStateMock);
+
+    GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+            oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+
+    model.setCurrentGamePhase(GamePhase.SETUP_PHASE);
+    model.setCurrentPlayerColor(PlayerColor.BLUE);
+    model.attemptBuildSettlement(5);
+    model.attemptBuildRoad(5, 9);
+
+    EasyMock.verify(boardMock, blueStateMock);
+  }
+
 
   // --- BVA: resource amount boundaries for attemptBuildCity ---
 

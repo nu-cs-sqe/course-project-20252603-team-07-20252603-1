@@ -74,28 +74,6 @@ public class DevelopmentCardDeck {
     DevelopmentCard drawn = this.deck.pop();
     drawn.setRoundDrawnAt(currentRound);
     this.cardsLeft--;
-    DevelopmentCardType type = drawn.getType();
-
-    switch (type) {
-      case KNIGHT:
-        this.knightCount--;
-        break;
-      case VICTORY_POINT:
-        this.victoryPointCount--;
-        break;
-      case ROAD_BUILDER:
-        this.roadBuilderCount--;
-        break;
-      case YEAR_OF_PLENTY:
-        this.yearOfPlentyCount--;
-        break;
-      case MONOPOLY:
-        this.monopolyCount--;
-        break;
-      default:
-        break;
-    }
-
     return drawn;
   }
 

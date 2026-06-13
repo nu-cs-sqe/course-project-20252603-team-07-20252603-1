@@ -21,9 +21,7 @@ import domain.model.player.PlayerColor;
 
 import java.util.HashSet;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class BoardGraphControllerTests {
@@ -309,6 +307,19 @@ public class BoardGraphControllerTests {
                 () -> boardControl.playerClaimStoredEdge(PlayerColor.WHITE, 0, 3));
 
         assertEquals("Edge must be adjacent to an owned structure", exception.getMessage());
+
+        EasyMock.verify(boardMock);
+    }
+
+    @Test
+    void checkEdgeOccupied_MockGraphReturnsNotOccupied_ExpectFalse() {
+        BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
+        BoardGraphController boardControl = new BoardGraphController(boardMock);
+
+        EasyMock.expect(boardMock.checkEdgeOccupied(0, 1)).andReturn(false);
+        EasyMock.replay(boardMock);
+
+        assertFalse(boardControl.checkEdgeOccupied(0, 1));
 
         EasyMock.verify(boardMock);
     }
