@@ -4,6 +4,7 @@ import domain.model.GameModel;
 import domain.model.GameSetupModel;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.scene.Scene;
+import javafx.stage.Stage;
 import ui.controller.GameSetupController;
 import ui.view.GameRoundView;
 import ui.view.HomeScreenView;
@@ -13,19 +14,30 @@ import ui.view.RoundNavigator;
 import ui.view.SetupNavigator;
 import ui.view.SetupSummaryView;
 
+import java.util.Locale;
+
 @SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"},
         justification = "UI classes intentionally share JavaFX nodes, controllers, and models by reference")
 public class Navigator implements SetupNavigator, RoundNavigator {
     private final Scene scene;
-    private final ViewContext context;
+    private final Stage stage;
+    private ViewContext context;
 
     private GameSetupModel setupModel;
     private GameModel gameModel;
 
-    public Navigator(Scene scene, ViewContext context) {
+    public Navigator(Scene scene, Stage stage, ViewContext context) {
         this.scene = scene;
+        this.stage = stage;
         this.context = context;
         this.setupModel = new GameSetupModel();
+    }
+
+    public void changeLocale(Locale locale) {
+        Locale.setDefault(locale);
+        context = context.withLocale(locale);
+        stage.setTitle(context.labels().getString("app.title"));
+        goToHome();
     }
 
     @Override

@@ -2,6 +2,8 @@ package ui;
 
 import domain.model.gamepieces.DiceHandler;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import java.util.Locale;
 import java.util.ResourceBundle;
 import ui.controller.DevCardController;
 import ui.controller.GameLoopController;
@@ -48,5 +50,11 @@ public final class ViewContext {
 
     public ResourceBundle labels() {
         return labels;
+    }
+
+    public ViewContext withLocale(Locale locale) {
+        ResourceBundle newLabels = ResourceBundle.getBundle("labels", locale);
+        return new ViewContext(setupController, loopController,
+                devCardController, diceRoller, newLabels);
     }
 }

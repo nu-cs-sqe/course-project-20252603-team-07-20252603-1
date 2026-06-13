@@ -35,7 +35,7 @@ public class Main extends Application {
                 labels
         );
 
-        Navigator navigator = new Navigator(scene, context);
+        Navigator navigator = new Navigator(scene, stage, context);
         navigator.goToHome();
 
         stage.setTitle(labels.getString("app.title"));
