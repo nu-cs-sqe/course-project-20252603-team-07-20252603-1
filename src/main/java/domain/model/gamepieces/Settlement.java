@@ -1,5 +1,7 @@
 package domain.model.gamepieces;
 
-/** Represents a settlement game piece. */
+/**
+ * Represents a settlement game piece.
+ */
 public class Settlement {
 }

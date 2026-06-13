@@ -3,7 +3,9 @@ package domain.model.resources;
 import domain.model.exceptions.EmptyDeckException;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
-/** Represents a deck of one type of resource card. */
+/**
+ * Represents a deck of one type of resource card.
+ */
 public class ResourceDeck {
 
   private static final int TOTAL_NUMBER_OF_RESOURCES = 95;
@@ -12,7 +14,9 @@ public class ResourceDeck {
   private int count;
   private Resource type;
 
-  /** Creates a placeholder deck covering all resource types. */
+  /**
+   * Creates a placeholder deck covering all resource types.
+   */
   public ResourceDeck() {
     this.type = null;
     this.count = TOTAL_NUMBER_OF_RESOURCES;
@@ -72,7 +76,9 @@ public class ResourceDeck {
     return numCardsReturning;
   }
 
-  /** Returns one card to this deck. */
+  /**
+   * Returns one card to this deck.
+   */
   public void replenish() {
     this.count++;
   }
@@ -90,7 +96,9 @@ public class ResourceDeck {
     }
   }
 
-  /** Replenishes this deck to its maximum capacity. */
+  /**
+   * Replenishes this deck to its maximum capacity.
+   */
   public void replenishAll() {
     this.replenish(NUMBER_OF_RESOURCES_PER_DECK);
   }

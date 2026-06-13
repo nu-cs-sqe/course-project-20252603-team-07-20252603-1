@@ -1,6 +1,8 @@
 package domain.model;
 
-/** Represents the phases of a Catan game turn. */
+/**
+ * Represents the phases of a Catan game turn.
+ */
 public enum GamePhase {
   SETUP_PHASE,
   BEFORE_ROLL,

@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/** Adjacency-list graph of board nodes and edges used to track settlements and roads. */
+/**
+ * Adjacency-list graph of board nodes and edges used to track settlements and roads.
+ */
 public class BoardGraph {
   private final Map<Integer, Set<GraphEdge>> nodeIdToConnectingEdges = new HashMap<>();
   private final Map<Integer, GraphNode> nodeIdToNodeObject = new HashMap<>();
@@ -56,13 +58,17 @@ public class BoardGraph {
     }
   }
 
-  /** Returns whether the given node is occupied by a settlement or city. */
+  /**
+   * Returns whether the given node is occupied by a settlement or city.
+   */
   public boolean checkNodeOccupied(int nodeId) {
     GraphNode nodeOfInterest = getGraphNodeById(nodeId);
     return nodeOfInterest.checkOccupied();
   }
 
-  /** Returns whether the edge between the two nodes has a road on it. */
+  /**
+   * Returns whether the edge between the two nodes has a road on it.
+   */
   public boolean checkEdgeOccupied(int startingNodeId, int endingNodeId) {
     Set<GraphEdge> setWithRelevantEdge = getConnectingEdgesById(startingNodeId);
     GraphEdge edgeToCheck =
@@ -109,7 +115,8 @@ public class BoardGraph {
 
   PlayerColor getEdgeOwner(int startingNodeId, int endingNodeId) {
     Set<GraphEdge> setWithRelevantEdge = getConnectingEdgesById(startingNodeId);
-    GraphEdge edgeToCheck = getMatchingEdgeFromSet(setWithRelevantEdge, startingNodeId, endingNodeId);
+    GraphEdge edgeToCheck =
+        getMatchingEdgeFromSet(setWithRelevantEdge, startingNodeId, endingNodeId);
     return edgeToCheck.checkOwningColor();
   }
 
@@ -124,7 +131,9 @@ public class BoardGraph {
     throw new IllegalArgumentException("Edge does not exist");
   }
 
-  /** Returns whether the player owns an edge neighboring the given edge endpoints. */
+  /**
+   * Returns whether the player owns an edge neighboring the given edge endpoints.
+   */
   protected boolean edgeCheckPlayerOwnsNeighboringEdge(
       PlayerColor color, int startingNodeId, int endingNodeId) {
     Set<GraphEdge> connectingStartingNodeEdges = getConnectingEdgesById(startingNodeId);
@@ -144,7 +153,9 @@ public class BoardGraph {
     return false;
   }
 
-  /** Returns whether the player owns either endpoint node of the given edge. */
+  /**
+   * Returns whether the player owns either endpoint node of the given edge.
+   */
   protected boolean edgeCheckPlayerOwnsNeighboringNode(
       PlayerColor color, int startingNodeId, int endingNodeId) {
     GraphNode startingNode = getGraphNodeById(startingNodeId);
@@ -152,7 +163,9 @@ public class BoardGraph {
     return startingNode.checkColor() == color || endingNode.checkColor() == color;
   }
 
-  /** Returns whether the player owns any edge adjacent to the given node. */
+  /**
+   * Returns whether the player owns any edge adjacent to the given node.
+   */
   public boolean nodeCheckPlayerOwnsNeighboringEdge(PlayerColor color, int nodeId) {
     Set<GraphEdge> relevantEdgeSet = getConnectingEdgesById(nodeId);
     for (GraphEdge edge : relevantEdgeSet) {
@@ -322,12 +335,16 @@ public class BoardGraph {
     addGraphNodeConnection(endingNodeId, newEdge);
   }
 
-  /** Returns the number of nodes in the graph (for testing). */
+  /**
+   * Returns the number of nodes in the graph (for testing).
+   */
   protected int checkAmountOfNodesForTesting() {
     return this.nodeIdToNodeObject.size();
   }
 
-  /** Returns the number of entries in the edge map (for testing). */
+  /**
+   * Returns the number of entries in the edge map (for testing).
+   */
   protected int checkAmountOfNodesInEdgeMapForTesting() {
     return this.nodeIdToConnectingEdges.size();
   }

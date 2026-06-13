@@ -1,23 +1,21 @@
 package ui.controller;
 
-import org.easymock.EasyMock;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import domain.model.DevelopmentCardHandler;
 import domain.model.GameModel;
 import domain.model.developmentcards.DevelopmentCard;
 import domain.model.developmentcards.DevelopmentCardDeck;
-import domain.model.developmentcards.DevelopmentCardType;
 import domain.model.exceptions.EmptyDeckException;
 import domain.model.exceptions.InsufficientResourcesException;
 import domain.model.gamepieces.Robber;
 import domain.model.player.Player;
 import domain.model.resources.Resource;
-
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.easymock.EasyMock;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class DevCardControllerTest {
 
@@ -44,7 +42,8 @@ class DevCardControllerTest {
 
     EasyMock.expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
     EasyMock.expect(mockModel.getCurrentRound()).andReturn(currentRound);
-    EasyMock.expect(mockHandler.buyDevelopmentCard(mockPlayer, mockDeck, currentRound)).andReturn(mockCard);
+    EasyMock.expect(mockHandler.buyDevelopmentCard(mockPlayer, mockDeck, currentRound))
+        .andReturn(mockCard);
 
     EasyMock.replay(mockModel, mockHandler, mockPlayer, mockDeck, mockCard);
 
@@ -57,7 +56,8 @@ class DevCardControllerTest {
   // TC2: buyDevelopmentCard(model, deck); handler throws InsufficientResourcesException
   //      -> controller relays InsufficientResourcesException to caller
   @Test
-  void buyDevelopmentCard_HandlerThrowsInsufficientResources_ExpectExceptionRelayed() throws EmptyDeckException {
+  void buyDevelopmentCard_HandlerThrowsInsufficientResources_ExpectExceptionRelayed()
+      throws EmptyDeckException {
     final int currentRound = 2;
 
     Player mockPlayer = EasyMock.createMock(Player.class);
@@ -66,7 +66,8 @@ class DevCardControllerTest {
     EasyMock.expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
     EasyMock.expect(mockModel.getCurrentRound()).andReturn(currentRound);
     EasyMock.expect(mockHandler.buyDevelopmentCard(mockPlayer, mockDeck, currentRound))
-        .andThrow(new InsufficientResourcesException("Not enough resources to buy a development card."));
+        .andThrow(
+            new InsufficientResourcesException("Not enough resources to buy a development card."));
 
     EasyMock.replay(mockModel, mockHandler, mockPlayer, mockDeck);
 
@@ -80,7 +81,8 @@ class DevCardControllerTest {
   // TC3: buyDevelopmentCard(model, deck); handler throws EmptyDeckException (deck empty)
   //      -> controller relays EmptyDeckException to caller
   @Test
-  void buyDevelopmentCard_HandlerThrowsEmptyDeckException_ExpectExceptionRelayed() throws EmptyDeckException {
+  void buyDevelopmentCard_HandlerThrowsEmptyDeckException_ExpectExceptionRelayed()
+      throws EmptyDeckException {
     final int currentRound = 2;
 
     Player mockPlayer = EasyMock.createMock(Player.class);
@@ -114,7 +116,8 @@ class DevCardControllerTest {
 
     EasyMock.expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
     EasyMock.expect(mockModel.getCurrentRound()).andReturn(currentRound);
-    mockHandler.playKnightCard(mockPlayer, mockCard, currentRound, mockRobber, targetHexId, mockVictim);
+    mockHandler.playKnightCard(mockPlayer, mockCard, currentRound, mockRobber, targetHexId,
+        mockVictim);
 
     EasyMock.replay(mockModel, mockHandler, mockPlayer, mockVictim, mockCard, mockRobber);
 
@@ -184,7 +187,8 @@ class DevCardControllerTest {
     EasyMock.expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
     EasyMock.expect(mockModel.getCurrentRound()).andReturn(currentRound);
     mockHandler.playKnightCard(mockPlayer, null, currentRound, mockRobber, targetHexId, mockVictim);
-    EasyMock.expectLastCall().andThrow(new IllegalArgumentException("Development card cannot be null."));
+    EasyMock.expectLastCall()
+        .andThrow(new IllegalArgumentException("Development card cannot be null."));
 
     EasyMock.replay(mockModel, mockHandler, mockPlayer, mockVictim, mockRobber);
 
@@ -258,7 +262,8 @@ class DevCardControllerTest {
     EasyMock.expect(mockModel.getCurrentRound()).andReturn(currentRound);
     EasyMock.expect(mockModel.getOtherPlayers()).andReturn(otherPlayers);
     mockHandler.playMonopolyCard(mockPlayer, null, currentRound, Resource.BRICK, otherPlayers);
-    EasyMock.expectLastCall().andThrow(new IllegalArgumentException("Development card cannot be null."));
+    EasyMock.expectLastCall()
+        .andThrow(new IllegalArgumentException("Development card cannot be null."));
 
     EasyMock.replay(mockModel, mockHandler, mockPlayer, mockOther);
 
@@ -301,7 +306,8 @@ class DevCardControllerTest {
     EasyMock.expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
     EasyMock.expect(mockModel.getCurrentRound()).andReturn(currentRound);
     mockHandler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockModel, -1, 1, 1, 2);
-    EasyMock.expectLastCall().andThrow(new IllegalArgumentException("Edge nodeId out of bounds. Must be within [0, 53]."));
+    EasyMock.expectLastCall().andThrow(
+        new IllegalArgumentException("Edge nodeId out of bounds. Must be within [0, 53]."));
 
     EasyMock.replay(mockModel, mockHandler, mockPlayer, mockCard);
 
@@ -323,7 +329,8 @@ class DevCardControllerTest {
 
     EasyMock.expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
     EasyMock.expect(mockModel.getCurrentRound()).andReturn(currentRound);
-    mockHandler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockModel, 0, 1, null, null);
+    mockHandler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockModel, 0, 1, null,
+        null);
 
     EasyMock.replay(mockModel, mockHandler, mockPlayer, mockCard);
 
@@ -343,7 +350,8 @@ class DevCardControllerTest {
     EasyMock.expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
     EasyMock.expect(mockModel.getCurrentRound()).andReturn(currentRound);
     mockHandler.playRoadBuildingCard(mockPlayer, null, currentRound, mockModel, 0, 1, 1, 2);
-    EasyMock.expectLastCall().andThrow(new IllegalArgumentException("Development card cannot be null."));
+    EasyMock.expectLastCall()
+        .andThrow(new IllegalArgumentException("Development card cannot be null."));
 
     EasyMock.replay(mockModel, mockHandler, mockPlayer);
 
@@ -365,7 +373,8 @@ class DevCardControllerTest {
 
     EasyMock.expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
     EasyMock.expect(mockModel.getCurrentRound()).andReturn(currentRound);
-    mockHandler.playYearOfPlentyCard(mockPlayer, mockCard, currentRound, Resource.ORE, Resource.ORE);
+    mockHandler.playYearOfPlentyCard(mockPlayer, mockCard, currentRound, Resource.ORE,
+        Resource.ORE);
 
     EasyMock.replay(mockModel, mockHandler, mockPlayer, mockCard);
 
@@ -408,7 +417,8 @@ class DevCardControllerTest {
     EasyMock.expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
     EasyMock.expect(mockModel.getCurrentRound()).andReturn(currentRound);
     mockHandler.playYearOfPlentyCard(mockPlayer, null, currentRound, Resource.ORE, Resource.ORE);
-    EasyMock.expectLastCall().andThrow(new IllegalArgumentException("Development card cannot be null."));
+    EasyMock.expectLastCall()
+        .andThrow(new IllegalArgumentException("Development card cannot be null."));
 
     EasyMock.replay(mockModel, mockHandler, mockPlayer);
 
@@ -482,11 +492,13 @@ class DevCardControllerTest {
     EasyMock.expect(mockPlayer.getDevelopmentCards()).andReturn(hand);
     EasyMock.expect(mockHandler.countVictoryPointCards(hand)).andReturn(expectedCount);
 
-    EasyMock.replay(mockModel, mockHandler, mockPlayer, mockVP1, mockVP2, mockVP3, mockVP4, mockVP5);
+    EasyMock.replay(mockModel, mockHandler, mockPlayer, mockVP1, mockVP2, mockVP3, mockVP4,
+        mockVP5);
 
     int result = controller.getVictoryPointCount(mockModel);
 
-    EasyMock.verify(mockModel, mockHandler, mockPlayer, mockVP1, mockVP2, mockVP3, mockVP4, mockVP5);
+    EasyMock.verify(mockModel, mockHandler, mockPlayer, mockVP1, mockVP2, mockVP3, mockVP4,
+        mockVP5);
     assertEquals(expectedCount, result);
   }
 

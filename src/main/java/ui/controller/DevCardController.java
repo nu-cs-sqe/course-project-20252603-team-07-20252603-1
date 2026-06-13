@@ -10,7 +10,9 @@ import domain.model.player.Player;
 import domain.model.resources.Resource;
 import java.util.List;
 
-/** Controller for development card actions, delegating to DevelopmentCardHandler. */
+/**
+ * Controller for development card actions, delegating to DevelopmentCardHandler.
+ */
 public class DevCardController {
 
   private final DevelopmentCardHandler handler;
@@ -28,7 +30,7 @@ public class DevCardController {
    * Purchases a development card for the current player.
    *
    * @param model the game model
-   * @param deck the development card deck
+   * @param deck  the development card deck
    * @return the drawn card
    * @throws EmptyDeckException if the deck is empty
    */
@@ -42,11 +44,11 @@ public class DevCardController {
   /**
    * Plays a Knight card for the current player, moving the robber and optionally stealing.
    *
-   * @param model the game model
-   * @param card the Knight card to play
-   * @param robber the robber piece
+   * @param model       the game model
+   * @param card        the Knight card to play
+   * @param robber      the robber piece
    * @param targetHexId the hex to move the robber to
-   * @param victim the player to steal from (nullable)
+   * @param victim      the player to steal from (nullable)
    */
   public void playKnightCard(
       GameModel model, DevelopmentCard card, Robber robber,
@@ -59,8 +61,8 @@ public class DevCardController {
   /**
    * Plays a Monopoly card for the current player.
    *
-   * @param model the game model
-   * @param card the Monopoly card to play
+   * @param model    the game model
+   * @param card     the Monopoly card to play
    * @param resource the resource to monopolize
    */
   public void playMonopolyCard(GameModel model, DevelopmentCard card, Resource resource) {
@@ -73,8 +75,8 @@ public class DevCardController {
   /**
    * Plays a Road Building card for the current player.
    *
-   * @param model the game model
-   * @param card the Road Builder card to play
+   * @param model      the game model
+   * @param card       the Road Builder card to play
    * @param road1Node1 first endpoint of the first road
    * @param road1Node2 second endpoint of the first road
    * @param road2Node1 first endpoint of the second road (nullable)
@@ -93,8 +95,8 @@ public class DevCardController {
   /**
    * Plays a Year of Plenty card for the current player.
    *
-   * @param model the game model
-   * @param card the Year of Plenty card to play
+   * @param model     the game model
+   * @param card      the Year of Plenty card to play
    * @param resource1 the first resource to receive
    * @param resource2 the second resource to receive
    */

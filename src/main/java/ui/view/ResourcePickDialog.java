@@ -16,38 +16,38 @@ import javafx.scene.layout.VBox;
  */
 public class ResourcePickDialog {
 
-    private static final int SPACING_PX = 10;
+  private static final int SPACING_PX = 10;
 
-    private final Dialog<List<Resource>> dialog;
+  private final Dialog<List<Resource>> dialog;
 
-    public ResourcePickDialog(ResourceBundle labels, int resourceCount) {
-        List<ComboBox<Resource>> pickers = new ArrayList<>();
-        VBox content = new VBox();
-        content.setSpacing(SPACING_PX);
-        for (int i = 0; i < resourceCount; i++) {
-            ComboBox<Resource> picker = DialogSupport.resourceComboBox(labels);
-            pickers.add(picker);
-            content.getChildren().add(picker);
-        }
-
-        dialog = new Dialog<>();
-        dialog.setTitle(labels.getString(resourceCount > 1
-                ? "devcard.pickTwoResources" : "devcard.pickResource"));
-        dialog.getDialogPane().setContent(content);
-        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-        dialog.setResultConverter(button -> {
-            if (button != ButtonType.OK) {
-                return null;
-            }
-            List<Resource> picked = new ArrayList<>();
-            for (ComboBox<Resource> picker : pickers) {
-                picked.add(picker.getValue());
-            }
-            return picked;
-        });
+  public ResourcePickDialog(ResourceBundle labels, int resourceCount) {
+    List<ComboBox<Resource>> pickers = new ArrayList<>();
+    VBox content = new VBox();
+    content.setSpacing(SPACING_PX);
+    for (int i = 0; i < resourceCount; i++) {
+      ComboBox<Resource> picker = DialogSupport.resourceComboBox(labels);
+      pickers.add(picker);
+      content.getChildren().add(picker);
     }
 
-    public Optional<List<Resource>> showAndPick() {
-        return dialog.showAndWait();
-    }
+    dialog = new Dialog<>();
+    dialog.setTitle(labels.getString(resourceCount > 1
+        ? "devcard.pickTwoResources" : "devcard.pickResource"));
+    dialog.getDialogPane().setContent(content);
+    dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+    dialog.setResultConverter(button -> {
+      if (button != ButtonType.OK) {
+        return null;
+      }
+      List<Resource> picked = new ArrayList<>();
+      for (ComboBox<Resource> picker : pickers) {
+        picked.add(picker.getValue());
+      }
+      return picked;
+    });
+  }
+
+  public Optional<List<Resource>> showAndPick() {
+    return dialog.showAndWait();
+  }
 }

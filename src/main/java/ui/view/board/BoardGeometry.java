@@ -16,7 +16,9 @@ import java.util.Map;
  */
 public final class BoardGeometry {
 
-  /** An immutable 2D point. */
+  /**
+   * An immutable 2D point.
+   */
   public static final class Point {
     private final double x;
     private final double y;
@@ -183,8 +185,8 @@ public final class BoardGeometry {
     }
     List<Point> nodes = new ArrayList<>(uniqueCorners.values());
     nodes.sort(Comparator
-            .comparingLong((Point p) -> Math.round(p.getY() * POSITION_KEY_SCALE))
-            .thenComparingLong(p -> Math.round(p.getX() * POSITION_KEY_SCALE)));
+        .comparingLong((Point p) -> Math.round(p.getY() * POSITION_KEY_SCALE))
+        .thenComparingLong(p -> Math.round(p.getX() * POSITION_KEY_SCALE)));
     return nodes;
   }
 
@@ -202,7 +204,7 @@ public final class BoardGeometry {
         Point pointA = nodePositions.get(a);
         Point pointB = nodePositions.get(b);
         double distance = Math.hypot(
-                pointA.getX() - pointB.getX(), pointA.getY() - pointB.getY());
+            pointA.getX() - pointB.getX(), pointA.getY() - pointB.getY());
         if (Math.abs(distance - hexSize) <= tolerance) {
           result.add(new int[] {a, b});
         }

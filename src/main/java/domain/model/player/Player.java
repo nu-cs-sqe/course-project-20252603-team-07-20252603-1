@@ -9,10 +9,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;   
+import java.util.Map;
 
 
-/** Represents a player in the Catan game, tracking resources, buildings, and victory points. */
+/**
+ * Represents a player in the Catan game, tracking resources, buildings, and victory points.
+ */
 public class Player {
 
   private final List<Settlement> settlements;
@@ -29,7 +31,7 @@ public class Player {
   /**
    * Creates a new player with the given name and color.
    *
-   * @param name the player's display name
+   * @param name  the player's display name
    * @param color the player's color token
    */
   public Player(String name, PlayerColor color) {
@@ -61,7 +63,9 @@ public class Player {
     return Collections.unmodifiableList(settlements);
   }
 
-  /** Places a settlement piece, limited to a max of 5. */
+  /**
+   * Places a settlement piece, limited to a max of 5.
+   */
   public void placeSettlement() {
     if (settlements.size() >= 5) {
       throw new IllegalStateException("No settlements remaining.");
@@ -78,7 +82,9 @@ public class Player {
     return Collections.unmodifiableList(roads);
   }
 
-  /** Places a road piece, limited to a max of 15. */
+  /**
+   * Places a road piece, limited to a max of 15.
+   */
   public void placeRoad() {
     if (roads.size() >= 15) {
       throw new IllegalStateException("No roads remaining.");
@@ -128,7 +134,7 @@ public class Player {
    * Adjusts the player's count of the given resource by delta (positive=gain, negative=spend).
    *
    * @param resource the resource to update
-   * @param delta the change amount
+   * @param delta    the change amount
    */
   public void updateResources(Resource resource, int delta) {
     if (resource == null) {
@@ -169,7 +175,9 @@ public class Player {
     return resources.values().stream().mapToInt(Integer::intValue).sum();
   }
 
-  /** Increments the player's settlement count (separate from piece tracking). */
+  /**
+   * Increments the player's settlement count (separate from piece tracking).
+   */
   public void increaseSettlementCount() {
     this.numSettlement++;
   }
@@ -238,7 +246,9 @@ public class Player {
     developmentCards.remove(card);
   }
 
-  /** Increments the player's knight count. */
+  /**
+   * Increments the player's knight count.
+   */
   public void incrementKnightCount() {
     knightCount++;
   }

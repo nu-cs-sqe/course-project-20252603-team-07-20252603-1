@@ -1,9 +1,13 @@
 package ui.view;
 
 public interface SetupNavigator {
-    void goToHome();
-    void goToPlayerCount();
-    void goToPlayerConfig(int count);
-    void goToSetupSummary();
-    void startGame();
+  void goToHome();
+
+  void goToPlayerCount();
+
+  void goToPlayerConfig(int count);
+
+  void goToSetupSummary();
+
+  void startGame();
 }
