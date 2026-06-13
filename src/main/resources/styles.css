@@ -93,6 +93,16 @@
     -fx-padding: 4 12 4 12;
 }
 
+.die {
+    -fx-font-size: 34px;
+    -fx-text-fill: #8b2f1d;
+    -fx-padding: 0 2 0 2;
+}
+
+.die-rolling {
+    -fx-text-fill: #c0712c;
+}
+
 .resources-panel {
     -fx-hgap: 8;
     -fx-vgap: 4;

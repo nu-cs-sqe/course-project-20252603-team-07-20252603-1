@@ -233,6 +233,24 @@ public class GameModel {
     return playerColorToPlayerObject.get(color);
   }
 
+  /**
+   * Transitions from BEFORE_ROLL into the setup phase.
+   */
+  public void enterSetupPhase() {
+    checkCurrentGamePhaseMatches(GamePhase.BEFORE_ROLL);
+    setCurrentGamePhase(GamePhase.SETUP_PHASE);
+  }
+
+  /**
+   * Completes the setup phase, resetting to the first player and BEFORE_ROLL.
+   */
+  public void completeSetupPhase() {
+    checkCurrentGamePhaseMatches(GamePhase.SETUP_PHASE);
+    this.currentPlayerIndex = 0;
+    this.currentPlayerColor = playerColors.get(0);
+    setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+  }
+
     public void performTurn(int roll) {
         checkCurrentGamePhaseMatches(GamePhase.BEFORE_ROLL);
 

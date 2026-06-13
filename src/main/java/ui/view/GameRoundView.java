@@ -21,6 +21,9 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -30,6 +33,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import ui.ViewContext;
 import ui.view.board.BoardSelectionMode;
 import ui.view.board.BoardView;
@@ -48,6 +52,16 @@ public class GameRoundView {
     private static final String STATUS_CSS = "status";
     private static final String ERROR_CSS = "error";
     private static final String WINNER_CSS = "winner-banner";
+    private static final String DIE_CSS = "die";
+    private static final String DIE_ROLLING_CSS = "die-rolling";
+
+    // Unicode die faces 1-6 (U+2680..U+2685)
+    private static final String[] DIE_FACES = {
+        "⚀", "⚁", "⚂", "⚃", "⚄", "⚅"
+    };
+    private static final int DIE_MAX = DIE_FACES.length;
+    private static final int ROLL_TUMBLE_FRAMES = 12;
+    private static final int ROLL_FRAME_MILLIS = 55;
 
     private final RoundNavigator navigator;
     private final GameModel model;
@@ -57,6 +71,10 @@ public class GameRoundView {
 
     private final CurrentPlayerBanner banner;
     private final Label lastRollLabel;
+    private final Label dieOneLabel;
+    private final Label dieTwoLabel;
+    private final Random animationRandom = new Random();
+    private Timeline rollAnimation;
     private final Label statusLabel;
     private final FlowPane controlBar;
     private final PlayerResourcesPanel resourcesPanel;
@@ -80,6 +98,8 @@ public class GameRoundView {
 
         this.banner = new CurrentPlayerBanner(context.labels());
         this.lastRollLabel = buildLastRollLabel();
+        this.dieOneLabel = buildDieLabel();
+        this.dieTwoLabel = buildDieLabel();
         this.statusLabel = buildStatusLabel();
         this.controlBar = buildControlBar();
         this.resourcesPanel = new PlayerResourcesPanel(context.loop(), model, context.labels());
@@ -112,7 +132,7 @@ public class GameRoundView {
     }
 
     private VBox buildBottomSection() {
-        HBox statusRow = new HBox(lastRollLabel, statusLabel);
+        HBox statusRow = new HBox(dieOneLabel, dieTwoLabel, lastRollLabel, statusLabel);
         statusRow.setAlignment(Pos.CENTER);
         statusRow.setSpacing(STATUS_ROW_SPACING_PX);
 
@@ -130,6 +150,12 @@ public class GameRoundView {
     private static Label buildLastRollLabel() {
         Label label = new Label();
         label.getStyleClass().add(DICE_READOUT_CSS);
+        return label;
+    }
+
+    private static Label buildDieLabel() {
+        Label label = new Label();
+        label.getStyleClass().add(DIE_CSS);
         return label;
     }
 
@@ -279,8 +305,56 @@ public class GameRoundView {
     private void onRollDice() {
         runAction(() -> {
             int roll = context.loop().rollDiceAndDistribute(model, context.dice());
-            lastRollLabel.setText(MessageFormat.format(context.labels().getString("round.rolled"), roll));
+            animateRoll(roll);
         });
+    }
+
+    /**
+     * Plays a brief dice-tumbling animation that flashes random faces before
+     * settling on a pair of dice whose pips add up to the actual roll total.
+     * Purely cosmetic: the game state has already advanced by the time this runs.
+     */
+    private void animateRoll(int total) {
+        if (rollAnimation != null) {
+            rollAnimation.stop();
+        }
+        dieOneLabel.getStyleClass().add(DIE_ROLLING_CSS);
+        dieTwoLabel.getStyleClass().add(DIE_ROLLING_CSS);
+        lastRollLabel.setText(context.labels().getString("round.rolling"));
+
+        Timeline timeline = new Timeline();
+        for (int frame = 1; frame <= ROLL_TUMBLE_FRAMES; frame++) {
+            Duration when = Duration.millis((double) frame * ROLL_FRAME_MILLIS);
+            timeline.getKeyFrames().add(new KeyFrame(when, e -> tumbleDice()));
+        }
+        timeline.setOnFinished(e -> settleDice(total));
+        rollAnimation = timeline;
+
+        tumbleDice();
+        timeline.play();
+    }
+
+    private void tumbleDice() {
+        dieOneLabel.setText(randomFace());
+        dieTwoLabel.setText(randomFace());
+    }
+
+    private void settleDice(int total) {
+        // split the total into two valid die faces (each 1..6) for display
+        int low = Math.max(1, total - DIE_MAX);
+        int high = Math.min(DIE_MAX, total - 1);
+        int first = low + animationRandom.nextInt(high - low + 1);
+        int second = total - first;
+
+        dieOneLabel.setText(DIE_FACES[first - 1]);
+        dieTwoLabel.setText(DIE_FACES[second - 1]);
+        dieOneLabel.getStyleClass().remove(DIE_ROLLING_CSS);
+        dieTwoLabel.getStyleClass().remove(DIE_ROLLING_CSS);
+        lastRollLabel.setText(MessageFormat.format(context.labels().getString("round.rolled"), total));
+    }
+
+    private String randomFace() {
+        return DIE_FACES[animationRandom.nextInt(DIE_MAX)];
     }
 
     private void autoRollIfNeeded() {
