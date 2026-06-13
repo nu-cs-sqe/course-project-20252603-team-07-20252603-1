@@ -2301,5 +2301,20 @@ public class BoardGraphTests {
     assertEquals(PlayerColor.SETUP, result); // 2 roads < 5
   }
 
+  // ← REDUCES CXTY
+  @Test
+  void dfs_EnemySettlementAtIntermediateNode_ExpectRoadBlockedAtEnemyNode() {
+    BoardGraph b = new BoardGraph();
+    b.buildBoard();
+    b.claimGraphEdgeObject(PlayerColor.RED, 0, 3);
+    b.claimGraphEdgeObject(PlayerColor.RED, 3, 7);
+    b.claimGraphNodeObject(PlayerColor.BLUE, 3);
+
+    List<Player> players = List.of();
+    PlayerColor result = b.calculateLongestRoad(players, PlayerColor.SETUP);
+    assertEquals(PlayerColor.SETUP, result);
+  }
+
+
 
 }
