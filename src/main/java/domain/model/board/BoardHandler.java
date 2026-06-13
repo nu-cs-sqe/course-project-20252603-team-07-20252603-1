@@ -4,6 +4,7 @@ import domain.model.game_pieces.Robber;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 import domain.model.resources.Resource;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -450,5 +451,64 @@ public class BoardHandler {
    */
   public boolean checkEdgeOccupied(int nodeId1, int nodeId2) {
     return boardGraphController.checkEdgeOccupied(nodeId1, nodeId2);
+  }
+
+  /**
+   * Returns the roll number of each hex in board order.
+   *
+   * @return a list of roll numbers corresponding to each hex
+   */
+  public List<Integer> getHexRollNumbers() {
+    List<Integer> rollNumbers = new ArrayList<>();
+    for (Hex hex : hexes) {
+      rollNumbers.add(hex.getHexRollNum());
+    }
+    return rollNumbers;
+  }
+
+  /**
+   * Returns the ID of the hex the robber currently occupies.
+   *
+   * @return the robber's hex ID, within [0, 18]
+   */
+  public int getRobberLocation() {
+    return robber.getRobberLocation();
+  }
+
+  /**
+   * Returns the color of the player owning the building at the specified node.
+   *
+   * @param nodeId the ID of the node to query, must be within [0, 53]
+   * @return the owning player's color, or {@link PlayerColor#SETUP} if unowned
+   * @throws IllegalArgumentException if the node ID is out of bounds
+   */
+  public PlayerColor getNodeOwner(int nodeId) {
+    if (nodeId < MIN_NODE_ID || nodeId > MAX_NODE_ID) {
+      throw new IllegalArgumentException("Invalid NodeID - must be within [0, 53].");
+    }
+    return nodeOwners[nodeId];
+  }
+
+  /**
+   * Returns the color of the player owning the road on the edge between two nodes.
+   *
+   * @param nodeId1 the ID of the first node, must be less than nodeId2
+   * @param nodeId2 the ID of the second node
+   * @return the owning player's color, or {@link PlayerColor#SETUP} if unowned
+   * @throws IllegalArgumentException if the edge does not exist
+   */
+  public PlayerColor getEdgeOwner(int nodeId1, int nodeId2) {
+    return boardGraphController.getEdgeOwner(nodeId1, nodeId2);
+  }
+
+  /**
+   * Returns the robber piece for this board.
+   *
+   * @return the robber
+   */
+  @SuppressFBWarnings(value = "EI_EXPOSE_REP",
+          justification = "Robber is intentionally shared so dev card handlers can move it")
+  public Robber getRobber() {
+    return robber;
   }
 }

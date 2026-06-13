@@ -2081,4 +2081,159 @@ public class GameModelTests {
     EasyMock.verify(redStateMock, boardMock, tradeManagerMock,
             lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock, woolDeckMock);
   }
+
+  // moveRobberAndSteal() tests
+
+  @Test
+  void moveRobberAndSteal_test01_WrongPhase_ExpectIllegalGamePhaseException() {
+    List<Player> players = List.of(
+            new Player("A", PlayerColor.RED),
+            new Player("B", PlayerColor.BLUE),
+            new Player("C", PlayerColor.WHITE));
+    GameModel model = new GameModel(players, boardMock);
+
+    Exception exception = assertThrows(IllegalGamePhaseException.class,
+            () -> model.moveRobberAndSteal(5, null));
+    assertEquals("Not proper phase for that action", exception.getMessage());
+  }
+
+  @Test
+  void moveRobberAndSteal_test02_NullVictim_MovesRobberAndEntersGeneralPlay() {
+    List<Player> players = List.of(
+            new Player("A", PlayerColor.RED),
+            new Player("B", PlayerColor.BLUE),
+            new Player("C", PlayerColor.WHITE));
+    boardMock.moveRobber(5);
+    EasyMock.expectLastCall();
+    EasyMock.replay(boardMock);
+
+    GameModel model = new GameModel(players, boardMock);
+    model.setCurrentGamePhase(GamePhase.MOVE_ROBBER);
+    model.moveRobberAndSteal(5, null);
+
+    assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+    EasyMock.verify(boardMock);
+  }
+
+  @Test
+  void moveRobberAndSteal_test03_VictimWithResources_StealsExactlyOneResource() {
+    Player current = new Player("A", PlayerColor.RED);
+    Player victim = new Player("B", PlayerColor.BLUE);
+    victim.updateResources(Resource.WOOL, 2);
+    boardMock.moveRobber(5);
+    EasyMock.expectLastCall();
+    EasyMock.replay(boardMock);
+
+    GameModel model = new GameModel(List.of(current, victim), boardMock);
+    model.setCurrentGamePhase(GamePhase.MOVE_ROBBER);
+    model.moveRobberAndSteal(5, victim);
+
+    assertEquals(1, victim.getTotalResourceCount());
+    assertEquals(1, current.getTotalResourceCount());
+    assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+    EasyMock.verify(boardMock);
+  }
+
+  @Test
+  void moveRobberAndSteal_test04_VictimWithNoResources_StealsNothing() {
+    Player current = new Player("A", PlayerColor.RED);
+    Player victim = new Player("B", PlayerColor.BLUE);
+    boardMock.moveRobber(5);
+    EasyMock.expectLastCall();
+    EasyMock.replay(boardMock);
+
+    GameModel model = new GameModel(List.of(current, victim), boardMock);
+    model.setCurrentGamePhase(GamePhase.MOVE_ROBBER);
+    model.moveRobberAndSteal(5, victim);
+
+    assertEquals(0, victim.getTotalResourceCount());
+    assertEquals(0, current.getTotalResourceCount());
+    EasyMock.verify(boardMock);
+  }
+
+  // enterSetupPhase() / completeSetupPhase() tests
+
+  @Test
+  void enterSetupPhase_test01_FromBeforeRoll_EntersSetupPhase() {
+    List<Player> players = List.of(
+            new Player("A", PlayerColor.RED),
+            new Player("B", PlayerColor.BLUE),
+            new Player("C", PlayerColor.WHITE));
+    GameModel model = new GameModel(players, boardMock);
+
+    model.enterSetupPhase();
+    assertEquals(GamePhase.SETUP_PHASE, model.getCurrentPhase());
+  }
+
+  @Test
+  void enterSetupPhase_test02_WrongPhase_ExpectIllegalGamePhaseException() {
+    List<Player> players = List.of(
+            new Player("A", PlayerColor.RED),
+            new Player("B", PlayerColor.BLUE),
+            new Player("C", PlayerColor.WHITE));
+    GameModel model = new GameModel(players, boardMock);
+    model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+
+    assertThrows(IllegalGamePhaseException.class, () -> model.enterSetupPhase());
+  }
+
+  @Test
+  void completeSetupPhase_test01_ResetsToFirstPlayerAndBeforeRoll() {
+    List<Player> players = List.of(
+            new Player("A", PlayerColor.RED),
+            new Player("B", PlayerColor.BLUE),
+            new Player("C", PlayerColor.WHITE));
+    GameModel model = new GameModel(players, boardMock);
+    model.enterSetupPhase();
+    model.setCurrentPlayerIndex(2);
+    model.setCurrentPlayerColor(PlayerColor.WHITE);
+
+    model.completeSetupPhase();
+
+    assertEquals(GamePhase.BEFORE_ROLL, model.getCurrentPhase());
+    assertEquals(0, model.getCurrentPlayerIndex());
+    assertEquals(PlayerColor.RED, model.getCurrentPlayerColor());
+  }
+
+  @Test
+  void completeSetupPhase_test02_WrongPhase_ExpectIllegalGamePhaseException() {
+    List<Player> players = List.of(
+            new Player("A", PlayerColor.RED),
+            new Player("B", PlayerColor.BLUE),
+            new Player("C", PlayerColor.WHITE));
+    GameModel model = new GameModel(players, boardMock);
+
+    assertThrows(IllegalGamePhaseException.class, () -> model.completeSetupPhase());
+  }
+
+  // endTurn() round-increment tests
+
+  @Test
+  void endTurn_test_RoundIncrementsWhenTurnOrderWraps() {
+    List<Player> players = List.of(
+            new Player("A", PlayerColor.RED),
+            new Player("B", PlayerColor.BLUE),
+            new Player("C", PlayerColor.WHITE));
+    GameModel model = new GameModel(players, boardMock);
+
+    assertEquals(0, model.getCurrentRound());
+    for (int turn = 0; turn < players.size(); turn++) {
+      model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+      model.endTurn();
+    }
+    assertEquals(1, model.getCurrentRound());
+  }
+
+  @Test
+  void endTurn_test_RoundUnchangedMidRound() {
+    List<Player> players = List.of(
+            new Player("A", PlayerColor.RED),
+            new Player("B", PlayerColor.BLUE),
+            new Player("C", PlayerColor.WHITE));
+    GameModel model = new GameModel(players, boardMock);
+
+    model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+    model.endTurn();
+    assertEquals(0, model.getCurrentRound());
+  }
 }
