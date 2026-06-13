@@ -300,7 +300,7 @@ public class PlayerTests {
   @Test
   void addDevelopmentCard_ValidCard_ExpectCardInList() {
     Player player = new Player("Alice", PlayerColor.BLUE);
-    domain.model.development_cards.DevelopmentCard mockCard = org.easymock.EasyMock.createMock(domain.model.development_cards.DevelopmentCard.class);
+    domain.model.developmentcards.DevelopmentCard mockCard = org.easymock.EasyMock.createMock(domain.model.developmentcards.DevelopmentCard.class);
     org.easymock.EasyMock.replay(mockCard);
     player.addDevelopmentCard(mockCard);
     assertEquals(1, player.getDevelopmentCards().size());
@@ -312,7 +312,7 @@ public class PlayerTests {
   @Test
   void removeDevelopmentCard_CardInList_ExpectCardRemoved() {
     Player player = new Player("Alice", PlayerColor.BLUE);
-    domain.model.development_cards.DevelopmentCard mockCard = org.easymock.EasyMock.createMock(domain.model.development_cards.DevelopmentCard.class);
+    domain.model.developmentcards.DevelopmentCard mockCard = org.easymock.EasyMock.createMock(domain.model.developmentcards.DevelopmentCard.class);
     org.easymock.EasyMock.replay(mockCard);
     player.addDevelopmentCard(mockCard);
     player.removeDevelopmentCard(mockCard);

@@ -2243,7 +2243,7 @@ public class BoardGraphTests {
   void checkNodeOccupied_NodeExists_NodeNotOccupied_ExpectFalse() {
     BoardGraph b = new BoardGraph();
     GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
-    EasyMock.expect(nodeMock.getNodeID()).andReturn(0);
+    EasyMock.expect(nodeMock.getNodeId()).andReturn(0);
     EasyMock.expect(nodeMock.checkOccupied()).andReturn(false);
     EasyMock.replay(nodeMock);
 
@@ -2258,7 +2258,7 @@ public class BoardGraphTests {
   void checkNodeOccupied_NodeExists_NodeOccupied_ExpectTrue() {
     BoardGraph b = new BoardGraph();
     GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
-    EasyMock.expect(nodeMock.getNodeID()).andReturn(0);
+    EasyMock.expect(nodeMock.getNodeId()).andReturn(0);
     EasyMock.expect(nodeMock.checkOccupied()).andReturn(true);
     EasyMock.replay(nodeMock);
 

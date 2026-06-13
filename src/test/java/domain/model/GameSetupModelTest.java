@@ -4,7 +4,7 @@ import domain.model.player.PlayerColor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import domain.model.development_cards.DevelopmentCardDeck;
+import domain.model.developmentcards.DevelopmentCardDeck;
 import domain.model.resources.ResourceDeck;
 import org.easymock.EasyMock;
 
