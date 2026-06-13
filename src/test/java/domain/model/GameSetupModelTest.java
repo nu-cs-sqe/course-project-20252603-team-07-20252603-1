@@ -69,4 +69,9 @@ class GameSetupModelTest {
         assertEquals("Alice", model.getPlayer(0).getName());
         assertEquals(PlayerColor.RED, model.getPlayer(0).getColor());
     }
+
+  @Test
+  void isColorAvailable_UnusedColor_ExpectTrue() {
+    assertTrue(model.isColorAvailable(PlayerColor.RED));
+  }
 }
