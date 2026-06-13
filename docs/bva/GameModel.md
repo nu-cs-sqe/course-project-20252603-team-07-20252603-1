@@ -192,6 +192,32 @@ Step 3:
 | Test Case 9 | GENERAL_PLAY, ore=4 (surplus), grain=3 (surplus), board succeeds           | success (surplus does not prevent building) | :white_check_mark: |
 
 
+### Method under test: `attemptPortTrade(Port port, Resource giving, Resource receiving)`
+
+Step 1:
+
+- Input: Port (player specific)
+- Input: current game phase, deck size
+- Output: trade executed, player resources updated, decks updated
+- Output: exception
+
+Step 2:
+
+- Game phase:  Cases {GENERAL_PLAY (allowed), others (not allowed)} 
+- Bank deck (receiving): Interval [0, 19]; boundary = 1 (need at least 1)
+
+Step 3:
+
+- Game phase: GENERAL_PLAY; BEFORE_ROLL (invalid);
+- Bank deck: 0 (empty, below boundary); 1 (at boundary); 19 (max/surplus)
+
+|             | State of the System                                      | Expected output                | Implemented?       |
+|-------------|----------------------------------------------------------|--------------------------------|--------------------|
+| Test Case 1 | GENERAL_PLAY, bank has 1 card (at boundary), valid trade | success                        | :white_check_mark: |
+| Test Case 2 | GENERAL_PLAY, bank has 0 cards (empty)                   | InsufficientResourcesException | :white_check_mark: |
+| Test Case 3 | GENERAL_PLAY, bank has 19 cards (max), valid trade       | success                        | :white_check_mark: |
+| Test Case 4 | BEFORE_ROLL (invalid phase)                              | IllegalGamePhaseException      | x                  |
+
 ---
 
 ### Method under test: `updateVictoryPoints(PlayerColor color, int amount)`
@@ -261,6 +287,100 @@ Outputs:
 | Test Case 6 | ORANGE, check fails  | WHITE, BEFORE_ROLL phase  | :white_check_mark: |
 | Test Case 7 | Incorrect game phase | IllegalGamePhaseException | :white_check_mark: |
 
+### Method under test: `buyDevCard(DevelopmentCardDeck deck)`
+
+Cost: 1 ORE + 1 WOOL + 1 GRAIN. Valid phase: GENERAL_PLAY only.
+Resource check order (matching existing GameModel convention): ORE → WOOL → GRAIN.
+The deck is drawn **after** resources are validated; resources are deducted only on a successful draw.
+The ORE, WOOL, and GRAIN resource decks are replenished by 1 each on success.
+Returns the drawn `DevelopmentCard`.
+
+Step 1:
+
+- Input: deck (DevelopmentCardDeck)
+- State: current game phase, current player's ORE/WOOL/GRAIN counts, deck size
+- Output: DevelopmentCard drawn; player's ORE/WOOL/GRAIN each decremented by 1; ORE/WOOL/GRAIN resource decks each replenished by 1; card added to player's hand
+- Output: exception
+
+Step 2:
+
+- Game phase: Case {GENERAL_PLAY (allowed), others (not allowed)}
+- Player ORE: Interval [0, 19]; cost boundary = 1
+- Player WOOL: Interval [0, 19]; cost boundary = 1
+- Player GRAIN: Interval [0, 19]; cost boundary = 1
+- Deck size: Interval [0, 25]; boundary values: 0 (empty), 1 (last card), 25 (full)
+
+Step 3:
+
+- Game phase: GENERAL_PLAY; BEFORE_ROLL (invalid); MOVE_ROBBER (invalid)
+- ORE (first checked): 0 (below cost); 1 (at cost boundary); 3 (surplus)
+- WOOL (second checked): 0 (below cost, ORE already ≥ 1); 1 (at cost boundary)
+- GRAIN (third checked): 0 (below cost, ORE/WOOL already ≥ 1); 1 (at cost boundary)
+- Deck size: 0 (empty — EmptyDeckException after resource check passes); 1 (last card); 25 (full)
+
+|             | State of the System                                                                              | Expected output                                                                                          | Implemented? |
+|-------------|--------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|--------------|
+| Test Case 1 | GENERAL_PLAY, ORE=1, WOOL=1, GRAIN=1 (exact cost), deck=25 (full)                               | card returned; player loses 1 each ORE/WOOL/GRAIN; ORE/WOOL/GRAIN decks each replenished by 1; deck countRemaining = 24 | :white_check_mark: |
+| Test Case 2 | GENERAL_PLAY, ORE=3, WOOL=2, GRAIN=4 (surplus each), deck=25                                    | card returned; player loses 1 each ORE/WOOL/GRAIN; surplus does not prevent purchase                    | :white_check_mark: |
+| Test Case 3 | GENERAL_PLAY, ORE=1, WOOL=1, GRAIN=1, deck=1 (last card)                                        | card returned; deck countRemaining = 0                                                                   | :white_check_mark: |
+| Test Case 4 | GENERAL_PLAY, ORE=1, WOOL=1, GRAIN=1, deck=0 (empty)                                            | EmptyDeckException; player resources NOT deducted                                                        | :white_check_mark: |
+| Test Case 5 | GENERAL_PLAY, ORE=0 (below cost boundary)                                                        | InsufficientResourcesException                                                                           | :white_check_mark: |
+| Test Case 6 | GENERAL_PLAY, ORE=1, WOOL=0 (below cost boundary, ORE already ≥ 1)                              | InsufficientResourcesException                                                                           | :white_check_mark: |
+| Test Case 7 | GENERAL_PLAY, ORE=1, WOOL=1, GRAIN=0 (below cost boundary, ORE/WOOL already ≥ 1)               | InsufficientResourcesException                                                                           | :white_check_mark: |
+| Test Case 8 | BEFORE_ROLL                                                                                      | IllegalGamePhaseException                                                                                | :white_check_mark: |
+| Test Case 9 | MOVE_ROBBER                                                                                      | IllegalGamePhaseException                                                                                | :white_check_mark: |
+
+---
+
+### Method under test: `playDevCard(DevelopmentCard card)`
+
+Validates that the current phase allows playing a development card and transitions
+the game phase based on card type. This method is purely a game-state coordinator —
+it does not execute card effects. Card effects (robber movement, road placement,
+resource transfer) are triggered separately via the resulting phase.
+
+Valid phases: `BEFORE_ROLL` and `GENERAL_PLAY` (dev cards may be played before or
+after rolling dice per official Catan rules).
+
+Phase transitions:
+- `KNIGHT` → `MOVE_ROBBER`
+- `ROAD_BUILDER` → `ROAD_BUILDING_DEV_CARD`
+- `MONOPOLY` → `MONOPOLY_DEV_CARD`
+- `YEAR_OF_PLENTY` → phase unchanged
+- `VICTORY_POINT` → phase unchanged
+
+Step 1:
+
+- Input: card (DevelopmentCard)
+- State: current game phase, card type
+- Output: phase transitions per card type above
+- Output: exception
+
+Step 2:
+
+- card: Pointer; null (invalid)
+- card type: Case {KNIGHT, ROAD_BUILDER, MONOPOLY, YEAR_OF_PLENTY, VICTORY_POINT}
+- Game phase: Case {BEFORE_ROLL or GENERAL_PLAY (valid), all others (invalid)}
+
+Step 3:
+
+- card: null (invalid); valid card
+- card type: KNIGHT; ROAD_BUILDER; MONOPOLY; YEAR_OF_PLENTY; VICTORY_POINT
+- Game phase: GENERAL_PLAY (valid); BEFORE_ROLL (valid); MOVE_ROBBER (invalid representative)
+
+|             | State of the System                         | Expected output                                                      | Implemented? |
+|-------------|---------------------------------------------|----------------------------------------------------------------------|--------------|
+| Test Case 1 | card = null                                 | IllegalArgumentException: "Development card cannot be null."         | :white_check_mark: |
+| Test Case 2 | MOVE_ROBBER (invalid phase), valid card     | IllegalGamePhaseException: "Not proper phase for that action"        | :white_check_mark: |
+| Test Case 3 | GENERAL_PLAY, card type = KNIGHT            | phase → MOVE_ROBBER                                                  | :white_check_mark: |
+| Test Case 4 | GENERAL_PLAY, card type = ROAD_BUILDER      | phase → ROAD_BUILDING_DEV_CARD                                       | :white_check_mark: |
+| Test Case 5 | GENERAL_PLAY, card type = MONOPOLY          | phase → MONOPOLY_DEV_CARD                                            | :white_check_mark: |
+| Test Case 6 | GENERAL_PLAY, card type = YEAR_OF_PLENTY    | phase unchanged (GENERAL_PLAY)                                       | :white_check_mark: |
+| Test Case 7 | GENERAL_PLAY, card type = VICTORY_POINT     | phase unchanged (GENERAL_PLAY)                                       | :white_check_mark: |
+| Test Case 8 | BEFORE_ROLL, card type = KNIGHT             | phase → MOVE_ROBBER                                                  | :white_check_mark: |
+
+---
+
 ### Method under test: `handleLongestRoad()`
 
 Handles checking and redistributing points based on longest road, to be called in building settlements and roads (things which can change longest road)
@@ -283,3 +403,77 @@ Outputs:
 | Test Case 4 | Currently BLUE, Becomes ORANGE | PlayerColor.Orange, victory points awarded to Orange, taken from blue | :white_check_mark: |
 | Test Case 5 | Currently ORANGE, becomes BLUE | PlayerColor.Blue, victory points awarded to BLUE, taken from ORANGE   | :white_check_mark: |
 | Test Case 6 | Currently WHITE, becomes RED   | PlayerColor.Red, victory points awarded to RED, taken from white      | :white_check_mark: |
+
+
+### Method under test: `offerTrade(TradeOffer offer)`
+
+Step 1:
+
+- Input: offer - validated by trademanager
+- Input: Game phase
+- Output: offer added
+- Output: now OFFERING_TRADE phase
+- Output: Exception
+
+Step 2:
+
+- Game phase: Now GENERAL_PLAY (allowed), others (not allowed)
+
+Step 3:
+
+- Game phase: GENERAL_PLAY; BEFORE_ROLL (invalid);
+
+
+|             | State of the System         | Expected output                  | Implemented?       |
+|-------------|-----------------------------|----------------------------------|--------------------|
+| Test Case 1 | GENERAL_PLAY, valid offer   | phase → OFFERING_TRADE, success  | :white_check_mark: |
+| Test Case 2 | BEFORE_ROLL (invalid phase) | IllegalGamePhaseException        | :white_check_mark: |
+
+
+### Method under test: `acceptTrade(TradeOffer offer, Player acceptingPlayer)`
+
+Step 1:
+
+- Input: offer - validated by trademanager
+- Input: Player
+- Input: Game phase
+- Output: trade executed
+- Output: now GENERAL_PLAY phase
+- Output: Exception
+
+Step 2:
+
+- Game phase: Now OFFERING_TRADE (allowed), others (not allowed)
+
+Step 3:
+
+- Game phase: OFFERING_TRADE; GENERAL_PLAY (invalid);
+
+
+|             | State of the System                              | Expected output             | Implemented?       |
+|-------------|--------------------------------------------------|-----------------------------|--------------------|
+| Test Case 1 | OFFERING_TRADE, valid offer and accepting player | GENERAL_PLAY phase, success | :white_check_mark: |
+| Test Case 2 | GENERAL_PLAY (invalid phase)                     | IllegalGamePhaseException   | :white_check_mark: |
+
+
+### Method under test: `clearOffers()`
+
+Step 1:
+
+- Input: Game phase
+- Output: Offers cleared
+- Output: Exception
+
+Step 2:
+
+- Game phase: Now OFFERING_TRADE (allowed), others (not allowed)
+
+Step 3:
+
+- Game phase: GENERAL_PLAY; GENERAL_PLAY (invalid);
+
+
+|             | State of the System            | Expected output           | Implemented?       |
+|-------------|--------------------------------|---------------------------|--------------------|
+| Test Case 1 | Currently no one, still no one | PlayerColor.setup         | :white_check_mark: |
+| Test Case 2 | GENERAL_PLAY (invalid phase)   | IllegalGamePhaseException | :white_check_mark: |

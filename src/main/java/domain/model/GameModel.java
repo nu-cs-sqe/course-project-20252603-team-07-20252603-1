@@ -1,12 +1,20 @@
 package domain.model;
 
 import domain.model.board.BoardHandler;
+import domain.model.board.Port;
+import domain.model.board.PortTradeRequest;
+import domain.model.developmentcards.DevelopmentCard;
+import domain.model.developmentcards.DevelopmentCardDeck;
+import domain.model.developmentcards.DevelopmentCardType;
+import domain.model.exceptions.EmptyDeckException;
 import domain.model.exceptions.IllegalCityPlacementException;
 import domain.model.exceptions.IllegalGamePhaseException;
 import domain.model.exceptions.IllegalSettlementPlacementException;
 import domain.model.exceptions.InsufficientResourcesException;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
+import domain.model.player.TradeManager;
+import domain.model.player.TradeOffer;
 import domain.model.resources.Resource;
 import domain.model.resources.ResourceDeck;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -25,12 +33,14 @@ public class GameModel {
   private static final int MIN_POINTS_TO_WIN_GAME = 10;
   private static final int POINTS_FOR_SETTLEMENT = 1;
   private static final int POINTS_FOR_CITY = 1;
+  private static final int DEV_CARD_COST = 1;
   private static final int POINTS_FOR_LONGEST_ROAD = 2;
 
   @SuppressFBWarnings(
-      value = "EI_EXPOSE_REP2",
-      justification = "BoardHandler is intentionally shared between GameSetupModel and GameModel"
-          + " as it represents the single game board state")
+          value = "EI_EXPOSE_REP2",
+          justification = "BoardHandler is intentionally shared "
+                  + " between GameSetupModel and GameModel"
+                  + " as it represents the single game board state")
   private final BoardHandler board;
   private GamePhase currentGamePhase;
   private int currentPlayerIndex;
@@ -47,28 +57,31 @@ public class GameModel {
   private final ResourceDeck oreDeck;
   private final ResourceDeck woolDeck;
   private final Map<Resource, ResourceDeck> decks;
+  private final TradeManager tradeManager;
 
   GameModel(
-      ResourceDeck lumberDeck, ResourceDeck brickDeck,
-      ResourceDeck grainDeck, ResourceDeck oreDeck,
-      ResourceDeck woolDeck,
-      Map<PlayerColor, Player> playerColorToPlayerObject,
-      BoardHandler board) {
+          ResourceDeck lumberDeck, ResourceDeck brickDeck,
+          ResourceDeck grainDeck, ResourceDeck oreDeck,
+          ResourceDeck woolDeck,
+          Map<PlayerColor, Player> playerColorToPlayerObject,
+          BoardHandler board,
+          TradeManager tradeManager) {
     this.lumberDeck = lumberDeck;
     this.brickDeck = brickDeck;
     this.grainDeck = grainDeck;
     this.oreDeck = oreDeck;
     this.woolDeck = woolDeck;
     decks = Map.of(
-        Resource.LUMBER, lumberDeck,
-        Resource.BRICK, brickDeck,
-        Resource.GRAIN, grainDeck,
-        Resource.WOOL, woolDeck,
-        Resource.ORE, oreDeck
+            Resource.LUMBER, lumberDeck,
+            Resource.BRICK, brickDeck,
+            Resource.GRAIN, grainDeck,
+            Resource.WOOL, woolDeck,
+            Resource.ORE, oreDeck
     );
     this.playerColorToPlayerObject = playerColorToPlayerObject;
     this.board = board;
     this.currentLongestRoadPlayerColor = PlayerColor.SETUP;
+    this.tradeManager = tradeManager;
   }
 
   /**
@@ -85,11 +98,11 @@ public class GameModel {
     this.oreDeck = new ResourceDeck(Resource.ORE);
     this.woolDeck = new ResourceDeck(Resource.WOOL);
     decks = Map.of(
-        Resource.LUMBER, lumberDeck,
-        Resource.BRICK, brickDeck,
-        Resource.GRAIN, grainDeck,
-        Resource.WOOL, woolDeck,
-        Resource.ORE, oreDeck
+            Resource.LUMBER, lumberDeck,
+            Resource.BRICK, brickDeck,
+            Resource.GRAIN, grainDeck,
+            Resource.WOOL, woolDeck,
+            Resource.ORE, oreDeck
     );
 
     playerColors = new ArrayList<>();
@@ -103,6 +116,7 @@ public class GameModel {
     this.currentPlayerColor = playerColors.get(0);
     this.currentLongestRoadPlayerColor = PlayerColor.SETUP;
     this.currentGamePhase = GamePhase.BEFORE_ROLL;
+    this.tradeManager = new TradeManager();
   }
 
   /**
@@ -112,8 +126,8 @@ public class GameModel {
    */
   public List<Player> getTurnOrder() {
     return playerColors.stream()
-        .map(color -> playerColorToPlayerObject.get(color))
-        .collect(Collectors.toList());
+            .map(color -> playerColorToPlayerObject.get(color))
+            .collect(Collectors.toList());
   }
 
   /**
@@ -151,8 +165,8 @@ public class GameModel {
   public List<Player> getOtherPlayers() {
     Player current = getCurrentPlayer();
     return playerColorToPlayerObject.values().stream()
-        .filter(p -> p != current)
-        .collect(Collectors.toList());
+            .filter(p -> p != current)
+            .collect(Collectors.toList());
   }
 
   /**
@@ -288,11 +302,11 @@ public class GameModel {
    */
   public void attemptBuildRoad(int startingNodeId, int endingNodeId) {
     checkCurrentGamePhaseMatches(
-        GamePhase.GENERAL_PLAY, GamePhase.ROAD_BUILDING_DEV_CARD, GamePhase.SETUP_PHASE);
+            GamePhase.GENERAL_PLAY, GamePhase.ROAD_BUILDING_DEV_CARD, GamePhase.SETUP_PHASE);
     if (currentGamePhase == GamePhase.SETUP_PHASE) {
       board.buildSetupRoad(
-          getCurrentPlayer(), getPlayerLastClaimedNode(currentPlayerColor),
-          startingNodeId, endingNodeId);
+              getCurrentPlayer(), getPlayerLastClaimedNode(currentPlayerColor),
+              startingNodeId, endingNodeId);
       return;
     } else if (currentGamePhase == GamePhase.ROAD_BUILDING_DEV_CARD) {
       board.addRoad(getCurrentPlayer(), startingNodeId, endingNodeId);
@@ -347,7 +361,7 @@ public class GameModel {
   }
 
   private void checkPlayerOwnsEnoughResources(
-      PlayerColor playerColorOfInterest, Resource type, int amountNeeded) {
+          PlayerColor playerColorOfInterest, Resource type, int amountNeeded) {
     Player relevantPlayer = getArbitraryPlayer(playerColorOfInterest);
     int amountPlayerOwnsResource = relevantPlayer.getResourceCount(type);
     if (amountPlayerOwnsResource < amountNeeded) {
@@ -356,7 +370,7 @@ public class GameModel {
   }
 
   private void reducePlayerResources(
-      PlayerColor playerColorOfInterest, Resource type, int amount) {
+          PlayerColor playerColorOfInterest, Resource type, int amount) {
     Player relevantPlayer = playerColorToPlayerObject.get(playerColorOfInterest);
     relevantPlayer.updateResources(type, -amount);
   }
@@ -402,7 +416,7 @@ public class GameModel {
   public void handleLongestRoad() {
     List<Player> playerList = new ArrayList<>(playerColorToPlayerObject.values());
     PlayerColor newLongestRoadColor =
-        board.calculateLongestRoad(playerList, currentLongestRoadPlayerColor);
+            board.calculateLongestRoad(playerList, currentLongestRoadPlayerColor);
     if (newLongestRoadColor != this.currentLongestRoadPlayerColor) {
       Player playerToAwardPoints = getArbitraryPlayer(newLongestRoadColor);
       playerToAwardPoints.updateVictoryPoints(POINTS_FOR_LONGEST_ROAD);
@@ -436,15 +450,100 @@ public class GameModel {
     }
   }
 
-  /** Stub for future trade implementation. */
-  public void attemptTrade() {}
+  /**
+   * Offers a trade during general play, transitioning to the OFFERING_TRADE phase.
+   *
+   * @param offer the trade offer to make
+   */
+  public void offerTrade(TradeOffer offer) {
+    checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY);
+    tradeManager.offerTrade(offer);
+    currentGamePhase = GamePhase.OFFERING_TRADE;
+  }
 
-  /** Stub for future dev card play implementation. */
-  public void playDevCard() {}
+  /**
+   * Accepts a trade offer on behalf of the accepting player.
+   *
+   * @param offer the trade offer being accepted
+   * @param acceptingPlayer the player accepting the trade
+   */
+  public void acceptTrade(TradeOffer offer, Player acceptingPlayer) {
+    checkCurrentGamePhaseMatches(GamePhase.OFFERING_TRADE);
+    tradeManager.acceptTrade(offer, acceptingPlayer);
+    currentGamePhase = GamePhase.GENERAL_PLAY;
+  }
 
-  /** Stub for future dev card purchase implementation. */
-  public void buyDevCard() {}
+  /**
+   * Clears all active trade offers and returns to general play.
+   */
+  public void clearOffers() {
+    checkCurrentGamePhaseMatches(GamePhase.OFFERING_TRADE);
+    tradeManager.clearOffers();
+    currentGamePhase = GamePhase.GENERAL_PLAY;
+  }
+
+  /**
+   * Plays a development card, transitioning the game phase based on card type.
+   *
+   * @param card the development card to play
+   */
+  public void playDevCard(DevelopmentCard card) {
+    if (card == null) {
+      throw new IllegalArgumentException("Development card cannot be null.");
+    }
+    checkCurrentGamePhaseMatches(GamePhase.BEFORE_ROLL, GamePhase.GENERAL_PLAY);
+    DevelopmentCardType type = card.getType();
+    if (type == DevelopmentCardType.KNIGHT) {
+      currentGamePhase = GamePhase.MOVE_ROBBER;
+    } else if (type == DevelopmentCardType.ROAD_BUILDER) {
+      currentGamePhase = GamePhase.ROAD_BUILDING_DEV_CARD;
+    } else if (type == DevelopmentCardType.MONOPOLY) {
+      currentGamePhase = GamePhase.MONOPOLY_DEV_CARD;
+    }
+  }
+
+  /**
+   * Purchases a development card from the deck, deducting resources from the current player.
+   *
+   * @param deck the development card deck to draw from
+   * @return the drawn development card
+   * @throws EmptyDeckException if the deck has no cards remaining
+   */
+  public DevelopmentCard buyDevCard(DevelopmentCardDeck deck) throws EmptyDeckException {
+    checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY);
+    checkPlayerOwnsEnoughResources(currentPlayerColor, Resource.ORE, DEV_CARD_COST);
+    checkPlayerOwnsEnoughResources(currentPlayerColor, Resource.WOOL, DEV_CARD_COST);
+    checkPlayerOwnsEnoughResources(currentPlayerColor, Resource.GRAIN, DEV_CARD_COST);
+    final DevelopmentCard card = deck.drawCard(currentRound);
+    Player player = getCurrentPlayer();
+    player.updateResources(Resource.ORE, -DEV_CARD_COST);
+    player.updateResources(Resource.WOOL, -DEV_CARD_COST);
+    player.updateResources(Resource.GRAIN, -DEV_CARD_COST);
+    oreDeck.replenish();
+    woolDeck.replenish();
+    grainDeck.replenish();
+    player.addDevelopmentCard(card);
+    return card;
+  }
 
   /** Stub for future robber move and steal implementation. */
-  public void moveRobberAndSteal() {}
+  public void moveRobberAndSteal() {
+  }
+
+  /**
+   * Attempts a port trade for the current player, exchanging the given resource for another.
+   *
+   * @param port the port to trade at
+   * @param giving the resource being given
+   * @param receiving the resource being received
+   */
+  public void attemptPortTrade(Port port, Resource giving, Resource receiving) {
+    checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY);
+    PortTradeRequest request = new PortTradeRequest(giving, receiving, decks);
+    try {
+      port.executePortTrade(getCurrentPlayer(), board, request);
+    } catch (EmptyDeckException e) {
+      throw new IllegalStateException("Bank has insufficient resources for this trade.");
+    }
+  }
 }

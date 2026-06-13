@@ -7,5 +7,6 @@ public enum Resource {
   LUMBER,
   ORE,
   WOOL,
-  DESERT;
+  DESERT,
+  ANY;
 }
