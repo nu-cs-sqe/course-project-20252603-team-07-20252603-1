@@ -76,8 +76,8 @@ public class BoardGraph {
     return nodeColor == color;
   }
 
-  boolean claimGraphNodeObject(PlayerColor color, int nodeId) {
-    return getGraphNodeById(nodeId).playerClaimNode(color);
+  void claimGraphNodeObject(PlayerColor color, int nodeId) {
+    getGraphNodeById(nodeId).playerClaimNode(color);
   }
 
   boolean claimGraphEdgeObject(PlayerColor color, int startingNodeId, int endingNodeId) {

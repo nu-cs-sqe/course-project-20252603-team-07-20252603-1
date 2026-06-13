@@ -7,6 +7,7 @@ import domain.model.exceptions.IllegalSettlementPlacementException;
 import domain.model.board.BoardGraph;
 import domain.model.board.BoardGraphController;
 import domain.model.board.GraphEdge;
+import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,9 @@ import domain.model.exceptions.EdgeAlreadyClaimedException;
 import domain.model.exceptions.IllegalEdgeClaim;
 import domain.model.player.PlayerColor;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,10 +34,11 @@ public class BoardGraphControllerTests {
         BoardGraphController boardControl = new BoardGraphController(boardMock);
 
         EasyMock.expect(boardMock.checkIfAdjacentNodesNotClaimed(0)).andReturn(true);
-        EasyMock.expect(boardMock.claimGraphNodeObject(PlayerColor.RED, 0)).andReturn(true);
+        boardMock.claimGraphNodeObject(PlayerColor.RED, 0);
+        EasyMock.expectLastCall();
         EasyMock.replay(boardMock);
 
-        assertTrue(boardControl.playerClaimStoredNodeSetupPhase(PlayerColor.RED, 0));
+        boardControl.playerClaimStoredNodeSetupPhase(PlayerColor.RED, 0);
         EasyMock.verify(boardMock);
     }
 
@@ -59,7 +63,8 @@ public class BoardGraphControllerTests {
         BoardGraphController boardControl = new BoardGraphController(boardMock);
 
        EasyMock.expect(boardMock.checkIfAdjacentNodesNotClaimed(53)).andReturn(true);
-       EasyMock.expect(boardMock.claimGraphNodeObject(PlayerColor.ORANGE, 53))
+       boardMock.claimGraphNodeObject(PlayerColor.ORANGE, 53);
+       EasyMock.expectLastCall()
                .andThrow(new IllegalArgumentException("Node already claimed"));
        EasyMock.replay(boardMock);
 
@@ -173,7 +178,8 @@ public class BoardGraphControllerTests {
         EasyMock.expect(boardMock.checkIfAdjacentNodesNotClaimed(0)).andReturn(true);
         EasyMock.expect(boardMock.nodeCheckPlayerOwnsNeighboringEdge(PlayerColor.RED, 0)).andReturn(true);
 
-        EasyMock.expect(boardMock.claimGraphNodeObject(PlayerColor.RED, 0)).andReturn(true);
+        boardMock.claimGraphNodeObject(PlayerColor.RED, 0);
+        EasyMock.expectLastCall();
 
         EasyMock.replay(boardMock);
 
@@ -320,6 +326,22 @@ public class BoardGraphControllerTests {
         EasyMock.replay(boardMock);
 
         assertFalse(boardControl.checkEdgeOccupied(0, 1));
+
+        EasyMock.verify(boardMock);
+    }
+
+    @Test
+    void calculateLongestRoad_DelegatesToBoardGraph_ReturnsWinner() {
+        BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
+        BoardGraphController boardControl = new BoardGraphController(boardMock);
+        List<Player> players = new ArrayList<>();
+
+        EasyMock.expect(boardMock.calculateLongestRoad(players, PlayerColor.SETUP))
+                .andReturn(PlayerColor.RED);
+        EasyMock.replay(boardMock);
+
+        assertEquals(PlayerColor.RED,
+                boardControl.calculateLongestRoad(players, PlayerColor.SETUP));
 
         EasyMock.verify(boardMock);
     }

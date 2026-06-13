@@ -1,5 +1,6 @@
 package domain.model.player;
 
+import domain.model.developmentcards.DevelopmentCard;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 import domain.model.resources.Resource;
@@ -321,6 +322,16 @@ public class PlayerTests {
         Player player = new Player("Dummy", PlayerColor.BLUE);
         player.incrementKnightCount();
         assertEquals(1, player.getKnightCount());
+    }
+
+    @Test
+    public void GetDevelopmentCards_AfterAddingOne_ContainsThatCard() {
+        Player player = new Player("Dummy", PlayerColor.RED);
+        DevelopmentCard card = DevelopmentCard.createKnightDevelopmentCard(0);
+        player.addDevelopmentCard(card);
+
+        assertEquals(1, player.getDevelopmentCards().size());
+        assertTrue(player.getDevelopmentCards().contains(card));
     }
 
 

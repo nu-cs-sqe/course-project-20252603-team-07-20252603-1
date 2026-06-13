@@ -19,7 +19,6 @@ public class DevelopmentCardDeck {
   /** Creates and shuffles a full development card deck with standard card counts. */
   public DevelopmentCardDeck() {
     this.deck = new Stack<DevelopmentCard>();
-    this.cardsLeft = 25;
     this.knightCount = 14;
     this.victoryPointCount = 5;
     this.roadBuilderCount = 2;
@@ -51,6 +50,7 @@ public class DevelopmentCardDeck {
       this.deck.push(monopoly);
     }
 
+    this.cardsLeft = this.deck.size();
     this.shuffle();
   }
 

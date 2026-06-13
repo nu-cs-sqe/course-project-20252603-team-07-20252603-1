@@ -91,4 +91,24 @@ public class TradeOfferTests {
         TradeOffer offer = TradeOffer.create(mockRed, giving, receiving);
         assertEquals(mockRed, offer.getOfferingPlayer());
     }
+
+    @Test // Test Case 8
+    public void GetGiving_ExpectSameResourceQuantity() {
+        Player mockRed = EasyMock.createMock(Player.class);
+        ResourceQuantity giving = ResourceQuantity.create(Resource.BRICK, 1);
+        ResourceQuantity receiving = ResourceQuantity.create(Resource.WOOL, 1);
+
+        TradeOffer offer = TradeOffer.create(mockRed, giving, receiving);
+        assertSame(giving, offer.getGiving());
+    }
+
+    @Test // Test Case 9
+    public void GetReceiving_ExpectSameResourceQuantity() {
+        Player mockRed = EasyMock.createMock(Player.class);
+        ResourceQuantity giving = ResourceQuantity.create(Resource.ORE, 1);
+        ResourceQuantity receiving = ResourceQuantity.create(Resource.GRAIN, 1);
+
+        TradeOffer offer = TradeOffer.create(mockRed, giving, receiving);
+        assertSame(receiving, offer.getReceiving());
+    }
 }

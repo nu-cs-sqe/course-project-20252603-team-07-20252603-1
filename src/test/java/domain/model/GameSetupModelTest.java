@@ -1,6 +1,9 @@
 package domain.model;
 
+import domain.model.developmentcards.DevelopmentCardDeck;
 import domain.model.player.PlayerColor;
+import domain.model.resources.Resource;
+import domain.model.resources.ResourceDeck;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -82,5 +85,26 @@ class GameSetupModelTest {
         model.addPlayer("Bob", PlayerColor.BLUE);
         model.determineTurnOrder();
         assertFalse(model.getTurnOrder().isEmpty());
+    }
+
+    @Test
+    void testGetResourceDeckReturnsTheSetDeck() {
+        ResourceDeck deck = new ResourceDeck(Resource.LUMBER);
+        model.setResourceDeck(deck);
+        assertSame(deck, model.getResourceDeck());
+    }
+
+    @Test
+    void testGetDevelopmentCardDeckReturnsTheSetDeck() {
+        DevelopmentCardDeck deck = new DevelopmentCardDeck();
+        model.setDevelopmentCardDeck(deck);
+        assertSame(deck, model.getDevelopmentCardDeck());
+    }
+
+    @Test
+    void testCreateGameModelWithPlayersReturnsNonNullModel() {
+        model.addPlayer("Alice", PlayerColor.RED);
+        model.addPlayer("Bob", PlayerColor.BLUE);
+        assertNotNull(model.createGameModel());
     }
 }

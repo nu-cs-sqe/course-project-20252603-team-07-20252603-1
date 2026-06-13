@@ -66,7 +66,7 @@ public class ResourceDeck {
    * @return number of cards actually drawn
    */
   public int drawMultiple(int numCards) {
-    int numCardsReturning = numCards <= this.count ? numCards : this.count;
+    int numCardsReturning = Math.min(numCards, this.count);
     this.count -= numCardsReturning;
     return numCardsReturning;
   }
@@ -82,11 +82,7 @@ public class ResourceDeck {
    * @param numToReplenish number of cards to return
    */
   public void replenish(int numToReplenish) {
-    if (this.count + numToReplenish >= NUMBER_OF_RESOURCES_PER_DECK) {
-      this.count = NUMBER_OF_RESOURCES_PER_DECK;
-    } else {
-      this.count += numToReplenish;
-    }
+    this.count = Math.min(this.count + numToReplenish, NUMBER_OF_RESOURCES_PER_DECK);
   }
 
   /** Replenishes this deck to its maximum capacity. */

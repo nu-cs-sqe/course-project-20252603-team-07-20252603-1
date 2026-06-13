@@ -2440,4 +2440,59 @@ public class GameModelTests {
     EasyMock.verify(redStateMock, boardMock, tradeManagerMock,
             lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock, woolDeckMock);
   }
+
+  // getTurnOrder() / getCurrentPlayerIndex() / getOtherPlayers() tests
+
+  @Test
+  void getTurnOrder_TwoPlayers_ReturnsPlayersInTurnOrder() {
+    Player red = new Player("Red", PlayerColor.RED);
+    Player blue = new Player("Blue", PlayerColor.BLUE);
+    GameModel model = new GameModel(List.of(red, blue), new BoardHandler());
+
+    assertEquals(List.of(red, blue), model.getTurnOrder());
+  }
+
+  @Test
+  void getCurrentPlayerIndex_AfterSettingIndex_ReturnsThatIndex() {
+    Player red = new Player("Red", PlayerColor.RED);
+    Player blue = new Player("Blue", PlayerColor.BLUE);
+    GameModel model = new GameModel(List.of(red, blue), new BoardHandler());
+
+    model.setCurrentPlayerIndex(1);
+
+    assertEquals(1, model.getCurrentPlayerIndex());
+  }
+
+  @Test
+  void getOtherPlayers_TwoPlayers_ExcludesCurrentPlayer() {
+    Player red = new Player("Red", PlayerColor.RED);
+    Player blue = new Player("Blue", PlayerColor.BLUE);
+    GameModel model = new GameModel(List.of(red, blue), new BoardHandler());
+
+    // current player defaults to the first player (red)
+    List<Player> others = model.getOtherPlayers();
+
+    assertEquals(1, others.size());
+    assertTrue(others.contains(blue));
+    assertFalse(others.contains(red));
+  }
+
+  @Test
+  void advanceToNextPlayer_OnlyIncrementsRoundWhenWrappingToFirstPlayer() {
+    Player red = new Player("Red", PlayerColor.RED);
+    Player blue = new Player("Blue", PlayerColor.BLUE);
+    GameModel model = new GameModel(List.of(red, blue), new BoardHandler());
+
+    assertEquals(0, model.getCurrentRound());
+
+    // advancing to the second player does not complete a round
+    model.advanceToNextPlayer();
+    assertEquals(1, model.getCurrentPlayerIndex());
+    assertEquals(0, model.getCurrentRound());
+
+    // wrapping back to the first player completes a round
+    model.advanceToNextPlayer();
+    assertEquals(0, model.getCurrentPlayerIndex());
+    assertEquals(1, model.getCurrentRound());
+  }
 }
