@@ -414,4 +414,17 @@ class GameSetupControllerTest {
         assertFalse(turnOrder.isEmpty());
         verify(mockModel);
     }
+
+    // ========== getBoard (BVA TC31) ==========
+
+    @Test // TC31
+    void getBoard_ReturnsModelBoard() {
+        expect(mockModel.getBoard()).andReturn(mockBoard);
+        replay(mockModel, mockBoard);
+
+        BoardHandler result = controller.getBoard(mockModel);
+
+        assertSame(mockBoard, result);
+        verify(mockModel, mockBoard);
+    }
 }
