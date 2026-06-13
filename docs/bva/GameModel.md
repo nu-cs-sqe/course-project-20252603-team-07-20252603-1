@@ -429,17 +429,17 @@ Outputs:
 - Valid move
   - Verify resources updated on players
 
-|             | State of the System                                                                             | Expected output                                 | Implemented? |
-|-------------|-------------------------------------------------------------------------------------------------|-------------------------------------------------|--------------|
-| Test Case 1 | GENERAL_PLAY Game phase                                                                         | IllegalGamePhaseException                       | :x:          |
-| Test Case 2 | MOVE_ROBBER phase, Red move Robber 0 to 18, null victim (can use PlayerColor.SETUP?)            | Robber Moved, no resources changed              | :x:          |
-| Test Case 3 | MOVE_ROBBER phase, Blue move Robber 18 to 0, Red victim exists on 0 with no resources           | Robber Moved, no resources changed              | :x:          |
-| Test Case 4 | MOVE_ROBBER phase, White move Robber 18 to 0, Blue victim exists on 0 with 1 resource           | Robber Moved, resource stolen                   | :x:          |
-| Test Case 5 | MOVE_ROBBER phase, Orange move Robber 18 to 0, White victim exists on 0 with multiple resources | Robber Moved, random resorce stolen (mock rand) | :x:          |
-| Test Case 6 | MOVE_ROBBER phase, Orange move Robber 0 to -1                                                   | IllegalArgumentException                        | :x:          |
-| Test Case 7 | MOVE_ROBBER phase, Orange move Robber 0 to 19                                                   | IllegalArgumentException                        | :x:          |
-| Test Case 8 | MOVE_ROBBER phase, Red move Robber 0 to 18, Orange victim on different HexID 5                  | IllegalArgumentException                        | :x:          |
-| Test Case 9 | MOVE_ROBBER phase, Red move Robber 0 to 0                                                       | IllegalArgumentExceptiom                        | :x:          |
+|             | State of the System                                                                             | Expected output                                 | Implemented?       |
+|-------------|-------------------------------------------------------------------------------------------------|-------------------------------------------------|--------------------|
+| Test Case 1 | GENERAL_PLAY Game phase                                                                         | IllegalGamePhaseException                       | :white_check_mark: |
+| Test Case 2 | MOVE_ROBBER phase, Red move Robber 0 to 18, null victim (can use PlayerColor.SETUP?)            | Robber Moved, no resources changed              | :x:                |
+| Test Case 3 | MOVE_ROBBER phase, Blue move Robber 18 to 0, Red victim exists on 0 with no resources           | Robber Moved, no resources changed              | :x:                |
+| Test Case 4 | MOVE_ROBBER phase, White move Robber 18 to 0, Blue victim exists on 0 with 1 resource           | Robber Moved, resource stolen                   | :x:                |
+| Test Case 5 | MOVE_ROBBER phase, Orange move Robber 18 to 0, White victim exists on 0 with multiple resources | Robber Moved, random resorce stolen (mock rand) | :x:                |
+| Test Case 6 | MOVE_ROBBER phase, Orange move Robber 0 to -1                                                   | IllegalArgumentException                        | :x:                |
+| Test Case 7 | MOVE_ROBBER phase, Orange move Robber 0 to 19                                                   | IllegalArgumentException                        | :x:                |
+| Test Case 8 | MOVE_ROBBER phase, Red move Robber 0 to 18, Orange victim on different HexID 5                  | IllegalArgumentException                        | :x:                |
+| Test Case 9 | MOVE_ROBBER phase, Red move Robber 0 to 0                                                       | IllegalArgumentExceptiom                        | :x:                |
 
 
 ### Method under test: `offerTrade(TradeOffer offer)`
