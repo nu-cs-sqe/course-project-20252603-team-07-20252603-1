@@ -135,6 +135,17 @@ public class GameLoopController {
   }
 
   /**
+   * Moves the robber to the target hex and steals from the victim of the given color.
+   *
+   * @param model the game model
+   * @param targetHexId the hex to move the robber to
+   * @param victimColor the color of the player to steal from, or null
+   */
+  public void moveRobberAndSteal(GameModel model, int targetHexId, PlayerColor victimColor) {
+    model.moveRobberAndSteal(targetHexId, victimColor);
+  }
+
+  /**
    * Returns the current game phase.
    *
    * @param model the game model
@@ -224,16 +235,6 @@ public class GameLoopController {
     model.attemptBuildCity(nodeId);
   }
 
-  /**
-   * Moves the robber to the target hex and steals from the given victim.
-   *
-   * @param model the game model
-   * @param targetHexId the hex to move the robber to
-   * @param victim the player to steal from, or null
-   */
-  public void moveRobberAndSteal(GameModel model, int targetHexId, Player victim) {
-    model.moveRobberAndSteal(targetHexId, victim);
-  }
 
   /**
    * Returns the players with structures on the given hex.

@@ -14,6 +14,7 @@ import domain.model.exceptions.IllegalRoadPlacementException;
 import domain.model.exceptions.IllegalSettlementPlacementException;
 import domain.model.exceptions.InsufficientResourcesException;
 import domain.model.player.Player;
+import domain.model.player.PlayerColor;
 import domain.model.player.TradeOffer;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.text.MessageFormat;
@@ -290,7 +291,8 @@ public class GameRoundView {
 
     private void onRobberHexPicked(int hexId) {
         Player victim = pickVictimOnHex(hexId);
-        runAction(() -> context.loop().moveRobberAndSteal(model, hexId, victim));
+        PlayerColor victimColor = victim == null ? null : victim.getColor();
+        runAction(() -> context.loop().moveRobberAndSteal(model, hexId, victimColor));
     }
 
     private Player pickVictimOnHex(int hexId) {

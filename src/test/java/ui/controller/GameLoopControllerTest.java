@@ -282,18 +282,6 @@ class GameLoopControllerTest {
     }
 
     @Test
-    void testMoveRobberAndStealDelegatesToModel() {
-        Player victim = new Player("Bob", PlayerColor.BLUE);
-        mockModel.moveRobberAndSteal(5, victim);
-        expectLastCall();
-        replay(mockModel);
-
-        controller.moveRobberAndSteal(mockModel, 5, victim);
-
-        verify(mockModel);
-    }
-
-    @Test
     void testGetPlayersOnHexDelegatesToBoard() {
         BoardHandler mockBoard = createMock(BoardHandler.class);
         Set<Player> players = Set.of(new Player("Bob", PlayerColor.BLUE));
@@ -415,5 +403,17 @@ class GameLoopControllerTest {
         assertEquals("Development card cannot be null.", exception.getMessage());
 
         verify(mockModel, mockCard);
+    }
+
+    //
+    @Test
+    void testMoveRobberAndStealDelegatesToModel() {
+        mockModel.moveRobberAndSteal(5, PlayerColor.RED);
+        expectLastCall();
+        replay(mockModel);
+
+        controller.moveRobberAndSteal(mockModel, 5, PlayerColor.RED);
+
+        verify(mockModel);
     }
 }
