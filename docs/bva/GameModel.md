@@ -223,18 +223,17 @@ Step 3:
 - Ore: 0 (zero); 2 (one below cost boundary); 3 (at cost boundary); 4 (surplus)
 - Grain (only reached if ore ≥ 3): 0 (zero); 1 (one below cost boundary); 2 (at cost boundary); 3 (surplus)
 
-|             | State of the System                                                        | Expected output                             | Implemented?       |
-|-------------|----------------------------------------------------------------------------|---------------------------------------------|--------------------|
-| Test Case 1 | GENERAL_PLAY, ore=3 (at boundary), grain=2 (at boundary), board succeeds   | success                                     | :white_check_mark: |
-| Test Case 2 | GENERAL_PLAY, ore=2 (one below boundary)                                   | InsufficientResourcesException              | :white_check_mark: |
-| Test Case 3 | GENERAL_PLAY, ore=4, grain=1 (one below grain boundary)                    | InsufficientResourcesException              | :white_check_mark: |
-| Test Case 4 | GENERAL_PLAY, ore=3, grain=2, board throws                                 | IllegalCityPlacementException               | :white_check_mark: |
-| Test Case 5 | ROAD_BUILDING_DEV_CARD (invalid phase)                                     | IllegalGamePhaseException                   | :white_check_mark: |
-| Test Case 6 | BEFORE_ROLL (invalid phase)                                                | IllegalGamePhaseException                   | :white_check_mark: |
-| Test Case 7 | GENERAL_PLAY, ore=0 (zero, well below boundary)                            | InsufficientResourcesException              | :white_check_mark: |
-| Test Case 8 | GENERAL_PLAY, ore=3, grain=0 (zero, well below boundary)                   | InsufficientResourcesException              | :white_check_mark: |
-| Test Case 9 | GENERAL_PLAY, ore=4 (surplus), grain=3 (surplus), board succeeds           | success (surplus does not prevent building) | :white_check_mark: |
-
+|             | State of the System                                          | Expected output                                    | Implemented?       |
+|-------------|--------------------------------------------------------------|----------------------------------------------------|--------------------|
+| Test Case 1 | GENERAL_PLAY, ore=3 (at boundary), grain=2 (at boundary), board succeeds | success                               | :white_check_mark: |
+| Test Case 2 | GENERAL_PLAY, ore=2 (one below boundary)                     | InsufficientResourcesException                     | :white_check_mark: |
+| Test Case 3 | GENERAL_PLAY, ore=4, grain=1 (one below grain boundary)      | InsufficientResourcesException                     | :white_check_mark: |
+| Test Case 4 | GENERAL_PLAY, ore=3, grain=2, board throws                   | IllegalCityPlacementException                      | :white_check_mark: |
+| Test Case 5 | ROAD_BUILDING_DEV_CARD (invalid phase)                       | IllegalGamePhaseException                          | :white_check_mark: |
+| Test Case 6 | BEFORE_ROLL (invalid phase)                                  | IllegalGamePhaseException                          | :white_check_mark: |
+| Test Case 7 | GENERAL_PLAY, ore=0 (zero, well below boundary)              | InsufficientResourcesException                     | :white_check_mark: |
+| Test Case 8 | GENERAL_PLAY, ore=3, grain=0 (zero, well below boundary)     | InsufficientResourcesException                     | :white_check_mark: |
+| Test Case 9 | GENERAL_PLAY, ore=4 (surplus), grain=3 (surplus), board succeeds | success (surplus does not prevent building)    | :white_check_mark: |
 
 ### Method under test: `attemptPortTrade(Port port, Resource giving, Resource receiving)`
 
@@ -264,48 +263,51 @@ Step 3:
 
 ---
 
-### Method under test: `updateVictoryPoints(PlayerColor color, int amount)`
+### Method  under test: `performTurn(int roll)` — resource distribution path
 
-Either awards (+ amount) or takes away (- amount) player victory points
+When roll ≠ 7, `performTurn` delegates to `distributeResources`, which calls `board.computeResourceDemand(roll)` and distributes resources per the following rules:
+- **Multiple players competing for a resource**: if the bank deck has fewer cards than total demand, **no player receives that resource** (all-or-nothing).
+- **Single player owed a resource**: the player receives however many cards the bank has, which may be a partial amount (including zero if the bank is empty).
 
-Inputs:
-- PlayerColor -> RED, ORANGE, WHITE, BLUE
-- Amount -> cases
-  - -2 -> when a player loses largest army or longest road
-  - 2 -> when a player gains largest army or longest road
-  - 1 -> when a player plays a VP devcard, or builds a settlement, or upgrades to a city
+Each resource is evaluated independently.
 
-Outputs:
-- Player is updated -> use EasyMock verify to ensure method is called
+Step 1:
 
-|             | State of the System        | Expected output            | Implemented?       |
-|-------------|----------------------------|----------------------------|--------------------|
-| Test Case 1 | Red recieves 1             | Success                    | :white_check_mark: |
-| Test Case 2 | Orange recieves 2          | Success                    | :white_check_mark: |
-| Test Case 3 | White loses 2              | Success                    | :white_check_mark: |
-| Test Case 4 | Blue recieves 2            | Success                    | :white_check_mark: |
+- Input: roll (die value)
+- Input: Demand map returned by `board.computeResourceDemand(roll)` (Map<Resource, Map<Player, Integer>>)
+- Input: Bank deck sizes per resource (Interval [0, 19])
+- Output: Player resource counts updated; decks drawn; game phase transitions to GENERAL_PLAY
+- Output: No change (bank insufficient for multi-player resource, or demand map empty, or bank empty for single player)
 
-### Method under test: `checkCurrentPlayerHasTenOrMoreVictoryPoints()`
+Step 2:
 
-Returns true if a player has 10 or more points
-According to the rules, players can win ONLY on their turn, so we only need to check current player
+- roll: Cases {7 (robber, no distribution), non-7 (distribution path)}
+- Demand map: Cases {empty (no active hexes), non-empty}
+- Per resource, number of players: Cases {single player, multiple players}
+  - Single player: deck drawn up to demand; player receives `drawn` amount (partial if bank short, nothing if bank empty)
+  - Multiple players: deck.total < total demand → no distribution; deck.total ≥ total demand → each player draws their amount
+- Single-player demand amount: 1 (settlement) or 2 (city)
+- Multiple resources in demand: each evaluated independently
 
-Inputs:
-- State of current Player
-  - Color -> RED, WHITE, ORANGE, BLUE
-  - Amount of Points: interval [0, 10]
+Step 3:
 
-Outputs:
-- Change of Game Phase to GamePhase.END_GAME, or not
+- roll: non-7 value (e.g. 6) for distribution path; 7 for robber path
+- Demand map: empty; one resource one player; one resource two players; two resources
+- Single player, deck sizes: 0 (empty → player gets 0); partial (bank < owed → player gets partial); full (bank ≥ owed)
+- Multiple players, deck sizes: 1 vs. demand of 2 (insufficient → no one gets any); 2 (exactly covers two players of 1 each)
+- Demand amount: 1 (settlement); 2 (city)
+- Two resources, one covered, one not: only covered resource distributes
 
-|             | State of the System  | Expected output            | Implemented?       |
-|-------------|----------------------|----------------------------|--------------------|
-| Test Case 1 | Red has 0 points     | GamePhase stays the same   | :white_check_mark: |
-| Test Case 2 | White has 9 points   | GamePhase stays the same   | :white_check_mark: |
-| Test Case 3 | Orange has 10 points | GamePhase switches to end  | :white_check_mark: |
-| Test Case 4 | Blue has 11 points   | GamePhase switches to end  | :white_check_mark: |
-
-### Method under test: `endTurn()`
+|              | State of the System                                                                              | Expected output                                                                     | Implemented?       |
+|--------------|--------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|-------------------|
+| Test Case 10 | Board returns `{WOOL: {red: 1}}`; wool deck has 5 cards (single player, bank sufficient)        | `drawMultiple(1)` called; red receives 1 WOOL; phase → GENERAL_PLAY                 | :white_check_mark: |
+| Test Case 11 | Board returns `{WOOL: {red: 1}}`; wool deck has 0 cards (single player, bank empty)             | `drawMultiple(1)` called → returns 0; no player update; phase → GENERAL_PLAY        | :white_check_mark: |
+| Test Case 12 | Board returns `{WOOL: {red: 1, blue: 1}}`; wool deck has 1 card (multi-player, bank short)      | No draw, neither player receives WOOL (all-or-nothing rule)                          | :white_check_mark: |
+| Test Case 13 | Board returns `{WOOL: {red: 1, blue: 1}}`; wool deck has exactly 2 cards (multi-player, exact)  | `drawMultiple(1)` called twice; both players receive 1 WOOL each                     | :white_check_mark: |
+| Test Case 14 | Board returns `{ORE: {red: 2}}`; ore deck has 10 cards (single player, city demand = 2)         | `drawMultiple(2)` called; red receives 2 ORE                                         | :white_check_mark: |
+| Test Case 15 | Board returns `{}`; all decks idle                                                               | No deck interactions, no player updates; phase → GENERAL_PLAY                        | :white_check_mark: |
+| Test Case 16 | Board returns `{WOOL: {red: 1}, ORE: {red: 1, blue: 1}}`; wool deck ok, ore deck has 1 card     | WOOL: `drawMultiple(1)`, red +1; ORE: skipped (multi-player, bank insufficient)      | :white_check_mark: |
+| Test Case 17 | Board returns `{WOOL: {red: 3}}`; wool deck has 2 cards (single player, bank partially short)   | `drawMultiple(3)` called → returns 2; red receives 2 WOOL (partial); phase → GENERAL_PLAY | :white_check_mark: |
 
 Ends the current player's turn
 
