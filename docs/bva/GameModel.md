@@ -438,7 +438,7 @@ Outputs:
 | Test Case 5 | MOVE_ROBBER phase, Orange move Robber 18 to 0, White victim exists on 0 with multiple resources | Robber Moved, random resorce stolen (mock rand) | :white_check_mark: |
 | Test Case 6 | MOVE_ROBBER phase, Orange move Robber 0 to -1                                                   | IllegalArgumentException                        | :white_check_mark: |
 | Test Case 7 | MOVE_ROBBER phase, Orange move Robber 0 to 19                                                   | IllegalArgumentException                        | :white_check_mark: |
-| Test Case 8 | MOVE_ROBBER phase, Red move Robber 0 to 18, Orange victim on different HexID 5                  | IllegalArgumentException                        | :x:                |
+| Test Case 8 | MOVE_ROBBER phase, Red move Robber 0 to 18, Orange victim on different HexID 5                  | IllegalArgumentException                        | :white_check_mark: |
 | Test Case 9 | MOVE_ROBBER phase, Red move Robber 0 to 0                                                       | IllegalArgumentExceptiom                        | :x:                |
 
 

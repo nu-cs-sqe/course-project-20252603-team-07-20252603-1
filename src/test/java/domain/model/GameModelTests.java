@@ -2426,4 +2426,33 @@ public class GameModelTests {
     EasyMock.verify(orangeStateMock, boardMock, lumberDeckMock, brickDeckMock,
             grainDeckMock, oreDeckMock, woolDeckMock);
   }
+
+  // Test Case 8
+  @Test
+  void moveRobberAndSteal_test08_VictimOnDifferentHex_ExpectIllegalArgumentException() {
+    Player redStateMock = EasyMock.createMock(Player.class);
+    Player orangeStateMock = EasyMock.createMock(Player.class);
+    ColorToPlayerObjMock = Map.of(PlayerColor.RED, redStateMock, PlayerColor.ORANGE, orangeStateMock);
+
+    boardMock.moveRobber(18);
+    EasyMock.expectLastCall();
+    EasyMock.expect(boardMock.getPlayersOnHex(18)).andReturn(Set.of());
+
+    EasyMock.replay(redStateMock, orangeStateMock, boardMock, lumberDeckMock, brickDeckMock,
+            grainDeckMock, oreDeckMock, woolDeckMock);
+
+    GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+            oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock, new Random());
+
+    model.setCurrentPlayerColor(PlayerColor.RED);
+    model.setCurrentGamePhase(GamePhase.MOVE_ROBBER);
+
+    Exception exception = assertThrows(IllegalArgumentException.class,
+            () -> model.moveRobberAndSteal(18, PlayerColor.ORANGE));
+
+    assertEquals("Victim is not on the target hex.", exception.getMessage());
+
+    EasyMock.verify(redStateMock, orangeStateMock, boardMock, lumberDeckMock, brickDeckMock,
+            grainDeckMock, oreDeckMock, woolDeckMock);
+  }
 }
