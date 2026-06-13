@@ -4,6 +4,10 @@ import domain.model.player.PlayerColor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import domain.model.development_cards.DevelopmentCardDeck;
+import domain.model.resources.ResourceDeck;
+import org.easymock.EasyMock;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameSetupModelTest {
@@ -81,5 +85,15 @@ class GameSetupModelTest {
   void isColorAvailable_UsedColor_ExpectFalse() {
     model.addPlayer("Alice", PlayerColor.RED);
     assertFalse(model.isColorAvailable(PlayerColor.RED));
+  }
+
+  // TC10 ← REDUCES CXTY
+  @Test
+  void setResourceDeck_AndGetResourceDeck_ExpectSameInstance() {
+    ResourceDeck mockDeck = EasyMock.createMock(ResourceDeck.class);
+    EasyMock.replay(mockDeck);
+    model.setResourceDeck(mockDeck);
+    assertSame(mockDeck, model.getResourceDeck());
+    EasyMock.verify(mockDeck);
   }
 }
