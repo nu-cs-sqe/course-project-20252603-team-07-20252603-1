@@ -166,24 +166,30 @@ public List<Player> getOtherPlayers() {
             currentGamePhase = GamePhase.MOVE_ROBBER;
             return;
         }
-
-        // stub production — real distribution comes in a later part
-        Resource rslt = interpretRoll(roll);
-        try {
-            Resource card = decks.get(rslt).draw();
-            playerColorToPlayerObject.get(currentPlayerColor).updateResources(card, 1);
-        } catch (Exception e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
+        distributeResources(roll);
         currentGamePhase = GamePhase.GENERAL_PLAY;
     }
 
-    public Resource interpretRoll(int roll) {
-        // just a fakey function to make performTurn not error
-        // really this would be closer to something like Map<Hex, (Player[], Resource)>
-        // Rewarding resources on is the responsibility of the tile, just cause lowkey
-        // Ben has rewarding resources in his hex class
-        return Resource.WOOL;
+    private void distributeResources(int roll) {
+        Map<Resource, Map<Player, Integer>> demand = board.computeResourceDemand(roll);
+        for (Map.Entry<Resource, Map<Player, Integer>> resourceEntry : demand.entrySet()) {
+            distributeResourceToPlayers(resourceEntry.getKey(), resourceEntry.getValue());
+        }
+    }
+
+    // if not enough to satisfy all players, no one gets anything; if only one player is requesting, they can get a partial amount
+    private void distributeResourceToPlayers(Resource resource, Map<Player, Integer> playerAmounts) {
+        ResourceDeck deck = decks.get(resource);
+        if (playerAmounts.size() > 1) {
+            int total = playerAmounts.values().stream().mapToInt(Integer::intValue).sum();
+            if (deck.getTotalCards() < total) return;
+        }
+        for (Map.Entry<Player, Integer> playerAmountEntry : playerAmounts.entrySet()) {
+            int drawn = deck.drawMultiple(playerAmountEntry.getValue());
+            if (drawn > 0) {
+                playerAmountEntry.getKey().updateResources(resource, drawn);
+            }
+        }
     }
 
     public void attemptBuildSettlement(int nodeID){

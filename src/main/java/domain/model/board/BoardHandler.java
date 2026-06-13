@@ -4,6 +4,7 @@ import domain.model.game_pieces.Robber;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 import domain.model.resources.Resource;
+import domain.model.board.Hex;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -238,6 +239,38 @@ public class BoardHandler {
     playersOnHex.addAll(curHex.getHexCityPlayers());
 
     return playersOnHex;
+  }
+
+  private void deliverResourcesToCitiesAndSettlements(List<Player> hexSettlementPlayers, List<Player> hexCityPlayers, Map<Resource, Map<Player, Integer>> demand, Resource resource) {
+
+    for (Player p : hexSettlementPlayers) {
+        demand.computeIfAbsent(resource, k -> new HashMap<>()).merge(p, 1, Integer::sum);
+    }
+
+    for (Player p : hexCityPlayers) {
+        demand.computeIfAbsent(resource, k -> new HashMap<>()).merge(p, 2, Integer::sum);
+    }
+
+  }
+
+  public Map<Resource, Map<Player, Integer>> computeResourceDemand(int rollNum) {
+    Map<Resource, Map<Player, Integer>> demand = new HashMap<>();
+    int robberLocation = robber.getRobberLocation();
+
+    
+
+    for (Hex hex : hexes) {
+      if (hex.getHexRollNum() == rollNum && hex.getHexId() != robberLocation) {
+        Resource resource = hex.getHexResource();
+        if (resource == Resource.DESERT) continue;
+
+        List<Player> hexSettlementPlayers = hex.getHexSettlementPlayers();
+        List<Player> hexCityPlayers = hex.getHexCityPlayers();
+
+        deliverResourcesToCitiesAndSettlements(hexSettlementPlayers, hexCityPlayers, demand, resource);
+      }
+    }
+    return demand;
   }
 
   /**
