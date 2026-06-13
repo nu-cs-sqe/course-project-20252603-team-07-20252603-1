@@ -342,3 +342,19 @@ Step 3:
 | Test Case 58 | hand contains 3 KNIGHT and 2 VICTORY_POINT cards                     | 2               | :white_check_mark: |
 | Test Case 59 | hand contains 5 VICTORY_POINT cards (maximum)                        | 5               | :white_check_mark: |
 | Test Case 60 | hand contains 3 KNIGHT, 1 MONOPOLY, 0 VICTORY_POINT cards           | 0               | :white_check_mark: |
+
+---
+
+### Additional cyclomatic coverage cases
+
+#### `playKnightCard` — victim resource map has zero-value entries
+
+|              | System under test                                                                      | Expected output                                                                      | Implemented? |
+|--------------|----------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|--------------|
+| Test Case 61 | victim's resource map has {ORE=0, WOOL=3}; random picks index 0 of non-zero entries   | ORE entry skipped; WOOL stolen; knight count incremented; card removed from hand     | :white_check_mark: |
+
+#### `playRoadBuildingCard(Player, DevelopmentCard, int, GameModel, int, int, Integer, Integer)` — second road partially specified
+
+|              | System under test                                                                      | Expected output                                                         | Implemented? |
+|--------------|----------------------------------------------------------------------------------------|-------------------------------------------------------------------------|--------------|
+| Test Case 62 | road2Node1 = 2 (non-null), road2Node2 = null; card valid, road1 nodes (0, 1) valid    | only road1 placed; card removed from hand; road2 skipped                | :white_check_mark: |

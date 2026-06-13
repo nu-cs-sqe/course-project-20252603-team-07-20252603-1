@@ -162,3 +162,13 @@ Step 3:
 | Test Case 8  | playDevCard(model, card); model completes normally                                   | model.playDevCard(card) called once; no exception                | :white_check_mark: |
 | Test Case 9  | playDevCard(model, card); model throws IllegalGamePhaseException (wrong phase)       | IllegalGamePhaseException relayed to caller                      | :white_check_mark: |
 | Test Case 10 | playDevCard(model, card); model throws IllegalArgumentException (null card)          | IllegalArgumentException relayed to caller                       | :white_check_mark: |
+
+---
+
+### Method under test: `getResourceCount(GameModel model, PlayerColor color, Resource resource)`
+
+Delegates to `model.getArbitraryPlayer(color).getResourceCount(resource)`.
+
+|              | System under test                                              | Expected output                            | Implemented?       |
+|--------------|----------------------------------------------------------------|--------------------------------------------|--------------------|
+| Test Case 11 | model.getArbitraryPlayer(RED) returns mockPlayer; mockPlayer.getResourceCount(ORE) returns 5 | controller returns 5 | :white_check_mark: |

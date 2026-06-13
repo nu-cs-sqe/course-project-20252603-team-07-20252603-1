@@ -14,10 +14,53 @@ mutations to `BoardHandler`, and deducts resources from the current player.
 
 ---
 
+### Method under test: `getCurrentPlayerIndex()`
+
+|             | State of the System          | Expected output | Implemented?       |
+|-------------|------------------------------|-----------------|--------------------|
+| Test Case 1 | fresh model after construction | 0             | :white_check_mark: |
+
+---
+
+### Method under test: `getCurrentRound()`
+
+|             | State of the System          | Expected output | Implemented?       |
+|-------------|------------------------------|-----------------|--------------------|
+| Test Case 1 | fresh model after construction | 0             | :white_check_mark: |
+
+---
+
+### Method under test: `moveRobberAndSteal()`
+
+|             | State of the System | Expected output      | Implemented?       |
+|-------------|---------------------|----------------------|--------------------|
+| Test Case 1 | any state           | no exception thrown  | :white_check_mark: |
+
+---
+
+### Method under test: `getTurnOrder()`
+
+|             | State of the System                | Expected output                            | Implemented?       |
+|-------------|------------------------------------|--------------------------------------------|---------------------|
+| Test Case 1 | model with RED and BLUE players    | list contains both players (size = 2)      | :white_check_mark: |
+
+---
+
+### Method under test: `getOtherPlayers()`
+
+Returns all players except the current player.
+
+|             | State of the System                                         | Expected output                       | Implemented?       |
+|-------------|-------------------------------------------------------------|---------------------------------------|--------------------|
+| Test Case 1 | current player = RED; players = [RED, BLUE]                 | list contains only BLUE (size = 1)    | :white_check_mark: |
+
+---
+
 ### Method under test: `performTurn(int roll)`
 
 Transitions phase from `BEFORE_ROLL` to `GENERAL_PLAY` (non-7) or `MOVE_ROBBER` (7).
 Throws `IllegalGamePhaseException` if called outside `BEFORE_ROLL`.
+Wraps `EmptyDeckException` as `IllegalArgumentException` if a resource deck is empty during distribution.
 
 Step 1:
 
@@ -36,12 +79,13 @@ Step 3:
 - roll: 2 (LOW), 7 (robber trigger), 12 (HIGH)
 - phase: BEFORE_ROLL (valid); GENERAL_PLAY (already rolled — invalid)
 
-|             | State of the System                             | Expected output                              | Implemented?       |
-|-------------|-------------------------------------------------|----------------------------------------------|--------------------|
-| Test Case 2 | BEFORE_ROLL, roll = 2 (minimum)                 | phase transitions to GENERAL_PLAY            | :white_check_mark: |
-| Test Case 3 | BEFORE_ROLL, roll = 12 (maximum)                | phase transitions to GENERAL_PLAY            | :white_check_mark: |
-| Test Case 4 | BEFORE_ROLL, roll = 7 (robber trigger)          | phase transitions to MOVE_ROBBER             | :white_check_mark: |
-| Test Case 5 | GENERAL_PLAY (already rolled), roll = 6         | IllegalGamePhaseException                    | :white_check_mark: |
+|             | State of the System                                          | Expected output                                              | Implemented?       |
+|-------------|--------------------------------------------------------------|--------------------------------------------------------------|--------------------|
+| Test Case 2 | BEFORE_ROLL, roll = 2 (minimum)                              | phase transitions to GENERAL_PLAY                            | :white_check_mark: |
+| Test Case 3 | BEFORE_ROLL, roll = 12 (maximum)                             | phase transitions to GENERAL_PLAY                            | :white_check_mark: |
+| Test Case 4 | BEFORE_ROLL, roll = 7 (robber trigger)                       | phase transitions to MOVE_ROBBER                             | :white_check_mark: |
+| Test Case 5 | GENERAL_PLAY (already rolled), roll = 6                      | IllegalGamePhaseException                                    | :white_check_mark: |
+| Test Case 6 | BEFORE_ROLL, roll = 6, WOOL resource deck throws EmptyDeckException | IllegalArgumentException with same message as EmptyDeckException | :white_check_mark: |
 
 ---
 

@@ -136,3 +136,48 @@ Output
 
 
 ---
+
+### Method under test: `increaseSettlementCount()` / `getSettlementCount()`
+
+|              | System under test                             | Expected output                | Implemented?       |
+|--------------|-----------------------------------------------|--------------------------------|--------------------|
+| Test Case 14 | fresh player; call increaseSettlementCount()  | getSettlementCount() returns 1 | :white_check_mark: |
+| Test Case 15 | fresh player; no call                         | getSettlementCount() returns 0 | :white_check_mark: |
+
+---
+
+### Method under test: `incrementKnightCount()` / `getKnightCount()`
+
+|              | System under test                         | Expected output             | Implemented?       |
+|--------------|-------------------------------------------|-----------------------------|---------------------|
+| Test Case 16 | fresh player; call incrementKnightCount() | getKnightCount() returns 1  | :white_check_mark: |
+| Test Case 17 | fresh player; no call                     | getKnightCount() returns 0  | :white_check_mark: |
+
+---
+
+### Method under test: `addDevelopmentCard()` / `removeDevelopmentCard()` / `getDevelopmentCards()`
+
+|              | System under test                                  | Expected output                | Implemented?       |
+|--------------|----------------------------------------------------|--------------------------------|--------------------|
+| Test Case 18 | fresh player; addDevelopmentCard(mockCard)         | getDevelopmentCards() size = 1 | :white_check_mark: |
+| Test Case 19 | player has 1 card; removeDevelopmentCard(mockCard) | getDevelopmentCards() size = 0 | :white_check_mark: |
+| Test Case 20 | fresh player; no cards added                       | getDevelopmentCards() size = 0 | :white_check_mark: |
+
+---
+
+### Method under test: `setHasPlayedDevCardThisTurn(boolean)` / `hasPlayedDevCardThisTurn()`
+
+|              | System under test                               | Expected output                    | Implemented?       |
+|--------------|-------------------------------------------------|------------------------------------|--------------------|
+| Test Case 21 | fresh player; setHasPlayedDevCardThisTurn(true) | hasPlayedDevCardThisTurn() = true  | :white_check_mark: |
+| Test Case 22 | fresh player; no call                           | hasPlayedDevCardThisTurn() = false | :white_check_mark: |
+
+---
+
+### Method under test: `isAdjacentToHex(int hexId)`
+
+Stub implementation — always returns false regardless of hexId.
+
+|              | System under test       | Expected output | Implemented?       |
+|--------------|-------------------------|-----------------|--------------------|
+| Test Case 23 | fresh player; hexId = 5 | false           | :white_check_mark: |

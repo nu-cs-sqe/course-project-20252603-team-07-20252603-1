@@ -161,6 +161,29 @@
 | Test Case 3 | Multiple element set, edge exists         | Correct Object  | :white_check_mark: |
 | Test Case 4 | Multiple element set, edge does not exist | Error           | :white_check_mark: |
 
+### Method under test: `checkNodeOccupied(int nodeID)`
+
+Returns true if the node at nodeID is occupied by any player.
+
+|             | State of the System                               | Expected output | Implemented?       |
+|-------------|---------------------------------------------------|-----------------|--------------------|
+| Test Case 1 | node exists; node is not occupied                 | false           | :white_check_mark: |
+| Test Case 2 | node exists; node is occupied                     | true            | :white_check_mark: |
+
+---
+
+### Method under test: `dfs(int nodeId, PlayerColor color, Set<GraphEdge> visited)`
+
+Recursive depth-first search that computes the longest connected road for `color`, skipping enemy-owned edges and stopping at enemy-occupied intermediate nodes.
+
+|             | State of the System                                                                          | Expected output                               | Implemented?       |
+|-------------|----------------------------------------------------------------------------------------------|-----------------------------------------------|--------------------|
+| Test Case 1 | intermediate node has own (friendly) settlement                                              | road continues through own settlement         | :white_check_mark: |
+| Test Case 2 | intermediate node has enemy settlement                                                       | road is blocked; search stops at that node    | :white_check_mark: |
+| Test Case 3 | node has an unvisited edge owned by an enemy color                                           | enemy edge not traversed                      | :white_check_mark: |
+
+---
+
 ### Method under test: `edgeCheckPlayerOwnsNeighboringEdge(PlayerColor color, int startingNodeID, int endingNodeID)`
 
 #### Inputs:
