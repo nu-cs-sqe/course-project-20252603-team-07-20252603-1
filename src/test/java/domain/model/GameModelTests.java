@@ -799,6 +799,8 @@ public class GameModelTests {
 
     boardMock.buildSetupSettlement(blueStateMock, 0);
     EasyMock.expectLastCall();
+    blueStateMock.updateVictoryPoints(1);
+    EasyMock.expectLastCall();
 
     EasyMock.replay(boardMock, blueStateMock);
 
@@ -904,6 +906,8 @@ public class GameModelTests {
     ColorToPlayerObjMock.put(PlayerColor.ORANGE, orangeStateMock);
 
     boardMock.buildSetupSettlement(blueStateMock, 0);
+    EasyMock.expectLastCall();
+    blueStateMock.updateVictoryPoints(1);
     EasyMock.expectLastCall();
     boardMock.buildSetupRoad(blueStateMock, 0, 0, 3);
     EasyMock.expectLastCall();
