@@ -21,6 +21,7 @@ public class VictimPickDialog {
 
   private final Dialog<Player> dialog;
 
+  /** Constructs the victim pick dialog with the list of candidate players. */
   public VictimPickDialog(ResourceBundle labels, List<Player> candidates) {
     dialog = new Dialog<>();
     dialog.setTitle(labels.getString("robber.title"));
@@ -39,6 +40,7 @@ public class VictimPickDialog {
     dialog.setResultConverter(buttonToVictim::get);
   }
 
+  /** Shows the dialog and returns the chosen victim, or empty if none selected. */
   public Optional<Player> showAndPick() {
     return dialog.showAndWait();
   }

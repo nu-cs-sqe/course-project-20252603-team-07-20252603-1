@@ -11,6 +11,7 @@ import domain.model.resources.ResourceQuantity;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
+/** Test class. */
 public class TradeOfferTests {
   @Test // Test Case 1
   public void Construct_RedBrickForWool_ExpectValid() {

@@ -14,12 +14,13 @@ import java.util.Set;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
+/** Test class. */
 public class BoardGraphTests {
 
   // addGraphNodeObj() Tests
   @Test
   void addNodeToGraph_test01_EmptyGraph_ExpectTrue() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
     EasyMock.expect(nodeMock.getNodeId()).andReturn(0);
     EasyMock.replay(nodeMock);
@@ -33,7 +34,7 @@ public class BoardGraphTests {
 
   @Test
   void addNodeToGraph_test02_OneElementGraph_ExpectTrue() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     GraphNode nodeMock1 = EasyMock.createMock(GraphNode.class);
     GraphNode nodeMock2 = EasyMock.createMock(GraphNode.class);
@@ -51,7 +52,7 @@ public class BoardGraphTests {
 
   @Test
   void addNodeToGraph_test03_MultipleElementGraph_ExpectTrue() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     GraphNode nodeMock1 = EasyMock.createMock(GraphNode.class);
     GraphNode nodeMock2 = EasyMock.createMock(GraphNode.class);
@@ -76,7 +77,7 @@ public class BoardGraphTests {
 
   @Test
   void addDuplicateNodeToGraph_test04_ExpectError() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     GraphNode nodeMock1 = EasyMock.createMock(GraphNode.class);
     GraphNode nodeMock2 = EasyMock.createMock(GraphNode.class);
@@ -106,7 +107,7 @@ public class BoardGraphTests {
   // getGraphNodeById() Tests
   @Test
   void getNodeId0_test01_EmptyMap_ExpectError() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     Exception exception = assertThrows(IllegalArgumentException.class,
         () -> b.getGraphNodeById(0));
@@ -117,7 +118,7 @@ public class BoardGraphTests {
 
   @Test
   void getNodeId0_test02_OneElementMap_ID0Exists_ExpectGraphNode() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     GraphNode nodeStub = EasyMock.createMock(GraphNode.class);
     EasyMock.expect(nodeStub.getNodeId()).andStubReturn(0);
@@ -133,7 +134,7 @@ public class BoardGraphTests {
 
   @Test
   void getNodeId53_test03_MultipleElementMap_ID53DoesNotExists_ExpectError() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     GraphNode nodeStub0 = EasyMock.createMock(GraphNode.class);
     GraphNode nodeStub1 = EasyMock.createMock(GraphNode.class);
@@ -154,7 +155,7 @@ public class BoardGraphTests {
 
   @Test
   void checkPlayerOwnsGraphNodeObject_test01_NodeExists_PlayerOwnsIt_ExpectTrue() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
     EasyMock.expect(nodeMock.getNodeId()).andReturn(0);
     EasyMock.expect(nodeMock.checkColor()).andReturn(PlayerColor.RED);
@@ -167,7 +168,7 @@ public class BoardGraphTests {
 
   @Test
   void checkPlayerOwnsGraphNodeObject_test02_NodeExists_PlayerDoesNotOwnsIt_ExpectFalse() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
     EasyMock.expect(nodeMock.getNodeId()).andReturn(0);
     EasyMock.expect(nodeMock.checkColor()).andReturn(PlayerColor.WHITE);
@@ -180,7 +181,7 @@ public class BoardGraphTests {
 
   @Test
   void checkPlayerOwnsGraphNodeObject_test03_NodeDoesNotExist_ExpectError() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     Exception exception = assertThrows(IllegalArgumentException.class,
         () -> b.checkPlayerOwnsGraphNodeObject(PlayerColor.BLUE, 0));
     assertEquals("Node does not exist", exception.getMessage());
@@ -188,7 +189,7 @@ public class BoardGraphTests {
 
   @Test
   void checkPlayerOwnsGraphNodeObject_test04_NodeExists_DifferentColor_ExpectFalse() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
     EasyMock.expect(nodeMock.getNodeId()).andReturn(0);
     EasyMock.expect(nodeMock.checkColor()).andReturn(PlayerColor.BLUE);
@@ -201,7 +202,7 @@ public class BoardGraphTests {
 
   @Test
   void claimGraphNodeObject_test01_NodeExists_Unclaimed_ExpectTrue() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
     EasyMock.expect(nodeMock.getNodeId()).andReturn(0);
@@ -217,11 +218,11 @@ public class BoardGraphTests {
 
   @Test
   void claimGraphNodeObject_test02_MultipleNodeExists_NodeUnclaimed_ExpectTrue() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
-    GraphNode nodeStub2 = EasyMock.createMock(GraphNode.class);
-    GraphNode nodeStub3 = EasyMock.createMock(GraphNode.class);
+    final GraphNode nodeStub2 = EasyMock.createMock(GraphNode.class);
+    final GraphNode nodeStub3 = EasyMock.createMock(GraphNode.class);
     EasyMock.expect(nodeMock.getNodeId()).andReturn(0);
     nodeMock.playerClaimNode(PlayerColor.ORANGE);
     EasyMock.expectLastCall();
@@ -239,7 +240,7 @@ public class BoardGraphTests {
 
   @Test
   void claimGraphNodeObject_test03_NodeDoesNotExist_ExpectError() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     Exception exception = assertThrows(IllegalArgumentException.class,
         () -> b.claimGraphNodeObject(PlayerColor.BLUE, 53));
@@ -249,7 +250,7 @@ public class BoardGraphTests {
 
   @Test
   void claimGraphNodeObject_test04_NodeDoesExists_AlreadyClaimed_ExpectError() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
     EasyMock.expect(nodeMock.getNodeId()).andReturn(53);
@@ -270,7 +271,7 @@ public class BoardGraphTests {
 
   @Test
   void playerClaimEdgeObject_test01_EdgeUnclaimed_SingleItemCollection_ExpectTrue() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     GraphNode nodeStub = EasyMock.createMock(GraphNode.class);
     GraphEdge edge0to1 = EasyMock.createMock(GraphEdge.class);
     EasyMock.expect(nodeStub.getNodeId()).andReturn(0);
@@ -287,7 +288,7 @@ public class BoardGraphTests {
 
   @Test
   void playerClaimEdgeObject_test02_EdgeUnclaimed_MultipleItemCollection_ExpectTrue() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     GraphNode nodeStub = EasyMock.createNiceMock(GraphNode.class);
     GraphEdge edge0to1 = EasyMock.createMock(GraphEdge.class);
     GraphEdge edge0to2 = EasyMock.createNiceMock(GraphEdge.class);
@@ -309,7 +310,7 @@ public class BoardGraphTests {
 
   @Test
   void playerClaimEdgeObject_test03_EdgeDoesNotExist_EmptyCollection_ExpectError() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     GraphNode nodeStub = EasyMock.createNiceMock(GraphNode.class);
 
     EasyMock.expect(nodeStub.getNodeId()).andReturn(52);
@@ -325,7 +326,7 @@ public class BoardGraphTests {
 
   @Test
   void playerClaimEdgeObject_test04_EdgeAlreadyClaimed_MultipleItemCollection_ExpectError() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     GraphNode nodeStub = EasyMock.createMock(GraphNode.class);
     GraphEdge edge50to53 = EasyMock.createMock(GraphEdge.class);
     GraphEdge edge50to52 = EasyMock.createNiceMock(GraphEdge.class);
@@ -361,7 +362,7 @@ public class BoardGraphTests {
   // addGraphNodeConnection() Tests
   @Test
   void addNewEdge_test01_NotDuplicate_NodeExistsInMap_ExpectTrue() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     GraphNode nodeStub = EasyMock.createMock(GraphNode.class);
     GraphEdge edgeStub = EasyMock.createMock(GraphEdge.class);
@@ -378,7 +379,7 @@ public class BoardGraphTests {
 
   @Test
   void addNewEdge_test02_Duplicate_NodeExistsInMap_ExpectError() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     GraphNode nodeStub = EasyMock.createMock(GraphNode.class);
     GraphEdge edgeStub = EasyMock.createMock(GraphEdge.class);
@@ -400,7 +401,7 @@ public class BoardGraphTests {
 
   @Test
   void addNewEdge_test03_Duplicate_SeparateExistingNode_ExpectTrue() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     GraphNode nodeStub0 = EasyMock.createMock(GraphNode.class);
     GraphNode nodeStub1 = EasyMock.createMock(GraphNode.class);
@@ -423,7 +424,7 @@ public class BoardGraphTests {
 
   @Test
   void addNewEdge_test04_NodeDoesNotExist_ExpectError() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     GraphEdge edgeStub = EasyMock.createMock(GraphEdge.class);
 
     EasyMock.replay(edgeStub);
@@ -438,7 +439,7 @@ public class BoardGraphTests {
   // getConnectingEdgesById Tests
   @Test
   void getEdgeSet_test01_NodeDoesNotExist_ExpectError() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     Exception exception = assertThrows(IllegalArgumentException.class,
         () -> b.getConnectingEdgesById(0));
@@ -448,7 +449,7 @@ public class BoardGraphTests {
 
   @Test
   void getEdgeSet_test02_OneNodeExists_ExpectEmptySet() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     GraphNode nodeStub = EasyMock.createMock(GraphNode.class);
 
     EasyMock.expect(nodeStub.getNodeId()).andStubReturn(0);
@@ -463,7 +464,7 @@ public class BoardGraphTests {
 
   @Test
   void getEdgeSet_test03_MultipleNodesExist_ExpectOneEdgeSet() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     GraphNode nodeStub0 = EasyMock.createMock(GraphNode.class);
     GraphNode nodeStub53 = EasyMock.createMock(GraphNode.class);
     GraphEdge edgeStub = EasyMock.createMock(GraphEdge.class);
@@ -484,7 +485,7 @@ public class BoardGraphTests {
 
   @Test
   void getEdgeSet_test04_MultipleNodesExist_ExpectMultipleEdgeSet() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     GraphNode nodeStub0 = EasyMock.createMock(GraphNode.class);
     GraphNode nodeStub53 = EasyMock.createMock(GraphNode.class);
     GraphEdge edgeStub0 = EasyMock.createMock(GraphEdge.class);
@@ -509,7 +510,7 @@ public class BoardGraphTests {
   // getMatchingEdgeFromSet() tests
   @Test
   void getMatchingEdgeFromSet_test01_EmptySet_ExpectError() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     GraphNode nodeStub = EasyMock.createNiceMock((GraphNode.class));
     EasyMock.expect(nodeStub.getNodeId()).andStubReturn(0);
     EasyMock.replay(nodeStub);
@@ -524,7 +525,7 @@ public class BoardGraphTests {
 
   @Test
   void getMatchingEdgeFromSet_test02_OneElementSet_ExpectEdge() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     GraphNode nodeStub = EasyMock.createNiceMock(GraphNode.class);
     GraphEdge edgeStub = EasyMock.createNiceMock(GraphEdge.class);
     EasyMock.expect(nodeStub.getNodeId()).andStubReturn(0);
@@ -541,7 +542,7 @@ public class BoardGraphTests {
 
   @Test
   void getMatchingEdgeFromSet_test03_MultipleElementSet_ExpectEdge() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     GraphNode nodeStub = EasyMock.createNiceMock(GraphNode.class);
     GraphEdge edgeStub0 = EasyMock.createNiceMock(GraphEdge.class);
     GraphEdge edgeStub1 = EasyMock.createNiceMock(GraphEdge.class);
@@ -562,7 +563,7 @@ public class BoardGraphTests {
 
   @Test
   void getMatchingEdgeFromSet_test04_MultipleElementSet_EdgeDoesNotExist_ExpectError() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     GraphNode nodeStub = EasyMock.createNiceMock(GraphNode.class);
     GraphEdge edgeStub0 = EasyMock.createNiceMock(GraphEdge.class);
     GraphEdge edgeStub1 = EasyMock.createNiceMock(GraphEdge.class);
@@ -596,7 +597,7 @@ public class BoardGraphTests {
   // checkPlayerOwnsNeighboringEdges() tests
   @Test
   void edgeCheckPlayerOwnsNeighboringEdges_test01_RedOwnsEdgeConnectingToStartingNode_ExpectTrue() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     GraphNode nodeStub0 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub1 = EasyMock.createNiceMock(GraphNode.class);
@@ -628,7 +629,7 @@ public class BoardGraphTests {
 
   @Test
   void edgeCheckPlayerOwnsNeighboringEdges_test02_WhiteOwnsEdgeConnectingToEndingNode_ExpectTrue() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     GraphNode nodeStub0 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub1 = EasyMock.createNiceMock(GraphNode.class);
@@ -660,7 +661,7 @@ public class BoardGraphTests {
 
   @Test
   void edgeCheckPlayerOwnsNeighboringEdges_test03_BlueOwnsNoConnectingEdges_ExpectFalse() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     GraphNode nodeStub52 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub53 = EasyMock.createNiceMock(GraphNode.class);
@@ -699,7 +700,7 @@ public class BoardGraphTests {
 
   @Test
   void edgeCheckPlayerOwnsNeighboringEdges_test04_OrangeConnectingEdgesToStartAndEnd_ExpectTrue() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     GraphNode nodeStub52 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub53 = EasyMock.createNiceMock(GraphNode.class);
@@ -740,7 +741,7 @@ public class BoardGraphTests {
 
   @Test
   void edgeCheckPlayerOwnsNeighboringNodes_test01_RedOwnsStartingNode_ExpectTrue() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     GraphNode nodeStub0 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub1 = EasyMock.createNiceMock(GraphNode.class);
@@ -760,7 +761,7 @@ public class BoardGraphTests {
 
   @Test
   void edgeCheckPlayerOwnsNeighboringNodes_test02_WhiteOwnsEndingNode_ExpectTrue() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     GraphNode nodeStub0 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub1 = EasyMock.createNiceMock(GraphNode.class);
@@ -780,7 +781,7 @@ public class BoardGraphTests {
 
   @Test
   void edgeCheckPlayerOwnsNeighboringNodes_test03_BlueOwnsNoNode_ExpectFalse() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     GraphNode nodeStub52 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub53 = EasyMock.createNiceMock(GraphNode.class);
@@ -800,7 +801,7 @@ public class BoardGraphTests {
 
   @Test
   void edgeCheckPlayerOwnsNeighboringNodes_test04_OrangeOwnsBothNodes_ExpectTrue() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     GraphNode nodeStub52 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub53 = EasyMock.createNiceMock(GraphNode.class);
@@ -822,7 +823,7 @@ public class BoardGraphTests {
 
   @Test
   void nodeCheckPlayerOwnsNeighboringEdge_test01_playerOwnsNeighboringEdge_ExpectTrue() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     GraphNode nodeStub0 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub1 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub3 = EasyMock.createNiceMock(GraphNode.class);
@@ -855,7 +856,7 @@ public class BoardGraphTests {
 
   @Test
   void nodeCheckPlayerOwnsNeighboringEdge_test02_playerOwnsNeighboringEdge_ExpectTrue() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     GraphNode nodeStub0 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub1 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub3 = EasyMock.createNiceMock(GraphNode.class);
@@ -887,7 +888,7 @@ public class BoardGraphTests {
 
   @Test
   void nodeCheckPlayerOwnsNeighboringEdge_test03_playerOwnsNoNeighboringEdge_ExpectFalse() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     GraphNode nodeStub49 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub50 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub53 = EasyMock.createNiceMock(GraphNode.class);
@@ -919,7 +920,7 @@ public class BoardGraphTests {
 
   @Test
   void nodeCheckPlayerOwnsNeighboringEdge_test04_playerOwnsNoNeighboringEdge_ExpectFalse() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     GraphNode nodeStub49 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub50 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub53 = EasyMock.createNiceMock(GraphNode.class);
@@ -954,7 +955,7 @@ public class BoardGraphTests {
 
   @Test
   void checkAdjacentClaimedNodes_test01_NoIfAdjacentNodes_ExpectTrue() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     GraphNode nodeStub0 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub3 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub4 = EasyMock.createNiceMock(GraphNode.class);
@@ -985,7 +986,7 @@ public class BoardGraphTests {
 
   @Test
   void checkAdjacentClaimedNodes_test02_EndingIfAdjacentNodes_ExpectFalse() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     GraphNode nodeStub0 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub3 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub4 = EasyMock.createNiceMock(GraphNode.class);
@@ -1019,7 +1020,7 @@ public class BoardGraphTests {
 
   @Test
   void checkAdjacentClaimedNodes_test03_StartingIfAdjacentNodes_ExpectFalse() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     GraphNode nodeStub49 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub50 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub53 = EasyMock.createNiceMock(GraphNode.class);
@@ -1051,7 +1052,7 @@ public class BoardGraphTests {
 
   @Test
   void checkIfAdjacentClaimedNodes_test04_BothStartingAndEndingNodes_ExpectFalse() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     GraphNode nodeStub45 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub49 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub52 = EasyMock.createNiceMock(GraphNode.class);
@@ -1096,7 +1097,7 @@ public class BoardGraphTests {
   // buildBoard() test
   @Test
   void buildBoard_test01_ExpectCompletedBoard() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     b.buildBoard();
     assertEquals(54, b.checkAmountOfNodesForTesting());
     assertEquals(54, b.checkAmountOfNodesInEdgeMapForTesting());
@@ -1106,14 +1107,14 @@ public class BoardGraphTests {
   // Test Case 1
   @Test
   void noPlayerRoads_NoPreviousWinner_ReturnSetup() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     Player mockRedPlayer = EasyMock.createMock(Player.class);
     Player mockWhitePlayer = EasyMock.createMock(Player.class);
     Player mockBluePlayer = EasyMock.createMock(Player.class);
     Player mockOrangePlayer = EasyMock.createMock(Player.class);
 
-    List<Player> players =
+    final List<Player> players =
         List.of(mockRedPlayer, mockBluePlayer, mockOrangePlayer, mockWhitePlayer);
 
     assertEquals(PlayerColor.SETUP, b.calculateLongestRoad(players, PlayerColor.SETUP));
@@ -1122,14 +1123,14 @@ public class BoardGraphTests {
   // Test Case 2
   @Test
   void RedHasExactlyFourRoads_NoPreviousWinner_ReturnsSetup() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     Player mockRedPlayer = EasyMock.createMock(Player.class);
     Player mockWhitePlayer = EasyMock.createMock(Player.class);
     Player mockBluePlayer = EasyMock.createMock(Player.class);
     Player mockOrangePlayer = EasyMock.createMock(Player.class);
 
-    List<Player> players =
+    final List<Player> players =
         List.of(mockRedPlayer, mockBluePlayer, mockOrangePlayer, mockWhitePlayer);
 
     GraphNode mockNode0 = EasyMock.createMock(GraphNode.class);
@@ -1203,14 +1204,14 @@ public class BoardGraphTests {
   // Test Case 3
   @Test
   void OrangeHasExactlyFiveRoads_NoPreviousWinner_ReturnsOrange() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     Player mockRedPlayer = EasyMock.createMock(Player.class);
     Player mockWhitePlayer = EasyMock.createMock(Player.class);
     Player mockBluePlayer = EasyMock.createMock(Player.class);
     Player mockOrangePlayer = EasyMock.createMock(Player.class);
 
-    List<Player> players =
+    final List<Player> players =
         List.of(mockRedPlayer, mockBluePlayer, mockOrangePlayer, mockWhitePlayer);
 
     GraphNode mockNode0 = EasyMock.createMock(GraphNode.class);
@@ -1294,14 +1295,14 @@ public class BoardGraphTests {
   // Test Case 4
   @Test
   void WhiteAndBlueHaveFiveRoads_WhiteIsPreviousWinner_ReturnsWhite() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     Player mockRedPlayer = EasyMock.createMock(Player.class);
     Player mockWhitePlayer = EasyMock.createMock(Player.class);
     Player mockBluePlayer = EasyMock.createMock(Player.class);
     Player mockOrangePlayer = EasyMock.createMock(Player.class);
 
-    List<Player> players =
+    final List<Player> players =
         List.of(mockRedPlayer, mockBluePlayer, mockOrangePlayer, mockWhitePlayer);
 
     GraphNode mockNode0 = EasyMock.createMock(GraphNode.class);
@@ -1443,14 +1444,14 @@ public class BoardGraphTests {
   // Test Case 5
   @Test
   void RedAndBlueHaveFiveRoads_BlueIsPreviousWinner_ReturnsBlue() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     Player mockRedPlayer = EasyMock.createMock(Player.class);
     Player mockWhitePlayer = EasyMock.createMock(Player.class);
     Player mockBluePlayer = EasyMock.createMock(Player.class);
     Player mockOrangePlayer = EasyMock.createMock(Player.class);
 
-    List<Player> players =
+    final List<Player> players =
         List.of(mockRedPlayer, mockBluePlayer, mockOrangePlayer, mockWhitePlayer);
 
     GraphNode mockNode0 = EasyMock.createMock(GraphNode.class);
@@ -1592,14 +1593,14 @@ public class BoardGraphTests {
   // Test Case 6
   @Test
   void RedHasFiveRoads_BlueBuildsToSix_ReturnsBlue() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     Player mockRedPlayer = EasyMock.createMock(Player.class);
     Player mockWhitePlayer = EasyMock.createMock(Player.class);
     Player mockBluePlayer = EasyMock.createMock(Player.class);
     Player mockOrangePlayer = EasyMock.createMock(Player.class);
 
-    List<Player> players =
+    final List<Player> players =
         List.of(mockRedPlayer, mockBluePlayer, mockOrangePlayer, mockWhitePlayer);
 
     GraphNode mockNode0 = EasyMock.createMock(GraphNode.class);
@@ -1751,14 +1752,14 @@ public class BoardGraphTests {
   // Test Case 7
   @Test
   void BlueHasSixRoadsBranching_LongestPathIsFour_RedIsPreviousWinner_ReturnsRed() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     Player mockRedPlayer = EasyMock.createMock(Player.class);
     Player mockWhitePlayer = EasyMock.createMock(Player.class);
     Player mockBluePlayer = EasyMock.createMock(Player.class);
     Player mockOrangePlayer = EasyMock.createMock(Player.class);
 
-    List<Player> players =
+    final List<Player> players =
         List.of(mockRedPlayer, mockBluePlayer, mockOrangePlayer, mockWhitePlayer);
 
     // BLUE nodes - main line 0-4-8-12-17 plus disconnected segment 49-53-50
@@ -1924,14 +1925,14 @@ public class BoardGraphTests {
   // Test Case 8
   @Test
   void WhiteHasEightRoads_LongestSegmentFive_OrangeHasNineRoads_LongestSegmentSix_ReturnsOrange() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     Player mockRedPlayer = EasyMock.createMock(Player.class);
     Player mockWhitePlayer = EasyMock.createMock(Player.class);
     Player mockBluePlayer = EasyMock.createMock(Player.class);
     Player mockOrangePlayer = EasyMock.createMock(Player.class);
 
-    List<Player> players =
+    final List<Player> players =
         List.of(mockRedPlayer, mockBluePlayer, mockOrangePlayer, mockWhitePlayer);
 
     // WHITE nodes - segment 1 (5 roads): 0-4-8-12-17-22
@@ -2171,14 +2172,14 @@ public class BoardGraphTests {
   // Test Case 9
   @Test
   void RedIsPreviousWinner_BlueSettlementBreaksRoadAtNodeEight_ReturnsSetup() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     Player mockRedPlayer = EasyMock.createMock(Player.class);
     Player mockWhitePlayer = EasyMock.createMock(Player.class);
     Player mockBluePlayer = EasyMock.createMock(Player.class);
     Player mockOrangePlayer = EasyMock.createMock(Player.class);
 
-    List<Player> players =
+    final List<Player> players =
         List.of(mockRedPlayer, mockBluePlayer, mockOrangePlayer, mockWhitePlayer);
 
     GraphNode mockNode0 = EasyMock.createMock(GraphNode.class);
@@ -2254,7 +2255,7 @@ public class BoardGraphTests {
   // Test Case 10
   @Test
   void checkNodeOccupied_FreshMockNode_ExpectFalse() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     GraphNode mockNode0 = EasyMock.createMock(GraphNode.class);
     EasyMock.expect(mockNode0.getNodeId()).andReturn(0);
@@ -2271,7 +2272,7 @@ public class BoardGraphTests {
   // Test Case 11
   @Test
   void checkEdgeOccupied_UnclaimedMockEdge_ExpectFalse() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     GraphNode mockNode0 = EasyMock.createMock(GraphNode.class);
     GraphNode mockNode1 = EasyMock.createMock(GraphNode.class);
@@ -2301,7 +2302,7 @@ public class BoardGraphTests {
   // removing any single addGraphEdge call reduces that total to 142.
   @Test
   void buildBoard_TotalConnectingEdgeEntries_ExpectOneHundredFortyFour() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     b.buildBoard();
 
     int total = 0;
@@ -2319,14 +2320,14 @@ public class BoardGraphTests {
   // segments and preventing RED from winning.
   @Test
   void calculateLongestRoad_RedHasFiveRoadsOwnSettlementAtNode8_ReturnsRed() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
 
     Player mockRedPlayer = EasyMock.createMock(Player.class);
     Player mockBluePlayer = EasyMock.createMock(Player.class);
     Player mockOrangePlayer = EasyMock.createMock(Player.class);
     Player mockWhitePlayer = EasyMock.createMock(Player.class);
 
-    List<Player> players =
+    final List<Player> players =
         List.of(mockRedPlayer, mockBluePlayer, mockOrangePlayer, mockWhitePlayer);
 
     GraphNode mockNode0 = EasyMock.createMock(GraphNode.class);
@@ -2412,7 +2413,7 @@ public class BoardGraphTests {
   // checkNodeOccupied() tests
   @Test
   void checkNodeOccupied_NodeIsOccupied_ExpectTrue() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
     EasyMock.expect(nodeMock.getNodeId()).andReturn(0);
     EasyMock.expect(nodeMock.checkOccupied()).andReturn(true);
@@ -2426,7 +2427,7 @@ public class BoardGraphTests {
 
   @Test
   void checkNodeOccupied_NodeIsUnoccupied_ExpectFalse() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
     EasyMock.expect(nodeMock.getNodeId()).andReturn(0);
     EasyMock.expect(nodeMock.checkOccupied()).andReturn(false);
@@ -2439,8 +2440,8 @@ public class BoardGraphTests {
   }
 
   @Test
-  void edgeCheckPlayerOwnsNeighboringEdges_test05_RedOwnsEdgeConnectingOnlyToEndingNode_ExpectTrue() {
-    BoardGraph b = new BoardGraph();
+  void edgeCheckPlayerOwnsNeighboringEdges_test05_RedOwnsEdgeToEndingNodeOnly_ExpectTrue() {
+    final BoardGraph b = new BoardGraph();
 
     GraphNode nodeStub0 = EasyMock.createNiceMock(GraphNode.class);
     GraphNode nodeStub1 = EasyMock.createNiceMock(GraphNode.class);
@@ -2474,7 +2475,7 @@ public class BoardGraphTests {
   // ← REDUCES CXTY
   @Test
   void checkNodeOccupied_NodeExists_NodeOccupied_ExpectTrue() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
     EasyMock.expect(nodeMock.getNodeId()).andReturn(0);
     EasyMock.expect(nodeMock.checkOccupied()).andReturn(true);
@@ -2489,7 +2490,7 @@ public class BoardGraphTests {
   // ← REDUCES CXTY
   @Test
   void edgeCheckPlayerOwnsNeighboringEdge_StartingNodeEdgeOwnedByColor_ExpectTrue() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     b.buildBoard();
     b.claimGraphEdgeObject(PlayerColor.RED, 0, 3);
     assertTrue(b.edgeCheckPlayerOwnsNeighboringEdge(PlayerColor.RED, 0, 3));
@@ -2498,7 +2499,7 @@ public class BoardGraphTests {
   // ← REDUCES CXTY
   @Test
   void edgeCheckPlayerOwnsNeighboringEdge_EndingNodeEdgeOwnedByColor_ExpectTrue() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     b.buildBoard();
     b.claimGraphEdgeObject(PlayerColor.BLUE, 0, 4);
     b.claimGraphEdgeObject(PlayerColor.RED, 3, 7);
@@ -2508,13 +2509,13 @@ public class BoardGraphTests {
   // ← REDUCES CXTY
   @Test
   void dfs_FriendlySettlementAtIntermediateNode_ExpectRoadContinuesThroughOwnSettlement() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     b.buildBoard();
     b.claimGraphEdgeObject(PlayerColor.RED, 0, 3);
     b.claimGraphEdgeObject(PlayerColor.RED, 3, 7);
     b.claimGraphNodeObject(PlayerColor.RED, 3);
 
-    List<Player> players = List.of();
+    final List<Player> players = List.of();
     PlayerColor result = b.calculateLongestRoad(players, PlayerColor.SETUP);
     assertEquals(PlayerColor.SETUP, result); // 2 roads < 5
   }
@@ -2522,21 +2523,21 @@ public class BoardGraphTests {
   // ← REDUCES CXTY
   @Test
   void dfs_EnemySettlementAtIntermediateNode_ExpectRoadBlockedAtEnemyNode() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     b.buildBoard();
     b.claimGraphEdgeObject(PlayerColor.RED, 0, 3);
     b.claimGraphEdgeObject(PlayerColor.RED, 3, 7);
     b.claimGraphNodeObject(PlayerColor.BLUE, 3);
 
-    List<Player> players = List.of();
+    final List<Player> players = List.of();
     PlayerColor result = b.calculateLongestRoad(players, PlayerColor.SETUP);
     assertEquals(PlayerColor.SETUP, result);
   }
 
   // ← REDUCES CXTY
   @Test
-  void dfs_FriendlySettlementAtIntermediateNode_PlayerInActivePlayers_ExpectDfsContinuesThroughFriendlyNode() {
-    BoardGraph b = new BoardGraph();
+  void dfs_FriendlySettlementAtIntermediateNode_InActivePlayers_ExpectContinuesThroughNode() {
+    final BoardGraph b = new BoardGraph();
     b.buildBoard();
     b.claimGraphEdgeObject(PlayerColor.RED, 0, 3);
     b.claimGraphEdgeObject(PlayerColor.RED, 3, 7);
@@ -2546,7 +2547,7 @@ public class BoardGraphTests {
     EasyMock.expect(redPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.replay(redPlayer);
 
-    List<Player> players = List.of(redPlayer);
+    final List<Player> players = List.of(redPlayer);
     PlayerColor result = b.calculateLongestRoad(players, PlayerColor.SETUP);
     assertEquals(PlayerColor.SETUP, result); // 2 roads < 5, but DFS traverses through node 3
     EasyMock.verify(redPlayer);
@@ -2555,7 +2556,7 @@ public class BoardGraphTests {
   // ← REDUCES CXTY
   @Test
   void dfs_NodeHasUnvisitedEdgeOwnedByEnemy_ExpectEnemyEdgeNotTraversed() {
-    BoardGraph b = new BoardGraph();
+    final BoardGraph b = new BoardGraph();
     b.buildBoard();
     b.claimGraphEdgeObject(PlayerColor.RED, 0, 3);
     b.claimGraphEdgeObject(PlayerColor.BLUE, 0, 4);
@@ -2568,7 +2569,7 @@ public class BoardGraphTests {
     EasyMock.expect(redPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.replay(redPlayer);
 
-    List<Player> players = List.of(redPlayer);
+    final List<Player> players = List.of(redPlayer);
     PlayerColor result = b.calculateLongestRoad(players, PlayerColor.SETUP);
     assertEquals(PlayerColor.RED, result);
     EasyMock.verify(redPlayer);

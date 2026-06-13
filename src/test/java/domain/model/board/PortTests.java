@@ -17,6 +17,7 @@ import org.easymock.EasyMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/** Test class. */
 public class PortTests {
 
   private BoardHandler mockBoard;
@@ -48,7 +49,7 @@ public class PortTests {
   // Test Case 1
   @Test
   void PlayerOwnsNeitherPortNode_ReturnsFalse() {
-    Port port = new Port(3, Resource.ANY, List.of(0, 3));
+    final Port port = new Port(3, Resource.ANY, List.of(0, 3));
 
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).times(2);
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(false);
@@ -64,7 +65,7 @@ public class PortTests {
   // Test Case 2
   @Test
   void PlayerOwnsFirstPortNode_ReturnsTrue() {
-    Port port = new Port(3, Resource.ANY, List.of(0, 3));
+    final Port port = new Port(3, Resource.ANY, List.of(0, 3));
 
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
@@ -79,7 +80,7 @@ public class PortTests {
   // Test Case 3
   @Test
   void PlayerOwnsSecondPortNode_ReturnsTrue() {
-    Port port = new Port(3, Resource.ANY, List.of(0, 3));
+    final Port port = new Port(3, Resource.ANY, List.of(0, 3));
 
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(false);
@@ -95,7 +96,7 @@ public class PortTests {
   // Test Case 4
   @Test
   void RedAtAnyPort_GivesThreeWool_ReceivesOneOre_BankHasNineteen() throws EmptyDeckException {
-    Port port = new Port(3, Resource.ANY, List.of(0, 3));
+    final Port port = new Port(3, Resource.ANY, List.of(0, 3));
 
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
@@ -120,7 +121,7 @@ public class PortTests {
   // Test Case 5
   @Test
   void RedAtAnyPort_GivesThreeLumber_ReceivesOneGrain() throws EmptyDeckException {
-    Port port = new Port(3, Resource.ANY, List.of(0, 3));
+    final Port port = new Port(3, Resource.ANY, List.of(0, 3));
 
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
@@ -145,7 +146,7 @@ public class PortTests {
   // Test Case 6
   @Test
   void RedAtWoolPort_GivesTwoWool_ReceivesOneOre() throws EmptyDeckException {
-    Port port = new Port(2, Resource.WOOL, List.of(0, 3));
+    final Port port = new Port(2, Resource.WOOL, List.of(0, 3));
 
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
@@ -170,7 +171,7 @@ public class PortTests {
   // Test Case 7
   @Test
   void RedAtOrePort_GivesTwoOre_ReceivesOneBrick() throws EmptyDeckException {
-    Port port = new Port(2, Resource.ORE, List.of(0, 3));
+    final Port port = new Port(2, Resource.ORE, List.of(0, 3));
 
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
@@ -195,7 +196,7 @@ public class PortTests {
   // Test Case 8
   @Test
   void RedAtLumberPort_GivesTwoLumber_ReceivesOneGrain() throws EmptyDeckException {
-    Port port = new Port(2, Resource.LUMBER, List.of(0, 3));
+    final Port port = new Port(2, Resource.LUMBER, List.of(0, 3));
 
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
@@ -220,7 +221,7 @@ public class PortTests {
   // Test Case 9
   @Test
   void RedAtGrainPort_GivesTwoGrain_ReceivesOneWool() throws EmptyDeckException {
-    Port port = new Port(2, Resource.GRAIN, List.of(0, 3));
+    final Port port = new Port(2, Resource.GRAIN, List.of(0, 3));
 
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
@@ -245,7 +246,7 @@ public class PortTests {
   // Test Case 10
   @Test
   void RedAtBrickPort_GivesTwoBrick_ReceivesOneLumber() throws EmptyDeckException {
-    Port port = new Port(2, Resource.BRICK, List.of(0, 3));
+    final Port port = new Port(2, Resource.BRICK, List.of(0, 3));
 
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
@@ -270,7 +271,7 @@ public class PortTests {
   // Test Case 11
   @Test
   void RedAtWoolPort_TriesToGiveOre_ThrowsException() {
-    Port port = new Port(2, Resource.WOOL, List.of(0, 3));
+    final Port port = new Port(2, Resource.WOOL, List.of(0, 3));
 
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
@@ -289,7 +290,7 @@ public class PortTests {
   // Test Case 12
   @Test
   void RedAtAnyPort_TradesWoolForWool_ThrowsException() {
-    Port port = new Port(3, Resource.ANY, List.of(0, 3));
+    final Port port = new Port(3, Resource.ANY, List.of(0, 3));
 
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
@@ -308,7 +309,7 @@ public class PortTests {
   // Test Case 13
   @Test
   void RedAtWoolPort_HasOneWool_TriesToGiveTwo_ThrowsException() {
-    Port port = new Port(2, Resource.WOOL, List.of(0, 3));
+    final Port port = new Port(2, Resource.WOOL, List.of(0, 3));
 
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
@@ -328,7 +329,7 @@ public class PortTests {
   // Test Case 14
   @Test
   void RedDoesNotOwnAdjacentNode_ThrowsException() {
-    Port port = new Port(3, Resource.ANY, List.of(0, 3));
+    final Port port = new Port(3, Resource.ANY, List.of(0, 3));
 
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(false);
@@ -348,7 +349,7 @@ public class PortTests {
   // Test Case 15
   @Test
   void RedAtAnyPort_BankHasZeroOre_ThrowsEmptyDeckException() throws EmptyDeckException {
-    Port port = new Port(3, Resource.ANY, List.of(0, 3));
+    final Port port = new Port(3, Resource.ANY, List.of(0, 3));
 
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
@@ -367,7 +368,7 @@ public class PortTests {
   // Test Case 16
   @Test
   void RedAtAnyPort_BankHasOneOre_TradeSucceeds() throws EmptyDeckException {
-    Port port = new Port(3, Resource.ANY, List.of(0, 3));
+    final Port port = new Port(3, Resource.ANY, List.of(0, 3));
 
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
@@ -392,7 +393,7 @@ public class PortTests {
   // Test Case 17
   @Test
   void RedAtAnyPort_PlayerHasNineteenWool_TradeSucceeds() throws EmptyDeckException {
-    Port port = new Port(3, Resource.ANY, List.of(0, 3));
+    final Port port = new Port(3, Resource.ANY, List.of(0, 3));
 
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);
@@ -417,7 +418,7 @@ public class PortTests {
   // Test Case 18
   @Test
   void RedAtWoolPort_GivesTwoWool_ReceivesOneWool_ThrowsException() {
-    Port port = new Port(2, Resource.WOOL, List.of(0, 3));
+    final Port port = new Port(2, Resource.WOOL, List.of(0, 3));
 
     EasyMock.expect(mockPlayer.getColor()).andReturn(PlayerColor.RED).anyTimes();
     EasyMock.expect(mockBoard.checkPlayerOwnsNode(PlayerColor.RED, 0)).andReturn(true);

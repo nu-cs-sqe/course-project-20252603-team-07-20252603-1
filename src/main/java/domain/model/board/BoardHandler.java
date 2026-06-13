@@ -335,7 +335,7 @@ public class BoardHandler {
    * @param previousWinner the color of the previous longest road holder,
    *                       or {@link PlayerColor#SETUP} if none
    * @return the color of the player with the longest road, or
-   * {@link PlayerColor#SETUP} if no player qualifies
+   *     {@link PlayerColor#SETUP} if no player qualifies
    */
   // Note: Returns SETUP PlayerColor if nobody has achieved longest road yet
   public PlayerColor calculateLongestRoad(List<Player> players, PlayerColor previousWinner) {

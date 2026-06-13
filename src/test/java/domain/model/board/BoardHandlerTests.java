@@ -21,6 +21,7 @@ import org.easymock.EasyMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/** Test class. */
 public class BoardHandlerTests {
 
   private BoardGraphController mockBoardGraphController;
@@ -1936,7 +1937,8 @@ public class BoardHandlerTests {
   // Test Case 71
   // before any settlement is built, every node should be owned by SETUP.
   // the private and public constructors both call Arrays.fill(nodeOwners, PlayerColor.SETUP).
-  // removing that call leaves all entries null, so checkPlayerOwnsNode(SETUP, n) would return false.
+  // removing that call leaves all entries null,
+  // so checkPlayerOwnsNode(SETUP, n) would return false.
   @Test
   void CheckPlayerOwnsNode_FreshBoard_DefaultOwnerIsSetup() {
     BoardHandler b =

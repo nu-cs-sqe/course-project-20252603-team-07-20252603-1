@@ -26,7 +26,8 @@ import ui.ViewContext;
  * that card's pick flow on the board.
  */
 @SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"},
-    justification = "UI classes intentionally share JavaFX nodes, controllers, and models by reference")
+    justification = "UI classes intentionally share JavaFX nodes, controllers, and "
+        + "models by reference")
 public class DevCardDialog {
 
   private static final int SPACING_PX = 8;
@@ -45,6 +46,7 @@ public class DevCardDialog {
   private final Label vpLabel;
   private final Label statusLabel;
 
+  /** Constructs the development card dialog. */
   public DevCardDialog(ViewContext context, GameModel model, DevelopmentCardDeck deck) {
     this.context = context;
     this.model = model;
@@ -61,6 +63,7 @@ public class DevCardDialog {
     renderHand();
   }
 
+  /** Shows the dialog and returns the played card, or empty if closed without playing. */
   public Optional<DevelopmentCard> showAndPlay() {
     return dialog.showAndWait();
   }

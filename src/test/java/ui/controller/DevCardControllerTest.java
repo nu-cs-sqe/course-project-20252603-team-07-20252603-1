@@ -17,6 +17,7 @@ import org.easymock.EasyMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/** Test class. */
 class DevCardControllerTest {
 
   private DevelopmentCardHandler mockHandler;
@@ -31,7 +32,8 @@ class DevCardControllerTest {
   }
 
   // TC1: buyDevelopmentCard(model, deck); handler returns a card
-  //      -> controller returns the same DevelopmentCard; verify handler called with current player, deck, and round
+  //      -> controller returns the same DevelopmentCard;
+  //         verify handler called with current player, deck, and round
   @Test
   void buyDevelopmentCard_HandlerReturnsCard_ExpectCardReturned() throws EmptyDeckException {
     final int currentRound = 2;
@@ -103,7 +105,8 @@ class DevCardControllerTest {
   }
 
   // TC4: playKnightCard(model, card, robber, 5, victim); handler succeeds
-  //      -> verify handler called with current player, card, currentRound, robber, 5, victim; no exception
+  //      -> verify handler called with current player, card, currentRound, robber, 5, victim;
+  //         no exception
   @Test
   void playKnightCard_HandlerSucceeds_ExpectDelegation() {
     final int currentRound = 2;
@@ -200,14 +203,15 @@ class DevCardControllerTest {
   }
 
   // TC8: playMonopolyCard(model, card, BRICK); handler succeeds
-  //      -> verify handler called with current player, card, currentRound, BRICK, and other players; no exception
+  //      -> verify handler called with current player, card, currentRound, BRICK,
+  //         and other players; no exception
   @Test
   void playMonopolyCard_HandlerSucceeds_ExpectDelegation() {
     final int currentRound = 2;
 
     Player mockPlayer = EasyMock.createMock(Player.class);
     Player mockOther = EasyMock.createMock(Player.class);
-    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+    final DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
     List<Player> otherPlayers = List.of(mockOther);
 
     EasyMock.expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
@@ -230,7 +234,7 @@ class DevCardControllerTest {
 
     Player mockPlayer = EasyMock.createMock(Player.class);
     Player mockOther = EasyMock.createMock(Player.class);
-    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+    final DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
     List<Player> otherPlayers = List.of(mockOther);
 
     EasyMock.expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
@@ -275,7 +279,8 @@ class DevCardControllerTest {
   }
 
   // TC11: playRoadBuildingCard(model, card, 0, 1, 1, 2); handler succeeds
-  //       -> verify handler called with current player, card, currentRound, boardHandler, 0, 1, 1, 2; no exception
+  //       -> verify handler called with current player, card, currentRound, boardHandler, 0, 1,
+  //          1, 2; no exception
   @Test
   void playRoadBuildingCard_HandlerSucceeds_ExpectDelegation() {
     final int currentRound = 2;
@@ -457,20 +462,20 @@ class DevCardControllerTest {
     final int expectedCount = 3;
 
     Player mockPlayer = EasyMock.createMock(Player.class);
-    DevelopmentCard mockVP1 = EasyMock.createMock(DevelopmentCard.class);
-    DevelopmentCard mockVP2 = EasyMock.createMock(DevelopmentCard.class);
-    DevelopmentCard mockVP3 = EasyMock.createMock(DevelopmentCard.class);
-    List<DevelopmentCard> hand = List.of(mockVP1, mockVP2, mockVP3);
+    DevelopmentCard mockVp1 = EasyMock.createMock(DevelopmentCard.class);
+    DevelopmentCard mockVp2 = EasyMock.createMock(DevelopmentCard.class);
+    DevelopmentCard mockVp3 = EasyMock.createMock(DevelopmentCard.class);
+    List<DevelopmentCard> hand = List.of(mockVp1, mockVp2, mockVp3);
 
     EasyMock.expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
     EasyMock.expect(mockPlayer.getDevelopmentCards()).andReturn(hand);
     EasyMock.expect(mockHandler.countVictoryPointCards(hand)).andReturn(expectedCount);
 
-    EasyMock.replay(mockModel, mockHandler, mockPlayer, mockVP1, mockVP2, mockVP3);
+    EasyMock.replay(mockModel, mockHandler, mockPlayer, mockVp1, mockVp2, mockVp3);
 
     int result = controller.getVictoryPointCount(mockModel);
 
-    EasyMock.verify(mockModel, mockHandler, mockPlayer, mockVP1, mockVP2, mockVP3);
+    EasyMock.verify(mockModel, mockHandler, mockPlayer, mockVp1, mockVp2, mockVp3);
     assertEquals(expectedCount, result);
   }
 
@@ -481,24 +486,24 @@ class DevCardControllerTest {
     final int expectedCount = 5;
 
     Player mockPlayer = EasyMock.createMock(Player.class);
-    DevelopmentCard mockVP1 = EasyMock.createMock(DevelopmentCard.class);
-    DevelopmentCard mockVP2 = EasyMock.createMock(DevelopmentCard.class);
-    DevelopmentCard mockVP3 = EasyMock.createMock(DevelopmentCard.class);
-    DevelopmentCard mockVP4 = EasyMock.createMock(DevelopmentCard.class);
-    DevelopmentCard mockVP5 = EasyMock.createMock(DevelopmentCard.class);
-    List<DevelopmentCard> hand = List.of(mockVP1, mockVP2, mockVP3, mockVP4, mockVP5);
+    DevelopmentCard mockVp1 = EasyMock.createMock(DevelopmentCard.class);
+    DevelopmentCard mockVp2 = EasyMock.createMock(DevelopmentCard.class);
+    DevelopmentCard mockVp3 = EasyMock.createMock(DevelopmentCard.class);
+    DevelopmentCard mockVp4 = EasyMock.createMock(DevelopmentCard.class);
+    DevelopmentCard mockVp5 = EasyMock.createMock(DevelopmentCard.class);
+    List<DevelopmentCard> hand = List.of(mockVp1, mockVp2, mockVp3, mockVp4, mockVp5);
 
     EasyMock.expect(mockModel.getCurrentPlayer()).andReturn(mockPlayer);
     EasyMock.expect(mockPlayer.getDevelopmentCards()).andReturn(hand);
     EasyMock.expect(mockHandler.countVictoryPointCards(hand)).andReturn(expectedCount);
 
-    EasyMock.replay(mockModel, mockHandler, mockPlayer, mockVP1, mockVP2, mockVP3, mockVP4,
-        mockVP5);
+    EasyMock.replay(mockModel, mockHandler, mockPlayer, mockVp1, mockVp2, mockVp3, mockVp4,
+        mockVp5);
 
     int result = controller.getVictoryPointCount(mockModel);
 
-    EasyMock.verify(mockModel, mockHandler, mockPlayer, mockVP1, mockVP2, mockVP3, mockVP4,
-        mockVP5);
+    EasyMock.verify(mockModel, mockHandler, mockPlayer, mockVp1, mockVp2, mockVp3, mockVp4,
+        mockVp5);
     assertEquals(expectedCount, result);
   }
 

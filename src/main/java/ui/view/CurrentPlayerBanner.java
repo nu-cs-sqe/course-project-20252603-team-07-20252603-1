@@ -11,8 +11,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 
 
+/** Banner showing the current player's name and colour swatch. */
 @SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"},
-    justification = "UI classes intentionally share JavaFX nodes, controllers, and models by reference")
+    justification = "UI classes intentionally share JavaFX nodes, controllers, and "
+        + "models by reference")
 public class CurrentPlayerBanner {
 
   private static final int SPACING_PX = 10;
@@ -25,6 +27,7 @@ public class CurrentPlayerBanner {
   private final Label nameLabel;
   private final ResourceBundle labels;
 
+  /** Constructs the current player banner. */
   public CurrentPlayerBanner(ResourceBundle labels) {
     this.labels = labels;
     this.swatch = new Region();
@@ -36,10 +39,12 @@ public class CurrentPlayerBanner {
     this.root.setSpacing(SPACING_PX);
   }
 
+  /** Returns the root JavaFX node. */
   public Parent getRoot() {
     return root;
   }
 
+  /** Updates the banner to show the given player. */
   public void update(Player player) {
     nameLabel.setText(MessageFormat.format(labels.getString("banner.turn"), player.getName()));
     swatch.getStyleClass().removeIf(c -> c.startsWith(SWATCH_CLASS_PREFIX));

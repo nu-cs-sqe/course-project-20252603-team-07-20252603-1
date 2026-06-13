@@ -18,8 +18,10 @@ import ui.ViewContext;
 import ui.controller.GameSetupController;
 import ui.view.board.BoardView;
 
+/** Summary screen showing the configured players, board, and decks before the game starts. */
 @SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"},
-    justification = "UI classes intentionally share JavaFX nodes, controllers, and models by reference")
+    justification = "UI classes intentionally share JavaFX nodes, controllers, and "
+        + "models by reference")
 public class SetupSummaryView {
 
   private static final double SUMMARY_HEX_SIZE_PX = 30;
@@ -27,6 +29,7 @@ public class SetupSummaryView {
   private final ScrollPane root;
   private final ResourceBundle labels;
 
+  /** Constructs the setup summary view. */
   public SetupSummaryView(SetupNavigator navigator, ViewContext context, GameSetupModel model) {
     this.labels = context.labels();
     GameSetupController controller = context.setup();
@@ -34,9 +37,9 @@ public class SetupSummaryView {
     Label header = new Label(labels.getString("summary.title"));
     header.getStyleClass().add("title");
 
-    VBox turnOrder = buildTurnOrderSection(controller, model);
-    VBox board = buildBoardSection(controller, model);
-    VBox decks = buildDecksSection(controller, model);
+    final VBox turnOrder = buildTurnOrderSection(controller, model);
+    final VBox board = buildBoardSection(controller, model);
+    final VBox decks = buildDecksSection(controller, model);
 
     Button homeButton = new Button(labels.getString("common.backToHome"));
     homeButton.setOnAction(e -> navigator.goToHome());

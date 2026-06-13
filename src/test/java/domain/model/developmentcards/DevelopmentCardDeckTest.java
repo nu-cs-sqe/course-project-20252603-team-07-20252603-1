@@ -100,7 +100,8 @@ class DevelopmentCardDeckTest {
     assertEquals(expectedVictoryPointCount, victoryPointCount);
   }
 
-  // TC7: drawCard(3) from full deck (size 25) -> card non-null with valid type, roundDrawnAt == 3, countRemaining() == 24
+  // TC7: drawCard(3) from full deck (size 25) -> card non-null with valid type,
+  //      roundDrawnAt == 3, countRemaining() == 24
   @Test
   void drawCard_FromFullDeck_ExpectValidCardStampedWithRoundAndCountDecremented()
       throws EmptyDeckException {
@@ -117,7 +118,8 @@ class DevelopmentCardDeckTest {
     assertEquals(expectedRemaining, deck.countRemaining());
   }
 
-  // TC8: drawCard(7) from deck with 1 card remaining -> card returned (roundDrawnAt == 7), countRemaining() == 0
+  // TC8: drawCard(7) from deck with 1 card remaining
+  //      -> card returned (roundDrawnAt == 7), countRemaining() == 0
   @Test
   void drawCard_FromDeckWithOneCardRemaining_ExpectCardStampedWithRoundAndCountZero()
       throws EmptyDeckException {
@@ -136,7 +138,8 @@ class DevelopmentCardDeckTest {
     assertEquals(expectedRemaining, deck.countRemaining());
   }
 
-  // TC9: drawCard(1) from empty deck (size 0) -> EmptyDeckException: "Cannot draw new DevelopmentCard, no cards remain."
+  // TC9: drawCard(1) from empty deck (size 0)
+  //      -> EmptyDeckException: "Cannot draw new DevelopmentCard, no cards remain."
   @Test
   void drawCard_FromEmptyDeck_ExpectEmptyDeckException() throws EmptyDeckException {
     DevelopmentCardDeck deck = new DevelopmentCardDeck();
@@ -149,7 +152,8 @@ class DevelopmentCardDeckTest {
   }
 
   // TC10: shuffle() on full deck (25) -> card order is randomized; countRemaining() still 25
-  // Note: probabilistic — compares two independently shuffled sequences; failure probability is 1/25! ≈ 10^-25
+  // Note: probabilistic — compares two independently shuffled sequences;
+  //       failure probability is 1/25! ≈ 10^-25
   @Test
   void shuffle_OnFullDeck_ExpectRandomizedOrderAndCountUnchanged() throws EmptyDeckException {
     DevelopmentCardDeck deck1 = new DevelopmentCardDeck();

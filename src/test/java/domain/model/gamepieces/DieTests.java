@@ -6,6 +6,7 @@ import java.util.Random;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
+/** Test class. */
 public class DieTests {
 
   @Test // Test Case 1

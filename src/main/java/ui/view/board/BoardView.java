@@ -27,7 +27,8 @@ import javafx.scene.text.Text;
  * or hex the user clicks; legality of the pick is enforced by the model, not here.
  */
 @SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"},
-    justification = "UI classes intentionally share JavaFX nodes, controllers, and models by reference")
+    justification = "UI classes intentionally share JavaFX nodes, controllers, and "
+        + "models by reference")
 public class BoardView {
 
   /**
@@ -35,6 +36,7 @@ public class BoardView {
    */
   @FunctionalInterface
   public interface EdgeSelectionHandler {
+    /** Called when the user selects an edge between nodeA and nodeB. */
     void onEdge(int nodeA, int nodeB);
   }
 
@@ -101,10 +103,12 @@ public class BoardView {
   private EdgeSelectionHandler onEdgeSelected;
   private IntConsumer onHexSelected;
 
+  /** Constructs a BoardView with the default hex size. */
   public BoardView(BoardHandler board, ResourceBundle labels) {
     this(board, labels, HEX_SIZE_PX);
   }
 
+  /** Constructs a BoardView with the specified hex size. */
   public BoardView(BoardHandler board, ResourceBundle labels, double hexSize) {
     this.board = board;
     this.hexSize = hexSize;
@@ -128,6 +132,7 @@ public class BoardView {
     positionRobber();
   }
 
+  /** Sets the board selection mode and updates hit-layer visibility. */
   public void setSelectionMode(BoardSelectionMode newMode) {
     this.mode = newMode;
     applyMode();

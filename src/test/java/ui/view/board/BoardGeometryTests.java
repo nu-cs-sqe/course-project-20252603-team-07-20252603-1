@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import org.junit.jupiter.api.Test;
 
+/** Test class. */
 public class BoardGeometryTests {
 
   private static final double HEX_SIZE = 40.0;
@@ -44,8 +45,8 @@ public class BoardGeometryTests {
 
     TreeMap<Long, Integer> rowCounts = new TreeMap<>();
     for (BoardGeometry.Point node : geometry.nodePositions()) {
-      long yKey = Math.round(node.getY() * 100);
-      rowCounts.merge(yKey, 1, Integer::sum);
+      long yk = Math.round(node.getY() * 100);
+      rowCounts.merge(yk, 1, Integer::sum);
     }
 
     assertEquals(expectedRowSizes.length, rowCounts.size());
@@ -57,7 +58,7 @@ public class BoardGeometryTests {
   }
 
   @Test
-  public void testNodePositionsSortedByYThenX() {
+  public void testNodePositionsSortedByYthenX() {
     List<BoardGeometry.Point> nodes = geometry.nodePositions();
     for (int i = 1; i < nodes.size(); i++) {
       BoardGeometry.Point prev = nodes.get(i - 1);

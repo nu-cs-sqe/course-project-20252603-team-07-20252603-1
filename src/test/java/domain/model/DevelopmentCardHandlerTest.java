@@ -138,7 +138,7 @@ class DevelopmentCardHandlerTest {
     final int currentRound = 1;
 
     Player mockBuyer = EasyMock.createMock(Player.class);
-    DevelopmentCardDeck mockDeck = EasyMock.createMock(DevelopmentCardDeck.class);
+    final DevelopmentCardDeck mockDeck = EasyMock.createMock(DevelopmentCardDeck.class);
 
     EasyMock.expect(mockBuyer.getResourceCount(Resource.ORE)).andReturn(1);
     EasyMock.expect(mockBuyer.getResourceCount(Resource.WOOL)).andReturn(1);
@@ -220,9 +220,9 @@ class DevelopmentCardHandlerTest {
   void playKnightCard_CardIsNull_ExpectIllegalArgumentException() {
     final int currentRound = 1;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
-    Robber mockRobber = EasyMock.createMock(Robber.class);
-    Player mockVictim = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
+    final Robber mockRobber = EasyMock.createMock(Robber.class);
+    final Player mockVictim = EasyMock.createMock(Player.class);
 
     EasyMock.replay(mockPlayer, mockRobber, mockVictim);
 
@@ -240,10 +240,10 @@ class DevelopmentCardHandlerTest {
   void playKnightCard_CardTypeIsNotKnight_ExpectIllegalArgumentException() {
     final int currentRound = 1;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    Robber mockRobber = EasyMock.createMock(Robber.class);
-    Player mockVictim = EasyMock.createMock(Player.class);
+    final Robber mockRobber = EasyMock.createMock(Robber.class);
+    final Player mockVictim = EasyMock.createMock(Player.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.MONOPOLY);
 
@@ -264,10 +264,10 @@ class DevelopmentCardHandlerTest {
   void playKnightCard_CardNotPlayableSameTurn_ExpectIllegalStateException() {
     final int currentRound = 1;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    Robber mockRobber = EasyMock.createMock(Robber.class);
-    Player mockVictim = EasyMock.createMock(Player.class);
+    final Robber mockRobber = EasyMock.createMock(Robber.class);
+    final Player mockVictim = EasyMock.createMock(Player.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.KNIGHT);
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(false);
@@ -289,10 +289,10 @@ class DevelopmentCardHandlerTest {
   void playKnightCard_AlreadyPlayedDevCardThisTurn_ExpectIllegalStateException() {
     final int currentRound = 1;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    Robber mockRobber = EasyMock.createMock(Robber.class);
-    Player mockVictim = EasyMock.createMock(Player.class);
+    final Robber mockRobber = EasyMock.createMock(Robber.class);
+    final Player mockVictim = EasyMock.createMock(Player.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.KNIGHT);
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
@@ -315,9 +315,9 @@ class DevelopmentCardHandlerTest {
   void playKnightCard_RobberIsNull_ExpectIllegalArgumentException() {
     final int currentRound = 1;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    Player mockVictim = EasyMock.createMock(Player.class);
+    final Player mockVictim = EasyMock.createMock(Player.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.KNIGHT);
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
@@ -334,16 +334,17 @@ class DevelopmentCardHandlerTest {
   }
 
   // TC13: targetHexId = 5 (valid, different from current hex 3), victim adjacent with 3 resources
-  //       -> robber moves to hex 5; 1 resource transferred from victim to player; knight count incremented; card removed
+  //       -> robber moves to hex 5; 1 resource transferred from victim to player;
+  //          knight count incremented; card removed
   @Test
   void playKnightCard_ValidMoveVictimHasResources_ExpectRobberMovedAndResourceStolen() {
     final int currentRound = 2;
     final int targetHexId = 5;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    Robber mockRobber = EasyMock.createMock(Robber.class);
-    Player mockVictim = EasyMock.createMock(Player.class);
+    final Robber mockRobber = EasyMock.createMock(Robber.class);
+    final Player mockVictim = EasyMock.createMock(Player.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.KNIGHT);
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
@@ -374,10 +375,10 @@ class DevelopmentCardHandlerTest {
     final int currentRound = 2;
     final int targetHexId = 0;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    Robber mockRobber = EasyMock.createMock(Robber.class);
-    Player mockVictim = EasyMock.createMock(Player.class);
+    final Robber mockRobber = EasyMock.createMock(Robber.class);
+    final Player mockVictim = EasyMock.createMock(Player.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.KNIGHT);
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
@@ -408,10 +409,10 @@ class DevelopmentCardHandlerTest {
     final int currentRound = 2;
     final int targetHexId = 18;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    Robber mockRobber = EasyMock.createMock(Robber.class);
-    Player mockVictim = EasyMock.createMock(Player.class);
+    final Robber mockRobber = EasyMock.createMock(Robber.class);
+    final Player mockVictim = EasyMock.createMock(Player.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.KNIGHT);
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
@@ -442,10 +443,10 @@ class DevelopmentCardHandlerTest {
     final int currentRound = 2;
     final int targetHexId = 5;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    Robber mockRobber = EasyMock.createMock(Robber.class);
-    Player mockVictim = EasyMock.createMock(Player.class);
+    final Robber mockRobber = EasyMock.createMock(Robber.class);
+    final Player mockVictim = EasyMock.createMock(Player.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.KNIGHT);
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
@@ -470,9 +471,9 @@ class DevelopmentCardHandlerTest {
     final int currentRound = 2;
     final int targetHexId = 5;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    Robber mockRobber = EasyMock.createMock(Robber.class);
+    final Robber mockRobber = EasyMock.createMock(Robber.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.KNIGHT);
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
@@ -498,10 +499,10 @@ class DevelopmentCardHandlerTest {
     final int currentRound = 2;
     final int targetHexId = 5;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    Robber mockRobber = EasyMock.createMock(Robber.class);
-    Player mockVictim = EasyMock.createMock(Player.class);
+    final Robber mockRobber = EasyMock.createMock(Robber.class);
+    final Player mockVictim = EasyMock.createMock(Player.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.KNIGHT);
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
@@ -529,10 +530,10 @@ class DevelopmentCardHandlerTest {
     final int currentRound = 2;
     final int targetHexId = 5;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    Robber mockRobber = EasyMock.createMock(Robber.class);
-    Player mockVictim = EasyMock.createMock(Player.class);
+    final Robber mockRobber = EasyMock.createMock(Robber.class);
+    final Player mockVictim = EasyMock.createMock(Player.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.KNIGHT);
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
@@ -563,10 +564,10 @@ class DevelopmentCardHandlerTest {
     final int currentRound = 2;
     final int targetHexId = 5;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    Robber mockRobber = EasyMock.createMock(Robber.class);
-    Player mockVictim = EasyMock.createMock(Player.class);
+    final Robber mockRobber = EasyMock.createMock(Robber.class);
+    final Player mockVictim = EasyMock.createMock(Player.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.KNIGHT);
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
@@ -591,7 +592,7 @@ class DevelopmentCardHandlerTest {
   void playMonopolyCard_CardIsNull_ExpectIllegalArgumentException() {
     final int currentRound = 1;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
 
     EasyMock.replay(mockPlayer);
 
@@ -609,7 +610,7 @@ class DevelopmentCardHandlerTest {
   void playMonopolyCard_CardTypeIsNotMonopoly_ExpectIllegalArgumentException() {
     final int currentRound = 1;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.KNIGHT);
@@ -631,7 +632,7 @@ class DevelopmentCardHandlerTest {
   void playMonopolyCard_CardNotPlayableSameTurn_ExpectIllegalStateException() {
     final int currentRound = 1;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.MONOPOLY);
@@ -654,7 +655,7 @@ class DevelopmentCardHandlerTest {
   void playMonopolyCard_AlreadyPlayedDevCardThisTurn_ExpectIllegalStateException() {
     final int currentRound = 1;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.MONOPOLY);
@@ -678,7 +679,7 @@ class DevelopmentCardHandlerTest {
   void playMonopolyCard_ResourceIsNull_ExpectIllegalArgumentException() {
     final int currentRound = 1;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.MONOPOLY);
@@ -701,7 +702,7 @@ class DevelopmentCardHandlerTest {
   void playMonopolyCard_ResourceIsDesert_ExpectIllegalArgumentException() {
     final int currentRound = 1;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.MONOPOLY);
@@ -725,7 +726,7 @@ class DevelopmentCardHandlerTest {
   void playMonopolyCard_OtherPlayersIsNull_ExpectIllegalArgumentException() {
     final int currentRound = 1;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.MONOPOLY);
@@ -748,7 +749,7 @@ class DevelopmentCardHandlerTest {
   void playMonopolyCard_EmptyOtherPlayersList_ExpectNoTransferAndCardRemoved() {
     final int currentRound = 2;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.MONOPOLY);
@@ -771,7 +772,7 @@ class DevelopmentCardHandlerTest {
   void playMonopolyCard_OneOpponentHasFiveOre_ExpectAllOreTransferred() {
     final int currentRound = 2;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
     Player mockOpponent = EasyMock.createMock(Player.class);
 
@@ -799,7 +800,7 @@ class DevelopmentCardHandlerTest {
   void playMonopolyCard_OneOpponentHasZeroWool_ExpectNoTransferAndCardRemoved() {
     final int currentRound = 2;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
     Player mockOpponent = EasyMock.createMock(Player.class);
 
@@ -825,11 +826,11 @@ class DevelopmentCardHandlerTest {
   void playMonopolyCard_ThreeOpponentsWithVaryingGrain_ExpectAllGrainTransferred() {
     final int currentRound = 2;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
     Player mockOpponent1 = EasyMock.createMock(Player.class);
-    Player mockOpponent2 = EasyMock.createMock(Player.class);
-    Player mockOpponent3 = EasyMock.createMock(Player.class);
+    final Player mockOpponent2 = EasyMock.createMock(Player.class);
+    final Player mockOpponent3 = EasyMock.createMock(Player.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.MONOPOLY);
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
@@ -859,7 +860,7 @@ class DevelopmentCardHandlerTest {
   void playMonopolyCard_OneOpponentHasOneLumber_ExpectOneLumberTransferred() {
     final int currentRound = 2;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
     Player mockOpponent = EasyMock.createMock(Player.class);
 
@@ -887,8 +888,8 @@ class DevelopmentCardHandlerTest {
   void playRoadBuildingCard_CardIsNull_ExpectIllegalArgumentException() {
     final int currentRound = 1;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
-    GameModel mockModel = EasyMock.createMock(GameModel.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
+    final GameModel mockModel = EasyMock.createMock(GameModel.class);
 
     EasyMock.replay(mockPlayer, mockModel);
 
@@ -906,9 +907,9 @@ class DevelopmentCardHandlerTest {
   void playRoadBuildingCard_CardTypeIsNotRoadBuilder_ExpectIllegalArgumentException() {
     final int currentRound = 1;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    GameModel mockModel = EasyMock.createMock(GameModel.class);
+    final GameModel mockModel = EasyMock.createMock(GameModel.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.VICTORY_POINT);
 
@@ -929,9 +930,9 @@ class DevelopmentCardHandlerTest {
   void playRoadBuildingCard_CardNotPlayableSameTurn_ExpectIllegalStateException() {
     final int currentRound = 1;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    GameModel mockModel = EasyMock.createMock(GameModel.class);
+    final GameModel mockModel = EasyMock.createMock(GameModel.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.ROAD_BUILDER);
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(false);
@@ -953,9 +954,9 @@ class DevelopmentCardHandlerTest {
   void playRoadBuildingCard_AlreadyPlayedDevCardThisTurn_ExpectIllegalStateException() {
     final int currentRound = 1;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    GameModel mockModel = EasyMock.createMock(GameModel.class);
+    final GameModel mockModel = EasyMock.createMock(GameModel.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.ROAD_BUILDER);
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
@@ -978,9 +979,9 @@ class DevelopmentCardHandlerTest {
   void playRoadBuildingCard_Road1NodeOutOfBounds_ExpectIllegalArgumentExceptionRelayed() {
     final int currentRound = 2;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    GameModel mockModel = EasyMock.createMock(GameModel.class);
+    final GameModel mockModel = EasyMock.createMock(GameModel.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.ROAD_BUILDER);
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
@@ -1006,9 +1007,9 @@ class DevelopmentCardHandlerTest {
   void playRoadBuildingCard_TwoValidRoads_ExpectTwoRoadsPlacedAndCardRemoved() {
     final int currentRound = 2;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    GameModel mockModel = EasyMock.createMock(GameModel.class);
+    final GameModel mockModel = EasyMock.createMock(GameModel.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.ROAD_BUILDER);
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
@@ -1032,9 +1033,9 @@ class DevelopmentCardHandlerTest {
   void playRoadBuildingCard_TwoValidRoadsLastPairThatFits_ExpectTwoRoadsPlacedAndCardRemoved() {
     final int currentRound = 2;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    GameModel mockModel = EasyMock.createMock(GameModel.class);
+    final GameModel mockModel = EasyMock.createMock(GameModel.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.ROAD_BUILDER);
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
@@ -1058,9 +1059,9 @@ class DevelopmentCardHandlerTest {
   void playRoadBuildingCard_Road2NullOnlyOneRoadRemaining_ExpectOneRoadPlacedAndCardRemoved() {
     final int currentRound = 2;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    GameModel mockModel = EasyMock.createMock(GameModel.class);
+    final GameModel mockModel = EasyMock.createMock(GameModel.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.ROAD_BUILDER);
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
@@ -1083,9 +1084,9 @@ class DevelopmentCardHandlerTest {
   void playRoadBuildingCard_NoRoadsRemaining_ExpectIllegalStateException() {
     final int currentRound = 2;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    GameModel mockModel = EasyMock.createMock(GameModel.class);
+    final GameModel mockModel = EasyMock.createMock(GameModel.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.ROAD_BUILDER);
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
@@ -1110,9 +1111,9 @@ class DevelopmentCardHandlerTest {
   void playRoadBuildingCard_Road1AlreadyOccupied_ExpectIllegalArgumentException() {
     final int currentRound = 2;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    GameModel mockModel = EasyMock.createMock(GameModel.class);
+    final GameModel mockModel = EasyMock.createMock(GameModel.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.ROAD_BUILDER);
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
@@ -1137,9 +1138,9 @@ class DevelopmentCardHandlerTest {
   void playRoadBuildingCard_Road1NotConnected_ExpectIllegalArgumentException() {
     final int currentRound = 2;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    GameModel mockModel = EasyMock.createMock(GameModel.class);
+    final GameModel mockModel = EasyMock.createMock(GameModel.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.ROAD_BUILDER);
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
@@ -1165,9 +1166,9 @@ class DevelopmentCardHandlerTest {
   void playRoadBuildingCard_Road2AlreadyOccupied_ExpectIllegalArgumentException() {
     final int currentRound = 2;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    GameModel mockModel = EasyMock.createMock(GameModel.class);
+    final GameModel mockModel = EasyMock.createMock(GameModel.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.ROAD_BUILDER);
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
@@ -1193,9 +1194,9 @@ class DevelopmentCardHandlerTest {
   void playRoadBuildingCard_Road2NotConnected_ExpectIllegalArgumentException() {
     final int currentRound = 2;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    GameModel mockModel = EasyMock.createMock(GameModel.class);
+    final GameModel mockModel = EasyMock.createMock(GameModel.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.ROAD_BUILDER);
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
@@ -1222,7 +1223,7 @@ class DevelopmentCardHandlerTest {
   void playYearOfPlentyCard_CardIsNull_ExpectIllegalArgumentException() {
     final int currentRound = 3;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
 
     EasyMock.replay(mockPlayer);
 
@@ -1241,7 +1242,7 @@ class DevelopmentCardHandlerTest {
   void playYearOfPlentyCard_CardTypeIsKnight_ExpectIllegalArgumentException() {
     final int currentRound = 3;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.KNIGHT);
@@ -1263,7 +1264,7 @@ class DevelopmentCardHandlerTest {
   void playYearOfPlentyCard_CardDrawnThisRound_ExpectIllegalStateException() {
     final int currentRound = 3;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.YEAR_OF_PLENTY);
@@ -1286,7 +1287,7 @@ class DevelopmentCardHandlerTest {
   void playYearOfPlentyCard_AlreadyPlayedDevCard_ExpectIllegalStateException() {
     final int currentRound = 3;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.YEAR_OF_PLENTY);
@@ -1310,7 +1311,7 @@ class DevelopmentCardHandlerTest {
   void playYearOfPlentyCard_Resource1IsNull_ExpectIllegalArgumentException() {
     final int currentRound = 3;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.YEAR_OF_PLENTY);
@@ -1334,7 +1335,7 @@ class DevelopmentCardHandlerTest {
   void playYearOfPlentyCard_Resource2IsNull_ExpectIllegalArgumentException() {
     final int currentRound = 3;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.YEAR_OF_PLENTY);
@@ -1358,7 +1359,7 @@ class DevelopmentCardHandlerTest {
   void playYearOfPlentyCard_Resource1IsDesert_ExpectIllegalArgumentException() {
     final int currentRound = 3;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.YEAR_OF_PLENTY);
@@ -1382,7 +1383,7 @@ class DevelopmentCardHandlerTest {
   void playYearOfPlentyCard_Resource2IsDesert_ExpectIllegalArgumentException() {
     final int currentRound = 3;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.YEAR_OF_PLENTY);
@@ -1406,7 +1407,7 @@ class DevelopmentCardHandlerTest {
   void playYearOfPlentyCard_SameResourceType_ExpectBothTransferred() {
     final int currentRound = 3;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.YEAR_OF_PLENTY);
@@ -1431,7 +1432,7 @@ class DevelopmentCardHandlerTest {
   void playYearOfPlentyCard_DifferentResourceTypes_ExpectBothTransferred() {
     final int currentRound = 3;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.YEAR_OF_PLENTY);
@@ -1482,22 +1483,22 @@ class DevelopmentCardHandlerTest {
     DevelopmentCard mockKnight1 = EasyMock.createMock(DevelopmentCard.class);
     DevelopmentCard mockKnight2 = EasyMock.createMock(DevelopmentCard.class);
     DevelopmentCard mockKnight3 = EasyMock.createMock(DevelopmentCard.class);
-    DevelopmentCard mockVP1 = EasyMock.createMock(DevelopmentCard.class);
-    DevelopmentCard mockVP2 = EasyMock.createMock(DevelopmentCard.class);
+    DevelopmentCard mockVp1 = EasyMock.createMock(DevelopmentCard.class);
+    DevelopmentCard mockVp2 = EasyMock.createMock(DevelopmentCard.class);
 
     EasyMock.expect(mockKnight1.getType()).andReturn(DevelopmentCardType.KNIGHT);
     EasyMock.expect(mockKnight2.getType()).andReturn(DevelopmentCardType.KNIGHT);
     EasyMock.expect(mockKnight3.getType()).andReturn(DevelopmentCardType.KNIGHT);
-    EasyMock.expect(mockVP1.getType()).andReturn(DevelopmentCardType.VICTORY_POINT);
-    EasyMock.expect(mockVP2.getType()).andReturn(DevelopmentCardType.VICTORY_POINT);
+    EasyMock.expect(mockVp1.getType()).andReturn(DevelopmentCardType.VICTORY_POINT);
+    EasyMock.expect(mockVp2.getType()).andReturn(DevelopmentCardType.VICTORY_POINT);
 
-    EasyMock.replay(mockKnight1, mockKnight2, mockKnight3, mockVP1, mockVP2);
+    EasyMock.replay(mockKnight1, mockKnight2, mockKnight3, mockVp1, mockVp2);
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
     assertEquals(expectedCount, handler.countVictoryPointCards(
-        List.of(mockKnight1, mockKnight2, mockKnight3, mockVP1, mockVP2)));
+        List.of(mockKnight1, mockKnight2, mockKnight3, mockVp1, mockVp2)));
 
-    EasyMock.verify(mockKnight1, mockKnight2, mockKnight3, mockVP1, mockVP2);
+    EasyMock.verify(mockKnight1, mockKnight2, mockKnight3, mockVp1, mockVp2);
   }
 
   // TC59: hand contains 5 VICTORY_POINT cards (maximum) -> 5
@@ -1505,25 +1506,25 @@ class DevelopmentCardHandlerTest {
   void countVictoryPointCards_FiveVictoryPointCards_ExpectFive() {
     final int expectedCount = 5;
 
-    DevelopmentCard mockVP1 = EasyMock.createMock(DevelopmentCard.class);
-    DevelopmentCard mockVP2 = EasyMock.createMock(DevelopmentCard.class);
-    DevelopmentCard mockVP3 = EasyMock.createMock(DevelopmentCard.class);
-    DevelopmentCard mockVP4 = EasyMock.createMock(DevelopmentCard.class);
-    DevelopmentCard mockVP5 = EasyMock.createMock(DevelopmentCard.class);
+    DevelopmentCard mockVp1 = EasyMock.createMock(DevelopmentCard.class);
+    DevelopmentCard mockVp2 = EasyMock.createMock(DevelopmentCard.class);
+    DevelopmentCard mockVp3 = EasyMock.createMock(DevelopmentCard.class);
+    DevelopmentCard mockVp4 = EasyMock.createMock(DevelopmentCard.class);
+    DevelopmentCard mockVp5 = EasyMock.createMock(DevelopmentCard.class);
 
-    EasyMock.expect(mockVP1.getType()).andReturn(DevelopmentCardType.VICTORY_POINT);
-    EasyMock.expect(mockVP2.getType()).andReturn(DevelopmentCardType.VICTORY_POINT);
-    EasyMock.expect(mockVP3.getType()).andReturn(DevelopmentCardType.VICTORY_POINT);
-    EasyMock.expect(mockVP4.getType()).andReturn(DevelopmentCardType.VICTORY_POINT);
-    EasyMock.expect(mockVP5.getType()).andReturn(DevelopmentCardType.VICTORY_POINT);
+    EasyMock.expect(mockVp1.getType()).andReturn(DevelopmentCardType.VICTORY_POINT);
+    EasyMock.expect(mockVp2.getType()).andReturn(DevelopmentCardType.VICTORY_POINT);
+    EasyMock.expect(mockVp3.getType()).andReturn(DevelopmentCardType.VICTORY_POINT);
+    EasyMock.expect(mockVp4.getType()).andReturn(DevelopmentCardType.VICTORY_POINT);
+    EasyMock.expect(mockVp5.getType()).andReturn(DevelopmentCardType.VICTORY_POINT);
 
-    EasyMock.replay(mockVP1, mockVP2, mockVP3, mockVP4, mockVP5);
+    EasyMock.replay(mockVp1, mockVp2, mockVp3, mockVp4, mockVp5);
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
     assertEquals(expectedCount, handler.countVictoryPointCards(
-        List.of(mockVP1, mockVP2, mockVP3, mockVP4, mockVP5)));
+        List.of(mockVp1, mockVp2, mockVp3, mockVp4, mockVp5)));
 
-    EasyMock.verify(mockVP1, mockVP2, mockVP3, mockVP4, mockVP5);
+    EasyMock.verify(mockVp1, mockVp2, mockVp3, mockVp4, mockVp5);
   }
 
   // TC61: victim has {BRICK: 0, WOOL: 1}; the boundary `entry.getValue() > 0` means only
@@ -1535,11 +1536,11 @@ class DevelopmentCardHandlerTest {
     final int currentRound = 2;
     final int targetHexId = 5;
 
-    Random mockRandom = EasyMock.createMock(Random.class);
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Random mockRandom = EasyMock.createMock(Random.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    Robber mockRobber = EasyMock.createMock(Robber.class);
-    Player mockVictim = EasyMock.createMock(Player.class);
+    final Robber mockRobber = EasyMock.createMock(Robber.class);
+    final Player mockVictim = EasyMock.createMock(Player.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.KNIGHT);
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
@@ -1608,11 +1609,11 @@ class DevelopmentCardHandlerTest {
     final int currentRound = 2;
     final int targetHexId = 5;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    Robber mockRobber = EasyMock.createMock(Robber.class);
-    Player mockVictim = EasyMock.createMock(Player.class);
-    Random mockRandom = EasyMock.createMock(Random.class);
+    final Robber mockRobber = EasyMock.createMock(Robber.class);
+    final Player mockVictim = EasyMock.createMock(Player.class);
+    final Random mockRandom = EasyMock.createMock(Random.class);
 
     LinkedHashMap<Resource, Integer> victimResources = new LinkedHashMap<>();
     victimResources.put(Resource.ORE, 0);
@@ -1652,9 +1653,9 @@ class DevelopmentCardHandlerTest {
   void playRoadBuildingCard_Road2Node1NonNullRoad2Node2Null_ExpectOneRoadPlaced() {
     final int currentRound = 2;
 
-    Player mockPlayer = EasyMock.createMock(Player.class);
+    final Player mockPlayer = EasyMock.createMock(Player.class);
     DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
-    GameModel mockModel = EasyMock.createMock(GameModel.class);
+    final GameModel mockModel = EasyMock.createMock(GameModel.class);
 
     EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.ROAD_BUILDER);
     EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);

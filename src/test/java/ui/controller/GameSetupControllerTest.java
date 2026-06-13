@@ -38,7 +38,7 @@ class GameSetupControllerTest {
   // ========== Full Validation Tests (BVA TC1–TC12) ==========
 
   @Test
-    // TC1
+  // TC1
   void testFullValidationNullNameReturnsNameEmpty() {
     replay(mockModel);
 
@@ -50,7 +50,7 @@ class GameSetupControllerTest {
   }
 
   @Test
-    // TC2
+  // TC2
   void testFullValidationEmptyStringNameReturnsNameEmpty() {
     replay(mockModel);
 
@@ -61,7 +61,7 @@ class GameSetupControllerTest {
   }
 
   @Test
-    // TC3
+  // TC3
   void testFullValidationSingleSpaceNameReturnsNameEmpty() {
     replay(mockModel);
 
@@ -73,7 +73,7 @@ class GameSetupControllerTest {
   }
 
   @Test
-    // TC4
+  // TC4
   void testFullValidationMixedWhitespaceNameReturnsNameEmpty() {
     replay(mockModel);
 
@@ -85,7 +85,7 @@ class GameSetupControllerTest {
   }
 
   @Test
-    // TC5
+  // TC5
   void testFullValidationSingleCharNameSucceeds() {
     expect(mockModel.isNameAvailable("A")).andReturn(true);
     expect(mockModel.isColorAvailable(PlayerColor.RED)).andReturn(true);
@@ -101,7 +101,7 @@ class GameSetupControllerTest {
   }
 
   @Test
-    // TC6
+  // TC6
   void testFullValidationTrimsLeadingAndTrailingWhitespace() {
     expect(mockModel.isNameAvailable("Alice")).andReturn(true);
     expect(mockModel.isColorAvailable(PlayerColor.RED)).andReturn(true);
@@ -117,7 +117,7 @@ class GameSetupControllerTest {
   }
 
   @Test
-    // TC7
+  // TC7
   void testFullValidationDuplicateNameReturnsNameTaken() {
     expect(mockModel.isNameAvailable("Alice")).andReturn(false);
     replay(mockModel);
@@ -130,7 +130,7 @@ class GameSetupControllerTest {
   }
 
   @Test
-    // TC8
+  // TC8
   void testFullValidationNullColorReturnsColorEmpty() {
     expect(mockModel.isNameAvailable("Alice")).andReturn(true);
     replay(mockModel);
@@ -142,7 +142,7 @@ class GameSetupControllerTest {
   }
 
   @Test
-    // TC9
+  // TC9
   void testFullValidationDuplicateColorReturnsColorTaken() {
     expect(mockModel.isNameAvailable("Alice")).andReturn(true);
     expect(mockModel.isColorAvailable(PlayerColor.RED)).andReturn(false);
@@ -156,7 +156,7 @@ class GameSetupControllerTest {
   }
 
   @Test
-    // TC10
+  // TC10
   void testFullValidationAllValidReturnsSuccess() {
     expect(mockModel.isNameAvailable("Alice")).andReturn(true);
     expect(mockModel.isColorAvailable(PlayerColor.RED)).andReturn(true);
@@ -172,7 +172,7 @@ class GameSetupControllerTest {
   }
 
   @Test
-    // TC11
+  // TC11
   void testFullValidationNameCheckedBeforeColor() {
     replay(mockModel);
 
@@ -183,7 +183,7 @@ class GameSetupControllerTest {
   }
 
   @Test
-    // TC12
+  // TC12
   void testFullValidationDuplicateNameShortCircuitsColorCheck() {
     expect(mockModel.isNameAvailable("Alice")).andReturn(false);
     replay(mockModel);
@@ -198,7 +198,7 @@ class GameSetupControllerTest {
   // ========== clearPlayers (BVA TC13) ==========
 
   @Test
-    // TC13
+  // TC13
   void testClearPlayersDelegatesToModel() {
     mockModel.clearPlayers();
     expectLastCall();
@@ -212,7 +212,7 @@ class GameSetupControllerTest {
   // ========== validatePlayerCount (BVA TC14–TC17) ==========
 
   @Test
-    // TC14
+  // TC14
   void testInitializeGameWithThreePlayersSucceeds() {
     expect(mockModel.getPlayerCount()).andReturn(3);
     replay(mockModel);
@@ -224,7 +224,7 @@ class GameSetupControllerTest {
   }
 
   @Test
-    // TC15
+  // TC15
   void testInitializeGameWithFourPlayersSucceeds() {
     expect(mockModel.getPlayerCount()).andReturn(4);
     replay(mockModel);
@@ -236,7 +236,7 @@ class GameSetupControllerTest {
   }
 
   @Test
-    // TC16
+  // TC16
   void testInitializeGameWithTwoPlayersFailsValidation() {
     expect(mockModel.getPlayerCount()).andReturn(2);
     replay(mockModel);
@@ -248,7 +248,7 @@ class GameSetupControllerTest {
   }
 
   @Test
-    // TC17
+  // TC17
   void testInitializeGameWithFivePlayersFailsValidation() {
     expect(mockModel.getPlayerCount()).andReturn(5);
     replay(mockModel);
@@ -262,7 +262,7 @@ class GameSetupControllerTest {
   // ========== addPlayer (BVA TC18) ==========
 
   @Test
-    // TC18
+  // TC18
   void testAddPlayerWithValidNameSucceeds() {
     String playerName = "Alice";
     mockModel.addPlayer(playerName, PlayerColor.RED);
@@ -277,7 +277,7 @@ class GameSetupControllerTest {
   // ========== addPlayerWithColorValidation (BVA TC19–TC20) ==========
 
   @Test
-    // TC19
+  // TC19
   void testAddPlayerWithUniqueColorSucceeds() {
     expect(mockModel.isColorAvailable(PlayerColor.RED)).andReturn(true);
     mockModel.addPlayer("Alice", PlayerColor.RED);
@@ -291,7 +291,7 @@ class GameSetupControllerTest {
   }
 
   @Test
-    // TC20
+  // TC20
   void testAddPlayerWithDuplicateColorFails() {
     expect(mockModel.isColorAvailable(PlayerColor.RED)).andReturn(false);
     replay(mockModel);
@@ -305,7 +305,7 @@ class GameSetupControllerTest {
   // ========== getPlayerName (BVA TC21) ==========
 
   @Test
-    // TC21
+  // TC21
   void testPlayerNamesAreStoredCorrectly() {
     Player mockPlayer = createMock(Player.class);
     expect(mockPlayer.getName()).andReturn("Alice").once();
@@ -321,7 +321,7 @@ class GameSetupControllerTest {
   // ========== getPlayerCount (BVA TC22) ==========
 
   @Test
-    // TC22
+  // TC22
   void testGetPlayerCountReturnsCorrectValue() {
     expect(mockModel.getPlayerCount()).andReturn(4);
     replay(mockModel);
@@ -335,7 +335,7 @@ class GameSetupControllerTest {
   // ========== getBoardHexCount (BVA TC23) ==========
 
   @Test
-    // TC23
+  // TC23
   void testBoardIsInitializedWithNineteenHexes() {
     expect(mockBoard.getHexCount()).andReturn(19);
     replay(mockBoard);
@@ -349,7 +349,7 @@ class GameSetupControllerTest {
   // ========== getHexOrder (BVA TC24) ==========
 
   @Test
-    // TC24
+  // TC24
   void testHexOrderIsDetermined() {
     List<String> mockHexOrder = List.of("WHEAT", "SHEEP", "WOOD", "BRICK", "ORE");
     expect(mockBoard.getHexOrder()).andReturn(mockHexOrder);
@@ -365,7 +365,7 @@ class GameSetupControllerTest {
   // ========== getResourceDeck (BVA TC25) ==========
 
   @Test
-    // TC25
+  // TC25
   void testResourceDeckIsInitialized() {
     ResourceDeck mockResourceDeck = createMock(ResourceDeck.class);
     expect(mockModel.getResourceDeck()).andReturn(mockResourceDeck);
@@ -380,7 +380,7 @@ class GameSetupControllerTest {
   // ========== initializeResourceDeck (BVA TC26) ==========
 
   @Test
-    // TC26
+  // TC26
   void testInitializeResourceDeckCreatesValidDeck() {
     mockModel.setResourceDeck(anyObject(ResourceDeck.class));
     expectLastCall().once();
@@ -394,7 +394,7 @@ class GameSetupControllerTest {
   // ========== getDevelopmentCardDeck (BVA TC27) ==========
 
   @Test
-    // TC27
+  // TC27
   void testDevelopmentCardDeckIsInitialized() {
     DevelopmentCardDeck mockDevDeck = createMock(DevelopmentCardDeck.class);
     expect(mockModel.getDevelopmentCardDeck()).andReturn(mockDevDeck);
@@ -409,7 +409,7 @@ class GameSetupControllerTest {
   // ========== initializeDevelopmentCardDeck (BVA TC28) ==========
 
   @Test
-    // TC28
+  // TC28
   void testInitializeDevelopmentCardDeckCreatesValidDeck() {
     mockModel.setDevelopmentCardDeck(anyObject(DevelopmentCardDeck.class));
     expectLastCall().once();
@@ -423,7 +423,7 @@ class GameSetupControllerTest {
   // ========== determineTurnOrder (BVA TC29) ==========
 
   @Test
-    // TC29
+  // TC29
   void testDetermineTurnOrderWithThreePlayers() {
     Player player1 = createMock(Player.class);
     Player player2 = createMock(Player.class);
@@ -445,7 +445,7 @@ class GameSetupControllerTest {
   // ========== getTurnOrder (BVA TC30) ==========
 
   @Test
-    // TC30
+  // TC30
   void testTurnOrderIsDetermined() {
     List<Player> mockPlayers = List.of(
         createMock(Player.class),
@@ -465,7 +465,7 @@ class GameSetupControllerTest {
   // ========== getBoard (BVA TC31) ==========
 
   @Test
-    // TC31
+  // TC31
   void getBoard_ReturnsModelBoard() {
     expect(mockModel.getBoard()).andReturn(mockBoard);
     replay(mockModel, mockBoard);

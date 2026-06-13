@@ -29,12 +29,13 @@ public class TradeComposeDialog {
 
   private final Dialog<TradeOffer> dialog;
 
+  /** Constructs the trade compose dialog for the offering player. */
   public TradeComposeDialog(ResourceBundle labels, Player offeringPlayer) {
-    ComboBox<Resource> giveResource = DialogSupport.resourceComboBox(labels);
-    Spinner<Integer> giveQuantity = new Spinner<>(MIN_QUANTITY, MAX_QUANTITY, MIN_QUANTITY);
+    final ComboBox<Resource> giveResource = DialogSupport.resourceComboBox(labels);
+    final Spinner<Integer> giveQuantity = new Spinner<>(MIN_QUANTITY, MAX_QUANTITY, MIN_QUANTITY);
     ComboBox<Resource> getResource = DialogSupport.resourceComboBox(labels);
     getResource.getSelectionModel().select(1);
-    Spinner<Integer> getQuantity = new Spinner<>(MIN_QUANTITY, MAX_QUANTITY, MIN_QUANTITY);
+    final Spinner<Integer> getQuantity = new Spinner<>(MIN_QUANTITY, MAX_QUANTITY, MIN_QUANTITY);
 
     Label statusLabel = new Label();
     statusLabel.getStyleClass().addAll(STATUS_CSS, ERROR_CSS);
@@ -74,6 +75,7 @@ public class TradeComposeDialog {
     dialog.setResultConverter(button -> button == offerButton ? dialog.getResult() : null);
   }
 
+  /** Shows the dialog and returns the composed trade offer, or empty if cancelled. */
   public Optional<TradeOffer> showAndCompose() {
     return dialog.showAndWait();
   }

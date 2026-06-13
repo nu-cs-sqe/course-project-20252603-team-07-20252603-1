@@ -10,6 +10,7 @@ import domain.model.resources.Resource;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
+/** Test class. */
 public class HexTests {
   @Test // Test Case 1
   public void AddEmptyString_OnEmptyList_ExpectLenOne() {

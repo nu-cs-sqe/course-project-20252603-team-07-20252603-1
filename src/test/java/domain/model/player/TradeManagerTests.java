@@ -10,6 +10,7 @@ import java.util.List;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
+/** Test class. */
 public class TradeManagerTests {
   @Test // Test Case 1
   public void OfferTrade_IntoEmptyList_ExpectListSizeOne() {
@@ -23,7 +24,7 @@ public class TradeManagerTests {
 
   @Test // Test Case 2
   public void OfferTrade_IntoListOfSizeOne_ExpectListSizeTwo() {
-    TradeOffer mockOfferA = EasyMock.createMock(TradeOffer.class);
+    final TradeOffer mockOfferA = EasyMock.createMock(TradeOffer.class);
     TradeOffer mockOfferB = EasyMock.createMock(TradeOffer.class);
 
     TradeManager tm = new TradeManager();
@@ -65,9 +66,9 @@ public class TradeManagerTests {
 
   @Test // Test Case 6
   public void ClearOffers_OnThreeOffers_ExpectEmpty() {
-    TradeOffer mockOfferA = EasyMock.createMock(TradeOffer.class);
+    final TradeOffer mockOfferA = EasyMock.createMock(TradeOffer.class);
     TradeOffer mockOfferB = EasyMock.createMock(TradeOffer.class);
-    TradeOffer mockOfferC = EasyMock.createMock(TradeOffer.class);
+    final TradeOffer mockOfferC = EasyMock.createMock(TradeOffer.class);
 
     TradeManager tm = new TradeManager();
     tm.offerTrade(mockOfferA);
@@ -111,9 +112,9 @@ public class TradeManagerTests {
 
   @Test // Test Case 10
   public void ListTrades_AfterThreeOffers_ExpectListSizeThreeInOrder() {
-    TradeOffer mockOfferA = EasyMock.createMock(TradeOffer.class);
+    final TradeOffer mockOfferA = EasyMock.createMock(TradeOffer.class);
     TradeOffer mockOfferB = EasyMock.createMock(TradeOffer.class);
-    TradeOffer mockOfferC = EasyMock.createMock(TradeOffer.class);
+    final TradeOffer mockOfferC = EasyMock.createMock(TradeOffer.class);
 
     TradeManager tm = new TradeManager();
     tm.offerTrade(mockOfferA);
@@ -144,7 +145,7 @@ public class TradeManagerTests {
   @Test // Test Case 12
   public void AcceptTrade_BlueAcceptsRedBrickForWool_ExpectListSizeZero() {
     Player mockRed = EasyMock.createMock(Player.class);
-    Player mockBlue = EasyMock.createMock(Player.class);
+    final Player mockBlue = EasyMock.createMock(Player.class);
 
     ResourceQuantity giving = ResourceQuantity.create(Resource.BRICK, 1);
     ResourceQuantity receiving = ResourceQuantity.create(Resource.WOOL, 1);
@@ -180,9 +181,9 @@ public class TradeManagerTests {
     ResourceQuantity giving = ResourceQuantity.create(Resource.ORE, 2);
     ResourceQuantity receiving = ResourceQuantity.create(Resource.GRAIN, 1);
 
-    TradeOffer mockOfferA = EasyMock.createMock(TradeOffer.class);
+    final TradeOffer mockOfferA = EasyMock.createMock(TradeOffer.class);
     TradeOffer mockOfferB = EasyMock.createMock(TradeOffer.class);
-    TradeOffer mockOfferC = EasyMock.createMock(TradeOffer.class);
+    final TradeOffer mockOfferC = EasyMock.createMock(TradeOffer.class);
 
     EasyMock.expect(mockOfferB.getOfferingPlayer()).andStubReturn(mockOrange);
     EasyMock.expect(mockOfferB.getGiving()).andStubReturn(giving);
@@ -215,7 +216,7 @@ public class TradeManagerTests {
   @Test // Test Case 14
   public void AcceptTrade_OneOfTwoDuplicates_ExpectListSizeOne() {
     Player mockRed = EasyMock.createMock(Player.class);
-    Player mockBlue = EasyMock.createMock(Player.class);
+    final Player mockBlue = EasyMock.createMock(Player.class);
 
     ResourceQuantity giving = ResourceQuantity.create(Resource.BRICK, 1);
     ResourceQuantity receiving = ResourceQuantity.create(Resource.WOOL, 1);
@@ -275,7 +276,7 @@ public class TradeManagerTests {
   @Test // Test Case 16
   public void AcceptTrade_OfferNotInList_ExpectError() {
     Player mockRed = EasyMock.createMock(Player.class);
-    Player mockBlue = EasyMock.createMock(Player.class);
+    final Player mockBlue = EasyMock.createMock(Player.class);
 
     ResourceQuantity giving = ResourceQuantity.create(Resource.BRICK, 1);
     ResourceQuantity receiving = ResourceQuantity.create(Resource.WOOL, 1);
@@ -303,7 +304,7 @@ public class TradeManagerTests {
   @Test // Test Case 18
   public void AcceptTrade_AcceptorInsufficient_ExpectError() {
     Player mockRed = EasyMock.createMock(Player.class);
-    Player mockBlue = EasyMock.createMock(Player.class);
+    final Player mockBlue = EasyMock.createMock(Player.class);
 
     ResourceQuantity giving = ResourceQuantity.create(Resource.BRICK, 1);
     ResourceQuantity receiving = ResourceQuantity.create(Resource.WOOL, 5);
@@ -335,7 +336,7 @@ public class TradeManagerTests {
   @Test // Test Case 17
   public void AcceptTrade_OffererInsufficient_ExpectError() {
     Player mockRed = EasyMock.createMock(Player.class);
-    Player mockBlue = EasyMock.createMock(Player.class);
+    final Player mockBlue = EasyMock.createMock(Player.class);
 
     ResourceQuantity giving = ResourceQuantity.create(Resource.BRICK, 5);
     ResourceQuantity receiving = ResourceQuantity.create(Resource.WOOL, 1);

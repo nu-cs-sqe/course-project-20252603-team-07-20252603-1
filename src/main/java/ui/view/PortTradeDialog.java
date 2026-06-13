@@ -51,6 +51,7 @@ public class PortTradeDialog {
 
   private final Dialog<Selection> dialog;
 
+  /** Constructs the port trade dialog for the given available ports. */
   public PortTradeDialog(ResourceBundle labels, List<Port> availablePorts) {
     ComboBox<Port> portPicker = buildPortPicker(labels, availablePorts);
     ComboBox<Resource> giveResource = DialogSupport.resourceComboBox(labels);
@@ -112,6 +113,7 @@ public class PortTradeDialog {
     return picker;
   }
 
+  /** Shows the dialog and returns the selected port trade, or empty if cancelled. */
   public Optional<Selection> showAndCompose() {
     return dialog.showAndWait();
   }

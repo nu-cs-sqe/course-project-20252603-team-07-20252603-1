@@ -41,7 +41,8 @@ public class GameModel {
   private static final int POINTS_FOR_LONGEST_ROAD = 2;
 
   @SuppressFBWarnings(value = "EI_EXPOSE_REP2",
-      justification = "BoardHandler is intentionally shared between GameSetupModel and GameModel as it represents the single game board state")
+      justification = "BoardHandler is intentionally shared between GameSetupModel and "
+          + "GameModel as it represents the single game board state")
   private final BoardHandler board;
   private GamePhase currentGamePhase;
   private int currentPlayerIndex;
@@ -259,6 +260,7 @@ public class GameModel {
     setCurrentGamePhase(GamePhase.BEFORE_ROLL);
   }
 
+  /** Performs a turn with the given dice roll, distributing resources or triggering the robber. */
   public void performTurn(int roll) {
     checkCurrentGamePhaseMatches(GamePhase.BEFORE_ROLL);
 
@@ -281,7 +283,8 @@ public class GameModel {
     }
   }
 
-  // if not enough to satisfy all players, no one gets anything; if only one player is requesting, they can get a partial amount
+  // if not enough to satisfy all players, no one gets anything;
+  // if only one player is requesting, they can get a partial amount
   private void distributeResourceToPlayers(Resource resource, Map<Player, Integer> playerAmounts)
       throws EmptyDeckException {
     ResourceDeck deck = decks.get(resource);
@@ -300,13 +303,14 @@ public class GameModel {
   }
 
 
-  public void moveRobberAndSteal(int targetHexID, PlayerColor victimColor) {
+  /** Moves the robber to the target hex and optionally steals a resource from the victim. */
+  public void moveRobberAndSteal(int targetHexId, PlayerColor victimColor) {
     checkCurrentGamePhaseMatches(GamePhase.MOVE_ROBBER);
-    board.moveRobber(targetHexID);
+    board.moveRobber(targetHexId);
 
     if (victimColor != null && victimColor != PlayerColor.SETUP) {
       Player target = getArbitraryPlayer(victimColor);
-      Set<Player> playersOnHex = board.getPlayersOnHex(targetHexID);
+      Set<Player> playersOnHex = board.getPlayersOnHex(targetHexId);
 
       if (!playersOnHex.contains(target)) {
         throw new IllegalArgumentException("Victim is not on the target hex.");

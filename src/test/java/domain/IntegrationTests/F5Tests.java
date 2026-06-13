@@ -1,7 +1,8 @@
-package domain.IntegrationTests;
+package domain.integrationtests;
 
 // Tests for Feature 5:
-// Ability to roll dice and distribute resources to players based on settlements and cities adjacent to matching number tokens, excluding robber-blocked hexes
+// Ability to roll dice and distribute resources to players based on settlements
+// and cities adjacent to matching number tokens, excluding robber-blocked hexes
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -13,6 +14,7 @@ import domain.model.player.PlayerColor;
 import domain.model.resources.Resource;
 import org.junit.jupiter.api.Test;
 
+/** Test class. */
 public class F5Tests {
   // Test Case 1 - rollTwoDice
   @Test
@@ -103,7 +105,7 @@ public class F5Tests {
 
   // Test Case 6
   @Test
-  void EightRolled_RobberOnHexEleven_WhiteCityNodeTwenty_BlueTwoLumber_RedTwoLumber_OrangeTwoLumber() {
+  void EightRolled_RobberOnHexEleven_WhiteCityTwenty_EachGetTwoLumber() {
     BoardHandler b = new BoardHandler();
     Player whitePlayer = new Player("Dummy", PlayerColor.WHITE);
     Player bluePlayer = new Player("Dummy", PlayerColor.BLUE);
@@ -154,7 +156,7 @@ public class F5Tests {
 
   // Test Case 7
   @Test
-  void SixRolled_RobberNotOnHex_WhiteCitiesOnEightSeventeenEighteen_RedSettlementsOnFortyFortyEightFortyNine() {
+  void SixRolled_RobberNotOnHex_WhiteCitiesOnThreeNodes_RedSettlementsOnThreeNodes() {
     BoardHandler b = new BoardHandler();
     Player whitePlayer = new Player("Dummy", PlayerColor.WHITE);
     Player redPlayer = new Player("Dummy", PlayerColor.RED);
@@ -212,5 +214,3 @@ public class F5Tests {
     assertEquals(0, bluePlayer.getResourceCount(Resource.BRICK));
   }
 }
-
-

@@ -20,6 +20,7 @@ public class ResourcePickDialog {
 
   private final Dialog<List<Resource>> dialog;
 
+  /** Constructs a resource pick dialog for the given number of resources to pick. */
   public ResourcePickDialog(ResourceBundle labels, int resourceCount) {
     List<ComboBox<Resource>> pickers = new ArrayList<>();
     VBox content = new VBox();
@@ -47,6 +48,7 @@ public class ResourcePickDialog {
     });
   }
 
+  /** Shows the dialog and returns the picked resources, or empty if cancelled. */
   public Optional<List<Resource>> showAndPick() {
     return dialog.showAndWait();
   }

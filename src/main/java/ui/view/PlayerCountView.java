@@ -13,13 +13,16 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import ui.ViewContext;
 
+/** View for selecting the number of players before the game starts. */
 @SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"},
-    justification = "UI classes intentionally share JavaFX nodes, controllers, and models by reference")
+    justification = "UI classes intentionally share JavaFX nodes, controllers, and "
+        + "models by reference")
 public class PlayerCountView {
 
   private final VBox root;
   private final ToggleGroup countGroup;
 
+  /** Constructs the player count selection view. */
   public PlayerCountView(SetupNavigator navigator, ViewContext context) {
     ResourceBundle labels = context.labels();
 

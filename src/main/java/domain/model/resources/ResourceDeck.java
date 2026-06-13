@@ -47,6 +47,7 @@ public class ResourceDeck {
     return this.type;
   }
 
+  /** Draws one resource card from this deck and returns it. */
   public Resource draw() throws EmptyDeckException {
     // just instantiate a brand new one, decrease count
     if (count > 0) {

@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
 
+/** Test class. */
 public class VertexTests {
   // TC1 ← REDUCES CXTY
   @Test

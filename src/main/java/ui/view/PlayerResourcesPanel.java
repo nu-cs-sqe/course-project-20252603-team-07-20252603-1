@@ -15,8 +15,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import ui.controller.GameLoopController;
 
+/** Panel displaying each player's resource counts and victory points. */
 @SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"},
-    justification = "UI classes intentionally share JavaFX nodes, controllers, and models by reference")
+    justification = "UI classes intentionally share JavaFX nodes, controllers, and "
+        + "models by reference")
 public class PlayerResourcesPanel {
 
   private static final Resource[] RESOURCE_COLUMNS = {
@@ -41,6 +43,7 @@ public class PlayerResourcesPanel {
   private final GameLoopController controller;
   private final ResourceBundle labels;
 
+  /** Constructs the player resources panel. */
   public PlayerResourcesPanel(GameLoopController controller, GameModel model,
                               ResourceBundle labels) {
     this.controller = controller;
@@ -51,10 +54,12 @@ public class PlayerResourcesPanel {
     refresh();
   }
 
+  /** Returns the root JavaFX node. */
   public Parent getRoot() {
     return root;
   }
 
+  /** Refreshes the displayed resource counts from the model. */
   public void refresh() {
     root.getChildren().clear();
     addHeaderRow();

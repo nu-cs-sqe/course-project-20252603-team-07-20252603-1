@@ -39,8 +39,10 @@ import ui.view.board.BoardSelectionMode;
 import ui.view.board.BoardView;
 
 
+/** Main game round view showing the board, resources, controls, and dice. */
 @SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"},
-    justification = "UI classes intentionally share JavaFX nodes, controllers, and models by reference")
+    justification = "UI classes intentionally share JavaFX nodes, controllers, and "
+        + "models by reference")
 public class GameRoundView {
 
   private static final int SECTION_PADDING_PX = 10;
@@ -85,6 +87,7 @@ public class GameRoundView {
   private int setupPlacementIndex;
   private boolean setupAwaitingRoad;
 
+  /** Constructs the game round view. */
   public GameRoundView(RoundNavigator navigator,
                        ViewContext context,
                        GameModel model,

@@ -18,11 +18,12 @@ import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
 
+/** Test class. */
 public class BoardGraphControllerTests {
   @Test
   void playerClaimStoredNodeSetup_test01_NodeExists_NodeUnclaimed_ExpectTrue() {
     BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
-    BoardGraphController boardControl = new BoardGraphController(boardMock);
+    final BoardGraphController boardControl = new BoardGraphController(boardMock);
 
     EasyMock.expect(boardMock.checkIfAdjacentNodesNotClaimed(0)).andReturn(true);
     boardMock.claimGraphNodeObject(PlayerColor.RED, 0);
@@ -36,7 +37,7 @@ public class BoardGraphControllerTests {
   @Test
   void playerClaimStoredNodeSetup_test02_NodeDoesNotExist_ExpectError() {
     BoardGraph boardMock = EasyMock.createStrictMock(BoardGraph.class);
-    BoardGraphController boardControl = new BoardGraphController(boardMock);
+    final BoardGraphController boardControl = new BoardGraphController(boardMock);
     EasyMock.expect(boardMock.checkIfAdjacentNodesNotClaimed(0))
         .andThrow(new IllegalArgumentException("Node does not exist"));
     EasyMock.replay(boardMock);
@@ -51,7 +52,7 @@ public class BoardGraphControllerTests {
   @Test
   void playerClaimStoredNodeSetup_test03_NodeExists_AlreadyClaimed_ExpectError() {
     BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
-    BoardGraphController boardControl = new BoardGraphController(boardMock);
+    final BoardGraphController boardControl = new BoardGraphController(boardMock);
 
     EasyMock.expect(boardMock.checkIfAdjacentNodesNotClaimed(53)).andReturn(true);
     boardMock.claimGraphNodeObject(PlayerColor.ORANGE, 53);
@@ -69,7 +70,7 @@ public class BoardGraphControllerTests {
   @Test
   void playerClaimStoredNodeSetup_test04_NeighboringNodeClaimed_ExpectError() {
     BoardGraph boardMock = EasyMock.createStrictMock(BoardGraph.class);
-    BoardGraphController boardControl = new BoardGraphController(boardMock);
+    final BoardGraphController boardControl = new BoardGraphController(boardMock);
 
     EasyMock.expect(boardMock.checkIfAdjacentNodesNotClaimed(0)).andReturn(false);
     EasyMock.replay(boardMock);
@@ -83,7 +84,7 @@ public class BoardGraphControllerTests {
   @Test
   void playerClaimStoredEdgeSetup_test01_JustClaimedNeighboringNode_EdgeUnclaimed_ExpectTrue() {
     BoardGraph boardMock = EasyMock.createNiceMock(BoardGraph.class);
-    BoardGraphController boardControl = new BoardGraphController(boardMock);
+    final BoardGraphController boardControl = new BoardGraphController(boardMock);
     EasyMock.expect(boardMock.checkPlayerOwnsGraphNodeObject(PlayerColor.RED, 0)).andReturn(true);
     EasyMock.expect(boardMock.claimGraphEdgeObject(PlayerColor.RED, 0, 3)).andReturn(true);
     EasyMock.replay(boardMock);
@@ -94,7 +95,7 @@ public class BoardGraphControllerTests {
   @Test
   void playerClaimStoredEdgeSetup_test02_JustClaimedNotNeighboringNode_EdgeUnclaimed_ExpectError() {
     BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
-    BoardGraphController boardControl = new BoardGraphController(boardMock);
+    final BoardGraphController boardControl = new BoardGraphController(boardMock);
     EasyMock.expect(boardMock.checkPlayerOwnsGraphNodeObject(PlayerColor.BLUE, 2)).andReturn(true);
     EasyMock.expect(boardMock.getConnectingEdgesById(2)).andReturn(new HashSet<>());
     EasyMock.expect(boardMock.getMatchingEdgeFromSet(new HashSet<>(), 0, 3))
@@ -113,7 +114,7 @@ public class BoardGraphControllerTests {
   @Test
   void playerClaimStoredEdgeSetup_test03_JustClaimedNeighboringNode_EdgeClaimed_ExpectError() {
     BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
-    BoardGraphController boardControl = new BoardGraphController(boardMock);
+    final BoardGraphController boardControl = new BoardGraphController(boardMock);
     EasyMock.expect(boardMock.checkPlayerOwnsGraphNodeObject(PlayerColor.ORANGE, 50))
         .andReturn(true);
     EasyMock.expect(boardMock.getConnectingEdgesById(50)).andReturn(new HashSet<>());
@@ -135,7 +136,7 @@ public class BoardGraphControllerTests {
   @Test
   void playerClaimStoredEdgeSetup_test04_JustClaimedNeighboringNode_EdgeUnclaimed_ExpectTruer() {
     BoardGraph boardMock = EasyMock.createNiceMock(BoardGraph.class);
-    BoardGraphController boardControl = new BoardGraphController(boardMock);
+    final BoardGraphController boardControl = new BoardGraphController(boardMock);
     EasyMock.expect(boardMock.checkPlayerOwnsGraphNodeObject(PlayerColor.WHITE, 53))
         .andReturn(true);
     EasyMock.expect(boardMock.claimGraphEdgeObject(PlayerColor.WHITE, 50, 53)).andReturn(true);
@@ -149,7 +150,7 @@ public class BoardGraphControllerTests {
   @Test
   void playerClaimStoredEdgeSetup_test05_PlayerDoesNotOwnNode_ExpectError() {
     BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
-    BoardGraphController boardControl = new BoardGraphController(boardMock);
+    final BoardGraphController boardControl = new BoardGraphController(boardMock);
     EasyMock.expect(boardMock.checkPlayerOwnsGraphNodeObject(PlayerColor.WHITE, 53))
         .andReturn(false);
     EasyMock.replay(boardMock);
@@ -165,9 +166,9 @@ public class BoardGraphControllerTests {
 
   //playerClaimStoredNode Test
   @Test
-  void playerClaimStoredNode_test01_NodeUnclaimed_PlayerOwnsAdjacentEdge_AdjacentNodesUnclaimed_ExpectSuccess() {
+  void playerClaimStoredNode_test01_NodeUnclaimed_OwnsAdjacentEdge_ExpectSuccess() {
     BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
-    BoardGraphController boardControl = new BoardGraphController(boardMock);
+    final BoardGraphController boardControl = new BoardGraphController(boardMock);
 
     EasyMock.expect(boardMock.checkNodeOccupied(0)).andReturn(false);
     EasyMock.expect(boardMock.checkIfAdjacentNodesNotClaimed(0)).andReturn(true);
@@ -187,7 +188,7 @@ public class BoardGraphControllerTests {
   @Test
   void playerClaimStoredNode_test02_AdjacentNodesClaimed_ExpectError() {
     BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
-    BoardGraphController boardControl = new BoardGraphController(boardMock);
+    final BoardGraphController boardControl = new BoardGraphController(boardMock);
 
     EasyMock.expect(boardMock.checkNodeOccupied(53)).andReturn(false);
     EasyMock.expect(boardMock.checkIfAdjacentNodesNotClaimed(53)).andReturn(false);
@@ -207,7 +208,7 @@ public class BoardGraphControllerTests {
   @Test
   void playerClaimStoredNode_test03_NodeAlreadyClaimed_ExpectError() {
     BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
-    BoardGraphController boardControl = new BoardGraphController(boardMock);
+    final BoardGraphController boardControl = new BoardGraphController(boardMock);
 
     EasyMock.expect(boardMock.checkNodeOccupied(53)).andReturn(true);
 
@@ -226,7 +227,7 @@ public class BoardGraphControllerTests {
   @Test
   void playerClaimStoredNode_test04_PlayerOwnsNoAdjacentRoads_ExpectError() {
     BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
-    BoardGraphController boardControl = new BoardGraphController(boardMock);
+    final BoardGraphController boardControl = new BoardGraphController(boardMock);
 
     EasyMock.expect(boardMock.checkNodeOccupied(0)).andReturn(false);
     EasyMock.expect(boardMock.checkIfAdjacentNodesNotClaimed(0)).andReturn(true);
@@ -250,7 +251,7 @@ public class BoardGraphControllerTests {
   @Test
   void playerClaimStoredEdge_test01_EdgeUnclaimed_OwnsAdjacencyToStart_ExpectSuccess() {
     BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
-    BoardGraphController boardControl = new BoardGraphController(boardMock);
+    final BoardGraphController boardControl = new BoardGraphController(boardMock);
 
     EasyMock.expect(boardMock.checkEdgeOccupied(0, 3)).andReturn(false);
     EasyMock.expect(boardMock.edgeCheckPlayerOwnsNeighboringEdge(PlayerColor.RED, 0, 3))
@@ -268,7 +269,7 @@ public class BoardGraphControllerTests {
   @Test
   void playerClaimStoredEdge_test02_EdgeClaimed_ExpectError() {
     BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
-    BoardGraphController boardControl = new BoardGraphController(boardMock);
+    final BoardGraphController boardControl = new BoardGraphController(boardMock);
 
     EasyMock.expect(boardMock.checkEdgeOccupied(0, 3)).andReturn(true);
     EasyMock.replay(boardMock);
@@ -284,7 +285,7 @@ public class BoardGraphControllerTests {
   @Test
   void playerClaimStoredEdge_test03_EdgeUnclaimed__OwnsAdjacency_ExpectSuccess() {
     BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
-    BoardGraphController boardControl = new BoardGraphController(boardMock);
+    final BoardGraphController boardControl = new BoardGraphController(boardMock);
 
     EasyMock.expect(boardMock.checkEdgeOccupied(50, 53)).andReturn(false);
     EasyMock.expect(boardMock.edgeCheckPlayerOwnsNeighboringEdge(PlayerColor.ORANGE, 50, 53))
@@ -302,7 +303,7 @@ public class BoardGraphControllerTests {
   @Test
   void playerClaimStoredEdge_test04_EdgeUnclaimed__OwnsNoAdjacency_ExpectError() {
     BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
-    BoardGraphController boardControl = new BoardGraphController(boardMock);
+    final BoardGraphController boardControl = new BoardGraphController(boardMock);
 
     EasyMock.expect(boardMock.checkEdgeOccupied(0, 3)).andReturn(false);
     EasyMock.expect(boardMock.edgeCheckPlayerOwnsNeighboringEdge(PlayerColor.WHITE, 0, 3))
@@ -320,7 +321,7 @@ public class BoardGraphControllerTests {
   @Test
   void checkEdgeOccupied_MockGraphReturnsNotOccupied_ExpectFalse() {
     BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
-    BoardGraphController boardControl = new BoardGraphController(boardMock);
+    final BoardGraphController boardControl = new BoardGraphController(boardMock);
 
     EasyMock.expect(boardMock.checkEdgeOccupied(0, 1)).andReturn(false);
     EasyMock.replay(boardMock);
@@ -333,7 +334,7 @@ public class BoardGraphControllerTests {
   @Test
   void calculateLongestRoad_DelegatesToBoardGraph_ReturnsWinner() {
     BoardGraph boardMock = EasyMock.createMock(BoardGraph.class);
-    BoardGraphController boardControl = new BoardGraphController(boardMock);
+    final BoardGraphController boardControl = new BoardGraphController(boardMock);
     List<Player> players = new ArrayList<>();
 
     EasyMock.expect(boardMock.calculateLongestRoad(players, PlayerColor.SETUP))

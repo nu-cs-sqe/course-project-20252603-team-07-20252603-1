@@ -18,7 +18,8 @@ class DevelopmentCardTest {
     assertEquals(expectedRound, card.getRoundDrawnAt());
   }
 
-  // TC2, TC7: new DevelopmentCard(VICTORY_POINT, 5) -> getType() == VICTORY_POINT, roundDrawnAt == 5
+  // TC2, TC7: new DevelopmentCard(VICTORY_POINT, 5)
+  //           -> getType() == VICTORY_POINT, roundDrawnAt == 5
   @Test
   void constructVictoryPointCard_AtRoundFive_ExpectVictoryPointTypeAndRoundFive() {
     final int expectedRound = 5;
@@ -38,7 +39,8 @@ class DevelopmentCardTest {
     assertEquals(expectedRound, card.getRoundDrawnAt());
   }
 
-  // TC4, TC9: new DevelopmentCard(YEAR_OF_PLENTY, 10) -> getType() == YEAR_OF_PLENTY, roundDrawnAt == 10
+  // TC4, TC9: new DevelopmentCard(YEAR_OF_PLENTY, 10)
+  //           -> getType() == YEAR_OF_PLENTY, roundDrawnAt == 10
   @Test
   void constructYearOfPlentyCard_AtRoundTen_ExpectYearOfPlentyTypeAndRoundTen() {
     final int expectedRound = 10;

@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 
+/** Test class. */
 public class PlayerTests {
 
   // --- placeSettlement: BVA settlement count boundary ---

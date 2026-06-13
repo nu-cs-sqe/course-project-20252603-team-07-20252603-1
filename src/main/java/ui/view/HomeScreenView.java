@@ -8,12 +8,15 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import ui.ViewContext;
 
+/** The initial home screen view shown when the application starts. */
 @SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"},
-    justification = "UI classes intentionally share JavaFX nodes, controllers, and models by reference")
+    justification = "UI classes intentionally share JavaFX nodes, controllers, and "
+        + "models by reference")
 public class HomeScreenView {
 
   private final VBox root;
 
+  /** Constructs the home screen view. */
   public HomeScreenView(SetupNavigator navigator, ViewContext context) {
     ResourceBundle labels = context.labels();
 

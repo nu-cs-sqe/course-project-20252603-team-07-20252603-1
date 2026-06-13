@@ -8,8 +8,10 @@ import ui.controller.GameLoopController;
 import ui.controller.GameSetupController;
 
 
+/** Holds shared controller and model references available to all UI views. */
 @SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"},
-    justification = "UI classes intentionally share JavaFX nodes, controllers, and models by reference")
+    justification = "UI classes intentionally share JavaFX nodes, controllers, and "
+        + "models by reference")
 public final class ViewContext {
 
   private final GameSetupController setupController;
@@ -18,6 +20,7 @@ public final class ViewContext {
   private final DiceHandler diceRoller;
   private final ResourceBundle labels;
 
+  /** Constructs a ViewContext with the given controllers and labels. */
   public ViewContext(GameSetupController setupController,
                      GameLoopController loopController,
                      DevCardController devCardController,
@@ -30,22 +33,27 @@ public final class ViewContext {
     this.labels = labels;
   }
 
+  /** Returns the game setup controller. */
   public GameSetupController setup() {
     return setupController;
   }
 
+  /** Returns the game loop controller. */
   public GameLoopController loop() {
     return loopController;
   }
 
+  /** Returns the development card controller. */
   public DevCardController devCards() {
     return devCardController;
   }
 
+  /** Returns the dice handler. */
   public DiceHandler dice() {
     return diceRoller;
   }
 
+  /** Returns the resource bundle for UI labels. */
   public ResourceBundle labels() {
     return labels;
   }

@@ -23,8 +23,10 @@ import ui.ViewContext;
 import ui.controller.GameSetupController;
 import ui.controller.PlayerAddResult;
 
+/** View for configuring each player's name and colour before the game starts. */
 @SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"},
-    justification = "UI classes intentionally share JavaFX nodes, controllers, and models by reference")
+    justification = "UI classes intentionally share JavaFX nodes, controllers, and "
+        + "models by reference")
 public class PlayerConfigView {
 
   private static final List<PlayerColor> COLOR_PALETTE =
@@ -37,6 +39,7 @@ public class PlayerConfigView {
   private final ResourceBundle labels;
   private boolean refreshingColors = false;
 
+  /** Constructs the player configuration view. */
   public PlayerConfigView(SetupNavigator navigator,
                           ViewContext context,
                           GameSetupModel model,
@@ -52,7 +55,7 @@ public class PlayerConfigView {
     playerRows.getStyleClass().add("option-list");
 
     for (int i = 0; i < playerCount; i++) {
-      Label rowLabel = new Label(MessageFormat.format(playerLabelPattern, i + 1));
+      final Label rowLabel = new Label(MessageFormat.format(playerLabelPattern, i + 1));
       TextField nameField = new TextField();
       nameField.setPromptText(labels.getString("playerConfig.namePrompt"));
       ComboBox<PlayerColor> colorBox = new ComboBox<>();
@@ -141,6 +144,8 @@ public class PlayerConfigView {
         case COLOR_TAKEN:
           showError("playerConfig.error.colorTaken", i + 1);
           return;
+        default:
+          break;
       }
     }
     controller.initializeResourceDeck(model);

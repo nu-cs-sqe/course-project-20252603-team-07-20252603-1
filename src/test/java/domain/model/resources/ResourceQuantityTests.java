@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
+/** Test class. */
 public class ResourceQuantityTests {
   @Test // Test Case 1
   public void Construct_BrickAtLowerBoundary_ExpectValid() {

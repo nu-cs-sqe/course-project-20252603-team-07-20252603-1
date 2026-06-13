@@ -135,7 +135,8 @@ class GameLoopControllerTest {
   }
 
   // TC5: handler returns a DevelopmentCard
-  //      -> controller returns the same card; model.getCurrentPlayer() and model.getCurrentRound() called; handler called with player, deck, round
+  //      -> controller returns the same card; model.getCurrentPlayer() and
+  //         model.getCurrentRound() called; handler called with player, deck, round
   @Test
   void buyDevCard_HandlerReturnsCard_ExpectCardRelayedToCaller() throws EmptyDeckException {
     DevelopmentCardDeck mockDeck = createMock(DevelopmentCardDeck.class);

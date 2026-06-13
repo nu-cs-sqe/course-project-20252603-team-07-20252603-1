@@ -13,8 +13,10 @@ import ui.view.RoundNavigator;
 import ui.view.SetupNavigator;
 import ui.view.SetupSummaryView;
 
+/** Navigates between views by swapping the scene root. */
 @SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"},
-    justification = "UI classes intentionally share JavaFX nodes, controllers, and models by reference")
+    justification = "UI classes intentionally share JavaFX nodes, controllers, and "
+        + "models by reference")
 public class Navigator implements SetupNavigator, RoundNavigator {
   private final Scene scene;
   private final ViewContext context;
@@ -22,6 +24,7 @@ public class Navigator implements SetupNavigator, RoundNavigator {
   private GameSetupModel setupModel;
   private GameModel gameModel;
 
+  /** Constructs a Navigator for the given scene and context. */
   public Navigator(Scene scene, ViewContext context) {
     this.scene = scene;
     this.context = context;

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 // no easymock here — Player is the class under test; mocking it would make these tests meaningless
 
+/** Test class. */
 public class PlayerResourceTest {
 
   // behavior 1: new player has 0 of each normal resource

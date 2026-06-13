@@ -1,4 +1,4 @@
-package domain.IntegrationTests;
+package domain.integrationtests;
 
 // Tests for Feature 3:
 // Ability to place initial settlements and roads during the setup phase according to setup rules
@@ -14,6 +14,7 @@ import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 import org.junit.jupiter.api.Test;
 
+/** Test class. */
 public class F3Tests {
   // Test Case 1
   @Test
@@ -426,5 +427,3 @@ public class F3Tests {
     assertEquals("Edge must be adjacent to just placed settlement", exception.getMessage());
   }
 }
-
-

@@ -12,6 +12,7 @@ import ui.controller.DevCardController;
 import ui.controller.GameLoopController;
 import ui.controller.GameSetupController;
 
+/** JavaFX application entry point that wires up the game and shows the window. */
 public class Main extends Application {
 
   private static final int WINDOW_WIDTH = 960;
@@ -43,6 +44,7 @@ public class Main extends Application {
     stage.show();
   }
 
+  /** Application main entry point. */
   public static void main(String[] args) {
     launch(args);
   }

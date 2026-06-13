@@ -21,6 +21,7 @@ public class TradeRespondDialog {
 
   private final Dialog<Player> dialog;
 
+  /** Constructs the trade respond dialog. */
   public TradeRespondDialog(ResourceBundle labels, Player offeringPlayer,
                             TradeOffer offer, List<Player> otherPlayers) {
     dialog = new Dialog<>();
@@ -52,6 +53,7 @@ public class TradeRespondDialog {
         DialogSupport.resourceName(labels, offer.getReceiving().getResource()));
   }
 
+  /** Shows the dialog and returns the accepting player, or empty if all decline. */
   public Optional<Player> showAndRespond() {
     return dialog.showAndWait();
   }
