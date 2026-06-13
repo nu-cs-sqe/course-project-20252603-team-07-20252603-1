@@ -316,4 +316,11 @@ public class PlayerTests {
     assertEquals(0, player.getDevelopmentCards().size());
     org.easymock.EasyMock.verify(mockCard);
   }
+
+  // TC20 ← REDUCES CXTY
+  @Test
+  void getDevelopmentCards_NewPlayer_ExpectEmptyList() {
+    Player player = new Player("Alice", PlayerColor.BLUE);
+    assertEquals(0, player.getDevelopmentCards().size());
+  }
 }
