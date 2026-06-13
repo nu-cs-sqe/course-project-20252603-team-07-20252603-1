@@ -263,5 +263,11 @@ public class PlayerTests {
         assertEquals(0, player.getVictoryPoints());
     }
 
-
+  // TC14
+  @Test
+  void increaseSettlementCount_FromZero_ExpectCountOne() {
+    Player player = new Player("Alice", PlayerColor.BLUE);
+    player.increaseSettlementCount();
+    assertEquals(1, player.getSettlementCount());
+  }
 }
