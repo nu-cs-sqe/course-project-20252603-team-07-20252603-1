@@ -35,6 +35,7 @@ public class PlayerResourcesPanel {
     private static final String HEADER_CSS = "resources-header";
     private static final String CURRENT_PLAYER_CSS = "current-player-row";
     private static final String SWATCH_CSS = "color-swatch";
+    private static final String VP_CELL_CSS = "vp-cell";
 
     private final GridPane root;
     private final GameModel model;
@@ -66,6 +67,8 @@ public class PlayerResourcesPanel {
             root.add(buildHeaderCell(labels.getString("resource." + RESOURCE_COLUMNS[resourceIdx].name())),
                     FIRST_RESOURCE_COLUMN + resourceIdx, HEADER_ROW);
         }
+        root.add(buildHeaderCell(labels.getString("resources.vpHeader")),
+                FIRST_RESOURCE_COLUMN + RESOURCE_COLUMNS.length, HEADER_ROW);
     }
 
     private void addPlayerRows() {
@@ -85,6 +88,9 @@ public class PlayerResourcesPanel {
             root.add(buildCountCell(count, isCurrentPlayer),
                     FIRST_RESOURCE_COLUMN + resourceIdx, gridRow);
         }
+        Node vpCell = buildCountCell(player.getVictoryPoints(), isCurrentPlayer);
+        vpCell.getStyleClass().add(VP_CELL_CSS);
+        root.add(vpCell, FIRST_RESOURCE_COLUMN + RESOURCE_COLUMNS.length, gridRow);
     }
 
     private static HBox buildNameCell(Player player, boolean isCurrentPlayer) {
