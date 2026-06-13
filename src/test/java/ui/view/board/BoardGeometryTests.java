@@ -129,6 +129,15 @@ public class BoardGeometryTests {
     }
 
     @Test
+    public void testBoardCenterIsTheMiddleHexCenter() {
+        // by symmetry, the centroid of all vertices is the center hex (id 9)
+        BoardGeometry.Point center = geometry.boardCenter();
+        BoardGeometry.Point middleHex = geometry.hexCenters().get(9);
+        assertEquals(middleHex.getX(), center.getX(), EPSILON);
+        assertEquals(middleHex.getY(), center.getY(), EPSILON);
+    }
+
+    @Test
     public void testBoardDimensions() {
         assertEquals(5 * Math.sqrt(3) * HEX_SIZE + 2 * PADDING, geometry.boardWidth(), EPSILON);
         assertEquals(8 * HEX_SIZE + 2 * PADDING, geometry.boardHeight(), EPSILON);

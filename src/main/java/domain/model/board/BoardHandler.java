@@ -443,6 +443,17 @@ public class BoardHandler {
   }
 
   /**
+   * Returns every port on the board, regardless of ownership. Used by the
+   * board view to draw the ports; use {@link #getAvailablePorts} to find the
+   * ports a specific player may trade through.
+   *
+   * @return a list of all ports on the board
+   */
+  public List<Port> getAllPorts() {
+    return new ArrayList<>(ports);
+  }
+
+  /**
    * Checks whether the edge between two nodes is already occupied by a road.
    *
    * @param nodeId1 the ID of the first node

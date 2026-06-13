@@ -1628,6 +1628,24 @@ public class BoardHandlerTests {
     Port port = new Port(2, domain.model.resources.Resource.GRAIN, List.of(1, 5));
     assertEquals(2, port.getTradeRatio());
     assertEquals(domain.model.resources.Resource.GRAIN, port.getResource());
+    assertEquals(List.of(1, 5), port.getNodeIds());
+  }
+
+  // getAllPorts() tests
+
+  @Test
+  void getAllPorts_FreshBoard_ReturnsAllNinePorts() {
+    BoardHandler b = new BoardHandler();
+    assertEquals(9, b.getAllPorts().size());
+  }
+
+  @Test
+  void getAllPorts_ReturnsPortsRegardlessOfOwnership() {
+    BoardHandler b = new BoardHandler();
+    // no player owns any node, so getAvailablePorts is empty but getAllPorts is not
+    Player red = new Player("Red", PlayerColor.RED);
+    assertEquals(0, b.getAvailablePorts(red).size());
+    assertEquals(9, b.getAllPorts().size());
   }
 
 }

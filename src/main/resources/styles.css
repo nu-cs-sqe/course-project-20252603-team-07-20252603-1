@@ -199,6 +199,30 @@
     -fx-stroke-width: 3;
 }
 
+/* ----- ports ----- */
+
+.port-marker {
+    -fx-stroke: #3a5a7a;
+    -fx-stroke-width: 1.5;
+}
+
+/* lighter resource tints so the dark ratio text stays readable */
+.port-grain  { -fx-fill: #f5d76e; }
+.port-wool   { -fx-fill: #c4e89a; }
+.port-lumber { -fx-fill: #9ccc84; }
+.port-brick  { -fx-fill: #d99878; }
+.port-ore    { -fx-fill: #bcbcbc; }
+.port-any    { -fx-fill: #e8eef4; }
+
+.port-dock {
+    -fx-stroke: #8a7a55;
+    -fx-stroke-line-cap: round;
+}
+
+.port-label {
+    -fx-fill: #2a3a4a;
+}
+
 /* ----- game round controls ----- */
 
 .control-bar {

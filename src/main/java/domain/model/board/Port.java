@@ -49,6 +49,15 @@ public class Port {
   }
 
   /**
+   * Returns the IDs of the two coastal nodes this port is attached to.
+   *
+   * @return an immutable list of the port's node IDs
+   */
+  public List<Integer> getNodeIds() {
+    return nodeIds;
+  }
+
+  /**
    * Checks if a player can use this port based on node ownership.
    *
    * @param board  the board handler to check node ownership

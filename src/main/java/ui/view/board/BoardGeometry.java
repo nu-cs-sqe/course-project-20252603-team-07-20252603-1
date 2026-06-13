@@ -114,6 +114,22 @@ public final class BoardGeometry {
   }
 
   /**
+   * Returns the geometric center of the board (the centroid of all vertices).
+   * Used to push port markers outward into the surrounding sea.
+   *
+   * @return the board center point
+   */
+  public Point boardCenter() {
+    double sumX = 0;
+    double sumY = 0;
+    for (Point point : nodePositions) {
+      sumX += point.getX();
+      sumY += point.getY();
+    }
+    return new Point(sumX / nodePositions.size(), sumY / nodePositions.size());
+  }
+
+  /**
    * Returns the total board width including padding.
    *
    * @return the board width

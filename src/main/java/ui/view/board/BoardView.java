@@ -1,8 +1,10 @@
 package ui.view.board;
 
 import domain.model.board.BoardHandler;
+import domain.model.board.Port;
 import domain.model.player.PlayerColor;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -35,7 +37,8 @@ public class BoardView {
     }
 
     private static final double HEX_SIZE_PX = 54;
-    private static final double PADDING_PX = 12;
+    // padding leaves a sea margin around the board wide enough for port markers
+    private static final double PADDING_RATIO = 0.85;
     private static final double EDGE_END_TRIM_RATIO = 0.2;
     private static final int DESERT_ROLL_NUMBER = 7;
     private static final int HOT_ROLL_LOW = 6;
@@ -54,6 +57,10 @@ public class BoardView {
     private static final double ROAD_WIDTH_RATIO = 0.16;
     private static final double HEX_NAME_FONT_RATIO = 0.26;
     private static final double ROLL_TOKEN_FONT_RATIO = 0.29;
+    private static final double PORT_OFFSET_RATIO = 0.5;
+    private static final double PORT_RADIUS_RATIO = 0.3;
+    private static final double PORT_DOCK_WIDTH_RATIO = 0.07;
+    private static final double PORT_FONT_RATIO = 0.24;
 
     private static final String HEX_SHAPE_CSS = "hex-shape";
     private static final String HEX_FILL_CSS_PREFIX = "hex-fill-";
@@ -70,6 +77,11 @@ public class BoardView {
     private static final String PICKABLE_CSS = "pickable";
     private static final String NODE_HIT_CSS = "node-hit";
     private static final String EDGE_HIT_CSS = "edge-hit";
+    private static final String PORT_MARKER_CSS = "port-marker";
+    private static final String PORT_FILL_CSS_PREFIX = "port-";
+    private static final String PORT_DOCK_CSS = "port-dock";
+    private static final String PORT_LABEL_CSS = "port-label";
+    private static final String PORT_ANY_RESOURCE = "ANY";
 
     private final BoardHandler board;
     private final BoardGeometry geometry;
@@ -94,7 +106,7 @@ public class BoardView {
     public BoardView(BoardHandler board, ResourceBundle labels, double hexSize) {
         this.board = board;
         this.hexSize = hexSize;
-        this.geometry = new BoardGeometry(hexSize, PADDING_PX);
+        this.geometry = new BoardGeometry(hexSize, hexSize * PADDING_RATIO);
         this.robberMarker = buildRobberMarker(hexSize);
         this.root = buildLayers(labels);
         applyMode();
@@ -137,12 +149,76 @@ public class BoardView {
         pane.setMinSize(geometry.boardWidth(), geometry.boardHeight());
         pane.setMaxSize(geometry.boardWidth(), geometry.boardHeight());
 
+        Group portLayer = buildPortLayer(labels);
         Group hexLayer = buildHexLayer(labels);
         buildHitLayers();
 
         pane.getChildren().addAll(
-                hexLayer, roadLayer, buildingLayer, robberMarker, edgeHitLayer, nodeHitLayer);
+                portLayer, hexLayer, roadLayer, buildingLayer, robberMarker,
+                edgeHitLayer, nodeHitLayer);
         return pane;
+    }
+
+    private Group buildPortLayer(ResourceBundle labels) {
+        Group layer = new Group();
+        BoardGeometry.Point center = geometry.boardCenter();
+        for (Port port : board.getAllPorts()) {
+            layer.getChildren().addAll(buildPortMarker(port, center, labels));
+        }
+        return layer;
+    }
+
+    private List<javafx.scene.Node> buildPortMarker(
+            Port port, BoardGeometry.Point center, ResourceBundle labels) {
+        List<Integer> nodeIds = port.getNodeIds();
+        int nodeA = nodeIds.get(0);
+        int nodeB = nodeIds.get(1);
+        BoardGeometry.Point mid = geometry.edgeMidpoint(nodeA, nodeB);
+
+        // push the marker outward from the board center into the sea
+        double dx = mid.getX() - center.getX();
+        double dy = mid.getY() - center.getY();
+        double length = Math.hypot(dx, dy);
+        double markerX = mid.getX() + dx / length * scaled(PORT_OFFSET_RATIO);
+        double markerY = mid.getY() + dy / length * scaled(PORT_OFFSET_RATIO);
+
+        List<javafx.scene.Node> nodes = new ArrayList<>();
+        nodes.add(buildPortDock(markerX, markerY, geometry.nodePositions().get(nodeA)));
+        nodes.add(buildPortDock(markerX, markerY, geometry.nodePositions().get(nodeB)));
+
+        Circle marker = new Circle(markerX, markerY, scaled(PORT_RADIUS_RATIO));
+        marker.getStyleClass().addAll(PORT_MARKER_CSS,
+                PORT_FILL_CSS_PREFIX + portResourceKey(port).toLowerCase());
+        marker.setMouseTransparent(true);
+        nodes.add(marker);
+
+        Text label = new Text(portRatioText(port, labels));
+        label.getStyleClass().add(PORT_LABEL_CSS);
+        label.setFont(Font.font(null, FontWeight.BOLD, scaled(PORT_FONT_RATIO)));
+        label.setMouseTransparent(true);
+        centerText(label, markerX, markerY);
+        nodes.add(label);
+
+        return nodes;
+    }
+
+    private Line buildPortDock(double markerX, double markerY, BoardGeometry.Point node) {
+        Line dock = new Line(markerX, markerY, node.getX(), node.getY());
+        dock.getStyleClass().add(PORT_DOCK_CSS);
+        dock.setStrokeWidth(scaled(PORT_DOCK_WIDTH_RATIO));
+        dock.setMouseTransparent(true);
+        return dock;
+    }
+
+    private static String portResourceKey(Port port) {
+        return port.getResource() == domain.model.resources.Resource.ANY
+                ? PORT_ANY_RESOURCE
+                : port.getResource().name();
+    }
+
+    private static String portRatioText(Port port, ResourceBundle labels) {
+        // compact ratio for the marker; the resource is shown by the marker colour
+        return MessageFormat.format(labels.getString("port.boardRatio"), port.getTradeRatio());
     }
 
     private Group buildHexLayer(ResourceBundle labels) {
