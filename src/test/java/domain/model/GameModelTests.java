@@ -1610,7 +1610,7 @@ public class GameModelTests {
     // --- distributeResources (via performTurn) ---
 
     @Test
-    void performTurn_bankHasEnough_playerReceivesResource() {
+    void performTurn_bankHasEnough_playerReceivesResource() throws EmptyDeckException {
         Player redMock = EasyMock.createMock(Player.class);
         ColorToPlayerObjMock = Map.of(PlayerColor.RED, redMock);
         EasyMock.expect(boardMock.computeResourceDemand(6))
@@ -1631,7 +1631,7 @@ public class GameModelTests {
     }
 
     @Test
-    void performTurn_bankEmpty_playerReceivesNothing() {
+    void performTurn_bankEmpty_playerReceivesNothing() throws EmptyDeckException {
         Player redMock = EasyMock.createMock(Player.class);
         ColorToPlayerObjMock = Map.of(PlayerColor.RED, redMock);
         EasyMock.expect(boardMock.computeResourceDemand(6))
@@ -1673,7 +1673,7 @@ public class GameModelTests {
     }
 
     @Test
-    void performTurn_bankExactlyEnough_allPlayersReceive() {
+    void performTurn_bankExactlyEnough_allPlayersReceive() throws EmptyDeckException {
         Player redMock = EasyMock.createMock(Player.class);
         Player blueMock = EasyMock.createMock(Player.class);
         ColorToPlayerObjMock = Map.of(PlayerColor.RED, redMock, PlayerColor.BLUE, blueMock);
@@ -1702,7 +1702,7 @@ public class GameModelTests {
     }
 
     @Test
-    void performTurn_cityPlayer_receivesTwo() {
+    void performTurn_cityPlayer_receivesTwo() throws EmptyDeckException {
         Player redMock = EasyMock.createMock(Player.class);
         ColorToPlayerObjMock = Map.of(PlayerColor.RED, redMock);
         EasyMock.expect(boardMock.computeResourceDemand(8))
@@ -1723,7 +1723,7 @@ public class GameModelTests {
     }
 
     @Test
-    void performTurn_singlePlayerBankShort_receivesPartial() {
+    void performTurn_singlePlayerBankShort_receivesPartial() throws EmptyDeckException {
         Player redMock = EasyMock.createMock(Player.class);
         ColorToPlayerObjMock = Map.of(PlayerColor.RED, redMock);
         EasyMock.expect(boardMock.computeResourceDemand(6))
@@ -1759,7 +1759,7 @@ public class GameModelTests {
     }
 
     @Test
-    void performTurn_oneResourceCovered_otherNot_onlyCoveredDistributed() {
+    void performTurn_oneResourceCovered_otherNot_onlyCoveredDistributed() throws EmptyDeckException {
         Player redMock = EasyMock.createMock(Player.class);
         Player blueMock = EasyMock.createMock(Player.class);
         ColorToPlayerObjMock = Map.of(PlayerColor.RED, redMock, PlayerColor.BLUE, blueMock);
@@ -2496,7 +2496,9 @@ public class GameModelTests {
     Player redStateMock = EasyMock.createMock(Player.class);
     ColorToPlayerObjMock = Map.of(PlayerColor.RED, redStateMock);
 
-    EasyMock.expect(woolDeckMock.draw()).andThrow(new EmptyDeckException("No WOOL cards remain."));
+    EasyMock.expect(boardMock.computeResourceDemand(6))
+        .andReturn(Map.of(Resource.WOOL, new HashMap<>(Map.of(redStateMock, 1))));
+    EasyMock.expect(woolDeckMock.drawMultiple(1)).andThrow(new EmptyDeckException("No WOOL cards remain."));
     EasyMock.replay(boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock,
         woolDeckMock, tradeManagerMock, redStateMock);
 

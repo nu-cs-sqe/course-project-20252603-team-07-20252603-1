@@ -24,7 +24,7 @@ class ResourceDeckTest {
     }
 
     @Test
-    void testDrawMultipleCards() {
+    void testDrawMultipleCards() throws EmptyDeckException {
         ResourceDeck deck = new ResourceDeck(Resource.WOOL);
         int drawn = deck.drawMultiple(5);
 
@@ -32,7 +32,7 @@ class ResourceDeckTest {
     }
 
     @Test
-    void testDrawMultipleCardsExceedingAvailable() {
+    void testDrawMultipleCardsExceedingAvailable() throws EmptyDeckException {
         ResourceDeck deck = new ResourceDeck(Resource.BRICK);
 
         // Draw 15 cards first, leaving 4
@@ -44,7 +44,7 @@ class ResourceDeckTest {
     }
 
     @Test
-    void testDrawFromEmptyDeckThrowsException() {
+    void testDrawFromEmptyDeckThrowsException() throws EmptyDeckException {
         ResourceDeck deck = new ResourceDeck(Resource.GRAIN);
 
         // Draw all 19 cards
@@ -119,7 +119,7 @@ class ResourceDeckTest {
     }
 
     @Test
-    void testDrawMultipleReturnsEmptyArrayWhenDeckEmpty() {
+    void testDrawMultipleReturnsEmptyArrayWhenDeckEmpty() throws EmptyDeckException {
         ResourceDeck deck = new ResourceDeck(Resource.GRAIN);
 
         // Draw all cards

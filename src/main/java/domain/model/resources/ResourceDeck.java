@@ -44,7 +44,7 @@ public class ResourceDeck {
     }
 
 
-    public int drawMultiple(int numCards) {
+    public int drawMultiple(int numCards) throws EmptyDeckException {
         int numCardsReturning = numCards <= this.count ? numCards : this.count;
         this.count -= numCardsReturning;
         return numCardsReturning;

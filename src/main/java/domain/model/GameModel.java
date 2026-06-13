@@ -166,11 +166,15 @@ public List<Player> getOtherPlayers() {
             currentGamePhase = GamePhase.MOVE_ROBBER;
             return;
         }
-        distributeResources(roll);
+        try {
+            distributeResources(roll);
+        } catch (EmptyDeckException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
         currentGamePhase = GamePhase.GENERAL_PLAY;
     }
 
-    private void distributeResources(int roll) {
+    private void distributeResources(int roll) throws EmptyDeckException {
         Map<Resource, Map<Player, Integer>> demand = board.computeResourceDemand(roll);
         for (Map.Entry<Resource, Map<Player, Integer>> resourceEntry : demand.entrySet()) {
             distributeResourceToPlayers(resourceEntry.getKey(), resourceEntry.getValue());
@@ -178,7 +182,7 @@ public List<Player> getOtherPlayers() {
     }
 
     // if not enough to satisfy all players, no one gets anything; if only one player is requesting, they can get a partial amount
-    private void distributeResourceToPlayers(Resource resource, Map<Player, Integer> playerAmounts) {
+    private void distributeResourceToPlayers(Resource resource, Map<Player, Integer> playerAmounts) throws EmptyDeckException {
         ResourceDeck deck = decks.get(resource);
         if (playerAmounts.size() > 1) {
             int total = playerAmounts.values().stream().mapToInt(Integer::intValue).sum();
