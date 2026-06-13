@@ -5,6 +5,9 @@ import domain.model.player.PlayerColor;
 import domain.model.resources.Resource;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -322,5 +325,13 @@ public class PlayerTests {
   void getDevelopmentCards_NewPlayer_ExpectEmptyList() {
     Player player = new Player("Alice", PlayerColor.BLUE);
     assertEquals(0, player.getDevelopmentCards().size());
+  }
+
+  // TC21 ← REDUCES CXTY
+  @Test
+  void setHasPlayedDevCardThisTurn_True_ExpectTrue() {
+    Player player = new Player("Alice", PlayerColor.BLUE);
+    player.setHasPlayedDevCardThisTurn(true);
+    assertTrue(player.hasPlayedDevCardThisTurn());
   }
 }
