@@ -143,4 +143,12 @@ class ResourceDeckTest {
     ResourceDeck deck = new ResourceDeck(Resource.LUMBER);
     assertEquals(expectedCount, deck.getTotalCards());
   }
+
+  // TC13 ← REDUCES CXTY
+  @Test
+  void resourceType_EnumValues_ExpectStaticInitializerLoads() {
+    assertNotNull(ResourceType.WOOD);
+    assertNotNull(ResourceType.DESERT);
+    assertEquals(6, ResourceType.values().length);
+  }
 }
