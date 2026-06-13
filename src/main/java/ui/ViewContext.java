@@ -3,6 +3,7 @@ package ui;
 import domain.model.game_pieces.DiceHandler;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.ResourceBundle;
+import ui.controller.DevCardController;
 import ui.controller.GameLoopController;
 import ui.controller.GameSetupController;
 
@@ -13,15 +14,18 @@ public final class ViewContext {
 
     private final GameSetupController setupController;
     private final GameLoopController loopController;
+    private final DevCardController devCardController;
     private final DiceHandler diceRoller;
     private final ResourceBundle labels;
 
     public ViewContext(GameSetupController setupController,
                        GameLoopController loopController,
+                       DevCardController devCardController,
                        DiceHandler diceRoller,
                        ResourceBundle labels) {
         this.setupController = setupController;
         this.loopController = loopController;
+        this.devCardController = devCardController;
         this.diceRoller = diceRoller;
         this.labels = labels;
     }
@@ -32,6 +36,10 @@ public final class ViewContext {
 
     public GameLoopController loop() {
         return loopController;
+    }
+
+    public DevCardController devCards() {
+        return devCardController;
     }
 
     public DiceHandler dice() {

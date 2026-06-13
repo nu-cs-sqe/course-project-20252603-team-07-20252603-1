@@ -1,5 +1,6 @@
 package ui;
 
+import domain.model.DevelopmentCardHandler;
 import domain.model.game_pieces.DiceHandler;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -7,12 +8,13 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import ui.controller.DevCardController;
 import ui.controller.GameLoopController;
 import ui.controller.GameSetupController;
 
 public class Main extends Application {
 
-    private static final int WINDOW_WIDTH = 700;
+    private static final int WINDOW_WIDTH = 960;
     private static final int WINDOW_HEIGHT = 700;
     private static final String STYLESHEET = "/styles.css";
     private static final String BUNDLE_BASE_NAME = "labels";
@@ -28,6 +30,7 @@ public class Main extends Application {
         ViewContext context = new ViewContext(
                 new GameSetupController(),
                 new GameLoopController(),
+                new DevCardController(new DevelopmentCardHandler()),
                 new DiceHandler(),
                 labels
         );
