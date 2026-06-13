@@ -4,28 +4,29 @@ import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.List;
 
+/** Adjacency-list graph of board nodes and edges used to track settlements and roads. */
 public class BoardGraph {
-  private final Map<Integer, Set<GraphEdge>> nodeIDToConnectingEdges = new HashMap<>();
-  private final Map<Integer, GraphNode> nodeIDToNodeObject = new HashMap<>();
+  private final Map<Integer, Set<GraphEdge>> nodeIdToConnectingEdges = new HashMap<>();
+  private final Map<Integer, GraphNode> nodeIdToNodeObject = new HashMap<>();
 
   boolean addGraphNodeObject(GraphNode graphNode) {
-    int nodeID = graphNode.getNodeID();
-    if (nodeIDToNodeObject.containsKey(nodeID)) {
+    int nodeId = graphNode.getNodeId();
+    if (nodeIdToNodeObject.containsKey(nodeId)) {
       throw new IllegalArgumentException("Node already exists");
     } else {
-      this.nodeIDToNodeObject.put(nodeID, graphNode);
-      this.nodeIDToConnectingEdges.put(nodeID, new HashSet<>());
+      this.nodeIdToNodeObject.put(nodeId, graphNode);
+      this.nodeIdToConnectingEdges.put(nodeId, new HashSet<>());
       return true;
     }
   }
 
-  boolean addGraphNodeConnection(int nodeID, GraphEdge connectingEdge) {
-    getGraphNodeByID(nodeID);
-    Set<GraphEdge> setOfConnectingEdges = this.nodeIDToConnectingEdges.get(nodeID);
+  boolean addGraphNodeConnection(int nodeId, GraphEdge connectingEdge) {
+    getGraphNodeById(nodeId);
+    Set<GraphEdge> setOfConnectingEdges = this.nodeIdToConnectingEdges.get(nodeId);
     if (setOfConnectingEdges.contains(connectingEdge)) {
       throw new IllegalArgumentException("Node already has specified edge");
     } else {
@@ -34,20 +35,20 @@ public class BoardGraph {
     }
   }
 
-  GraphNode getGraphNodeByID(int nodeID) {
-    if (!nodeIDToNodeObject.containsKey(nodeID)) {
+  GraphNode getGraphNodeById(int nodeId) {
+    if (!nodeIdToNodeObject.containsKey(nodeId)) {
       throw new IllegalArgumentException("Node does not exist");
     } else {
-      return this.nodeIDToNodeObject.get(nodeID);
+      return this.nodeIdToNodeObject.get(nodeId);
     }
   }
 
-  Set<GraphEdge> getConnectingEdgesByID(int nodeID) {
+  Set<GraphEdge> getConnectingEdgesById(int nodeId) {
     Set<GraphEdge> result = new HashSet<>();
-    if (!nodeIDToConnectingEdges.containsKey(nodeID)) {
+    if (!nodeIdToConnectingEdges.containsKey(nodeId)) {
       throw new IllegalArgumentException("Node does not exist");
     } else {
-      Set<GraphEdge> connectingEdges = nodeIDToConnectingEdges.get(nodeID);
+      Set<GraphEdge> connectingEdges = nodeIdToConnectingEdges.get(nodeId);
       for (GraphEdge edge : connectingEdges) {
         result.add(edge);
       }
@@ -55,45 +56,48 @@ public class BoardGraph {
     }
   }
 
-  public boolean checkNodeOccupied(int nodeID) {
-    GraphNode nodeOfInterest = getGraphNodeByID(nodeID);
+  /** Returns whether the given node is occupied by a settlement or city. */
+  public boolean checkNodeOccupied(int nodeId) {
+    GraphNode nodeOfInterest = getGraphNodeById(nodeId);
     return nodeOfInterest.checkOccupied();
   }
 
-  public boolean checkEdgeOccupied(int startingNodeID, int endingNodeID) {
-    Set<GraphEdge> setWithRelevantEdge = getConnectingEdgesByID(startingNodeID);
-    GraphEdge edgeToCheck = getMatchingEdgeFromSet(setWithRelevantEdge, startingNodeID, endingNodeID);
+  /** Returns whether the edge between the two nodes has a road on it. */
+  public boolean checkEdgeOccupied(int startingNodeId, int endingNodeId) {
+    Set<GraphEdge> setWithRelevantEdge = getConnectingEdgesById(startingNodeId);
+    GraphEdge edgeToCheck =
+        getMatchingEdgeFromSet(setWithRelevantEdge, startingNodeId, endingNodeId);
     return edgeToCheck.checkRoadExists();
   }
 
-  boolean checkPlayerOwnsGraphNodeObject(PlayerColor color, int nodeID) {
-    GraphNode nodeOfInterest = getGraphNodeByID(nodeID);
+  boolean checkPlayerOwnsGraphNodeObject(PlayerColor color, int nodeId) {
+    GraphNode nodeOfInterest = getGraphNodeById(nodeId);
     PlayerColor nodeColor = nodeOfInterest.checkColor();
     return nodeColor == color;
   }
 
-  boolean claimGraphNodeObject(PlayerColor color, int nodeID) {
-    return getGraphNodeByID(nodeID).playerClaimNode(color);
+  boolean claimGraphNodeObject(PlayerColor color, int nodeId) {
+    return getGraphNodeById(nodeId).playerClaimNode(color);
   }
 
-  boolean claimGraphEdgeObject(PlayerColor color, int startingNodeID, int endingNodeID) {
-    Set<GraphEdge> setWithRelevantEdge = getConnectingEdgesByID(startingNodeID);
-    GraphEdge edgeToClaim = getMatchingEdgeFromSet(setWithRelevantEdge, startingNodeID, endingNodeID);
+  boolean claimGraphEdgeObject(PlayerColor color, int startingNodeId, int endingNodeId) {
+    Set<GraphEdge> setWithRelevantEdge = getConnectingEdgesById(startingNodeId);
+    GraphEdge edgeToClaim =
+        getMatchingEdgeFromSet(setWithRelevantEdge, startingNodeId, endingNodeId);
     edgeToClaim.claimGraphEdge(color);
     return true;
   }
 
-  boolean checkIfAdjacentNodesNotClaimed(int nodeID) {
-    Set<GraphEdge> connectingEdges = getConnectingEdgesByID(nodeID);
+  boolean checkIfAdjacentNodesNotClaimed(int nodeId) {
+    Set<GraphEdge> connectingEdges = getConnectingEdgesById(nodeId);
     for (GraphEdge edge : connectingEdges) {
-      int edgeStartingNodeID = edge.getStartingNodeID();
-      int edgeEndingNodeID = edge.getEndingNodeID();
+      int edgeStartingNodeId = edge.getStartingNodeId();
+      int edgeEndingNodeId = edge.getEndingNodeId();
       GraphNode nodeToCheck;
-      // One of these IDs will be the current node trying to be claimed, so we don't need to check it
-      if (edgeStartingNodeID != nodeID) {
-        nodeToCheck = getGraphNodeByID(edgeStartingNodeID);
+      if (edgeStartingNodeId != nodeId) {
+        nodeToCheck = getGraphNodeById(edgeStartingNodeId);
       } else {
-        nodeToCheck = getGraphNodeByID(edgeEndingNodeID);
+        nodeToCheck = getGraphNodeById(edgeEndingNodeId);
       }
 
       if (nodeToCheck.checkOccupied()) {
@@ -103,24 +107,28 @@ public class BoardGraph {
     return true;
   }
 
-  PlayerColor getEdgeOwner(int startingNodeID, int endingNodeID) {
-    Set<GraphEdge> setWithRelevantEdge = getConnectingEdgesByID(startingNodeID);
-    GraphEdge edgeToCheck = getMatchingEdgeFromSet(setWithRelevantEdge, startingNodeID, endingNodeID);
+  PlayerColor getEdgeOwner(int startingNodeId, int endingNodeId) {
+    Set<GraphEdge> setWithRelevantEdge = getConnectingEdgesById(startingNodeId);
+    GraphEdge edgeToCheck = getMatchingEdgeFromSet(setWithRelevantEdge, startingNodeId, endingNodeId);
     return edgeToCheck.checkOwningColor();
   }
 
-  GraphEdge getMatchingEdgeFromSet(Set<GraphEdge> connectingEdges, int startingNodeID, int endingNodeID) {
+  GraphEdge getMatchingEdgeFromSet(
+      Set<GraphEdge> connectingEdges, int startingNodeId, int endingNodeId) {
     for (GraphEdge edge : connectingEdges) {
-      if (edge.getStartingNodeID() == startingNodeID && edge.getEndingNodeID() == endingNodeID) {
+      if (edge.getStartingNodeId() == startingNodeId
+          && edge.getEndingNodeId() == endingNodeId) {
         return edge;
       }
     }
     throw new IllegalArgumentException("Edge does not exist");
   }
 
-  protected boolean edgeCheckPlayerOwnsNeighboringEdge(PlayerColor color, int startingNodeID, int endingNodeID) {
-    Set<GraphEdge> connectingStartingNodeEdges = getConnectingEdgesByID(startingNodeID);
-    Set<GraphEdge> connectingEndingNodeEdges = getConnectingEdgesByID(endingNodeID);
+  /** Returns whether the player owns an edge neighboring the given edge endpoints. */
+  protected boolean edgeCheckPlayerOwnsNeighboringEdge(
+      PlayerColor color, int startingNodeId, int endingNodeId) {
+    Set<GraphEdge> connectingStartingNodeEdges = getConnectingEdgesById(startingNodeId);
+    Set<GraphEdge> connectingEndingNodeEdges = getConnectingEdgesById(endingNodeId);
 
     for (GraphEdge edge : connectingStartingNodeEdges) {
       if (edge.checkOwningColor() == color) {
@@ -136,14 +144,17 @@ public class BoardGraph {
     return false;
   }
 
-  protected boolean edgeCheckPlayerOwnsNeighboringNode(PlayerColor color, int startingNodeID, int endingNodeID) {
-    GraphNode startingNode = getGraphNodeByID(startingNodeID);
-    GraphNode endingNode = getGraphNodeByID(endingNodeID);
+  /** Returns whether the player owns either endpoint node of the given edge. */
+  protected boolean edgeCheckPlayerOwnsNeighboringNode(
+      PlayerColor color, int startingNodeId, int endingNodeId) {
+    GraphNode startingNode = getGraphNodeById(startingNodeId);
+    GraphNode endingNode = getGraphNodeById(endingNodeId);
     return startingNode.checkColor() == color || endingNode.checkColor() == color;
   }
 
-  public boolean nodeCheckPlayerOwnsNeighboringEdge(PlayerColor color, int nodeID) {
-    Set<GraphEdge> relevantEdgeSet = getConnectingEdgesByID(nodeID);
+  /** Returns whether the player owns any edge adjacent to the given node. */
+  public boolean nodeCheckPlayerOwnsNeighboringEdge(PlayerColor color, int nodeId) {
+    Set<GraphEdge> relevantEdgeSet = getConnectingEdgesById(nodeId);
     for (GraphEdge edge : relevantEdgeSet) {
       if (edge.checkOwningColor() == color) {
         return true;
@@ -158,8 +169,6 @@ public class BoardGraph {
 
     if (previousWinner != PlayerColor.SETUP) {
       longestRoad = calculatePlayerLongestRoad(previousWinner);
-      // handles case where player builds settlement to break off longest road,
-      // and no other players have 5 continuous roads
       if (longestRoad < 5) {
         longestRoad = 4;
         longestRoadOwner = PlayerColor.SETUP;
@@ -168,7 +177,9 @@ public class BoardGraph {
 
     for (Player player : activePlayers) {
       PlayerColor color = player.getColor();
-      if (color == previousWinner) continue;
+      if (color == previousWinner) {
+        continue;
+      }
 
       int playerLongest = calculatePlayerLongestRoad(color);
 
@@ -182,7 +193,7 @@ public class BoardGraph {
 
   private int calculatePlayerLongestRoad(PlayerColor color) {
     Set<GraphEdge> playerEdges = new HashSet<>();
-    for (Set<GraphEdge> edges : nodeIDToConnectingEdges.values()) {
+    for (Set<GraphEdge> edges : nodeIdToConnectingEdges.values()) {
       for (GraphEdge edge : edges) {
         if (edge.checkOwningColor() == color) {
           playerEdges.add(edge);
@@ -198,20 +209,23 @@ public class BoardGraph {
     return longest;
   }
 
-  private int dfs(GraphEdge current, int fromNodeId, Set<GraphEdge> visited, PlayerColor color) {
+  private int dfs(
+      GraphEdge current, int fromNodeId, Set<GraphEdge> visited, PlayerColor color) {
     visited.add(current);
     int longest = visited.size();
 
-    int[] nodes = {current.getStartingNodeID(), current.getEndingNodeID()};
+    int[] nodes = {current.getStartingNodeId(), current.getEndingNodeId()};
     for (int nodeId : nodes) {
-      if (nodeId == fromNodeId) continue;
+      if (nodeId == fromNodeId) {
+        continue;
+      }
 
-      GraphNode node = getGraphNodeByID(nodeId);
+      GraphNode node = getGraphNodeById(nodeId);
       if (node.checkOccupied() && node.checkColor() != color) {
         continue;
       }
 
-      Set<GraphEdge> connecting = getConnectingEdgesByID(nodeId);
+      Set<GraphEdge> connecting = getConnectingEdgesById(nodeId);
       for (GraphEdge neighbor : connecting) {
         if (!visited.contains(neighbor) && neighbor.checkOwningColor() == color) {
           int length = dfs(neighbor, nodeId, new HashSet<>(visited), color);
@@ -302,17 +316,19 @@ public class BoardGraph {
     addGraphEdge(50, 53);
   }
 
-  private void addGraphEdge(int startingNodeID, int endingNodeID) {
-    GraphEdge newEdge = new GraphEdge(startingNodeID, endingNodeID);
-    addGraphNodeConnection(startingNodeID, newEdge);
-    addGraphNodeConnection(endingNodeID, newEdge);
+  private void addGraphEdge(int startingNodeId, int endingNodeId) {
+    GraphEdge newEdge = new GraphEdge(startingNodeId, endingNodeId);
+    addGraphNodeConnection(startingNodeId, newEdge);
+    addGraphNodeConnection(endingNodeId, newEdge);
   }
 
+  /** Returns the number of nodes in the graph (for testing). */
   protected int checkAmountOfNodesForTesting() {
-    return this.nodeIDToNodeObject.size();
+    return this.nodeIdToNodeObject.size();
   }
 
+  /** Returns the number of entries in the edge map (for testing). */
   protected int checkAmountOfNodesInEdgeMapForTesting() {
-    return this.nodeIDToConnectingEdges.size();
+    return this.nodeIdToConnectingEdges.size();
   }
 }

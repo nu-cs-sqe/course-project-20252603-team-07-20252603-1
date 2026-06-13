@@ -14,10 +14,53 @@ mutations to `BoardHandler`, and deducts resources from the current player.
 
 ---
 
+### Method under test: `getCurrentPlayerIndex()`
+
+|             | State of the System          | Expected output | Implemented?       |
+|-------------|------------------------------|-----------------|--------------------|
+| Test Case 1 | fresh model after construction | 0             | :white_check_mark: |
+
+---
+
+### Method under test: `getCurrentRound()`
+
+|             | State of the System          | Expected output | Implemented?       |
+|-------------|------------------------------|-----------------|--------------------|
+| Test Case 1 | fresh model after construction | 0             | :white_check_mark: |
+
+---
+
+### Method under test: `moveRobberAndSteal()`
+
+|             | State of the System | Expected output      | Implemented?       |
+|-------------|---------------------|----------------------|--------------------|
+| Test Case 1 | any state           | no exception thrown  | :white_check_mark: |
+
+---
+
+### Method under test: `getTurnOrder()`
+
+|             | State of the System                | Expected output                            | Implemented?       |
+|-------------|------------------------------------|--------------------------------------------|---------------------|
+| Test Case 1 | model with RED and BLUE players    | list contains both players (size = 2)      | :white_check_mark: |
+
+---
+
+### Method under test: `getOtherPlayers()`
+
+Returns all players except the current player.
+
+|             | State of the System                                         | Expected output                       | Implemented?       |
+|-------------|-------------------------------------------------------------|---------------------------------------|--------------------|
+| Test Case 1 | current player = RED; players = [RED, BLUE]                 | list contains only BLUE (size = 1)    | :white_check_mark: |
+
+---
+
 ### Method under test: `performTurn(int roll)`
 
 Transitions phase from `BEFORE_ROLL` to `GENERAL_PLAY` (non-7) or `MOVE_ROBBER` (7).
 Throws `IllegalGamePhaseException` if called outside `BEFORE_ROLL`.
+Wraps `EmptyDeckException` as `IllegalArgumentException` if a resource deck is empty during distribution.
 
 Step 1:
 
@@ -36,12 +79,13 @@ Step 3:
 - roll: 2 (LOW), 7 (robber trigger), 12 (HIGH)
 - phase: BEFORE_ROLL (valid); GENERAL_PLAY (already rolled — invalid)
 
-|             | State of the System                             | Expected output                              | Implemented?       |
-|-------------|-------------------------------------------------|----------------------------------------------|--------------------|
-| Test Case 2 | BEFORE_ROLL, roll = 2 (minimum)                 | phase transitions to GENERAL_PLAY            | :white_check_mark: |
-| Test Case 3 | BEFORE_ROLL, roll = 12 (maximum)                | phase transitions to GENERAL_PLAY            | :white_check_mark: |
-| Test Case 4 | BEFORE_ROLL, roll = 7 (robber trigger)          | phase transitions to MOVE_ROBBER             | :white_check_mark: |
-| Test Case 5 | GENERAL_PLAY (already rolled), roll = 6         | IllegalGamePhaseException                    | :white_check_mark: |
+|             | State of the System                                          | Expected output                                              | Implemented?       |
+|-------------|--------------------------------------------------------------|--------------------------------------------------------------|--------------------|
+| Test Case 2 | BEFORE_ROLL, roll = 2 (minimum)                              | phase transitions to GENERAL_PLAY                            | :white_check_mark: |
+| Test Case 3 | BEFORE_ROLL, roll = 12 (maximum)                             | phase transitions to GENERAL_PLAY                            | :white_check_mark: |
+| Test Case 4 | BEFORE_ROLL, roll = 7 (robber trigger)                       | phase transitions to MOVE_ROBBER                             | :white_check_mark: |
+| Test Case 5 | GENERAL_PLAY (already rolled), roll = 6                      | IllegalGamePhaseException                                    | :white_check_mark: |
+| Test Case 6 | BEFORE_ROLL, roll = 6, WOOL resource deck throws EmptyDeckException | IllegalArgumentException with same message as EmptyDeckException | :white_check_mark: |
 
 ---
 
@@ -179,18 +223,17 @@ Step 3:
 - Ore: 0 (zero); 2 (one below cost boundary); 3 (at cost boundary); 4 (surplus)
 - Grain (only reached if ore ≥ 3): 0 (zero); 1 (one below cost boundary); 2 (at cost boundary); 3 (surplus)
 
-|             | State of the System                                                        | Expected output                             | Implemented?       |
-|-------------|----------------------------------------------------------------------------|---------------------------------------------|--------------------|
-| Test Case 1 | GENERAL_PLAY, ore=3 (at boundary), grain=2 (at boundary), board succeeds   | success                                     | :white_check_mark: |
-| Test Case 2 | GENERAL_PLAY, ore=2 (one below boundary)                                   | InsufficientResourcesException              | :white_check_mark: |
-| Test Case 3 | GENERAL_PLAY, ore=4, grain=1 (one below grain boundary)                    | InsufficientResourcesException              | :white_check_mark: |
-| Test Case 4 | GENERAL_PLAY, ore=3, grain=2, board throws                                 | IllegalCityPlacementException               | :white_check_mark: |
-| Test Case 5 | ROAD_BUILDING_DEV_CARD (invalid phase)                                     | IllegalGamePhaseException                   | :white_check_mark: |
-| Test Case 6 | BEFORE_ROLL (invalid phase)                                                | IllegalGamePhaseException                   | :white_check_mark: |
-| Test Case 7 | GENERAL_PLAY, ore=0 (zero, well below boundary)                            | InsufficientResourcesException              | :white_check_mark: |
-| Test Case 8 | GENERAL_PLAY, ore=3, grain=0 (zero, well below boundary)                   | InsufficientResourcesException              | :white_check_mark: |
-| Test Case 9 | GENERAL_PLAY, ore=4 (surplus), grain=3 (surplus), board succeeds           | success (surplus does not prevent building) | :white_check_mark: |
-
+|             | State of the System                                          | Expected output                                    | Implemented?       |
+|-------------|--------------------------------------------------------------|----------------------------------------------------|--------------------|
+| Test Case 1 | GENERAL_PLAY, ore=3 (at boundary), grain=2 (at boundary), board succeeds | success                               | :white_check_mark: |
+| Test Case 2 | GENERAL_PLAY, ore=2 (one below boundary)                     | InsufficientResourcesException                     | :white_check_mark: |
+| Test Case 3 | GENERAL_PLAY, ore=4, grain=1 (one below grain boundary)      | InsufficientResourcesException                     | :white_check_mark: |
+| Test Case 4 | GENERAL_PLAY, ore=3, grain=2, board throws                   | IllegalCityPlacementException                      | :white_check_mark: |
+| Test Case 5 | ROAD_BUILDING_DEV_CARD (invalid phase)                       | IllegalGamePhaseException                          | :white_check_mark: |
+| Test Case 6 | BEFORE_ROLL (invalid phase)                                  | IllegalGamePhaseException                          | :white_check_mark: |
+| Test Case 7 | GENERAL_PLAY, ore=0 (zero, well below boundary)              | InsufficientResourcesException                     | :white_check_mark: |
+| Test Case 8 | GENERAL_PLAY, ore=3, grain=0 (zero, well below boundary)     | InsufficientResourcesException                     | :white_check_mark: |
+| Test Case 9 | GENERAL_PLAY, ore=4 (surplus), grain=3 (surplus), board succeeds | success (surplus does not prevent building)    | :white_check_mark: |
 
 ### Method under test: `attemptPortTrade(Port port, Resource giving, Resource receiving)`
 
@@ -216,52 +259,55 @@ Step 3:
 | Test Case 1 | GENERAL_PLAY, bank has 1 card (at boundary), valid trade | success                        | :white_check_mark: |
 | Test Case 2 | GENERAL_PLAY, bank has 0 cards (empty)                   | InsufficientResourcesException | :white_check_mark: |
 | Test Case 3 | GENERAL_PLAY, bank has 19 cards (max), valid trade       | success                        | :white_check_mark: |
-| Test Case 4 | BEFORE_ROLL (invalid phase)                              | IllegalGamePhaseException      | x                  |
+| Test Case 4 | BEFORE_ROLL (invalid phase)                              | IllegalGamePhaseException      | :white_check_mark: |
 
 ---
 
-### Method under test: `updateVictoryPoints(PlayerColor color, int amount)`
+### Method  under test: `performTurn(int roll)` — resource distribution path
 
-Either awards (+ amount) or takes away (- amount) player victory points
+When roll ≠ 7, `performTurn` delegates to `distributeResources`, which calls `board.computeResourceDemand(roll)` and distributes resources per the following rules:
+- **Multiple players competing for a resource**: if the bank deck has fewer cards than total demand, **no player receives that resource** (all-or-nothing).
+- **Single player owed a resource**: the player receives however many cards the bank has, which may be a partial amount (including zero if the bank is empty).
 
-Inputs:
-- PlayerColor -> RED, ORANGE, WHITE, BLUE
-- Amount -> cases
-  - -2 -> when a player loses largest army or longest road
-  - 2 -> when a player gains largest army or longest road
-  - 1 -> when a player plays a VP devcard, or builds a settlement, or upgrades to a city
+Each resource is evaluated independently.
 
-Outputs:
-- Player is updated -> use EasyMock verify to ensure method is called
+Step 1:
 
-|             | State of the System        | Expected output            | Implemented?       |
-|-------------|----------------------------|----------------------------|--------------------|
-| Test Case 1 | Red recieves 1             | Success                    | :white_check_mark: |
-| Test Case 2 | Orange recieves 2          | Success                    | :white_check_mark: |
-| Test Case 3 | White loses 2              | Success                    | :white_check_mark: |
-| Test Case 4 | Blue recieves 2            | Success                    | :white_check_mark: |
+- Input: roll (die value)
+- Input: Demand map returned by `board.computeResourceDemand(roll)` (Map<Resource, Map<Player, Integer>>)
+- Input: Bank deck sizes per resource (Interval [0, 19])
+- Output: Player resource counts updated; decks drawn; game phase transitions to GENERAL_PLAY
+- Output: No change (bank insufficient for multi-player resource, or demand map empty, or bank empty for single player)
 
-### Method under test: `checkCurrentPlayerHasTenOrMoreVictoryPoints()`
+Step 2:
 
-Returns true if a player has 10 or more points
-According to the rules, players can win ONLY on their turn, so we only need to check current player
+- roll: Cases {7 (robber, no distribution), non-7 (distribution path)}
+- Demand map: Cases {empty (no active hexes), non-empty}
+- Per resource, number of players: Cases {single player, multiple players}
+  - Single player: deck drawn up to demand; player receives `drawn` amount (partial if bank short, nothing if bank empty)
+  - Multiple players: deck.total < total demand → no distribution; deck.total ≥ total demand → each player draws their amount
+- Single-player demand amount: 1 (settlement) or 2 (city)
+- Multiple resources in demand: each evaluated independently
 
-Inputs:
-- State of current Player
-  - Color -> RED, WHITE, ORANGE, BLUE
-  - Amount of Points: interval [0, 10]
+Step 3:
 
-Outputs:
-- Change of Game Phase to GamePhase.END_GAME, or not
+- roll: non-7 value (e.g. 6) for distribution path; 7 for robber path
+- Demand map: empty; one resource one player; one resource two players; two resources
+- Single player, deck sizes: 0 (empty → player gets 0); partial (bank < owed → player gets partial); full (bank ≥ owed)
+- Multiple players, deck sizes: 1 vs. demand of 2 (insufficient → no one gets any); 2 (exactly covers two players of 1 each)
+- Demand amount: 1 (settlement); 2 (city)
+- Two resources, one covered, one not: only covered resource distributes
 
-|             | State of the System  | Expected output            | Implemented?       |
-|-------------|----------------------|----------------------------|--------------------|
-| Test Case 1 | Red has 0 points     | GamePhase stays the same   | :white_check_mark: |
-| Test Case 2 | White has 9 points   | GamePhase stays the same   | :white_check_mark: |
-| Test Case 3 | Orange has 10 points | GamePhase switches to end  | :white_check_mark: |
-| Test Case 4 | Blue has 11 points   | GamePhase switches to end  | :white_check_mark: |
-
-### Method under test: `endTurn()`
+|              | State of the System                                                                              | Expected output                                                                     | Implemented?       |
+|--------------|--------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|-------------------|
+| Test Case 10 | Board returns `{WOOL: {red: 1}}`; wool deck has 5 cards (single player, bank sufficient)        | `drawMultiple(1)` called; red receives 1 WOOL; phase → GENERAL_PLAY                 | :white_check_mark: |
+| Test Case 11 | Board returns `{WOOL: {red: 1}}`; wool deck has 0 cards (single player, bank empty)             | `drawMultiple(1)` called → returns 0; no player update; phase → GENERAL_PLAY        | :white_check_mark: |
+| Test Case 12 | Board returns `{WOOL: {red: 1, blue: 1}}`; wool deck has 1 card (multi-player, bank short)      | No draw, neither player receives WOOL (all-or-nothing rule)                          | :white_check_mark: |
+| Test Case 13 | Board returns `{WOOL: {red: 1, blue: 1}}`; wool deck has exactly 2 cards (multi-player, exact)  | `drawMultiple(1)` called twice; both players receive 1 WOOL each                     | :white_check_mark: |
+| Test Case 14 | Board returns `{ORE: {red: 2}}`; ore deck has 10 cards (single player, city demand = 2)         | `drawMultiple(2)` called; red receives 2 ORE                                         | :white_check_mark: |
+| Test Case 15 | Board returns `{}`; all decks idle                                                               | No deck interactions, no player updates; phase → GENERAL_PLAY                        | :white_check_mark: |
+| Test Case 16 | Board returns `{WOOL: {red: 1}, ORE: {red: 1, blue: 1}}`; wool deck ok, ore deck has 1 card     | WOOL: `drawMultiple(1)`, red +1; ORE: skipped (multi-player, bank insufficient)      | :white_check_mark: |
+| Test Case 17 | Board returns `{WOOL: {red: 3}}`; wool deck has 2 cards (single player, bank partially short)   | `drawMultiple(3)` called → returns 2; red receives 2 WOOL (partial); phase → GENERAL_PLAY | :white_check_mark: |
 
 Ends the current player's turn
 
@@ -329,6 +375,55 @@ Step 3:
 | Test Case 7 | GENERAL_PLAY, ORE=1, WOOL=1, GRAIN=0 (below cost boundary, ORE/WOOL already ≥ 1)               | InsufficientResourcesException                                                                           | :white_check_mark: |
 | Test Case 8 | BEFORE_ROLL                                                                                      | IllegalGamePhaseException                                                                                | :white_check_mark: |
 | Test Case 9 | MOVE_ROBBER                                                                                      | IllegalGamePhaseException                                                                                | :white_check_mark: |
+
+---
+
+### Method under test: `playDevCard(DevelopmentCard card)`
+
+Validates that the current phase allows playing a development card and transitions
+the game phase based on card type. This method is purely a game-state coordinator —
+it does not execute card effects. Card effects (robber movement, road placement,
+resource transfer) are triggered separately via the resulting phase.
+
+Valid phases: `BEFORE_ROLL` and `GENERAL_PLAY` (dev cards may be played before or
+after rolling dice per official Catan rules).
+
+Phase transitions:
+- `KNIGHT` → `MOVE_ROBBER`
+- `ROAD_BUILDER` → `ROAD_BUILDING_DEV_CARD`
+- `MONOPOLY` → `MONOPOLY_DEV_CARD`
+- `YEAR_OF_PLENTY` → phase unchanged
+- `VICTORY_POINT` → phase unchanged
+
+Step 1:
+
+- Input: card (DevelopmentCard)
+- State: current game phase, card type
+- Output: phase transitions per card type above
+- Output: exception
+
+Step 2:
+
+- card: Pointer; null (invalid)
+- card type: Case {KNIGHT, ROAD_BUILDER, MONOPOLY, YEAR_OF_PLENTY, VICTORY_POINT}
+- Game phase: Case {BEFORE_ROLL or GENERAL_PLAY (valid), all others (invalid)}
+
+Step 3:
+
+- card: null (invalid); valid card
+- card type: KNIGHT; ROAD_BUILDER; MONOPOLY; YEAR_OF_PLENTY; VICTORY_POINT
+- Game phase: GENERAL_PLAY (valid); BEFORE_ROLL (valid); MOVE_ROBBER (invalid representative)
+
+|             | State of the System                         | Expected output                                                      | Implemented? |
+|-------------|---------------------------------------------|----------------------------------------------------------------------|--------------|
+| Test Case 1 | card = null                                 | IllegalArgumentException: "Development card cannot be null."         | :white_check_mark: |
+| Test Case 2 | MOVE_ROBBER (invalid phase), valid card     | IllegalGamePhaseException: "Not proper phase for that action"        | :white_check_mark: |
+| Test Case 3 | GENERAL_PLAY, card type = KNIGHT            | phase → MOVE_ROBBER                                                  | :white_check_mark: |
+| Test Case 4 | GENERAL_PLAY, card type = ROAD_BUILDER      | phase → ROAD_BUILDING_DEV_CARD                                       | :white_check_mark: |
+| Test Case 5 | GENERAL_PLAY, card type = MONOPOLY          | phase → MONOPOLY_DEV_CARD                                            | :white_check_mark: |
+| Test Case 6 | GENERAL_PLAY, card type = YEAR_OF_PLENTY    | phase unchanged (GENERAL_PLAY)                                       | :white_check_mark: |
+| Test Case 7 | GENERAL_PLAY, card type = VICTORY_POINT     | phase unchanged (GENERAL_PLAY)                                       | :white_check_mark: |
+| Test Case 8 | BEFORE_ROLL, card type = KNIGHT             | phase → MOVE_ROBBER                                                  | :white_check_mark: |
 
 ---
 

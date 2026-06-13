@@ -1,9 +1,9 @@
-package domain.model.game_pieces;
+package domain.model.gamepieces;
 
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
-import domain.model.game_pieces.Die;
+import domain.model.gamepieces.Die;
 
 import java.util.Random;
 

@@ -1,9 +1,9 @@
 package ui.view;
 
 import domain.model.GameModel;
-import domain.model.development_cards.DevelopmentCard;
-import domain.model.development_cards.DevelopmentCardDeck;
-import domain.model.development_cards.DevelopmentCardType;
+import domain.model.developmentcards.DevelopmentCard;
+import domain.model.developmentcards.DevelopmentCardDeck;
+import domain.model.developmentcards.DevelopmentCardType;
 import domain.model.exceptions.EmptyDeckException;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.text.MessageFormat;

@@ -5,12 +5,12 @@ import domain.model.GameModel;
 import domain.model.GamePhase;
 import domain.model.board.BoardHandler;
 import domain.model.board.Port;
-import domain.model.development_cards.DevelopmentCard;
-import domain.model.development_cards.DevelopmentCardDeck;
+import domain.model.developmentcards.DevelopmentCard;
+import domain.model.developmentcards.DevelopmentCardDeck;
 import domain.model.exceptions.EmptyDeckException;
 import domain.model.exceptions.IllegalGamePhaseException;
 import domain.model.exceptions.InsufficientResourcesException;
-import domain.model.game_pieces.DiceHandler;
+import domain.model.gamepieces.DiceHandler;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 
@@ -354,5 +354,66 @@ class GameLoopControllerTest {
         assertEquals(ports, controller.getAvailablePorts(mockBoard, player));
 
         verify(mockBoard);
+    }
+
+    // TC8: playDevCard(model, card); model completes normally
+    //      -> model.playDevCard(card) called once; no exception
+    @Test
+    void playDevCard_ModelCompletesNormally_ExpectDelegationToModel() {
+        DevelopmentCard mockCard = createMock(DevelopmentCard.class);
+        mockModel.playDevCard(mockCard);
+        expectLastCall();
+        replay(mockModel, mockCard);
+
+        controller.playDevCard(mockModel, mockCard);
+
+        verify(mockModel, mockCard);
+    }
+
+    // TC9: playDevCard(model, card); model throws IllegalGamePhaseException (wrong phase)
+    //      -> IllegalGamePhaseException relayed to caller
+    @Test
+    void playDevCard_ModelThrowsIllegalGamePhaseException_ExpectExceptionRelayed() {
+        DevelopmentCard mockCard = createMock(DevelopmentCard.class);
+        mockModel.playDevCard(mockCard);
+        expectLastCall().andThrow(new IllegalGamePhaseException("Not proper phase for that action"));
+        replay(mockModel, mockCard);
+
+        Exception exception = assertThrows(IllegalGamePhaseException.class,
+                () -> controller.playDevCard(mockModel, mockCard));
+        assertEquals("Not proper phase for that action", exception.getMessage());
+
+        verify(mockModel, mockCard);
+    }
+
+    // TC11 ← REDUCES CXTY
+    // TC11: getResourceCount(model, RED, ORE); model.getArbitraryPlayer(RED) returns mockPlayer;
+    //       mockPlayer.getResourceCount(ORE) returns 5 -> controller returns 5
+    @Test
+    void getResourceCount_ArbitraryPlayerReturnsCount_ExpectCountRelayed() {
+        Player mockPlayer = createMock(Player.class);
+        expect(mockModel.getArbitraryPlayer(PlayerColor.RED)).andReturn(mockPlayer);
+        expect(mockPlayer.getResourceCount(Resource.ORE)).andReturn(5);
+        replay(mockModel, mockPlayer);
+
+        assertEquals(5, controller.getResourceCount(mockModel, PlayerColor.RED, Resource.ORE));
+
+        verify(mockModel, mockPlayer);
+    }
+
+    // TC10: playDevCard(model, card); model throws IllegalArgumentException (null card)
+    //       -> IllegalArgumentException relayed to caller
+    @Test
+    void playDevCard_ModelThrowsIllegalArgumentException_ExpectExceptionRelayed() {
+        DevelopmentCard mockCard = createMock(DevelopmentCard.class);
+        mockModel.playDevCard(mockCard);
+        expectLastCall().andThrow(new IllegalArgumentException("Development card cannot be null."));
+        replay(mockModel, mockCard);
+
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> controller.playDevCard(mockModel, mockCard));
+        assertEquals("Development card cannot be null.", exception.getMessage());
+
+        verify(mockModel, mockCard);
     }
 }

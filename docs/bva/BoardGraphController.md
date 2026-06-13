@@ -73,6 +73,16 @@
 | Test Case 3 | Orange Claims ID 53, node exists, is claimed                                              | Error "Node already claimed"                                | :white_check_mark: |
 | Test Case 4 | White Claims ID 0, player does not own adjacent road                                      | Error "Must own an adjacent road to claim node"             | :white_check_mark: |
 
+### Method under test: `calculateLongestRoad(List<Player> players, PlayerColor previousWinner)`
+
+Thin delegation to `boardGraph.calculateLongestRoad(players, previousWinner)`.
+
+|             | State of the System                                                         | Expected output                               | Implemented?       |
+|-------------|-----------------------------------------------------------------------------|-----------------------------------------------|--------------------|
+| Test Case 1 | boardGraph.calculateLongestRoad([], SETUP) returns RED                      | controller returns RED                        | :white_check_mark: |
+
+---
+
 ### Method under test: `playerClaimStoredEdge(PlayerColor color, int startingNodeID, int endingNodeID)`
 
 #### Inputs:

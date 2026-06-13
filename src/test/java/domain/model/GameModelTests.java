@@ -1,8 +1,9 @@
 package domain.model;
 
 import domain.model.board.BoardHandler;
-import domain.model.development_cards.DevelopmentCard;
-import domain.model.development_cards.DevelopmentCardDeck;
+import domain.model.developmentcards.DevelopmentCard;
+import domain.model.developmentcards.DevelopmentCardDeck;
+import domain.model.developmentcards.DevelopmentCardType;
 import domain.model.board.Port;
 import domain.model.board.PortTradeRequest;
 import domain.model.exceptions.*;
@@ -565,25 +566,27 @@ public class GameModelTests {
   // BVA: minimum non-7 dice total
   @Test
   void performTurn_rollTwo_BVAMin_transitionsToGeneralPlay() {
-    BoardHandler board = EasyMock.createMock(BoardHandler.class);
-    EasyMock.replay(board);
-    GameModel model = new GameModel(List.of(new Player("Alice", PlayerColor.RED)), board);
-    model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
-    model.performTurn(2);
-    assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
-    EasyMock.verify(board);
+      BoardHandler board = EasyMock.createMock(BoardHandler.class);
+      EasyMock.expect(board.computeResourceDemand(2)).andReturn(new HashMap<>());
+      EasyMock.replay(board);
+      GameModel model = new GameModel(List.of(new Player("Alice", PlayerColor.RED)), board);
+      model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+      model.performTurn(2);
+      assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+      EasyMock.verify(board);
   }
 
   // BVA: maximum dice total
   @Test
   void performTurn_rollTwelve_BVAMax_transitionsToGeneralPlay() {
-    BoardHandler board = EasyMock.createMock(BoardHandler.class);
-    EasyMock.replay(board);
-    GameModel model = new GameModel(List.of(new Player("Alice", PlayerColor.RED)), board);
-    model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
-    model.performTurn(12);
-    assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
-    EasyMock.verify(board);
+      BoardHandler board = EasyMock.createMock(BoardHandler.class);
+      EasyMock.expect(board.computeResourceDemand(12)).andReturn(new HashMap<>());
+      EasyMock.replay(board);
+      GameModel model = new GameModel(List.of(new Player("Alice", PlayerColor.RED)), board);
+      model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+      model.performTurn(12);
+      assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+      EasyMock.verify(board);
   }
 
   @Test
@@ -647,14 +650,15 @@ public class GameModelTests {
 
   @Test
   void performTurn_rollingTwiceInOneTurn_expectError() {
-    BoardHandler board = EasyMock.createMock(BoardHandler.class);
-    EasyMock.replay(board);
-    GameModel model = new GameModel(List.of(new Player("Alice", PlayerColor.RED)), board);
-    model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
-    model.performTurn(6);
-    Exception exception = assertThrows(IllegalGamePhaseException.class, () -> model.performTurn(6));
-    assertEquals("Not proper phase for that action", exception.getMessage());
-    EasyMock.verify(board);
+      BoardHandler board = EasyMock.createMock(BoardHandler.class);
+      EasyMock.expect(board.computeResourceDemand(6)).andReturn(new HashMap<>());
+      EasyMock.replay(board);
+      GameModel model = new GameModel(List.of(new Player("Alice", PlayerColor.RED)), board);
+      model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+      model.performTurn(6);
+      Exception exception = assertThrows(IllegalGamePhaseException.class, () -> model.performTurn(6));
+      assertEquals("Not proper phase for that action", exception.getMessage());
+      EasyMock.verify(board);
   }
 
   @Test
@@ -1168,7 +1172,6 @@ public class GameModelTests {
     );
 
     EasyMock.expect(redStateMock.getVictoryPoints()).andReturn(10);
-
     EasyMock.replay(redStateMock);
 
     GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
@@ -1604,6 +1607,186 @@ public class GameModelTests {
         EasyMock.verify(redStateMock, deckMock, cardMock, oreDeckMock, woolDeckMock, grainDeckMock);
     }
 
+    // --- distributeResources (via performTurn) ---
+
+    @Test
+    void performTurn_bankHasEnough_playerReceivesResource() throws EmptyDeckException {
+        Player redMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.RED, redMock);
+        EasyMock.expect(boardMock.computeResourceDemand(6))
+                .andReturn(Map.of(Resource.WOOL, new HashMap<>(Map.of(redMock, 1))));
+        EasyMock.expect(woolDeckMock.drawMultiple(1)).andReturn(1);
+        redMock.updateResources(Resource.WOOL, 1);
+        EasyMock.expectLastCall();
+        EasyMock.replay(redMock, boardMock, woolDeckMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock);
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+        model.performTurn(6);
+        assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+        EasyMock.verify(redMock, boardMock, woolDeckMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock);
+    }
+
+    @Test
+    void performTurn_bankEmpty_playerReceivesNothing() throws EmptyDeckException {
+        Player redMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.RED, redMock);
+        EasyMock.expect(boardMock.computeResourceDemand(6))
+                .andReturn(Map.of(Resource.WOOL, new HashMap<>(Map.of(redMock, 1))));
+        EasyMock.expect(woolDeckMock.drawMultiple(1)).andReturn(0);
+        EasyMock.replay(redMock, boardMock, woolDeckMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock);
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+        model.performTurn(6);
+        assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+        EasyMock.verify(redMock, boardMock, woolDeckMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock);
+    }
+
+    @Test
+    void performTurn_bankLessThanTotalDemand_nobodyReceivesResource() {
+        Player redMock = EasyMock.createMock(Player.class);
+        Player blueMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.RED, redMock, PlayerColor.BLUE, blueMock);
+        Map<Player, Integer> playerAmounts = new HashMap<>();
+        playerAmounts.put(redMock, 1);
+        playerAmounts.put(blueMock, 1);
+        EasyMock.expect(boardMock.computeResourceDemand(6))
+                .andReturn(Map.of(Resource.WOOL, playerAmounts));
+        EasyMock.expect(woolDeckMock.getTotalCards()).andReturn(1);
+        EasyMock.replay(redMock, blueMock, boardMock, woolDeckMock, lumberDeckMock,
+                brickDeckMock, grainDeckMock, oreDeckMock);
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+        model.performTurn(6);
+        assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+        EasyMock.verify(redMock, blueMock, boardMock, woolDeckMock, lumberDeckMock,
+                brickDeckMock, grainDeckMock, oreDeckMock);
+    }
+
+    @Test
+    void performTurn_bankExactlyEnough_allPlayersReceive() throws EmptyDeckException {
+        Player redMock = EasyMock.createMock(Player.class);
+        Player blueMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.RED, redMock, PlayerColor.BLUE, blueMock);
+        Map<Player, Integer> playerAmounts = new HashMap<>();
+        playerAmounts.put(redMock, 1);
+        playerAmounts.put(blueMock, 1);
+        EasyMock.expect(boardMock.computeResourceDemand(6))
+                .andReturn(Map.of(Resource.WOOL, playerAmounts));
+        EasyMock.expect(woolDeckMock.getTotalCards()).andReturn(2);
+        EasyMock.expect(woolDeckMock.drawMultiple(1)).andReturn(1);
+        EasyMock.expect(woolDeckMock.drawMultiple(1)).andReturn(1);
+        redMock.updateResources(Resource.WOOL, 1);
+        EasyMock.expectLastCall();
+        blueMock.updateResources(Resource.WOOL, 1);
+        EasyMock.expectLastCall();
+        EasyMock.replay(redMock, blueMock, boardMock, woolDeckMock, lumberDeckMock,
+                brickDeckMock, grainDeckMock, oreDeckMock);
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+        model.performTurn(6);
+        assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+        EasyMock.verify(redMock, blueMock, boardMock, woolDeckMock, lumberDeckMock,
+                brickDeckMock, grainDeckMock, oreDeckMock);
+    }
+
+    @Test
+    void performTurn_cityPlayer_receivesTwo() throws EmptyDeckException {
+        Player redMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.RED, redMock);
+        EasyMock.expect(boardMock.computeResourceDemand(8))
+                .andReturn(Map.of(Resource.ORE, new HashMap<>(Map.of(redMock, 2))));
+        EasyMock.expect(oreDeckMock.drawMultiple(2)).andReturn(2);
+        redMock.updateResources(Resource.ORE, 2);
+        EasyMock.expectLastCall();
+        EasyMock.replay(redMock, boardMock, woolDeckMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock);
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+        model.performTurn(8);
+        assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+        EasyMock.verify(redMock, boardMock, woolDeckMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock);
+    }
+
+    @Test
+    void performTurn_singlePlayerBankShort_receivesPartial() throws EmptyDeckException {
+        Player redMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.RED, redMock);
+        EasyMock.expect(boardMock.computeResourceDemand(6))
+                .andReturn(Map.of(Resource.WOOL, new HashMap<>(Map.of(redMock, 3))));
+        EasyMock.expect(woolDeckMock.drawMultiple(3)).andReturn(2);
+        redMock.updateResources(Resource.WOOL, 2);
+        EasyMock.expectLastCall();
+        EasyMock.replay(redMock, boardMock, woolDeckMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock);
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+        model.performTurn(6);
+        assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+        EasyMock.verify(redMock, boardMock, woolDeckMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock);
+    }
+
+    @Test
+    void performTurn_emptyDemandMap_noInteractionsWithDecksOrPlayers() {
+        ColorToPlayerObjMock = new HashMap<>();
+        EasyMock.expect(boardMock.computeResourceDemand(6)).andReturn(new HashMap<>());
+        EasyMock.replay(boardMock, woolDeckMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock);
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+        model.performTurn(6);
+        assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+        EasyMock.verify(boardMock, woolDeckMock, lumberDeckMock, brickDeckMock,
+                grainDeckMock, oreDeckMock);
+    }
+
+    @Test
+    void performTurn_oneResourceCovered_otherNot_onlyCoveredDistributed() throws EmptyDeckException {
+        Player redMock = EasyMock.createMock(Player.class);
+        Player blueMock = EasyMock.createMock(Player.class);
+        ColorToPlayerObjMock = Map.of(PlayerColor.RED, redMock, PlayerColor.BLUE, blueMock);
+        Map<Player, Integer> oreAmounts = new HashMap<>();
+        oreAmounts.put(redMock, 1);
+        oreAmounts.put(blueMock, 1);
+        Map<Resource, Map<Player, Integer>> demand = new HashMap<>();
+        demand.put(Resource.WOOL, new HashMap<>(Map.of(redMock, 1)));
+        demand.put(Resource.ORE, oreAmounts);
+        EasyMock.expect(boardMock.computeResourceDemand(6)).andReturn(demand);
+        EasyMock.expect(woolDeckMock.drawMultiple(1)).andReturn(1);
+        redMock.updateResources(Resource.WOOL, 1);
+        EasyMock.expectLastCall();
+        EasyMock.expect(oreDeckMock.getTotalCards()).andReturn(1);
+        EasyMock.replay(redMock, blueMock, boardMock, woolDeckMock, lumberDeckMock,
+                brickDeckMock, grainDeckMock, oreDeckMock);
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+        model.setCurrentPlayerColor(PlayerColor.RED);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+        model.performTurn(6);
+        assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+        EasyMock.verify(redMock, blueMock, boardMock, woolDeckMock, lumberDeckMock,
+                brickDeckMock, grainDeckMock, oreDeckMock);
+
+    }
+  
     // TC2: GENERAL_PLAY, ORE=3, WOOL=2, GRAIN=4 (surplus each), deck=25 (full)
     //      -> card returned; player loses 1 each ORE/WOOL/GRAIN; surplus does not prevent purchase
     @Test
@@ -1810,6 +1993,150 @@ public class GameModelTests {
         assertEquals("Not proper phase for that action", exception.getMessage());
 
         EasyMock.verify(redStateMock, deckMock);
+    }
+
+  // playDevCard() tests
+
+    // TC1: card = null
+    //      -> IllegalArgumentException: "Development card cannot be null."
+    @Test
+    void playDevCard_NullCard_ExpectIllegalArgumentException() {
+        EasyMock.replay(boardMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> model.playDevCard(null));
+        assertEquals("Development card cannot be null.", exception.getMessage());
+
+        EasyMock.verify(boardMock);
+    }
+
+    // TC2: MOVE_ROBBER (invalid phase), valid card
+    //      -> IllegalGamePhaseException: "Not proper phase for that action"
+    @Test
+    void playDevCard_InvalidPhase_ExpectIllegalGamePhaseException() {
+        DevelopmentCard cardMock = EasyMock.createMock(DevelopmentCard.class);
+        EasyMock.replay(boardMock, cardMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+        model.setCurrentGamePhase(GamePhase.MOVE_ROBBER);
+
+        Exception exception = assertThrows(IllegalGamePhaseException.class,
+                () -> model.playDevCard(cardMock));
+        assertEquals("Not proper phase for that action", exception.getMessage());
+
+        EasyMock.verify(boardMock, cardMock);
+    }
+
+    // TC3: GENERAL_PLAY, card type = KNIGHT
+    //      -> phase transitions to MOVE_ROBBER
+    @Test
+    void playDevCard_GeneralPlayKnightCard_ExpectPhaseMovesToMoveRobber() {
+        DevelopmentCard cardMock = EasyMock.createMock(DevelopmentCard.class);
+        EasyMock.expect(cardMock.getType()).andReturn(DevelopmentCardType.KNIGHT);
+        EasyMock.replay(boardMock, cardMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+
+        model.playDevCard(cardMock);
+
+        assertEquals(GamePhase.MOVE_ROBBER, model.getCurrentPhase());
+        EasyMock.verify(boardMock, cardMock);
+    }
+
+    // TC4: GENERAL_PLAY, card type = ROAD_BUILDER
+    //      -> phase transitions to ROAD_BUILDING_DEV_CARD
+    @Test
+    void playDevCard_GeneralPlayRoadBuilderCard_ExpectPhaseMovesToRoadBuildingDevCard() {
+        DevelopmentCard cardMock = EasyMock.createMock(DevelopmentCard.class);
+        EasyMock.expect(cardMock.getType()).andReturn(DevelopmentCardType.ROAD_BUILDER);
+        EasyMock.replay(boardMock, cardMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+
+        model.playDevCard(cardMock);
+
+        assertEquals(GamePhase.ROAD_BUILDING_DEV_CARD, model.getCurrentPhase());
+        EasyMock.verify(boardMock, cardMock);
+    }
+
+    // TC5: GENERAL_PLAY, card type = MONOPOLY
+    //      -> phase transitions to MONOPOLY_DEV_CARD
+    @Test
+    void playDevCard_GeneralPlayMonopolyCard_ExpectPhaseMovesToMonopolyDevCard() {
+        DevelopmentCard cardMock = EasyMock.createMock(DevelopmentCard.class);
+        EasyMock.expect(cardMock.getType()).andReturn(DevelopmentCardType.MONOPOLY);
+        EasyMock.replay(boardMock, cardMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+
+        model.playDevCard(cardMock);
+
+        assertEquals(GamePhase.MONOPOLY_DEV_CARD, model.getCurrentPhase());
+        EasyMock.verify(boardMock, cardMock);
+    }
+
+    // TC6: GENERAL_PLAY, card type = YEAR_OF_PLENTY
+    //      -> phase unchanged (remains GENERAL_PLAY)
+    @Test
+    void playDevCard_GeneralPlayYearOfPlentyCard_ExpectPhaseUnchanged() {
+        DevelopmentCard cardMock = EasyMock.createMock(DevelopmentCard.class);
+        EasyMock.expect(cardMock.getType()).andReturn(DevelopmentCardType.YEAR_OF_PLENTY);
+        EasyMock.replay(boardMock, cardMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+
+        model.playDevCard(cardMock);
+
+        assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+        EasyMock.verify(boardMock, cardMock);
+    }
+
+    // TC7: GENERAL_PLAY, card type = VICTORY_POINT
+    //      -> phase unchanged (remains GENERAL_PLAY)
+    @Test
+    void playDevCard_GeneralPlayVictoryPointCard_ExpectPhaseUnchanged() {
+        DevelopmentCard cardMock = EasyMock.createMock(DevelopmentCard.class);
+        EasyMock.expect(cardMock.getType()).andReturn(DevelopmentCardType.VICTORY_POINT);
+        EasyMock.replay(boardMock, cardMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+        model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+
+        model.playDevCard(cardMock);
+
+        assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+        EasyMock.verify(boardMock, cardMock);
+    }
+
+    // TC8: BEFORE_ROLL, card type = KNIGHT
+    //      -> phase transitions to MOVE_ROBBER
+    @Test
+    void playDevCard_BeforeRollKnightCard_ExpectPhaseMovesToMoveRobber() {
+        DevelopmentCard cardMock = EasyMock.createMock(DevelopmentCard.class);
+        EasyMock.expect(cardMock.getType()).andReturn(DevelopmentCardType.KNIGHT);
+        EasyMock.replay(boardMock, cardMock);
+
+        GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+
+        model.playDevCard(cardMock);
+
+        assertEquals(GamePhase.MOVE_ROBBER, model.getCurrentPhase());
+        EasyMock.verify(boardMock, cardMock);
     }
 
   // Attempt Port Trade Tests
@@ -2235,5 +2562,95 @@ public class GameModelTests {
     model.setCurrentGamePhase(GamePhase.GENERAL_PLAY);
     model.endTurn();
     assertEquals(0, model.getCurrentRound());
+  }
+
+  // ← REDUCES CXTY
+  @Test
+  void getCurrentPlayerIndex_AfterConstruction_ExpectZero() {
+    EasyMock.replay(boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock,
+        woolDeckMock, tradeManagerMock);
+
+    GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+        oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+
+    assertEquals(0, model.getCurrentPlayerIndex());
+
+    EasyMock.verify(boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock,
+        woolDeckMock, tradeManagerMock);
+  }
+
+  // ← REDUCES CXTY
+  @Test
+  void getCurrentRound_AfterConstruction_ExpectZero() {
+    EasyMock.replay(boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock,
+        woolDeckMock, tradeManagerMock);
+
+    GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+        oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+
+    assertEquals(0, model.getCurrentRound());
+
+    EasyMock.verify(boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock,
+        woolDeckMock, tradeManagerMock);
+  }
+
+  // ← REDUCES CXTY
+  @Test
+  void getTurnOrder_TwoPlayers_ExpectBothPlayersReturned() {
+    Player redMock = EasyMock.createMock(Player.class);
+    Player blueMock = EasyMock.createMock(Player.class);
+    EasyMock.expect(redMock.getColor()).andReturn(PlayerColor.RED);
+    EasyMock.expect(blueMock.getColor()).andReturn(PlayerColor.BLUE);
+    EasyMock.replay(redMock, blueMock, boardMock);
+
+    GameModel model = new GameModel(List.of(redMock, blueMock), boardMock);
+    List<Player> order = model.getTurnOrder();
+
+    assertEquals(2, order.size());
+    assertTrue(order.contains(redMock));
+    assertTrue(order.contains(blueMock));
+    EasyMock.verify(redMock, blueMock, boardMock);
+  }
+
+  // ← REDUCES CXTY
+  @Test
+  void getOtherPlayers_TwoPlayers_ExpectOnlyOtherPlayerReturned() {
+    Player redMock = EasyMock.createMock(Player.class);
+    Player blueMock = EasyMock.createMock(Player.class);
+    EasyMock.expect(redMock.getColor()).andReturn(PlayerColor.RED);
+    EasyMock.expect(blueMock.getColor()).andReturn(PlayerColor.BLUE);
+    EasyMock.replay(redMock, blueMock, boardMock);
+
+    GameModel model = new GameModel(List.of(redMock, blueMock), boardMock);
+    List<Player> others = model.getOtherPlayers();
+
+    assertEquals(1, others.size());
+    assertFalse(others.contains(redMock));
+    assertTrue(others.contains(blueMock));
+    EasyMock.verify(redMock, blueMock, boardMock);
+  }
+
+  // ← REDUCES CXTY
+  @Test
+  void performTurn_DrawThrowsException_ExpectIllegalArgumentExceptionWithSameMessage() throws EmptyDeckException {
+    Player redStateMock = EasyMock.createMock(Player.class);
+    ColorToPlayerObjMock = Map.of(PlayerColor.RED, redStateMock);
+
+    EasyMock.expect(boardMock.computeResourceDemand(6))
+        .andReturn(Map.of(Resource.WOOL, new HashMap<>(Map.of(redStateMock, 1))));
+    EasyMock.expect(woolDeckMock.drawMultiple(1)).andThrow(new EmptyDeckException("No WOOL cards remain."));
+    EasyMock.replay(boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock,
+        woolDeckMock, tradeManagerMock, redStateMock);
+
+    GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+        oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+    model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+    model.setCurrentPlayerColor(PlayerColor.RED);
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> model.performTurn(6));
+    assertEquals("No WOOL cards remain.", exception.getMessage());
+
+    EasyMock.verify(boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock,
+        woolDeckMock, tradeManagerMock, redStateMock);
   }
 }

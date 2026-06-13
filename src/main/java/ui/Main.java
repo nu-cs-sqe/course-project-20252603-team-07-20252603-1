@@ -1,7 +1,7 @@
 package ui;
 
 import domain.model.DevelopmentCardHandler;
-import domain.model.game_pieces.DiceHandler;
+import domain.model.gamepieces.DiceHandler;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.application.Application;

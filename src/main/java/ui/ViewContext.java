@@ -1,6 +1,6 @@
 package ui;
 
-import domain.model.game_pieces.DiceHandler;
+import domain.model.gamepieces.DiceHandler;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.ResourceBundle;
 import ui.controller.DevCardController;
