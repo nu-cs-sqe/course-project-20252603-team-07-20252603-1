@@ -129,4 +129,10 @@ class ResourceDeckTest {
         int drawn = deck.drawMultiple(5);
         assertEquals(0, drawn);
     }
+
+  // TC11 ← REDUCES CXTY
+  @Test
+  void constructor_DesertResource_ExpectIllegalArgumentException() {
+    assertThrows(IllegalArgumentException.class, () -> new ResourceDeck(Resource.DESERT));
+  }
 }

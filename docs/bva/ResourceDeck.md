@@ -11,7 +11,7 @@ Methods under test: constructor, `draw()`, `drawMultiple(n)`, `replenish()`, `re
 |             | State of the System               | Expected output                          | Implemented?       |
 |-------------|-----------------------------------|------------------------------------------|--------------------|
 | Test Case 1 | new ResourceDeck(Resource.LUMBER) | getType() returns LUMBER                 | :white_check_mark: |
-| Test Case 11 | new ResourceDeck(Resource.DESERT) | IllegalArgumentException thrown          | :x: |
+| Test Case 11 | new ResourceDeck(Resource.DESERT) | IllegalArgumentException thrown          | :white_check_mark: |
 | Test Case 12 | new ResourceDeck(Resource.LUMBER) | getTotalCards() returns 19               | :x: |
 
 ---
