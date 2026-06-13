@@ -2252,4 +2252,20 @@ public class BoardGraphTests {
     assertFalse(b.checkNodeOccupied(0));
     EasyMock.verify(nodeMock);
   }
+
+  // ← REDUCES CXTY
+  @Test
+  void checkNodeOccupied_NodeExists_NodeOccupied_ExpectTrue() {
+    BoardGraph b = new BoardGraph();
+    GraphNode nodeMock = EasyMock.createMock(GraphNode.class);
+    EasyMock.expect(nodeMock.getNodeID()).andReturn(0);
+    EasyMock.expect(nodeMock.checkOccupied()).andReturn(true);
+    EasyMock.replay(nodeMock);
+
+    b.addGraphNodeObject(nodeMock);
+
+    assertTrue(b.checkNodeOccupied(0));
+    EasyMock.verify(nodeMock);
+  }
+
 }
