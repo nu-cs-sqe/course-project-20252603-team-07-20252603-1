@@ -124,11 +124,11 @@ Step 3:
 - Verify controller relays EmptyDeckException when handler throws it (deck is empty)
 
 
-|             | System under test                                                                                   | Expected output                                                                                                   | Implemented? |
-| ----------- | --------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------ |
-| Test Case 5 | buyDevCard(model, deck, handler); handler returns a DevelopmentCard                                 | controller returns the same DevelopmentCard; verify handler called with currentPlayer, deck, and currentRound     | :white_check_mark: |
-| Test Case 6 | buyDevCard(model, deck, handler); handler throws InsufficientResourcesException (buyer lacks resources) | controller relays InsufficientResourcesException to caller                                                    | :white_check_mark: |
-| Test Case 7 | buyDevCard(model, deck, handler); handler throws EmptyDeckException (deck is empty)                 | controller relays EmptyDeckException to caller                                                                    | :white_check_mark: |
+|             | System under test                                                                                        | Expected output                                                                                                | Implemented?       |
+| ----------- |----------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|--------------------|
+| Test Case 5 | buyDevCard(model, deck, handler); handler returns a DevelopmentCard                                      | controller returns the same DevelopmentCard; verify handler called with currentPlayer, deck, and currentRound  | :white_check_mark: |
+| Test Case 6 | buyDevCard(model, deck, handler); handler throws InsufficientResourcesException (buyer lacks resources)  | controller relays InsufficientResourcesException to caller                                                     | :white_check_mark: |
+| Test Case 7 | buyDevCard(model, deck, handler); handler throws EmptyDeckException (deck is empty)                      | controller relays EmptyDeckException to caller                                                                 | :white_check_mark: |
 
 ---
 
@@ -162,3 +162,12 @@ Step 3:
 | Test Case 8  | playDevCard(model, card); model completes normally                                   | model.playDevCard(card) called once; no exception                | :white_check_mark: |
 | Test Case 9  | playDevCard(model, card); model throws IllegalGamePhaseException (wrong phase)       | IllegalGamePhaseException relayed to caller                      | :white_check_mark: |
 | Test Case 10 | playDevCard(model, card); model throws IllegalArgumentException (null card)          | IllegalArgumentException relayed to caller                       | :white_check_mark: |
+
+
+### Method under test: `moveRobberAndSteal(GameModel model, int targetHexID, PlayerColor victimColor)`
+
+Delegates directly to `model.moveRobberAndSteal(int targetHexID, PlayerColor victimColor)`.
+
+|             | State of the System   | Expected output                    | Implemented? |
+|-------------|-----------------------|------------------------------------|--------------|
+| Test Case 1 | In general play phase | model.moveRobberAndSteal is called | x            |

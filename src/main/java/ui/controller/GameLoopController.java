@@ -64,4 +64,7 @@ public class GameLoopController {
     public void playDevCard(GameModel model, DevelopmentCard card) {
         model.playDevCard(card);
     }
+
+    public void moveRobberAndSteal(GameModel model, int targetHexID, PlayerColor victimColor) {
+    }
 }
