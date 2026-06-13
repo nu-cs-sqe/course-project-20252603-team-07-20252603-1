@@ -87,7 +87,7 @@ successfully after clear
 |              | System under test                     | Expected output                          | Implemented?       |
 |--------------|---------------------------------------|------------------------------------------|--------------------|
 | Test Case 10 | setResourceDeck(mockDeck)             | getResourceDeck() returns same instance  | :white_check_mark: |
-| Test Case 11 | no deck set                           | getResourceDeck() returns null           | :x: |
+| Test Case 11 | no deck set                           | getResourceDeck() returns null           | :white_check_mark: |
 
 ---
 

@@ -96,4 +96,10 @@ class GameSetupModelTest {
     assertSame(mockDeck, model.getResourceDeck());
     EasyMock.verify(mockDeck);
   }
+
+  // TC11 ← REDUCES CXTY
+  @Test
+  void getResourceDeck_BeforeSet_ExpectNull() {
+    assertNull(model.getResourceDeck());
+  }
 }
