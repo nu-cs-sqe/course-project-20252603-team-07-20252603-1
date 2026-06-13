@@ -4,6 +4,8 @@ import domain.model.gamepieces.Robber;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 import domain.model.resources.Resource;
+import domain.model.board.Hex;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -119,7 +121,7 @@ public class BoardHandler {
 
   /**
    * Returns the building level at the specified node (0=empty, 1=settlement, 2=city).
-   *A value of 0 indicates no building, 1 indicates a settlement, and 2 indicates a city.
+   * A value of 0 indicates no building, 1 indicates a settlement, and 2 indicates a city.
    *
    * @param nodeId the node to query
    * @return the building level
@@ -234,6 +236,38 @@ public class BoardHandler {
     playersOnHex.addAll(curHex.getHexCityPlayers());
 
     return playersOnHex;
+  }
+
+  private void deliverResourcesToCitiesAndSettlements(List<Player> hexSettlementPlayers, List<Player> hexCityPlayers, Map<Resource, Map<Player, Integer>> demand, Resource resource) {
+
+    for (Player p : hexSettlementPlayers) {
+        demand.computeIfAbsent(resource, k -> new HashMap<>()).merge(p, 1, Integer::sum);
+    }
+
+    for (Player p : hexCityPlayers) {
+        demand.computeIfAbsent(resource, k -> new HashMap<>()).merge(p, 2, Integer::sum);
+    }
+
+  }
+
+  public Map<Resource, Map<Player, Integer>> computeResourceDemand(int rollNum) {
+    Map<Resource, Map<Player, Integer>> demand = new HashMap<>();
+    int robberLocation = robber.getRobberLocation();
+
+
+
+    for (Hex hex : hexes) {
+      if (hex.getHexRollNum() == rollNum && hex.getHexId() != robberLocation) {
+        Resource resource = hex.getHexResource();
+        if (resource == Resource.DESERT) continue;
+
+        List<Player> hexSettlementPlayers = hex.getHexSettlementPlayers();
+        List<Player> hexCityPlayers = hex.getHexCityPlayers();
+
+        deliverResourcesToCitiesAndSettlements(hexSettlementPlayers, hexCityPlayers, demand, resource);
+      }
+    }
+    return demand;
   }
 
   /**

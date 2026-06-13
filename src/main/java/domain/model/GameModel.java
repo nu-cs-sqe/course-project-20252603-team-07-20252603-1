@@ -237,30 +237,35 @@ public class GameModel {
   public void performTurn(int roll) {
     checkCurrentGamePhaseMatches(GamePhase.BEFORE_ROLL);
 
-    if (roll == ROBBER_ROLL_VALUE) {
-      currentGamePhase = GamePhase.MOVE_ROBBER;
-      return;
+        if (roll == ROBBER_ROLL_VALUE) {
+            currentGamePhase = GamePhase.MOVE_ROBBER;
+            return;
+        }
+        distributeResources(roll);
+        currentGamePhase = GamePhase.GENERAL_PLAY;
     }
 
-    Resource rslt = interpretRoll(roll);
-    try {
-      Resource card = decks.get(rslt).draw();
-      playerColorToPlayerObject.get(currentPlayerColor).updateResources(card, 1);
-    } catch (Exception e) {
-      throw new IllegalArgumentException(e.getMessage());
+    private void distributeResources(int roll) {
+        Map<Resource, Map<Player, Integer>> demand = board.computeResourceDemand(roll);
+        for (Map.Entry<Resource, Map<Player, Integer>> resourceEntry : demand.entrySet()) {
+            distributeResourceToPlayers(resourceEntry.getKey(), resourceEntry.getValue());
+        }
     }
-    currentGamePhase = GamePhase.GENERAL_PLAY;
-  }
 
-  /**
-   * Returns a resource corresponding to the roll value.
-   *
-   * @param roll the dice roll result
-   * @return a resource type
-   */
-  public Resource interpretRoll(int roll) {
-    return Resource.WOOL;
-  }
+    // if not enough to satisfy all players, no one gets anything; if only one player is requesting, they can get a partial amount
+    private void distributeResourceToPlayers(Resource resource, Map<Player, Integer> playerAmounts) {
+        ResourceDeck deck = decks.get(resource);
+        if (playerAmounts.size() > 1) {
+            int total = playerAmounts.values().stream().mapToInt(Integer::intValue).sum();
+            if (deck.getTotalCards() < total) return;
+        }
+        for (Map.Entry<Player, Integer> playerAmountEntry : playerAmounts.entrySet()) {
+            int drawn = deck.drawMultiple(playerAmountEntry.getValue());
+            if (drawn > 0) {
+                playerAmountEntry.getKey().updateResources(resource, drawn);
+            }
+        }
+    }
 
   /**
    * Attempts to build a settlement at the specified node for the current player.

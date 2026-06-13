@@ -4,6 +4,7 @@ import domain.model.player.Player;
 import domain.model.resources.Resource;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /** Represents a hexagonal tile on the game board, tracking its resource type and occupants. */
@@ -139,11 +140,11 @@ public class Hex {
     return playerCities.contains(player);
   }
 
-  List<Player> getHexSettlementPlayers() {
-    return List.copyOf(playerSettlements);
+  public List<Player> getHexSettlementPlayers() {
+    return Collections.unmodifiableList(playerSettlements);
   }
 
-  List<Player> getHexCityPlayers() {
-    return List.copyOf(playerCities);
+  public List<Player> getHexCityPlayers() {
+    return Collections.unmodifiableList(playerCities);
   }
 }
