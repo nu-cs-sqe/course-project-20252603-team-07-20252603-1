@@ -391,7 +391,9 @@ public List<Player> getOtherPlayers() {
 
     public void moveRobberAndSteal(int targetHexID, PlayerColor victimColor){
 
-        checkCurrentGamePhaseMatches(GamePhase.MOVE_ROBBER);
+      checkCurrentGamePhaseMatches(GamePhase.MOVE_ROBBER);
+      board.moveRobber(targetHexID);
+      currentGamePhase = GamePhase.GENERAL_PLAY;
 
         // board.moveRobber(targetHexID);
         // Set<Player> playersOnTargetHex = board.getPlayersOnHex(targetHexID);
