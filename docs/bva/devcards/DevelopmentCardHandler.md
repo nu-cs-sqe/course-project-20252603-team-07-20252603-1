@@ -357,4 +357,4 @@ Step 3:
 
 |              | System under test                                                                      | Expected output                                                         | Implemented? |
 |--------------|----------------------------------------------------------------------------------------|-------------------------------------------------------------------------|--------------|
-| Test Case 62 | road2Node1 = 2 (non-null), road2Node2 = null; card valid, road1 nodes (0, 1) valid    | only road1 placed; card removed from hand; road2 skipped                | :x: |
+| Test Case 62 | road2Node1 = 2 (non-null), road2Node2 = null; card valid, road1 nodes (0, 1) valid    | only road1 placed; card removed from hand; road2 skipped                | :white_check_mark: |

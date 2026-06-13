@@ -1562,4 +1562,32 @@ class DevelopmentCardHandlerTest {
 
     EasyMock.verify(mockPlayer, mockCard, mockRobber, mockVictim, mockRandom);
   }
+
+  // TC62 ← REDUCES CXTY
+  @Test
+  void playRoadBuildingCard_Road2Node1NonNullRoad2Node2Null_ExpectOneRoadPlaced() {
+    final int currentRound = 2;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+    GameModel mockModel = EasyMock.createMock(GameModel.class);
+
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.ROAD_BUILDER);
+    EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
+    EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
+    mockModel.attemptBuildRoad(0, 1);
+    EasyMock.expectLastCall();
+    mockPlayer.removeDevelopmentCard(mockCard);
+    EasyMock.expectLastCall();
+    mockPlayer.setHasPlayedDevCardThisTurn(true);
+    EasyMock.expectLastCall();
+
+    EasyMock.replay(mockPlayer, mockCard, mockModel);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    handler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockModel, 0, 1, 2, null);
+
+    EasyMock.verify(mockPlayer, mockCard, mockModel);
+  }
+
 }
