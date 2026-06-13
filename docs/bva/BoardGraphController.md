@@ -79,7 +79,7 @@ Thin delegation to `boardGraph.calculateLongestRoad(players, previousWinner)`.
 
 |             | State of the System                                                         | Expected output                               | Implemented?       |
 |-------------|-----------------------------------------------------------------------------|-----------------------------------------------|--------------------|
-| Test Case 1 | boardGraph.calculateLongestRoad([], SETUP) returns RED                      | controller returns RED                        | :x: |
+| Test Case 1 | boardGraph.calculateLongestRoad([], SETUP) returns RED                      | controller returns RED                        | :white_check_mark: |
 
 ---
 
