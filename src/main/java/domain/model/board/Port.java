@@ -31,6 +31,33 @@ public class Port {
   }
 
   /**
+   * Returns the trade ratio of this port (2 or 3).
+   *
+   * @return the trade ratio
+   */
+  public int getTradeRatio() {
+    return tradeRatio;
+  }
+
+  /**
+   * Returns the resource this port trades, or {@link Resource#ANY} for 3:1 ports.
+   *
+   * @return the port's resource
+   */
+  public Resource getResource() {
+    return resource;
+  }
+
+  /**
+   * Returns the IDs of the two coastal nodes this port is attached to.
+   *
+   * @return an immutable list of the port's node IDs
+   */
+  public List<Integer> getNodeIds() {
+    return nodeIds;
+  }
+
+  /**
    * Checks if a player can use this port based on node ownership.
    *
    * @param board  the board handler to check node ownership

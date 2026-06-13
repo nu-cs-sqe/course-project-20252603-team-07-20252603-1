@@ -17,12 +17,13 @@ import ui.controller.GameSetupController;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.ResourceBundle;
+import ui.view.board.BoardView;
 
 @SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"},
         justification = "UI classes intentionally share JavaFX nodes, controllers, and models by reference")
 public class SetupSummaryView {
 
-    private static final int[] HEX_ROW_SIZES = {3, 4, 5, 4, 3};
+    private static final double SUMMARY_HEX_SIZE_PX = 30;
 
     private final ScrollPane root;
     private final ResourceBundle labels;
@@ -89,26 +90,12 @@ public class SetupSummaryView {
         heading.getStyleClass().add("section-heading");
 
         BoardHandler board = controller.getBoard(model);
-        List<String> hexes = controller.getHexOrder(board);
+        BoardView boardView = new BoardView(board, labels, SUMMARY_HEX_SIZE_PX);
 
-        VBox grid = new VBox();
-        grid.getStyleClass().add("hex-grid");
+        HBox boardHolder = new HBox(boardView.getRoot());
+        boardHolder.setAlignment(javafx.geometry.Pos.CENTER);
 
-        int idx = 0;
-        for (int rowSize : HEX_ROW_SIZES) {
-            HBox row = new HBox();
-            row.getStyleClass().add("hex-row");
-            for (int j = 0; j < rowSize; j++) {
-                String type = hexes.get(idx++);
-                // Display name is localized; the CSS class keeps the canonical hex type.
-                Label hex = new Label(labels.getString("hex." + type));
-                hex.getStyleClass().addAll("hex", "hex-" + type.toLowerCase());
-                row.getChildren().add(hex);
-            }
-            grid.getChildren().add(row);
-        }
-
-        VBox section = new VBox(heading, grid);
+        VBox section = new VBox(heading, boardHolder);
         section.getStyleClass().add("summary-section");
         return section;
     }

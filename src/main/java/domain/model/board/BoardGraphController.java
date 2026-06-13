@@ -97,6 +97,10 @@ public class BoardGraphController {
         return boardGraph.checkEdgeOccupied(nodeId1, nodeId2);
     }
 
+    PlayerColor getEdgeOwner(int nodeId1, int nodeId2) {
+        return boardGraph.getEdgeOwner(nodeId1, nodeId2);
+    }
+
 }
 
 

@@ -53,6 +53,7 @@ public class Navigator implements SetupNavigator, RoundNavigator {
     public void startGame() {
         GameSetupController setup = context.setup();
         gameModel = new GameModel(setup.getTurnOrder(setupModel), setup.getBoard(setupModel));
+        context.loop().enterSetupPhase(gameModel);
         goToGameRound();
     }
 
@@ -63,7 +64,8 @@ public class Navigator implements SetupNavigator, RoundNavigator {
                 this,
                 context,
                 gameModel,
-                setup.getBoard(setupModel)
+                setup.getBoard(setupModel),
+                setup.getDevelopmentCardDeck(setupModel)
         ).getRoot());
     }
 }

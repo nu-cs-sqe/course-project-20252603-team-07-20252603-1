@@ -73,31 +73,6 @@
 .swatch-white  { -fx-background-color: #ffffff; -fx-border-color: #888888; -fx-border-width: 1; }
 .swatch-orange { -fx-background-color: #e08020; }
 
-.hex-grid {
-    -fx-spacing: 4;
-    -fx-alignment: center;
-}
-
-.hex-row {
-    -fx-spacing: 4;
-    -fx-alignment: center;
-}
-
-.hex {
-    -fx-min-width: 56;
-    -fx-min-height: 32;
-    -fx-alignment: center;
-    -fx-padding: 4;
-    -fx-font-size: 11px;
-}
-
-.hex-grain  { -fx-background-color: #f5d76e; }
-.hex-wool  { -fx-background-color: #aedb6b; }
-.hex-lumber   { -fx-background-color: #6da854; -fx-text-fill: white; }
-.hex-brick  { -fx-background-color: #b9603d; -fx-text-fill: white; }
-.hex-ore    { -fx-background-color: #888888; -fx-text-fill: white; }
-.hex-desert { -fx-background-color: #e0c89d; }
-
 .game-root {
     -fx-padding: 12;
     -fx-background-color: #f8f5ec;
@@ -114,6 +89,7 @@
 
 .dice-readout {
     -fx-font-size: 14px;
+    -fx-font-weight: bold;
     -fx-padding: 4 12 4 12;
 }
 
@@ -138,4 +114,144 @@
 
 .current-player-row {
     -fx-background-color: #fff4c2;
+}
+
+/* ----- interactive board ----- */
+
+.hex-shape {
+    -fx-stroke: #6b5a3e;
+    -fx-stroke-width: 2;
+}
+
+.hex-fill-grain  { -fx-fill: #f5d76e; }
+.hex-fill-wool   { -fx-fill: #aedb6b; }
+.hex-fill-lumber { -fx-fill: #6da854; }
+.hex-fill-brick  { -fx-fill: #b9603d; }
+.hex-fill-ore    { -fx-fill: #888888; }
+.hex-fill-desert { -fx-fill: #e0c89d; }
+
+/* hex-label and roll-token-text font sizes are set in code, scaled to the hex size */
+
+.roll-token {
+    -fx-fill: #fdf6e3;
+    -fx-stroke: #555555;
+    -fx-stroke-width: 1;
+}
+
+.roll-token-hot {
+    -fx-fill: #c0392b;
+}
+
+.road {
+    -fx-stroke-line-cap: round;
+}
+
+.road-red    { -fx-stroke: #d04040; }
+.road-blue   { -fx-stroke: #4070d0; }
+.road-white  { -fx-stroke: #f0f0f0; }
+.road-orange { -fx-stroke: #e08020; }
+
+.building {
+    -fx-stroke: #333333;
+    -fx-stroke-width: 1;
+}
+
+.building-red    { -fx-fill: #d04040; }
+.building-blue   { -fx-fill: #4070d0; }
+.building-white  { -fx-fill: #ffffff; }
+.building-orange { -fx-fill: #e08020; }
+
+.robber {
+    -fx-fill: #3a3a3a;
+    -fx-opacity: 0.85;
+}
+
+.node-hit {
+    -fx-fill: transparent;
+}
+
+.edge-hit {
+    -fx-stroke: transparent;
+}
+
+.node-hit.pickable {
+    -fx-cursor: hand;
+}
+
+.edge-hit.pickable {
+    -fx-cursor: hand;
+}
+
+.hex-shape.pickable {
+    -fx-cursor: hand;
+}
+
+.node-hit.pickable:hover {
+    -fx-fill: rgba(64, 112, 208, 0.55);
+}
+
+.edge-hit.pickable:hover {
+    -fx-stroke: rgba(64, 112, 208, 0.55);
+}
+
+.hex-shape.pickable:hover {
+    -fx-stroke: #ffffff;
+    -fx-stroke-width: 3;
+}
+
+/* ----- ports ----- */
+
+.port-marker {
+    -fx-stroke: #3a5a7a;
+    -fx-stroke-width: 1.5;
+}
+
+/* lighter resource tints so the dark ratio text stays readable */
+.port-grain  { -fx-fill: #f5d76e; }
+.port-wool   { -fx-fill: #c4e89a; }
+.port-lumber { -fx-fill: #9ccc84; }
+.port-brick  { -fx-fill: #d99878; }
+.port-ore    { -fx-fill: #bcbcbc; }
+.port-any    { -fx-fill: #e8eef4; }
+
+.port-dock {
+    -fx-stroke: #8a7a55;
+    -fx-stroke-line-cap: round;
+}
+
+.port-label {
+    -fx-fill: #2a3a4a;
+}
+
+/* ----- game round controls ----- */
+
+.control-bar {
+    -fx-padding: 8;
+    -fx-hgap: 8;
+    -fx-vgap: 6;
+    -fx-alignment: center;
+}
+
+.winner-banner {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.vp-cell {
+    -fx-font-weight: bold;
+}
+
+/* ----- dialogs ----- */
+
+.dialog-status {
+    -fx-font-size: 12px;
+}
+
+.dev-card-row {
+    -fx-padding: 4;
+}
+
+.dev-card-unplayable {
+    -fx-text-fill: #999999;
+    -fx-font-size: 12px;
 }

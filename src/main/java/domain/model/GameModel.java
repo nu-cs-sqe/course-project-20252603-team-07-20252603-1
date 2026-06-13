@@ -39,6 +39,7 @@ public class GameModel {
     private Map<PlayerColor, Player> playerColorToPlayerObject = new HashMap<>();
     private Map<PlayerColor, Integer> playerColorToLastClaimedNodeID = new HashMap<>();
     private PlayerColor currentLongestRoadPlayerColor;
+    private final Random random = new Random();
 
 
     private final ResourceDeck lumberDeck;
@@ -145,6 +146,9 @@ public List<Player> getOtherPlayers() {
         }
         else {
             advanceToNextPlayer();
+            if (currentPlayerIndex == 0) {
+                currentRound++;
+            }
             setCurrentGamePhase(GamePhase.BEFORE_ROLL);
         }
 
@@ -156,6 +160,18 @@ public List<Player> getOtherPlayers() {
 
     public Player getArbitraryPlayer(PlayerColor color) {
         return playerColorToPlayerObject.get(color);
+    }
+
+    public void enterSetupPhase() {
+        checkCurrentGamePhaseMatches(GamePhase.BEFORE_ROLL);
+        setCurrentGamePhase(GamePhase.SETUP_PHASE);
+    }
+
+    public void completeSetupPhase() {
+        checkCurrentGamePhaseMatches(GamePhase.SETUP_PHASE);
+        this.currentPlayerIndex = 0;
+        this.currentPlayerColor = playerColors.get(0);
+        setCurrentGamePhase(GamePhase.BEFORE_ROLL);
     }
 
     public void performTurn(int roll) {
@@ -375,7 +391,22 @@ public List<Player> getOtherPlayers() {
         return card;
     }
 
-    public void moveRobberAndSteal(){};
+    public void moveRobberAndSteal(int targetHexId, Player victim) {
+        checkCurrentGamePhaseMatches(GamePhase.MOVE_ROBBER);
+        board.moveRobber(targetHexId);
+        if (victim != null && victim.getTotalResourceCount() > 0) {
+            List<Resource> available = new ArrayList<>();
+            for (Map.Entry<Resource, Integer> entry : victim.getResources().entrySet()) {
+                if (entry.getValue() > 0) {
+                    available.add(entry.getKey());
+                }
+            }
+            Resource stolen = available.get(random.nextInt(available.size()));
+            victim.updateResources(stolen, -1);
+            getCurrentPlayer().updateResources(stolen, 1);
+        }
+        setCurrentGamePhase(GamePhase.GENERAL_PLAY);
+    }
 
     // TODO: UI can call board to get list of available ports, and then upon the user clicking a port, it will be passed into this function
     public void attemptPortTrade(Port port, Resource giving, Resource receiving) {
