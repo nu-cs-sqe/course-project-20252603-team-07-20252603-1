@@ -18,11 +18,8 @@ import domain.model.player.TradeOffer;
 import domain.model.resources.Resource;
 import domain.model.resources.ResourceDeck;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 /** Represents the full state of a Catan game, including board, players, and game phase. */
@@ -45,7 +42,7 @@ public class GameModel {
     private List<PlayerColor> playerColors;
     private PlayerColor currentPlayerColor;
     private Map<PlayerColor, Player> playerColorToPlayerObject = new HashMap<>();
-    private Map<PlayerColor, Integer> playerColorToLastClaimedNodeID = new HashMap<>();
+    private Map<PlayerColor, Integer> playerColorToLastClaimedNodeId = new HashMap<>();
     private PlayerColor currentLongestRoadPlayerColor;
 
 
@@ -85,6 +82,12 @@ public class GameModel {
         this.random = random;
     }
 
+    /**
+     * Creates a GameModel with the given players and board.
+     *
+     * @param players the list of players in turn order
+     * @param board the game board
+     */
     public GameModel(List<Player> players, BoardHandler board) {
         this.board = board;
         this.lumberDeck = new ResourceDeck(Resource.LUMBER);
@@ -104,7 +107,7 @@ public class GameModel {
         for (Player player : players) {
 
             PlayerColor currentColor = player.getColor();
-            this.playerColorToLastClaimedNodeID.put(currentColor, -1);
+            this.playerColorToLastClaimedNodeId.put(currentColor, -1);
             this.playerColorToPlayerObject.put(currentColor, player);
             playerColors.add(currentColor);
         }
@@ -115,40 +118,7 @@ public class GameModel {
         this.tradeManager = new TradeManager();
         this.random = new Random();
     }
-  /**
-   * Creates a GameModel with the given players and board.
-   *
-   * @param players the list of players in turn order
-   * @param board the game board
-   */
-  public GameModel(List<Player> players, BoardHandler board) {
-    this.board = board;
-    this.lumberDeck = new ResourceDeck(Resource.LUMBER);
-    this.brickDeck = new ResourceDeck(Resource.BRICK);
-    this.grainDeck = new ResourceDeck(Resource.GRAIN);
-    this.oreDeck = new ResourceDeck(Resource.ORE);
-    this.woolDeck = new ResourceDeck(Resource.WOOL);
-    decks = Map.of(
-            Resource.LUMBER, lumberDeck,
-            Resource.BRICK, brickDeck,
-            Resource.GRAIN, grainDeck,
-            Resource.WOOL, woolDeck,
-            Resource.ORE, oreDeck
-    );
 
-    playerColors = new ArrayList<>();
-    for (Player player : players) {
-      PlayerColor currentColor = player.getColor();
-      this.playerColorToLastClaimedNodeId.put(currentColor, -1);
-      this.playerColorToPlayerObject.put(currentColor, player);
-      playerColors.add(currentColor);
-    }
-    this.currentPlayerIndex = 0;
-    this.currentPlayerColor = playerColors.get(0);
-    this.currentLongestRoadPlayerColor = PlayerColor.SETUP;
-    this.currentGamePhase = GamePhase.BEFORE_ROLL;
-    this.tradeManager = new TradeManager();
-  }
 
   /**
    * Returns the players in turn order.
@@ -322,8 +292,8 @@ public class GameModel {
                 getCurrentPlayer().updateResources(stolen, 1);
             }
         }
-
         currentGamePhase = GamePhase.GENERAL_PLAY;
+    }
   /**
    * Attempts to build a settlement at the specified node for the current player.
    *
