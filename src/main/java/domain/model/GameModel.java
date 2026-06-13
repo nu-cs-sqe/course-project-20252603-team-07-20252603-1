@@ -349,6 +349,8 @@ public class GameModel {
     checkCurrentGamePhaseMatches(GamePhase.GENERAL_PLAY, GamePhase.SETUP_PHASE);
     if (this.currentGamePhase == GamePhase.SETUP_PHASE) {
       board.buildSetupSettlement(getCurrentPlayer(), nodeId);
+      Player currentPlayer = getCurrentPlayer();
+      currentPlayer.updateVictoryPoints(POINTS_FOR_SETTLEMENT);
       this.playerColorToLastClaimedNodeId.put(currentPlayerColor, nodeId);
       return;
     }
