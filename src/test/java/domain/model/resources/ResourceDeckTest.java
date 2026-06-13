@@ -151,4 +151,12 @@ class ResourceDeckTest {
     assertNotNull(ResourceType.DESERT);
     assertEquals(6, ResourceType.values().length);
   }
+
+  // TC14 ← REDUCES CXTY
+  @Test
+  void resources_EmptyEnum_ExpectStaticInitializerLoads() {
+    Resources[] values = Resources.values();
+    assertNotNull(values);
+    assertEquals(0, values.length);
+  }
 }

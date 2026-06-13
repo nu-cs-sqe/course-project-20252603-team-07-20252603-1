@@ -23,7 +23,7 @@ These tests exist solely to trigger the static initializer blocks that JaCoCo tr
 |              | State of the System                  | Expected output                          | Implemented?       |
 |--------------|--------------------------------------|------------------------------------------|--------------------|
 | Test Case 13 | reference ResourceType.WOOD          | enum loads; values().length == 6         | :white_check_mark: |
-| Test Case 14 | reference Resources.values()         | empty array returned; length == 0        | :x: |
+| Test Case 14 | reference Resources.values()         | empty array returned; length == 0        | :white_check_mark: |
 
 ---
 
