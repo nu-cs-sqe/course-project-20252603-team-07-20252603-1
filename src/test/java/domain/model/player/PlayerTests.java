@@ -285,4 +285,11 @@ public class PlayerTests {
     player.incrementKnightCount();
     assertEquals(1, player.getKnightCount());
   }
+
+  // TC17 ← REDUCES CXTY
+  @Test
+  void getKnightCount_NewPlayer_ExpectZero() {
+    Player player = new Player("Alice", PlayerColor.BLUE);
+    assertEquals(0, player.getKnightCount());
+  }
 }

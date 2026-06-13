@@ -151,7 +151,7 @@ Output
 |              | System under test                         | Expected output             | Implemented?       |
 |--------------|-------------------------------------------|-----------------------------|---------------------|
 | Test Case 16 | fresh player; call incrementKnightCount() | getKnightCount() returns 1  | :white_check_mark: |
-| Test Case 17 | fresh player; no call                     | getKnightCount() returns 0  | :x: |
+| Test Case 17 | fresh player; no call                     | getKnightCount() returns 0  | :white_check_mark: |
 
 ---
 
