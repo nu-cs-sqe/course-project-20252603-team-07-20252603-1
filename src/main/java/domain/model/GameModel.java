@@ -38,7 +38,7 @@ public class GameModel {
 
   @SuppressFBWarnings(
           value = "EI_EXPOSE_REP2",
-          justification = "BoardHandler is intentionally shared "
+          justification = "BoardHandler is intentionally shared"
                   + " between GameSetupModel and GameModel"
                   + " as it represents the single game board state")
   private final BoardHandler board;
@@ -236,36 +236,49 @@ public class GameModel {
    */
   public void performTurn(int roll) {
     checkCurrentGamePhaseMatches(GamePhase.BEFORE_ROLL);
-
-        if (roll == ROBBER_ROLL_VALUE) {
-            currentGamePhase = GamePhase.MOVE_ROBBER;
-            return;
-        }
-        distributeResources(roll);
-        currentGamePhase = GamePhase.GENERAL_PLAY;
+    if (roll == ROBBER_ROLL_VALUE) {
+      currentGamePhase = GamePhase.MOVE_ROBBER;
+      return;
     }
+    distributeResources(roll);
+    currentGamePhase = GamePhase.GENERAL_PLAY;
+  }
 
-    private void distributeResources(int roll) {
-        Map<Resource, Map<Player, Integer>> demand = board.computeResourceDemand(roll);
-        for (Map.Entry<Resource, Map<Player, Integer>> resourceEntry : demand.entrySet()) {
-            distributeResourceToPlayers(resourceEntry.getKey(), resourceEntry.getValue());
-        }
+  /**
+   * Distributes resources to all eligible players based on the dice roll.
+   *
+   * @param roll the dice roll result
+   */
+  private void distributeResources(int roll) {
+    Map<Resource, Map<Player, Integer>> demand = board.computeResourceDemand(roll);
+    for (Map.Entry<Resource, Map<Player, Integer>> resourceEntry : demand.entrySet()) {
+      distributeResourceToPlayers(resourceEntry.getKey(), resourceEntry.getValue());
     }
+  }
 
-    // if not enough to satisfy all players, no one gets anything; if only one player is requesting, they can get a partial amount
-    private void distributeResourceToPlayers(Resource resource, Map<Player, Integer> playerAmounts) {
-        ResourceDeck deck = decks.get(resource);
-        if (playerAmounts.size() > 1) {
-            int total = playerAmounts.values().stream().mapToInt(Integer::intValue).sum();
-            if (deck.getTotalCards() < total) return;
-        }
-        for (Map.Entry<Player, Integer> playerAmountEntry : playerAmounts.entrySet()) {
-            int drawn = deck.drawMultiple(playerAmountEntry.getValue());
-            if (drawn > 0) {
-                playerAmountEntry.getKey().updateResources(resource, drawn);
-            }
-        }
+  /**
+   * Distributes a single resource type to players according to their demand amounts.
+   * If multiple players are requesting and the bank cannot satisfy all, no one receives any.
+   * If only one player is requesting, they may receive a partial amount.
+   *
+   * @param resource the resource to distribute
+   * @param playerAmounts a map of player to the amount they are owed
+   */
+  private void distributeResourceToPlayers(Resource resource, Map<Player, Integer> playerAmounts) {
+    ResourceDeck deck = decks.get(resource);
+    if (playerAmounts.size() > 1) {
+      int total = playerAmounts.values().stream().mapToInt(Integer::intValue).sum();
+      if (deck.getTotalCards() < total) {
+        return;
+      }
     }
+    for (Map.Entry<Player, Integer> playerAmountEntry : playerAmounts.entrySet()) {
+      int drawn = deck.drawMultiple(playerAmountEntry.getValue());
+      if (drawn > 0) {
+        playerAmountEntry.getKey().updateResources(resource, drawn);
+      }
+    }
+  }
 
   /**
    * Attempts to build a settlement at the specified node for the current player.

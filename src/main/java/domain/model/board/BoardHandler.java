@@ -4,8 +4,6 @@ import domain.model.gamepieces.Robber;
 import domain.model.player.Player;
 import domain.model.player.PlayerColor;
 import domain.model.resources.Resource;
-import domain.model.board.Hex;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -48,11 +46,11 @@ public class BoardHandler {
   }
 
   private BoardHandler(
-      BoardGraphController boardGraphController,
-      List<Hex> hexes,
-      Map<Integer, List<Integer>> nodeIdToHexes,
-      Robber robber,
-      List<Port> ports) {
+          BoardGraphController boardGraphController,
+          List<Hex> hexes,
+          Map<Integer, List<Integer>> nodeIdToHexes,
+          Robber robber,
+          List<Port> ports) {
     this.boardGraphController = boardGraphController;
     this.hexes = hexes;
     this.nodeIdToHexes = nodeIdToHexes;
@@ -74,11 +72,11 @@ public class BoardHandler {
    * @return a new BoardHandler instance
    */
   public static BoardHandler createForTesting(
-      BoardGraphController boardGraphController,
-      List<Hex> hexes,
-      Map<Integer, List<Integer>> nodeIdToHexes,
-      Robber robber,
-      List<Port> ports) {
+          BoardGraphController boardGraphController,
+          List<Hex> hexes,
+          Map<Integer, List<Integer>> nodeIdToHexes,
+          Robber robber,
+          List<Port> ports) {
     return new BoardHandler(boardGraphController, hexes, nodeIdToHexes, robber, ports);
   }
 
@@ -172,7 +170,7 @@ public class BoardHandler {
    */
   public void addRoad(Player player, int nodeId1, int nodeId2) {
     if (nodeId1 < MIN_NODE_ID || nodeId2 < MIN_NODE_ID
-        || nodeId1 > MAX_NODE_ID || nodeId2 > MAX_NODE_ID) {
+            || nodeId1 > MAX_NODE_ID || nodeId2 > MAX_NODE_ID) {
       throw new IllegalArgumentException("Edge nodeId out of bounds. Must be within [0, 53].");
     }
     PlayerColor claimingColor = player.getColor();
@@ -238,33 +236,38 @@ public class BoardHandler {
     return playersOnHex;
   }
 
-  private void deliverResourcesToCitiesAndSettlements(List<Player> hexSettlementPlayers, List<Player> hexCityPlayers, Map<Resource, Map<Player, Integer>> demand, Resource resource) {
-
+  private void deliverResourcesToCitiesAndSettlements(
+          List<Player> hexSettlementPlayers,
+          List<Player> hexCityPlayers,
+          Map<Resource, Map<Player, Integer>> demand,
+          Resource resource) {
     for (Player p : hexSettlementPlayers) {
-        demand.computeIfAbsent(resource, k -> new HashMap<>()).merge(p, 1, Integer::sum);
+      demand.computeIfAbsent(resource, k -> new HashMap<>()).merge(p, 1, Integer::sum);
     }
-
     for (Player p : hexCityPlayers) {
-        demand.computeIfAbsent(resource, k -> new HashMap<>()).merge(p, 2, Integer::sum);
+      demand.computeIfAbsent(resource, k -> new HashMap<>()).merge(p, 2, Integer::sum);
     }
-
   }
 
+  /**
+   * Computes the resource demand for all players based on the given dice roll.
+   *
+   * @param rollNum the dice roll number to match against hex roll numbers
+   * @return a map of resource to a map of player to amount owed
+   */
   public Map<Resource, Map<Player, Integer>> computeResourceDemand(int rollNum) {
     Map<Resource, Map<Player, Integer>> demand = new HashMap<>();
     int robberLocation = robber.getRobberLocation();
-
-
-
     for (Hex hex : hexes) {
       if (hex.getHexRollNum() == rollNum && hex.getHexId() != robberLocation) {
         Resource resource = hex.getHexResource();
-        if (resource == Resource.DESERT) continue;
-
+        if (resource == Resource.DESERT) {
+          continue;
+        }
         List<Player> hexSettlementPlayers = hex.getHexSettlementPlayers();
         List<Player> hexCityPlayers = hex.getHexCityPlayers();
-
-        deliverResourcesToCitiesAndSettlements(hexSettlementPlayers, hexCityPlayers, demand, resource);
+        deliverResourcesToCitiesAndSettlements(
+                hexSettlementPlayers, hexCityPlayers, demand, resource);
       }
     }
     return demand;
@@ -310,12 +313,12 @@ public class BoardHandler {
    */
   public void buildSetupRoad(Player player, int claimedNodeId, int nodeId1, int nodeId2) {
     if (nodeId1 < MIN_NODE_ID || nodeId2 < MIN_NODE_ID
-        || nodeId1 > MAX_NODE_ID || nodeId2 > MAX_NODE_ID) {
+            || nodeId1 > MAX_NODE_ID || nodeId2 > MAX_NODE_ID) {
       throw new IllegalArgumentException("Edge nodeId out of bounds. Must be within [0, 53].");
     }
     PlayerColor claimingColor = player.getColor();
     boardGraphController.playerClaimStoredEdgeSetupPhase(
-        claimingColor, claimedNodeId, nodeId1, nodeId2);
+            claimingColor, claimedNodeId, nodeId1, nodeId2);
     player.placeRoad();
   }
 
@@ -336,25 +339,25 @@ public class BoardHandler {
 
   private List<Hex> initHexes() {
     List<Hex> hexList = new ArrayList<>(List.of(
-        new Hex(0, Resource.ORE, 10),
-        new Hex(1, Resource.WOOL, 2),
-        new Hex(2, Resource.LUMBER, 9),
-        new Hex(3, Resource.GRAIN, 12),
-        new Hex(4, Resource.BRICK, 6),
-        new Hex(5, Resource.WOOL, 4),
-        new Hex(6, Resource.BRICK, 10),
-        new Hex(7, Resource.GRAIN, 9),
-        new Hex(8, Resource.LUMBER, 11),
-        new Hex(9, Resource.DESERT, 7),
-        new Hex(10, Resource.LUMBER, 3),
-        new Hex(11, Resource.ORE, 8),
-        new Hex(12, Resource.LUMBER, 8),
-        new Hex(13, Resource.ORE, 3),
-        new Hex(14, Resource.GRAIN, 4),
-        new Hex(15, Resource.WOOL, 5),
-        new Hex(16, Resource.BRICK, 5),
-        new Hex(17, Resource.GRAIN, 6),
-        new Hex(18, Resource.LUMBER, 11)
+            new Hex(0, Resource.ORE, 10),
+            new Hex(1, Resource.WOOL, 2),
+            new Hex(2, Resource.LUMBER, 9),
+            new Hex(3, Resource.GRAIN, 12),
+            new Hex(4, Resource.BRICK, 6),
+            new Hex(5, Resource.WOOL, 4),
+            new Hex(6, Resource.BRICK, 10),
+            new Hex(7, Resource.GRAIN, 9),
+            new Hex(8, Resource.LUMBER, 11),
+            new Hex(9, Resource.DESERT, 7),
+            new Hex(10, Resource.LUMBER, 3),
+            new Hex(11, Resource.ORE, 8),
+            new Hex(12, Resource.LUMBER, 8),
+            new Hex(13, Resource.ORE, 3),
+            new Hex(14, Resource.GRAIN, 4),
+            new Hex(15, Resource.WOOL, 5),
+            new Hex(16, Resource.BRICK, 5),
+            new Hex(17, Resource.GRAIN, 6),
+            new Hex(18, Resource.LUMBER, 11)
     ));
     return hexList;
   }
