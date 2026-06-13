@@ -229,42 +229,51 @@ public class GameModel {
     return playerColorToPlayerObject.get(color);
   }
 
-    public void performTurn(int roll) {
-        checkCurrentGamePhaseMatches(GamePhase.BEFORE_ROLL);
+  /**
+   * Performs the current player's turn for a given dice roll.
+   *
+   * @param roll the dice roll value
+   */
+  public void performTurn(int roll) {
+    checkCurrentGamePhaseMatches(GamePhase.BEFORE_ROLL);
 
-        if (roll == ROBBER_ROLL_VALUE) {
-            currentGamePhase = GamePhase.MOVE_ROBBER;
-            return;
-        }
-        try {
-            distributeResources(roll);
-        } catch (EmptyDeckException e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
-        currentGamePhase = GamePhase.GENERAL_PLAY;
+    if (roll == ROBBER_ROLL_VALUE) {
+      currentGamePhase = GamePhase.MOVE_ROBBER;
+      return;
     }
+    try {
+      distributeResources(roll);
+    } catch (EmptyDeckException e) {
+      throw new IllegalArgumentException(e.getMessage());
+    }
+    currentGamePhase = GamePhase.GENERAL_PLAY;
+  }
 
-    private void distributeResources(int roll) throws EmptyDeckException {
-        Map<Resource, Map<Player, Integer>> demand = board.computeResourceDemand(roll);
-        for (Map.Entry<Resource, Map<Player, Integer>> resourceEntry : demand.entrySet()) {
-            distributeResourceToPlayers(resourceEntry.getKey(), resourceEntry.getValue());
-        }
+  private void distributeResources(int roll) throws EmptyDeckException {
+    Map<Resource, Map<Player, Integer>> demand = board.computeResourceDemand(roll);
+    for (Map.Entry<Resource, Map<Player, Integer>> resourceEntry : demand.entrySet()) {
+      distributeResourceToPlayers(resourceEntry.getKey(), resourceEntry.getValue());
     }
+  }
 
-    // if not enough to satisfy all players, no one gets anything; if only one player is requesting, they can get a partial amount
-    private void distributeResourceToPlayers(Resource resource, Map<Player, Integer> playerAmounts) throws EmptyDeckException {
-        ResourceDeck deck = decks.get(resource);
-        if (playerAmounts.size() > 1) {
-            int total = playerAmounts.values().stream().mapToInt(Integer::intValue).sum();
-            if (deck.getTotalCards() < total) return;
-        }
-        for (Map.Entry<Player, Integer> playerAmountEntry : playerAmounts.entrySet()) {
-            int drawn = deck.drawMultiple(playerAmountEntry.getValue());
-            if (drawn > 0) {
-                playerAmountEntry.getKey().updateResources(resource, drawn);
-            }
-        }
+  // if not enough to satisfy all players, no one gets anything;
+  // if only one player is requesting, they can get a partial amount
+  private void distributeResourceToPlayers(Resource resource,
+      Map<Player, Integer> playerAmounts) throws EmptyDeckException {
+    ResourceDeck deck = decks.get(resource);
+    if (playerAmounts.size() > 1) {
+      int total = playerAmounts.values().stream().mapToInt(Integer::intValue).sum();
+      if (deck.getTotalCards() < total) {
+        return;
+      }
     }
+    for (Map.Entry<Player, Integer> playerAmountEntry : playerAmounts.entrySet()) {
+      int drawn = deck.drawMultiple(playerAmountEntry.getValue());
+      if (drawn > 0) {
+        playerAmountEntry.getKey().updateResources(resource, drawn);
+      }
+    }
+  }
 
   /**
    * Attempts to build a settlement at the specified node for the current player.
