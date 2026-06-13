@@ -2287,5 +2287,19 @@ public class BoardGraphTests {
     assertTrue(b.edgeCheckPlayerOwnsNeighboringEdge(PlayerColor.RED, 0, 3));
   }
 
+  // ← REDUCES CXTY
+  @Test
+  void dfs_FriendlySettlementAtIntermediateNode_ExpectRoadContinuesThroughOwnSettlement() {
+    BoardGraph b = new BoardGraph();
+    b.buildBoard();
+    b.claimGraphEdgeObject(PlayerColor.RED, 0, 3);
+    b.claimGraphEdgeObject(PlayerColor.RED, 3, 7);
+    b.claimGraphNodeObject(PlayerColor.RED, 3);
+
+    List<Player> players = List.of();
+    PlayerColor result = b.calculateLongestRoad(players, PlayerColor.SETUP);
+    assertEquals(PlayerColor.SETUP, result); // 2 roads < 5
+  }
+
 
 }
