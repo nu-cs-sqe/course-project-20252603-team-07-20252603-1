@@ -235,3 +235,24 @@ Delegates to `model.getTurnOrder()`.
 |              | System under test                                 | Expected output         | Implemented?       |
 |--------------|---------------------------------------------------|-------------------------|--------------------|
 | Test Case 30 | model.getTurnOrder() returns a non-empty list     | returns the same list   | :white_check_mark: |
+
+---
+
+### Method under test: `getBoard(GameSetupModel model)`
+
+Delegates to `model.getBoard()`.
+
+Step 1:
+- Input: model
+- Output: BoardHandler returned by model.getBoard()
+
+Step 2:
+- model - GameSetupModel (object reference); cases: any non-null model
+- Output - object reference; cases: whatever model.getBoard() returns
+
+Step 3:
+- Output: same BoardHandler instance returned by model.getBoard()
+
+|              | System under test                            | Expected output                   | Implemented?       |
+|--------------|----------------------------------------------|-----------------------------------|--------------------|
+| Test Case 31 | model.getBoard() returns a BoardHandler mock | returns the same BoardHandler     | :white_check_mark: |

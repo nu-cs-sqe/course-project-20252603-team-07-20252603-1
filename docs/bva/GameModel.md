@@ -484,8 +484,10 @@ Outputs:
 | Test Case 5 | MOVE_ROBBER phase, Orange move Robber 18 to 0, White victim exists on 0 with multiple resources | Robber Moved, random resorce stolen (mock rand) | :white_check_mark: |
 | Test Case 6 | MOVE_ROBBER phase, Orange move Robber 0 to -1                                                   | IllegalArgumentException                        | :white_check_mark: |
 | Test Case 7 | MOVE_ROBBER phase, Orange move Robber 0 to 19                                                   | IllegalArgumentException                        | :white_check_mark: |
-| Test Case 8 | MOVE_ROBBER phase, Red move Robber 0 to 18, Orange victim on different HexID 5                  | IllegalArgumentException                        | :white_check_mark: |
-| Test Case 9 | MOVE_ROBBER phase, Red move Robber 0 to 0                                                       | IllegalArgumentExceptiom                        | :white_check_mark: |
+| Test Case 8  | MOVE_ROBBER phase, Red move Robber 0 to 18, Orange victim on different HexID 5                   | IllegalArgumentException                                              | :white_check_mark: |
+| Test Case 9  | MOVE_ROBBER phase, Red move Robber 0 to 0                                                        | IllegalArgumentException                                              | :white_check_mark: |
+| Test Case 10 | MOVE_ROBBER phase, Red move Robber 0 to 18, victimColor = null                                   | Robber Moved, no resources changed (null bypasses steal logic)        | :white_check_mark: |
+| Test Case 11 | MOVE_ROBBER phase, Blue move Robber 18 to 0, Red victim has WOOL=1 and ORE=0 in resource map     | Robber Moved, only WOOL (value > 0) eligible; WOOL stolen from Red   | :white_check_mark: |
 
 
 ### Method under test: `offerTrade(TradeOffer offer)`
