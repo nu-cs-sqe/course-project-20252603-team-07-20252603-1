@@ -1397,7 +1397,7 @@ public class BoardHandlerTests {
     }
     EasyMock.replay(mockRobber);
     EasyMock.replay(mockHexes.toArray());
-    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, ports);
     Map<Resource, Map<Player, Integer>> result = b.computeResourceDemand(2);
     EasyMock.verify(mockRobber);
     EasyMock.verify(mockHexes.toArray());
@@ -1419,7 +1419,7 @@ public class BoardHandlerTests {
     }
     EasyMock.replay(mockRobber);
     EasyMock.replay(mockHexes.toArray());
-    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, ports);
     Map<Resource, Map<Player, Integer>> result = b.computeResourceDemand(2);
     EasyMock.verify(mockRobber);
     EasyMock.verify(mockHexes.toArray());
@@ -1449,7 +1449,7 @@ public class BoardHandlerTests {
     }
     EasyMock.replay(mockRobber);
     EasyMock.replay(mockHexes.toArray());
-    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, ports);
     Map<Resource, Map<Player, Integer>> result = b.computeResourceDemand(8);
     EasyMock.verify(mockRobber);
     EasyMock.verify(mockHexes.toArray());
@@ -1475,7 +1475,7 @@ public class BoardHandlerTests {
     }
     EasyMock.replay(mockRobber);
     EasyMock.replay(mockHexes.toArray());
-    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, ports);
     Map<Resource, Map<Player, Integer>> result = b.computeResourceDemand(2);
     EasyMock.verify(mockRobber);
     EasyMock.verify(mockHexes.toArray());
@@ -1506,7 +1506,7 @@ public class BoardHandlerTests {
     }
     EasyMock.replay(mockRobber);
     EasyMock.replay(mockHexes.toArray());
-    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, ports);
     Map<Resource, Map<Player, Integer>> result = b.computeResourceDemand(8);
     EasyMock.verify(mockRobber);
     EasyMock.verify(mockHexes.toArray());
@@ -1523,7 +1523,7 @@ public class BoardHandlerTests {
     }
     EasyMock.replay(mockRobber);
     EasyMock.replay(mockHexes.toArray());
-    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, ports);
     Map<Resource, Map<Player, Integer>> result = b.computeResourceDemand(6);
     EasyMock.verify(mockRobber);
     EasyMock.verify(mockHexes.toArray());
@@ -1550,7 +1550,7 @@ public class BoardHandlerTests {
     }
     EasyMock.replay(mockRobber);
     EasyMock.replay(mockHexes.toArray());
-    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, ports);
     Map<Resource, Map<Player, Integer>> result = b.computeResourceDemand(8);
     EasyMock.verify(mockRobber);
     EasyMock.verify(mockHexes.toArray());
@@ -1590,7 +1590,7 @@ public class BoardHandlerTests {
 
     EasyMock.replay(mockBoardGraphController, mockRedPlayer);
 
-    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, ports);
 
     Exception exception = assertThrows(IllegalArgumentException.class, () ->
         b.addRoad(mockRedPlayer, 5, 5)
@@ -1610,7 +1610,7 @@ public class BoardHandlerTests {
 
     EasyMock.replay(mockBoardGraphController, mockRedPlayer);
 
-    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, ports);
 
     Exception exception = assertThrows(IllegalArgumentException.class, () ->
         b.addRoad(mockRedPlayer, 3, 0)
@@ -1657,7 +1657,7 @@ public class BoardHandlerTests {
 
     EasyMock.replay(mockBoardGraphController, mockBluePlayer);
 
-    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber);
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, ports);
 
     Exception exception = assertThrows(AdjacentNodeAlreadyClaimed.class, () ->
         b.buildSetupSettlement(mockBluePlayer, 12)

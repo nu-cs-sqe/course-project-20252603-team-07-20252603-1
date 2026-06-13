@@ -566,25 +566,27 @@ public class GameModelTests {
   // BVA: minimum non-7 dice total
   @Test
   void performTurn_rollTwo_BVAMin_transitionsToGeneralPlay() {
-    BoardHandler board = EasyMock.createMock(BoardHandler.class);
-    EasyMock.replay(board);
-    GameModel model = new GameModel(List.of(new Player("Alice", PlayerColor.RED)), board);
-    model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
-    model.performTurn(2);
-    assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
-    EasyMock.verify(board);
+      BoardHandler board = EasyMock.createMock(BoardHandler.class);
+      EasyMock.expect(board.computeResourceDemand(2)).andReturn(new HashMap<>());
+      EasyMock.replay(board);
+      GameModel model = new GameModel(List.of(new Player("Alice", PlayerColor.RED)), board);
+      model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+      model.performTurn(2);
+      assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+      EasyMock.verify(board);
   }
 
   // BVA: maximum dice total
   @Test
   void performTurn_rollTwelve_BVAMax_transitionsToGeneralPlay() {
-    BoardHandler board = EasyMock.createMock(BoardHandler.class);
-    EasyMock.replay(board);
-    GameModel model = new GameModel(List.of(new Player("Alice", PlayerColor.RED)), board);
-    model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
-    model.performTurn(12);
-    assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
-    EasyMock.verify(board);
+      BoardHandler board = EasyMock.createMock(BoardHandler.class);
+      EasyMock.expect(board.computeResourceDemand(12)).andReturn(new HashMap<>());
+      EasyMock.replay(board);
+      GameModel model = new GameModel(List.of(new Player("Alice", PlayerColor.RED)), board);
+      model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+      model.performTurn(12);
+      assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+      EasyMock.verify(board);
   }
 
   @Test
@@ -648,14 +650,15 @@ public class GameModelTests {
 
   @Test
   void performTurn_rollingTwiceInOneTurn_expectError() {
-    BoardHandler board = EasyMock.createMock(BoardHandler.class);
-    EasyMock.replay(board);
-    GameModel model = new GameModel(List.of(new Player("Alice", PlayerColor.RED)), board);
-    model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
-    model.performTurn(6);
-    Exception exception = assertThrows(IllegalGamePhaseException.class, () -> model.performTurn(6));
-    assertEquals("Not proper phase for that action", exception.getMessage());
-    EasyMock.verify(board);
+      BoardHandler board = EasyMock.createMock(BoardHandler.class);
+      EasyMock.expect(board.computeResourceDemand(6)).andReturn(new HashMap<>());
+      EasyMock.replay(board);
+      GameModel model = new GameModel(List.of(new Player("Alice", PlayerColor.RED)), board);
+      model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+      model.performTurn(6);
+      Exception exception = assertThrows(IllegalGamePhaseException.class, () -> model.performTurn(6));
+      assertEquals("Not proper phase for that action", exception.getMessage());
+      EasyMock.verify(board);
   }
 
   @Test
@@ -1152,45 +1155,6 @@ public class GameModelTests {
 
     EasyMock.verify(blueStateMock);
   }
-  
-  // BVA: minimum non-7 dice total
-    @Test
-    void performTurn_rollTwo_BVAMin_transitionsToGeneralPlay() {
-        BoardHandler board = EasyMock.createMock(BoardHandler.class);
-        EasyMock.expect(board.computeResourceDemand(2)).andReturn(new HashMap<>());
-        EasyMock.replay(board);
-        GameModel model = new GameModel(List.of(new Player("Alice", PlayerColor.RED)), board);
-        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
-        model.performTurn(2);
-        assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
-        EasyMock.verify(board);
-    }
-
-    // BVA: maximum dice total
-    @Test
-    void performTurn_rollTwelve_BVAMax_transitionsToGeneralPlay() {
-        BoardHandler board = EasyMock.createMock(BoardHandler.class);
-        EasyMock.expect(board.computeResourceDemand(12)).andReturn(new HashMap<>());
-        EasyMock.replay(board);
-        GameModel model = new GameModel(List.of(new Player("Alice", PlayerColor.RED)), board);
-        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
-        model.performTurn(12);
-        assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
-        EasyMock.verify(board);
-    }
-  
-  @Test
-    void performTurn_rollingTwiceInOneTurn_expectError() {
-        BoardHandler board = EasyMock.createMock(BoardHandler.class);
-        EasyMock.expect(board.computeResourceDemand(6)).andReturn(new HashMap<>());
-        EasyMock.replay(board);
-        GameModel model = new GameModel(List.of(new Player("Alice", PlayerColor.RED)), board);
-        model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
-        model.performTurn(6);
-        Exception exception = assertThrows(IllegalGamePhaseException.class, () -> model.performTurn(6));
-        assertEquals("Not proper phase for that action", exception.getMessage());
-        EasyMock.verify(board);
-    }
 
   // endTurn() tests
 
@@ -1657,7 +1621,7 @@ public class GameModelTests {
         EasyMock.replay(redMock, boardMock, woolDeckMock, lumberDeckMock, brickDeckMock,
                 grainDeckMock, oreDeckMock);
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
         model.performTurn(6);
@@ -1676,7 +1640,7 @@ public class GameModelTests {
         EasyMock.replay(redMock, boardMock, woolDeckMock, lumberDeckMock, brickDeckMock,
                 grainDeckMock, oreDeckMock);
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
         model.performTurn(6);
@@ -1699,7 +1663,7 @@ public class GameModelTests {
         EasyMock.replay(redMock, blueMock, boardMock, woolDeckMock, lumberDeckMock,
                 brickDeckMock, grainDeckMock, oreDeckMock);
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
         model.performTurn(6);
@@ -1728,7 +1692,7 @@ public class GameModelTests {
         EasyMock.replay(redMock, blueMock, boardMock, woolDeckMock, lumberDeckMock,
                 brickDeckMock, grainDeckMock, oreDeckMock);
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
         model.performTurn(6);
@@ -1749,7 +1713,7 @@ public class GameModelTests {
         EasyMock.replay(redMock, boardMock, woolDeckMock, lumberDeckMock, brickDeckMock,
                 grainDeckMock, oreDeckMock);
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
         model.performTurn(8);
@@ -1770,7 +1734,7 @@ public class GameModelTests {
         EasyMock.replay(redMock, boardMock, woolDeckMock, lumberDeckMock, brickDeckMock,
                 grainDeckMock, oreDeckMock);
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
         model.performTurn(6);
@@ -1786,7 +1750,7 @@ public class GameModelTests {
         EasyMock.replay(boardMock, woolDeckMock, lumberDeckMock, brickDeckMock,
                 grainDeckMock, oreDeckMock);
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
         model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
         model.performTurn(6);
         assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
@@ -1813,13 +1777,15 @@ public class GameModelTests {
         EasyMock.replay(redMock, blueMock, boardMock, woolDeckMock, lumberDeckMock,
                 brickDeckMock, grainDeckMock, oreDeckMock);
         GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
-                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock);
+                oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
         model.setCurrentPlayerColor(PlayerColor.RED);
         model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
         model.performTurn(6);
         assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
         EasyMock.verify(redMock, blueMock, boardMock, woolDeckMock, lumberDeckMock,
                 brickDeckMock, grainDeckMock, oreDeckMock);
+
+    }
   
     // TC2: GENERAL_PLAY, ORE=3, WOOL=2, GRAIN=4 (surplus each), deck=25 (full)
     //      -> card returned; player loses 1 each ORE/WOOL/GRAIN; surplus does not prevent purchase
