@@ -16,4 +16,10 @@ public class VertexTests {
   void isOccupied_NewVertex_ExpectFalse() {
     assertFalse(new Vertex().isOccupied());
   }
+
+  // TC3 ← REDUCES CXTY
+  @Test
+  void hasAdjacentSettlementViolatingDistanceRule_NewVertex_ExpectFalse() {
+    assertFalse(new Vertex().hasAdjacentSettlementViolatingDistanceRule());
+  }
 }
