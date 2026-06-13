@@ -34,7 +34,7 @@ mutations to `BoardHandler`, and deducts resources from the current player.
 
 |             | State of the System | Expected output      | Implemented?       |
 |-------------|---------------------|----------------------|--------------------|
-| Test Case 1 | any state           | no exception thrown  | :x: |
+| Test Case 1 | any state           | no exception thrown  | :white_check_mark: |
 
 ---
 

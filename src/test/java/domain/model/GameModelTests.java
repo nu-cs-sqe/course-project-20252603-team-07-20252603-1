@@ -2256,4 +2256,19 @@ public class GameModelTests {
     EasyMock.verify(boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock,
         woolDeckMock, tradeManagerMock);
   }
+
+  // ← REDUCES CXTY
+  @Test
+  void moveRobberAndSteal_Called_ExpectNoException() {
+    EasyMock.replay(boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock,
+        woolDeckMock, tradeManagerMock);
+
+    GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+        oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+
+    assertDoesNotThrow(() -> model.moveRobberAndSteal());
+
+    EasyMock.verify(boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock,
+        woolDeckMock, tradeManagerMock);
+  }
 }
