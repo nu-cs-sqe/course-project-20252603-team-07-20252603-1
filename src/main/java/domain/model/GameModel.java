@@ -389,27 +389,33 @@ public List<Player> getOtherPlayers() {
         return card;
     }
 
-  public void moveRobberAndSteal(int targetHexID, PlayerColor victimColor) {
-    checkCurrentGamePhaseMatches(GamePhase.MOVE_ROBBER);
-    board.moveRobber(targetHexID);
+    public void moveRobberAndSteal(int targetHexID, PlayerColor victimColor) {
+        checkCurrentGamePhaseMatches(GamePhase.MOVE_ROBBER);
+        board.moveRobber(targetHexID);
 
-    if (victimColor != null && victimColor != PlayerColor.SETUP) {
-      Player target = getArbitraryPlayer(victimColor);
-      Set<Player> playersOnHex = board.getPlayersOnHex(targetHexID);
+        if (victimColor != null && victimColor != PlayerColor.SETUP) {
+            Player target = getArbitraryPlayer(victimColor);
+            Set<Player> playersOnHex = board.getPlayersOnHex(targetHexID);
 
-      if (!playersOnHex.contains(target)) {
-        throw new IllegalArgumentException("Victim is not on the target hex.");
-      }
+            if (!playersOnHex.contains(target)) {
+                throw new IllegalArgumentException("Victim is not on the target hex.");
+            }
 
-      Map<Resource, Integer> targetResources = target.getResources();
-      List<Resource> available = new ArrayList<>();
-      for (Map.Entry<Resource, Integer> entry : targetResources.entrySet()) {
-        if (entry.getValue() > 0) available.add(entry.getKey());
-      }
+            Map<Resource, Integer> targetResources = target.getResources();
+            List<Resource> available = new ArrayList<>();
+            for (Map.Entry<Resource, Integer> entry : targetResources.entrySet()) {
+                if (entry.getValue() > 0) available.add(entry.getKey());
+            }
+
+            if (!available.isEmpty()) {
+                Resource stolen = available.get(0);
+                target.updateResources(stolen, -1);
+                getCurrentPlayer().updateResources(stolen, 1);
+            }
+        }
+
+        currentGamePhase = GamePhase.GENERAL_PLAY;
     }
-
-    currentGamePhase = GamePhase.GENERAL_PLAY;
-  }
 
     // TODO: UI can call board to get list of available ports, and then upon the user clicking a port, it will be passed into this function
     public void attemptPortTrade(Port port, Resource giving, Resource receiving) {

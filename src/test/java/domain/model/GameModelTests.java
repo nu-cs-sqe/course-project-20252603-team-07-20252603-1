@@ -2304,4 +2304,36 @@ public class GameModelTests {
     EasyMock.verify(blueStateMock, redStateMock, boardMock, lumberDeckMock, brickDeckMock,
             grainDeckMock, oreDeckMock, woolDeckMock);
   }
+
+  // Test Case 4
+  @Test
+  void moveRobberAndSteal_test04_MoveRobber18To0_VictimHasOneResource_ExpectResourceStolen() {
+    Player whiteStateMock = EasyMock.createMock(Player.class);
+    Player blueStateMock = EasyMock.createMock(Player.class);
+    ColorToPlayerObjMock = Map.of(PlayerColor.WHITE, whiteStateMock, PlayerColor.BLUE, blueStateMock);
+
+    boardMock.moveRobber(0);
+    EasyMock.expectLastCall();
+    EasyMock.expect(boardMock.getPlayersOnHex(0)).andReturn(Set.of(blueStateMock));
+    EasyMock.expect(blueStateMock.getResources()).andReturn(Map.of(Resource.WOOL, 1));
+    blueStateMock.updateResources(Resource.WOOL, -1);
+    EasyMock.expectLastCall();
+    whiteStateMock.updateResources(Resource.WOOL, 1);
+    EasyMock.expectLastCall();
+
+    EasyMock.replay(whiteStateMock, blueStateMock, boardMock, lumberDeckMock, brickDeckMock,
+            grainDeckMock, oreDeckMock, woolDeckMock);
+
+    GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+            oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+
+    model.setCurrentPlayerColor(PlayerColor.WHITE);
+    model.setCurrentGamePhase(GamePhase.MOVE_ROBBER);
+    model.moveRobberAndSteal(0, PlayerColor.BLUE);
+
+    assertEquals(GamePhase.GENERAL_PLAY, model.getCurrentPhase());
+
+    EasyMock.verify(whiteStateMock, blueStateMock, boardMock, lumberDeckMock, brickDeckMock,
+            grainDeckMock, oreDeckMock, woolDeckMock);
+  }
 }
