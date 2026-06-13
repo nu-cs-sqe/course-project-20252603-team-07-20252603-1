@@ -10,8 +10,10 @@ import ui.controller.GameLoopController;
 import ui.controller.GameSetupController;
 
 
+/** Holds shared controller and model references available to all UI views. */
 @SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"},
-        justification = "UI classes intentionally share JavaFX nodes, controllers, and models by reference")
+    justification = "UI classes intentionally share JavaFX nodes, controllers, and "
+        + "models by reference")
 public final class ViewContext {
 
     private final GameSetupController setupController;

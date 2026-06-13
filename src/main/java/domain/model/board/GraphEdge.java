@@ -5,7 +5,9 @@ import domain.model.exceptions.IllegalNodeOrderingInEdgeException;
 import domain.model.player.PlayerColor;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
-/** Represents a directed edge in the board graph, connecting two nodes. */
+/**
+ * Represents a directed edge in the board graph, connecting two nodes.
+ */
 public class GraphEdge {
   private final int startingNodeId;
   private final int endingNodeId;

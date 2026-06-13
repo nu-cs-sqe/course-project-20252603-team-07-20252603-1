@@ -1,6 +1,8 @@
 package domain.model.exceptions;
 
-/** Thrown when a node ID is outside the valid range [0, 53]. */
+/**
+ * Thrown when a node ID is outside the valid range [0, 53].
+ */
 public class IllegalNodeIdException extends RuntimeException {
 
   /**

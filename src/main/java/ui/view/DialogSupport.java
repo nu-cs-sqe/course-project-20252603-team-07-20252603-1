@@ -11,32 +11,32 @@ import javafx.util.StringConverter;
  */
 final class DialogSupport {
 
-    static final Resource[] TRADEABLE_RESOURCES = {
-            Resource.LUMBER, Resource.BRICK, Resource.WOOL, Resource.GRAIN, Resource.ORE
-    };
+  static final Resource[] TRADEABLE_RESOURCES = {
+      Resource.LUMBER, Resource.BRICK, Resource.WOOL, Resource.GRAIN, Resource.ORE
+  };
 
-    private DialogSupport() {
-    }
+  private DialogSupport() {
+  }
 
-    static String resourceName(ResourceBundle labels, Resource resource) {
-        return labels.getString("resource." + resource.name());
-    }
+  static String resourceName(ResourceBundle labels, Resource resource) {
+    return labels.getString("resource." + resource.name());
+  }
 
-    static ComboBox<Resource> resourceComboBox(ResourceBundle labels) {
-        ComboBox<Resource> comboBox = new ComboBox<>(
-                FXCollections.observableArrayList(TRADEABLE_RESOURCES));
-        comboBox.setConverter(new StringConverter<>() {
-            @Override
-            public String toString(Resource resource) {
-                return resource == null ? "" : resourceName(labels, resource);
-            }
+  static ComboBox<Resource> resourceComboBox(ResourceBundle labels) {
+    ComboBox<Resource> comboBox = new ComboBox<>(
+        FXCollections.observableArrayList(TRADEABLE_RESOURCES));
+    comboBox.setConverter(new StringConverter<>() {
+      @Override
+      public String toString(Resource resource) {
+        return resource == null ? "" : resourceName(labels, resource);
+      }
 
-            @Override
-            public Resource fromString(String string) {
-                throw new UnsupportedOperationException("Combo box is not editable");
-            }
-        });
-        comboBox.getSelectionModel().selectFirst();
-        return comboBox;
-    }
+      @Override
+      public Resource fromString(String string) {
+        throw new UnsupportedOperationException("Combo box is not editable");
+      }
+    });
+    comboBox.getSelectionModel().selectFirst();
+    return comboBox;
+  }
 }

@@ -1,6 +1,8 @@
 package domain.model.exceptions;
 
-/** Thrown when a road claim violates placement rules. */
+/**
+ * Thrown when a road claim violates placement rules.
+ */
 public class IllegalEdgeClaim extends RuntimeException {
 
   /**

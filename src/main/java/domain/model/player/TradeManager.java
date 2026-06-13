@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/** Manages active trade offers between players. */
+/**
+ * Manages active trade offers between players.
+ */
 public class TradeManager {
 
   private final List<TradeOffer> offers = new ArrayList<>();
@@ -20,7 +22,9 @@ public class TradeManager {
     offers.add(offer);
   }
 
-  /** Removes all active trade offers. */
+  /**
+   * Removes all active trade offers.
+   */
   public void clearOffers() {
     offers.clear();
   }
@@ -37,7 +41,7 @@ public class TradeManager {
   /**
    * Executes the given trade offer when accepted by the specified player.
    *
-   * @param offer the offer to accept
+   * @param offer           the offer to accept
    * @param acceptingPlayer the player accepting the offer
    */
   public void acceptTrade(TradeOffer offer, Player acceptingPlayer) {

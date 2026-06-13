@@ -16,22 +16,24 @@ import java.util.Map;
  */
 public final class BoardGeometry {
 
-  /** An immutable 2D point. */
+  /**
+   * An immutable 2D point.
+   */
   public static final class Point {
-    private final double x;
-    private final double y;
+    private final double xc;
+    private final double yc;
 
-    Point(double x, double y) {
-      this.x = x;
-      this.y = y;
+    Point(double xc, double yc) {
+      this.xc = xc;
+      this.yc = yc;
     }
 
     public double getX() {
-      return x;
+      return xc;
     }
 
     public double getY() {
-      return y;
+      return yc;
     }
   }
 
@@ -48,6 +50,7 @@ public final class BoardGeometry {
   private final List<Point> nodePositions;
   private final List<int[]> edges;
 
+  /** Constructs a BoardGeometry for the given hex size and padding. */
   public BoardGeometry(double hexSize, double padding) {
     this.hexSize = hexSize;
     this.padding = padding;
@@ -183,15 +186,15 @@ public final class BoardGeometry {
     }
     List<Point> nodes = new ArrayList<>(uniqueCorners.values());
     nodes.sort(Comparator
-            .comparingLong((Point p) -> Math.round(p.getY() * POSITION_KEY_SCALE))
-            .thenComparingLong(p -> Math.round(p.getX() * POSITION_KEY_SCALE)));
+        .comparingLong((Point p) -> Math.round(p.getY() * POSITION_KEY_SCALE))
+        .thenComparingLong(p -> Math.round(p.getX() * POSITION_KEY_SCALE)));
     return nodes;
   }
 
   private long positionKey(Point point) {
-    long xKey = Math.round(point.getX() * POSITION_KEY_SCALE);
-    long yKey = Math.round(point.getY() * POSITION_KEY_SCALE);
-    return xKey * 1_000_000_000L + yKey;
+    long xk = Math.round(point.getX() * POSITION_KEY_SCALE);
+    long yk = Math.round(point.getY() * POSITION_KEY_SCALE);
+    return xk * 1_000_000_000L + yk;
   }
 
   private List<int[]> computeEdges() {
@@ -202,7 +205,7 @@ public final class BoardGeometry {
         Point pointA = nodePositions.get(a);
         Point pointB = nodePositions.get(b);
         double distance = Math.hypot(
-                pointA.getX() - pointB.getX(), pointA.getY() - pointB.getY());
+            pointA.getX() - pointB.getX(), pointA.getY() - pointB.getY());
         if (Math.abs(distance - hexSize) <= tolerance) {
           result.add(new int[] {a, b});
         }

@@ -8,7 +8,9 @@ import domain.model.player.PlayerColor;
 import java.util.List;
 import java.util.Set;
 
-/** Controls player interactions with the board graph during gameplay. */
+/**
+ * Controls player interactions with the board graph during gameplay.
+ */
 public class BoardGraphController {
   private BoardGraph boardGraph;
 
@@ -99,7 +101,9 @@ public class BoardGraphController {
     return boardGraph.getEdgeOwner(nodeId1, nodeId2);
   }
 
-  /** Returns whether the specified edge is occupied by a road. */
+  /**
+   * Returns whether the specified edge is occupied by a road.
+   */
   public boolean checkEdgeOccupied(int nodeId1, int nodeId2) {
     return boardGraph.checkEdgeOccupied(nodeId1, nodeId2);
   }

@@ -1,18 +1,16 @@
 package domain.model.board;
 
-import domain.model.board.Hex;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import domain.model.player.Player;
 import domain.model.resources.Resource;
+import org.easymock.EasyMock;
 import org.junit.jupiter.api.Test;
 
-import domain.model.board.Hex;
-import domain.model.player.Player;
-import domain.model.resources.Resource;
-
-import org.easymock.EasyMock;
-
-import static org.junit.jupiter.api.Assertions.*;
-
+/** Test class. */
 public class HexTests {
   @Test // Test Case 1
   public void AddEmptyString_OnEmptyList_ExpectLenOne() {

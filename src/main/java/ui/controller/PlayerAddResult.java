@@ -1,6 +1,8 @@
 package ui.controller;
 
-/** Result codes for adding a player during game setup. */
+/**
+ * Result codes for adding a player during game setup.
+ */
 public enum PlayerAddResult {
   SUCCESS,
   NAME_EMPTY,
