@@ -439,7 +439,7 @@ Outputs:
 | Test Case 6 | MOVE_ROBBER phase, Orange move Robber 0 to -1                                                   | IllegalArgumentException                        | :white_check_mark: |
 | Test Case 7 | MOVE_ROBBER phase, Orange move Robber 0 to 19                                                   | IllegalArgumentException                        | :white_check_mark: |
 | Test Case 8 | MOVE_ROBBER phase, Red move Robber 0 to 18, Orange victim on different HexID 5                  | IllegalArgumentException                        | :white_check_mark: |
-| Test Case 9 | MOVE_ROBBER phase, Red move Robber 0 to 0                                                       | IllegalArgumentExceptiom                        | :x:                |
+| Test Case 9 | MOVE_ROBBER phase, Red move Robber 0 to 0                                                       | IllegalArgumentExceptiom                        | :white_check_mark: |
 
 
 ### Method under test: `offerTrade(TradeOffer offer)`
