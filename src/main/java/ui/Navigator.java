@@ -33,6 +33,11 @@ public class Navigator implements SetupNavigator, RoundNavigator {
         this.setupModel = new GameSetupModel();
     }
 
+    /**
+     * Switches the application language and reloads the home screen.
+     *
+     * @param locale the new locale to apply
+     */
     public void changeLocale(Locale locale) {
         Locale.setDefault(locale);
         context = context.withLocale(locale);

@@ -52,6 +52,11 @@ public final class ViewContext {
         return labels;
     }
 
+    /**
+     * Returns a copy of this context with labels in the given locale.
+     *
+     * @param locale the new locale
+     */
     public ViewContext withLocale(Locale locale) {
         ResourceBundle newLabels = ResourceBundle.getBundle("labels", locale);
         return new ViewContext(setupController, loopController,
