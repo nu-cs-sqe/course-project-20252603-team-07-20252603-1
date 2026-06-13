@@ -2289,4 +2289,22 @@ public class GameModelTests {
     assertTrue(order.contains(blueMock));
     EasyMock.verify(redMock, blueMock, boardMock);
   }
+
+  // ← REDUCES CXTY
+  @Test
+  void getOtherPlayers_TwoPlayers_ExpectOnlyOtherPlayerReturned() {
+    Player redMock = EasyMock.createMock(Player.class);
+    Player blueMock = EasyMock.createMock(Player.class);
+    EasyMock.expect(redMock.getColor()).andReturn(PlayerColor.RED);
+    EasyMock.expect(blueMock.getColor()).andReturn(PlayerColor.BLUE);
+    EasyMock.replay(redMock, blueMock, boardMock);
+
+    GameModel model = new GameModel(List.of(redMock, blueMock), boardMock);
+    List<Player> others = model.getOtherPlayers();
+
+    assertEquals(1, others.size());
+    assertFalse(others.contains(redMock));
+    assertTrue(others.contains(blueMock));
+    EasyMock.verify(redMock, blueMock, boardMock);
+  }
 }

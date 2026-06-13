@@ -52,7 +52,7 @@ Returns all players except the current player.
 
 |             | State of the System                                         | Expected output                       | Implemented?       |
 |-------------|-------------------------------------------------------------|---------------------------------------|--------------------|
-| Test Case 1 | current player = RED; players = [RED, BLUE]                 | list contains only BLUE (size = 1)    | :x: |
+| Test Case 1 | current player = RED; players = [RED, BLUE]                 | list contains only BLUE (size = 1)    | :white_check_mark: |
 
 ---
 
