@@ -2307,4 +2307,26 @@ public class GameModelTests {
     assertTrue(others.contains(blueMock));
     EasyMock.verify(redMock, blueMock, boardMock);
   }
+
+  // ← REDUCES CXTY
+  @Test
+  void performTurn_DrawThrowsException_ExpectIllegalArgumentExceptionWithSameMessage() throws EmptyDeckException {
+    Player redStateMock = EasyMock.createMock(Player.class);
+    ColorToPlayerObjMock = Map.of(PlayerColor.RED, redStateMock);
+
+    EasyMock.expect(woolDeckMock.draw()).andThrow(new EmptyDeckException("No WOOL cards remain."));
+    EasyMock.replay(boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock,
+        woolDeckMock, tradeManagerMock, redStateMock);
+
+    GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+        oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock);
+    model.setCurrentGamePhase(GamePhase.BEFORE_ROLL);
+    model.setCurrentPlayerColor(PlayerColor.RED);
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> model.performTurn(6));
+    assertEquals("No WOOL cards remain.", exception.getMessage());
+
+    EasyMock.verify(boardMock, lumberDeckMock, brickDeckMock, grainDeckMock, oreDeckMock,
+        woolDeckMock, tradeManagerMock, redStateMock);
+  }
 }
