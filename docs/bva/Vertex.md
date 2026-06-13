@@ -16,7 +16,7 @@
 
 |             | System under test | Expected output | Implemented?       |
 |-------------|-------------------|-----------------|--------------------|
-| Test Case 2 | fresh Vertex      | false           | :x: |
+| Test Case 2 | fresh Vertex      | false           | :white_check_mark: |
 
 ---
 

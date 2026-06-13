@@ -10,4 +10,10 @@ public class VertexTests {
   void constructor_NewVertex_ExpectNotNull() {
     assertNotNull(new Vertex());
   }
+
+  // TC2 ← REDUCES CXTY
+  @Test
+  void isOccupied_NewVertex_ExpectFalse() {
+    assertFalse(new Vertex().isOccupied());
+  }
 }
