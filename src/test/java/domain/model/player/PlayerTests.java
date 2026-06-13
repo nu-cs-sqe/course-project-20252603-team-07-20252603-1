@@ -341,4 +341,11 @@ public class PlayerTests {
     Player player = new Player("Alice", PlayerColor.BLUE);
     assertFalse(player.hasPlayedDevCardThisTurn());
   }
+
+  // TC23 ← REDUCES CXTY
+  @Test
+  void isAdjacentToHex_AnyHexId_ExpectFalse() {
+    Player player = new Player("Alice", PlayerColor.BLUE);
+    assertFalse(player.isAdjacentToHex(5));
+  }
 }

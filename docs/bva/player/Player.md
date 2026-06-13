@@ -180,4 +180,4 @@ Stub implementation — always returns false regardless of hexId.
 
 |              | System under test       | Expected output | Implemented?       |
 |--------------|-------------------------|-----------------|--------------------|
-| Test Case 23 | fresh player; hexId = 5 | false           | :x: |
+| Test Case 23 | fresh player; hexId = 5 | false           | :white_check_mark: |
