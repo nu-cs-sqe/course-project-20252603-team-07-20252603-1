@@ -135,4 +135,12 @@ class ResourceDeckTest {
   void constructor_DesertResource_ExpectIllegalArgumentException() {
     assertThrows(IllegalArgumentException.class, () -> new ResourceDeck(Resource.DESERT));
   }
+
+  // TC12 ← REDUCES CXTY
+  @Test
+  void getTotalCards_NewTypedDeck_ExpectNineteen() {
+    final int expectedCount = 19;
+    ResourceDeck deck = new ResourceDeck(Resource.LUMBER);
+    assertEquals(expectedCount, deck.getTotalCards());
+  }
 }
