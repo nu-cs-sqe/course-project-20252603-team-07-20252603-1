@@ -16,4 +16,10 @@ public class EdgeTests {
   void isOccupied_NewEdge_ExpectFalse() {
     assertFalse(new Edge().isOccupied());
   }
+
+  // TC3 ← REDUCES CXTY
+  @Test
+  void isConnectedToPlayerNetwork_NewEdge_ExpectFalse() {
+    assertFalse(new Edge().isConnectedToPlayerNetwork());
+  }
 }

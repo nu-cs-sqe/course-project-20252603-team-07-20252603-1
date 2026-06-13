@@ -24,4 +24,4 @@
 
 |             | System under test | Expected output | Implemented?       |
 |-------------|-------------------|-----------------|--------------------|
-| Test Case 3 | fresh Edge        | false           | :x: |
+| Test Case 3 | fresh Edge        | false           | :white_check_mark: |
