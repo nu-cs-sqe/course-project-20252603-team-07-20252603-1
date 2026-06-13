@@ -3,6 +3,7 @@ package ui;
 import domain.model.GameModel;
 import domain.model.GameSetupModel;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import java.util.Locale;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ui.controller.GameSetupController;
@@ -14,42 +15,48 @@ import ui.view.RoundNavigator;
 import ui.view.SetupNavigator;
 import ui.view.SetupSummaryView;
 
-import java.util.Locale;
-
+/** Manages scene transitions and navigation between all application screens. */
 @SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"},
-    justification = "UI classes intentionally share JavaFX nodes, controllers, and "
-        + "models by reference")
+        justification = "UI classes intentionally share JavaFX nodes, controllers, and "
+                + "models by reference")
 public class Navigator implements SetupNavigator, RoundNavigator {
-    private final Scene scene;
-    private final Stage stage;
-    private ViewContext context;
+  private final Scene scene;
+  private final Stage stage;
+  private ViewContext context;
 
   private GameSetupModel setupModel;
   private GameModel gameModel;
 
-    public Navigator(Scene scene, Stage stage, ViewContext context) {
-        this.scene = scene;
-        this.stage = stage;
-        this.context = context;
-        this.setupModel = new GameSetupModel();
-    }
+  /**
+   * Creates a Navigator for the given scene, stage, and view context.
+   *
+   * @param scene   the primary JavaFX scene
+   * @param stage   the primary JavaFX stage
+   * @param context the shared view context
+   */
+  public Navigator(Scene scene, Stage stage, ViewContext context) {
+    this.scene = scene;
+    this.stage = stage;
+    this.context = context;
+    this.setupModel = new GameSetupModel();
+  }
 
-    /**
-     * Switches the application language and reloads the home screen.
-     *
-     * @param locale the new locale to apply
-     */
-    public void changeLocale(Locale locale) {
-        Locale.setDefault(locale);
-        context = context.withLocale(locale);
-        stage.setTitle(context.labels().getString("app.title"));
-        goToHome();
-    }
+  /**
+   * Switches the application language and reloads the home screen.
+   *
+   * @param locale the new locale to apply
+   */
+  public void changeLocale(Locale locale) {
+    Locale.setDefault(locale);
+    context = context.withLocale(locale);
+    stage.setTitle(context.labels().getString("app.title"));
+    goToHome();
+  }
 
-    @Override
-    public void goToHome() {
-        scene.setRoot(new HomeScreenView(this, context).getRoot());
-    }
+  @Override
+  public void goToHome() {
+    scene.setRoot(new HomeScreenView(this, context).getRoot());
+  }
 
   @Override
   public void goToPlayerCount() {
@@ -79,11 +86,11 @@ public class Navigator implements SetupNavigator, RoundNavigator {
   public void goToGameRound() {
     GameSetupController setup = context.setup();
     scene.setRoot(new GameRoundView(
-        this,
-        context,
-        gameModel,
-        setup.getBoard(setupModel),
-        setup.getDevelopmentCardDeck(setupModel)
+            this,
+            context,
+            gameModel,
+            setup.getBoard(setupModel),
+            setup.getDevelopmentCardDeck(setupModel)
     ).getRoot());
   }
 }
