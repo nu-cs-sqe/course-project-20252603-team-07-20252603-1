@@ -2372,4 +2372,31 @@ public class GameModelTests {
     EasyMock.verify(orangeStateMock, whiteStateMock, boardMock, randomMock, lumberDeckMock,
             brickDeckMock, grainDeckMock, oreDeckMock, woolDeckMock);
   }
+
+  // Test Case 6
+  @Test
+  void moveRobberAndSteal_test06_MoveRobberToNegativeOne_ExpectIllegalArgumentException() {
+    Player orangeStateMock = EasyMock.createMock(Player.class);
+    ColorToPlayerObjMock = Map.of(PlayerColor.ORANGE, orangeStateMock);
+
+    boardMock.moveRobber(-1);
+    EasyMock.expectLastCall().andThrow(new IllegalArgumentException("Cannot move Robber to invalid Hex ID"));
+
+    EasyMock.replay(orangeStateMock, boardMock, lumberDeckMock, brickDeckMock,
+            grainDeckMock, oreDeckMock, woolDeckMock);
+
+    GameModel model = new GameModel(lumberDeckMock, brickDeckMock, grainDeckMock,
+            oreDeckMock, woolDeckMock, ColorToPlayerObjMock, boardMock, tradeManagerMock, new Random());
+
+    model.setCurrentPlayerColor(PlayerColor.ORANGE);
+    model.setCurrentGamePhase(GamePhase.MOVE_ROBBER);
+
+    Exception exception = assertThrows(IllegalArgumentException.class,
+            () -> model.moveRobberAndSteal(-1, PlayerColor.SETUP));
+
+    assertEquals("Cannot move Robber to invalid Hex ID", exception.getMessage());
+
+    EasyMock.verify(orangeStateMock, boardMock, lumberDeckMock, brickDeckMock,
+            grainDeckMock, oreDeckMock, woolDeckMock);
+  }
 }
