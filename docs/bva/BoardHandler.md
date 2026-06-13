@@ -334,7 +334,7 @@ Returns a list of resource name strings for all 19 hexes, in order.
 
 |              | System under test                         | Expected output                                         | Implemented?       |
 |--------------|-------------------------------------------|---------------------------------------------------------|--------------------|
-| Test Case 61 | board with 19 hexes, each returning LUMBER | list of 19 strings; first element is "LUMBER"          | :white_check_mark: |
+| Test Case 61 | board with 19 hexes, each returning LUMBER | list of 19 strings; first element is "LUMBER"          | :x: |
 
 ---
 
@@ -344,5 +344,5 @@ Returns the number of hexes on the board.
 
 |              | System under test   | Expected output | Implemented?       |
 |--------------|---------------------|-----------------|--------------------|
-| Test Case 62 | board with 19 hexes | 19              | :white_check_mark: |
+| Test Case 62 | board with 19 hexes | 19              | :x: |
 

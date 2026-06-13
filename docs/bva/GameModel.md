@@ -18,7 +18,7 @@ mutations to `BoardHandler`, and deducts resources from the current player.
 
 |             | State of the System          | Expected output | Implemented?       |
 |-------------|------------------------------|-----------------|--------------------|
-| Test Case 1 | fresh model after construction | 0             | :white_check_mark: |
+| Test Case 1 | fresh model after construction | 0             | :x: |
 
 ---
 
@@ -26,7 +26,7 @@ mutations to `BoardHandler`, and deducts resources from the current player.
 
 |             | State of the System          | Expected output | Implemented?       |
 |-------------|------------------------------|-----------------|--------------------|
-| Test Case 1 | fresh model after construction | 0             | :white_check_mark: |
+| Test Case 1 | fresh model after construction | 0             | :x: |
 
 ---
 
@@ -34,7 +34,7 @@ mutations to `BoardHandler`, and deducts resources from the current player.
 
 |             | State of the System | Expected output      | Implemented?       |
 |-------------|---------------------|----------------------|--------------------|
-| Test Case 1 | any state           | no exception thrown  | :white_check_mark: |
+| Test Case 1 | any state           | no exception thrown  | :x: |
 
 ---
 
@@ -42,7 +42,7 @@ mutations to `BoardHandler`, and deducts resources from the current player.
 
 |             | State of the System                | Expected output                            | Implemented?       |
 |-------------|------------------------------------|--------------------------------------------|---------------------|
-| Test Case 1 | model with RED and BLUE players    | list contains both players (size = 2)      | :white_check_mark: |
+| Test Case 1 | model with RED and BLUE players    | list contains both players (size = 2)      | :x: |
 
 ---
 
@@ -52,7 +52,7 @@ Returns all players except the current player.
 
 |             | State of the System                                         | Expected output                       | Implemented?       |
 |-------------|-------------------------------------------------------------|---------------------------------------|--------------------|
-| Test Case 1 | current player = RED; players = [RED, BLUE]                 | list contains only BLUE (size = 1)    | :white_check_mark: |
+| Test Case 1 | current player = RED; players = [RED, BLUE]                 | list contains only BLUE (size = 1)    | :x: |
 
 ---
 
@@ -85,7 +85,7 @@ Step 3:
 | Test Case 3 | BEFORE_ROLL, roll = 12 (maximum)                             | phase transitions to GENERAL_PLAY                            | :white_check_mark: |
 | Test Case 4 | BEFORE_ROLL, roll = 7 (robber trigger)                       | phase transitions to MOVE_ROBBER                             | :white_check_mark: |
 | Test Case 5 | GENERAL_PLAY (already rolled), roll = 6                      | IllegalGamePhaseException                                    | :white_check_mark: |
-| Test Case 6 | BEFORE_ROLL, roll = 6, WOOL resource deck throws EmptyDeckException | IllegalArgumentException with same message as EmptyDeckException | :white_check_mark: |
+| Test Case 6 | BEFORE_ROLL, roll = 6, WOOL resource deck throws EmptyDeckException | IllegalArgumentException with same message as EmptyDeckException | :x: |
 
 ---
 

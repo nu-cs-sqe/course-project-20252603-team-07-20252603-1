@@ -171,4 +171,4 @@ Delegates to `model.getArbitraryPlayer(color).getResourceCount(resource)`.
 
 |              | System under test                                              | Expected output                            | Implemented?       |
 |--------------|----------------------------------------------------------------|--------------------------------------------|--------------------|
-| Test Case 11 | model.getArbitraryPlayer(RED) returns mockPlayer; mockPlayer.getResourceCount(ORE) returns 5 | controller returns 5 | :white_check_mark: |
+| Test Case 11 | model.getArbitraryPlayer(RED) returns mockPlayer; mockPlayer.getResourceCount(ORE) returns 5 | controller returns 5 | :x: |

@@ -351,10 +351,10 @@ Step 3:
 
 |              | System under test                                                                      | Expected output                                                                      | Implemented? |
 |--------------|----------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|--------------|
-| Test Case 61 | victim's resource map has {ORE=0, WOOL=3}; random picks index 0 of non-zero entries   | ORE entry skipped; WOOL stolen; knight count incremented; card removed from hand     | :white_check_mark: |
+| Test Case 61 | victim's resource map has {ORE=0, WOOL=3}; random picks index 0 of non-zero entries   | ORE entry skipped; WOOL stolen; knight count incremented; card removed from hand     | :x: |
 
 #### `playRoadBuildingCard(Player, DevelopmentCard, int, GameModel, int, int, Integer, Integer)` — second road partially specified
 
 |              | System under test                                                                      | Expected output                                                         | Implemented? |
 |--------------|----------------------------------------------------------------------------------------|-------------------------------------------------------------------------|--------------|
-| Test Case 62 | road2Node1 = 2 (non-null), road2Node2 = null; card valid, road1 nodes (0, 1) valid    | only road1 placed; card removed from hand; road2 skipped                | :white_check_mark: |
+| Test Case 62 | road2Node1 = 2 (non-null), road2Node2 = null; card valid, road1 nodes (0, 1) valid    | only road1 placed; card removed from hand; road2 skipped                | :x: |

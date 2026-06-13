@@ -77,8 +77,8 @@ successfully after clear
 
 |             | System under test                              | Expected output | Implemented?       |
 |-------------|------------------------------------------------|-----------------|--------------------|
-| Test Case 8 | empty model; color = RED                       | true            | :white_check_mark: |
-| Test Case 9 | model has player with RED; color = RED         | false           | :white_check_mark: |
+| Test Case 8 | empty model; color = RED                       | true            | :x: |
+| Test Case 9 | model has player with RED; color = RED         | false           | :x: |
 
 ---
 
@@ -86,8 +86,8 @@ successfully after clear
 
 |              | System under test                     | Expected output                          | Implemented?       |
 |--------------|---------------------------------------|------------------------------------------|--------------------|
-| Test Case 10 | setResourceDeck(mockDeck)             | getResourceDeck() returns same instance  | :white_check_mark: |
-| Test Case 11 | no deck set                           | getResourceDeck() returns null           | :white_check_mark: |
+| Test Case 10 | setResourceDeck(mockDeck)             | getResourceDeck() returns same instance  | :x: |
+| Test Case 11 | no deck set                           | getResourceDeck() returns null           | :x: |
 
 ---
 
@@ -95,8 +95,8 @@ successfully after clear
 
 |              | System under test                          | Expected output                                   | Implemented?       |
 |--------------|--------------------------------------------|---------------------------------------------------|--------------------|
-| Test Case 12 | setDevelopmentCardDeck(mockDeck)           | getDevelopmentCardDeck() returns same instance    | :white_check_mark: |
-| Test Case 13 | no deck set                                | getDevelopmentCardDeck() returns null             | :white_check_mark: |
+| Test Case 12 | setDevelopmentCardDeck(mockDeck)           | getDevelopmentCardDeck() returns same instance    | :x: |
+| Test Case 13 | no deck set                                | getDevelopmentCardDeck() returns null             | :x: |
 
 ---
 
@@ -106,4 +106,4 @@ Creates a `GameModel` from current players and board state.
 
 |              | System under test                              | Expected output            | Implemented?       |
 |--------------|------------------------------------------------|----------------------------|--------------------|
-| Test Case 14 | model has 2 players added (Alice/RED, Bob/BLUE) | returns non-null GameModel | :white_check_mark: |
+| Test Case 14 | model has 2 players added (Alice/RED, Bob/BLUE) | returns non-null GameModel | :x: |
