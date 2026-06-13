@@ -107,3 +107,23 @@ Creates a `GameModel` from current players and board state.
 |              | System under test                              | Expected output            | Implemented?       |
 |--------------|------------------------------------------------|----------------------------|--------------------|
 | Test Case 14 | model has 2 players added (Alice/RED, Bob/BLUE) | returns non-null GameModel | :white_check_mark: |
+
+---
+
+### Method under test: `getBoard()`
+
+Returns the `BoardHandler` instance held by the model. The board is created
+in the constructor and is never null.
+
+Step 1:
+- Output: BoardHandler instance
+
+Step 2:
+- Output - object reference; cases: non-null (always, constructor initialises it)
+
+Step 3:
+- Output: non-null BoardHandler on a freshly constructed model
+
+|              | System under test         | Expected output              | Implemented?       |
+|--------------|---------------------------|------------------------------|--------------------|
+| Test Case 15 | freshly constructed model | getBoard() returns non-null  | :white_check_mark: |

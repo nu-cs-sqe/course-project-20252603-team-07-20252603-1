@@ -170,4 +170,10 @@ class GameSetupModelTest {
     assertNotNull(model.getBoard());
   }
 
+  // TC15 ← REDUCES CXTY
+  @Test
+  void getBoard_OnNewModel_ExpectNonNull() {
+    assertNotNull(model.getBoard());
+  }
+
 }
