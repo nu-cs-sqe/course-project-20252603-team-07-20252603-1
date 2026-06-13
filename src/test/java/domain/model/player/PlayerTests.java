@@ -270,4 +270,11 @@ public class PlayerTests {
     player.increaseSettlementCount();
     assertEquals(1, player.getSettlementCount());
   }
+
+  // TC15 — does NOT reduce missed cxty (already covered)
+  @Test
+  void getSettlementCount_NewPlayer_ExpectZero() {
+    Player player = new Player("Alice", PlayerColor.BLUE);
+    assertEquals(0, player.getSettlementCount());
+  }
 }

@@ -142,7 +142,7 @@ Output
 |              | System under test                             | Expected output                | Implemented?       |
 |--------------|-----------------------------------------------|--------------------------------|--------------------|
 | Test Case 14 | fresh player; call increaseSettlementCount()  | getSettlementCount() returns 1 | :white_check_mark: |
-| Test Case 15 | fresh player; no call                         | getSettlementCount() returns 0 | :x: |
+| Test Case 15 | fresh player; no call                         | getSettlementCount() returns 0 | :white_check_mark: |
 
 ---
 
