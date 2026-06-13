@@ -9,6 +9,9 @@ import domain.model.exceptions.EmptyDeckException;
 import domain.model.player.Player;
 import domain.model.resources.Resource;
 
+ import java.util.LinkedHashMap;
+ import java.util.Random;
+
 import java.util.List;
 import java.util.Map;
 
@@ -1514,4 +1517,77 @@ class DevelopmentCardHandlerTest {
 
     EasyMock.verify(mockKnight1, mockKnight2, mockKnight3, mockMonopoly);
   }
+
+  // TC61 ← REDUCES CXTY
+  @Test
+  void playKnightCard_VictimResourceMapHasZeroValueEntry_ExpectOnlyNonZeroEntryStolen() {
+    final int currentRound = 2;
+    final int targetHexId = 5;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+    Robber mockRobber = EasyMock.createMock(Robber.class);
+    Player mockVictim = EasyMock.createMock(Player.class);
+    Random mockRandom = EasyMock.createMock(Random.class);
+
+    LinkedHashMap<Resource, Integer> victimResources = new LinkedHashMap<>();
+    victimResources.put(Resource.ORE, 0);
+    victimResources.put(Resource.WOOL, 3);
+
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.KNIGHT);
+    EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
+    EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(3);
+    EasyMock.expect(mockVictim.isAdjacentToHex(targetHexId)).andReturn(true);
+    mockRobber.moveRobber(targetHexId);
+    EasyMock.expectLastCall();
+    EasyMock.expect(mockVictim.getTotalResourceCount()).andReturn(3);
+    EasyMock.expect(mockVictim.getResources()).andReturn(victimResources);
+    EasyMock.expect(mockRandom.nextInt(1)).andReturn(0);
+    mockVictim.updateResources(Resource.WOOL, -1);
+    EasyMock.expectLastCall();
+    mockPlayer.updateResources(Resource.WOOL, 1);
+    EasyMock.expectLastCall();
+    mockPlayer.incrementKnightCount();
+    EasyMock.expectLastCall();
+    mockPlayer.removeDevelopmentCard(mockCard);
+    EasyMock.expectLastCall();
+    mockPlayer.setHasPlayedDevCardThisTurn(true);
+    EasyMock.expectLastCall();
+
+    EasyMock.replay(mockPlayer, mockCard, mockRobber, mockVictim, mockRandom);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler(mockRandom);
+    handler.playKnightCard(mockPlayer, mockCard, currentRound, mockRobber, targetHexId, mockVictim);
+
+    EasyMock.verify(mockPlayer, mockCard, mockRobber, mockVictim, mockRandom);
+  }
+
+  // TC62 ← REDUCES CXTY
+  @Test
+  void playRoadBuildingCard_Road2Node1NonNullRoad2Node2Null_ExpectOneRoadPlaced() {
+    final int currentRound = 2;
+
+    Player mockPlayer = EasyMock.createMock(Player.class);
+    DevelopmentCard mockCard = EasyMock.createMock(DevelopmentCard.class);
+    GameModel mockModel = EasyMock.createMock(GameModel.class);
+
+    EasyMock.expect(mockCard.getType()).andReturn(DevelopmentCardType.ROAD_BUILDER);
+    EasyMock.expect(mockCard.isPlayable(currentRound)).andReturn(true);
+    EasyMock.expect(mockPlayer.hasPlayedDevCardThisTurn()).andReturn(false);
+    mockModel.attemptBuildRoad(0, 1);
+    EasyMock.expectLastCall();
+    mockPlayer.removeDevelopmentCard(mockCard);
+    EasyMock.expectLastCall();
+    mockPlayer.setHasPlayedDevCardThisTurn(true);
+    EasyMock.expectLastCall();
+
+    EasyMock.replay(mockPlayer, mockCard, mockModel);
+
+    DevelopmentCardHandler handler = new DevelopmentCardHandler();
+    handler.playRoadBuildingCard(mockPlayer, mockCard, currentRound, mockModel, 0, 1, 2, null);
+
+    EasyMock.verify(mockPlayer, mockCard, mockModel);
+  }
+
 }

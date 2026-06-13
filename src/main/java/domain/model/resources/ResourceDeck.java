@@ -43,33 +43,22 @@ public class ResourceDeck {
     return this.type;
   }
 
-  /**
-   * Draws one card from this deck.
-   *
-   * @return the drawn resource
-   * @throws EmptyDeckException if no cards remain
-   */
-  public Resource draw() throws EmptyDeckException {
-    if (count > 0) {
-      this.count--;
-      return this.type;
-    } else {
-      throw new EmptyDeckException(
-          String.format("Cannot draw new %s card, no cards remain.", this.type.name()));
+    public Resource draw() throws EmptyDeckException {
+        // just instantiate a brand new one, decrease count
+        if (count > 0) {
+            this.count--;
+            return this.type; // caller will index into store and ++
+        } else {
+            throw new EmptyDeckException(String.format("Cannot draw new %s card, no cards remain.", this.type.name()));
+        }
     }
-  }
 
-  /**
-   * Draws up to the requested number of cards, returning however many were available.
-   *
-   * @param numCards number of cards requested
-   * @return number of cards actually drawn
-   */
-  public int drawMultiple(int numCards) {
-    int numCardsReturning = numCards <= this.count ? numCards : this.count;
-    this.count -= numCardsReturning;
-    return numCardsReturning;
-  }
+
+    public int drawMultiple(int numCards) throws EmptyDeckException {
+        int numCardsReturning = numCards <= this.count ? numCards : this.count;
+        this.count -= numCardsReturning;
+        return numCardsReturning;
+    }
 
   /** Returns one card to this deck. */
   public void replenish() {

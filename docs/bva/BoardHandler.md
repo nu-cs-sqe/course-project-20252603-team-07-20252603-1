@@ -349,6 +349,7 @@ Step 3:
 | Test Case 62 | Roll 8, hex 11 (ORE) has RED settlement; hex 12 (ORE) has RED settlement; no robber        | `{ORE: {RED: 2}}` (same player, same resource, summed)   | :white_check_mark: |
 | Test Case 63 | Roll 6; all hexes configured with rollNum ≠ 6 (all hexes return 0)                         | `{}` (no hexes match)                                    | :white_check_mark: |
 | Test Case 64 | Roll 8, hex 11 (ORE) RED settlement; hex 12 (LUMBER) BLUE settlement; robber on hex 12     | `{ORE: {RED: 1}}` (only unblocked hex contributes)       | :white_check_mark: |
+| Test Case 65 | Roll 6, hex 3 (DESERT, rollNum=6); robber on hex 9 (not blocking hex 3)                    | `{}` (DESERT hex skipped even when roll matches)         | :white_check_mark: |
 ### Method under test: `getAvailablePorts(Player player)`
 
 Step 1:
@@ -374,4 +375,24 @@ Step 3:
 | Test Case 58 | RED has settlement on node 23                                                | Returns empty list             | :white_check_mark: |
 | Test Case 59 | ORANGE has settlement on node 0                                              | Returns the one port on node 0 | :white_check_mark: |
 | Test Case 60 | WHITE has claimed 0, 5, 11, 15, 32, 38, and 46 (can maximally claim 7 nodes) | Returns 7 ports                | :white_check_mark: |
+
+---
+
+### Method under test: `getHexOrder()`
+
+Returns a list of resource name strings for all 19 hexes, in order.
+
+|              | System under test                         | Expected output                                         | Implemented?       |
+|--------------|-------------------------------------------|---------------------------------------------------------|--------------------|
+| Test Case 61 | board with 19 hexes, each returning LUMBER | list of 19 strings; first element is "LUMBER"          | :white_check_mark: |
+
+---
+
+### Method under test: `getHexCount()`
+
+Returns the number of hexes on the board.
+
+|              | System under test   | Expected output | Implemented?       |
+|--------------|---------------------|-----------------|--------------------|
+| Test Case 62 | board with 19 hexes | 19              | :white_check_mark: |
 

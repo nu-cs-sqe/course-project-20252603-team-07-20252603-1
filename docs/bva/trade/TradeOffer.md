@@ -46,3 +46,15 @@ resource as giving, different quantity)
 | Test Case 3 | RED, (1 LUMBER), (1 LUMBER) | IllegalArgumentException: "Cannot trade a resource for itself."       | :white_check_mark: |
 | Test Case 4 | WHITE, (2 WOOL), (3 WOOL)   | IllegalArgumentException: "Cannot trade a resource for itself."       | :white_check_mark: |
 | Test Case 5 | ORANGE, (1 GRAIN), (1 BRICK)| valid object                                                          | :white_check_mark: |
+
+---
+
+### Method under test: `getOfferingPlayer()` / `getGiving()` / `getReceiving()`
+
+Accessor methods that return the fields set by `create()`.
+
+|             | System under test                                 | Expected output                                   | Implemented?       |
+|-------------|---------------------------------------------------|---------------------------------------------------|--------------------|
+| Test Case 6 | valid offer (mockPlayer, ORE×1, WOOL×1)           | getOfferingPlayer() returns same mockPlayer       | :white_check_mark: |
+| Test Case 7 | valid offer (mockPlayer, BRICK×2, GRAIN×1)        | getGiving() returns same ResourceQuantity         | :white_check_mark: |
+| Test Case 8 | valid offer (mockPlayer, LUMBER×1, ORE×3)         | getReceiving() returns same ResourceQuantity      | :white_check_mark: |

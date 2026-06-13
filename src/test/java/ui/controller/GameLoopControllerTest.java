@@ -231,6 +231,21 @@ class GameLoopControllerTest {
         verify(mockModel, mockCard);
     }
 
+    // TC11 ← REDUCES CXTY
+    // TC11: getResourceCount(model, RED, ORE); model.getArbitraryPlayer(RED) returns mockPlayer;
+    //       mockPlayer.getResourceCount(ORE) returns 5 -> controller returns 5
+    @Test
+    void getResourceCount_ArbitraryPlayerReturnsCount_ExpectCountRelayed() {
+        Player mockPlayer = createMock(Player.class);
+        expect(mockModel.getArbitraryPlayer(PlayerColor.RED)).andReturn(mockPlayer);
+        expect(mockPlayer.getResourceCount(Resource.ORE)).andReturn(5);
+        replay(mockModel, mockPlayer);
+
+        assertEquals(5, controller.getResourceCount(mockModel, PlayerColor.RED, Resource.ORE));
+
+        verify(mockModel, mockPlayer);
+    }
+
     // TC10: playDevCard(model, card); model throws IllegalArgumentException (null card)
     //       -> IllegalArgumentException relayed to caller
     @Test

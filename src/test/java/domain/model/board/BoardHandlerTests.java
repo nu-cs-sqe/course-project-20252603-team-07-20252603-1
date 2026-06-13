@@ -1769,4 +1769,55 @@ public class BoardHandlerTests {
             mockPort5, mockPort6, mockPort7, mockPort8, mockPort9);
   }
 
+  // TC61 ← REDUCES CXTY
+  @Test
+  void getHexOrder_WithNineteenHexes_ExpectListOfNineteenResourceNames() {
+    for (Hex hex : mockHexes) {
+      EasyMock.expect(hex.getHexResource()).andReturn(domain.model.resources.Resource.LUMBER);
+    }
+    EasyMock.replay(mockHexes.toArray());
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes,
+        nodeIdToHexes, mockRobber, ports);
+
+    List<String> order = b.getHexOrder();
+
+    assertEquals(19, order.size());
+    assertEquals("LUMBER", order.get(0));
+    EasyMock.verify(mockHexes.toArray());
+  }
+
+  // TC63 ← REDUCES CXTY
+  @Test
+  void computeResourceDemand_DesertHexMatchesRoll_ExpectDesertSkipped() {
+    EasyMock.expect(mockRobber.getRobberLocation()).andReturn(9);
+    for (int i = 0; i < 19; i++) {
+      if (i == 3) {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(6);
+        EasyMock.expect(mockHexes.get(i).getHexId()).andReturn(3);
+        EasyMock.expect(mockHexes.get(i).getHexResource()).andReturn(Resource.DESERT);
+      } else {
+        EasyMock.expect(mockHexes.get(i).getHexRollNum()).andReturn(0);
+      }
+    }
+    EasyMock.replay(mockRobber);
+    EasyMock.replay(mockHexes.toArray());
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes, nodeIdToHexes, mockRobber, ports);
+    Map<Resource, Map<Player, Integer>> result = b.computeResourceDemand(6);
+    EasyMock.verify(mockRobber);
+    EasyMock.verify(mockHexes.toArray());
+    assertEquals(0, result.size());
+  }
+
+  // TC62 ← REDUCES CXTY
+  @Test
+  void getHexCount_WithNineteenHexes_ExpectNineteen() {
+    EasyMock.replay(mockHexes.toArray());
+
+    BoardHandler b = BoardHandler.createForTesting(mockBoardGraphController, mockHexes,
+        nodeIdToHexes, mockRobber, ports);
+
+    assertEquals(19, b.getHexCount());
+    EasyMock.verify(mockHexes.toArray());
+  }
 }
