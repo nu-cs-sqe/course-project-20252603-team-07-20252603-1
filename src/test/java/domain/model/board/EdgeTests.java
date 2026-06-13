@@ -10,4 +10,10 @@ public class EdgeTests {
   void constructor_NewEdge_ExpectNotNull() {
     assertNotNull(new Edge());
   }
+
+  // TC2 ← REDUCES CXTY
+  @Test
+  void isOccupied_NewEdge_ExpectFalse() {
+    assertFalse(new Edge().isOccupied());
+  }
 }
