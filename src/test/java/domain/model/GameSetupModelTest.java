@@ -70,8 +70,16 @@ class GameSetupModelTest {
         assertEquals(PlayerColor.RED, model.getPlayer(0).getColor());
     }
 
+  // TC8 ← REDUCES CXTY
   @Test
   void isColorAvailable_UnusedColor_ExpectTrue() {
     assertTrue(model.isColorAvailable(PlayerColor.RED));
+  }
+
+  // TC9 ← REDUCES CXTY
+  @Test
+  void isColorAvailable_UsedColor_ExpectFalse() {
+    model.addPlayer("Alice", PlayerColor.RED);
+    assertFalse(model.isColorAvailable(PlayerColor.RED));
   }
 }

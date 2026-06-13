@@ -78,7 +78,7 @@ successfully after clear
 |             | System under test                              | Expected output | Implemented?       |
 |-------------|------------------------------------------------|-----------------|--------------------|
 | Test Case 8 | empty model; color = RED                       | true            | :white_check_mark: |
-| Test Case 9 | model has player with RED; color = RED         | false           | :x: |
+| Test Case 9 | model has player with RED; color = RED         | false           | :white_check_mark: |
 
 ---
 
