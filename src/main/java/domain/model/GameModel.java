@@ -251,70 +251,82 @@ public class GameModel {
     setCurrentGamePhase(GamePhase.BEFORE_ROLL);
   }
 
-    public void performTurn(int roll) {
-        checkCurrentGamePhaseMatches(GamePhase.BEFORE_ROLL);
+  /**
+   * Performs the current player's turn for a given dice roll.
+   *
+   * @param roll the dice roll value
+   */
+  public void performTurn(int roll) {
+    checkCurrentGamePhaseMatches(GamePhase.BEFORE_ROLL);
 
-        if (roll == ROBBER_ROLL_VALUE) {
-            currentGamePhase = GamePhase.MOVE_ROBBER;
-            return;
-        }
-        try {
-            distributeResources(roll);
-        } catch (EmptyDeckException e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
-        currentGamePhase = GamePhase.GENERAL_PLAY;
+    if (roll == ROBBER_ROLL_VALUE) {
+      currentGamePhase = GamePhase.MOVE_ROBBER;
+      return;
     }
+    try {
+      distributeResources(roll);
+    } catch (EmptyDeckException e) {
+      throw new IllegalArgumentException(e.getMessage());
+    }
+    currentGamePhase = GamePhase.GENERAL_PLAY;
+  }
 
-    private void distributeResources(int roll) throws EmptyDeckException {
-        Map<Resource, Map<Player, Integer>> demand = board.computeResourceDemand(roll);
-        for (Map.Entry<Resource, Map<Player, Integer>> resourceEntry : demand.entrySet()) {
-            distributeResourceToPlayers(resourceEntry.getKey(), resourceEntry.getValue());
-        }
+  private void distributeResources(int roll) throws EmptyDeckException {
+    Map<Resource, Map<Player, Integer>> demand = board.computeResourceDemand(roll);
+    for (Map.Entry<Resource, Map<Player, Integer>> resourceEntry : demand.entrySet()) {
+      distributeResourceToPlayers(resourceEntry.getKey(), resourceEntry.getValue());
     }
+  }
 
-    // if not enough to satisfy all players, no one gets anything; if only one player is requesting, they can get a partial amount
-    private void distributeResourceToPlayers(Resource resource, Map<Player, Integer> playerAmounts) throws EmptyDeckException {
-        ResourceDeck deck = decks.get(resource);
-        if (playerAmounts.size() > 1) {
-            int total = playerAmounts.values().stream().mapToInt(Integer::intValue).sum();
-            if (deck.getTotalCards() < total) return;
-        }
-        for (Map.Entry<Player, Integer> playerAmountEntry : playerAmounts.entrySet()) {
-            int drawn = deck.drawMultiple(playerAmountEntry.getValue());
-            if (drawn > 0) {
-                playerAmountEntry.getKey().updateResources(resource, drawn);
-            }
-        }
+  // if not enough to satisfy all players, no one gets anything;
+  // if only one player is requesting, they can get a partial amount
+  private void distributeResourceToPlayers(Resource resource,
+      Map<Player, Integer> playerAmounts) throws EmptyDeckException {
+    ResourceDeck deck = decks.get(resource);
+    if (playerAmounts.size() > 1) {
+      int total = playerAmounts.values().stream().mapToInt(Integer::intValue).sum();
+      if (deck.getTotalCards() < total) {
+        return;
+      }
     }
+    for (Map.Entry<Player, Integer> playerAmountEntry : playerAmounts.entrySet()) {
+      int drawn = deck.drawMultiple(playerAmountEntry.getValue());
+      if (drawn > 0) {
+        playerAmountEntry.getKey().updateResources(resource, drawn);
+      }
+    }
+  }
       
 
-    public void moveRobberAndSteal(int targetHexID, PlayerColor victimColor) {
-        checkCurrentGamePhaseMatches(GamePhase.MOVE_ROBBER);
-        board.moveRobber(targetHexID);
+  public void moveRobberAndSteal(int targetHexID, PlayerColor victimColor) {
+    checkCurrentGamePhaseMatches(GamePhase.MOVE_ROBBER);
+    board.moveRobber(targetHexID);
 
-        if (victimColor != null && victimColor != PlayerColor.SETUP) {
-            Player target = getArbitraryPlayer(victimColor);
-            Set<Player> playersOnHex = board.getPlayersOnHex(targetHexID);
+    if (victimColor != null && victimColor != PlayerColor.SETUP) {
+      Player target = getArbitraryPlayer(victimColor);
+      Set<Player> playersOnHex = board.getPlayersOnHex(targetHexID);
 
-            if (!playersOnHex.contains(target)) {
-                throw new IllegalArgumentException("Victim is not on the target hex.");
-            }
+      if (!playersOnHex.contains(target)) {
+        throw new IllegalArgumentException("Victim is not on the target hex.");
+      }
 
-            Map<Resource, Integer> targetResources = target.getResources();
-            List<Resource> available = new ArrayList<>();
-            for (Map.Entry<Resource, Integer> entry : targetResources.entrySet()) {
-                if (entry.getValue() > 0) available.add(entry.getKey());
-            }
-
-            if (!available.isEmpty()) {
-                Resource stolen = available.get(random.nextInt(available.size()));
-                target.updateResources(stolen, -1);
-                getCurrentPlayer().updateResources(stolen, 1);
-            }
+      Map<Resource, Integer> targetResources = target.getResources();
+      List<Resource> available = new ArrayList<>();
+      for (Map.Entry<Resource, Integer> entry : targetResources.entrySet()) {
+        if (entry.getValue() > 0) {
+          available.add(entry.getKey());
         }
-        currentGamePhase = GamePhase.GENERAL_PLAY;
+      }
+
+      if (!available.isEmpty()) {
+        Resource stolen = available.get(random.nextInt(available.size()));
+        target.updateResources(stolen, -1);
+        getCurrentPlayer().updateResources(stolen, 1);
+      }
     }
+    currentGamePhase = GamePhase.GENERAL_PLAY;
+  }
+
   /**
    * Attempts to build a settlement at the specified node for the current player.
    *
