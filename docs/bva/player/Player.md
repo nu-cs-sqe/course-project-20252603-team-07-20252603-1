@@ -159,7 +159,7 @@ Output
 
 |              | System under test                                  | Expected output                | Implemented?       |
 |--------------|----------------------------------------------------|--------------------------------|--------------------|
-| Test Case 18 | fresh player; addDevelopmentCard(mockCard)         | getDevelopmentCards() size = 1 | :x: |
+| Test Case 18 | fresh player; addDevelopmentCard(mockCard)         | getDevelopmentCards() size = 1 | :white_check_mark: |
 | Test Case 19 | player has 1 card; removeDevelopmentCard(mockCard) | getDevelopmentCards() size = 0 | :x: |
 | Test Case 20 | fresh player; no cards added                       | getDevelopmentCards() size = 0 | :x: |
 
