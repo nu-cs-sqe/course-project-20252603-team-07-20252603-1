@@ -304,4 +304,16 @@ public class PlayerTests {
     assertEquals(mockCard, player.getDevelopmentCards().get(0));
     org.easymock.EasyMock.verify(mockCard);
   }
+
+  // TC19 ← REDUCES CXTY
+  @Test
+  void removeDevelopmentCard_CardInList_ExpectCardRemoved() {
+    Player player = new Player("Alice", PlayerColor.BLUE);
+    domain.model.development_cards.DevelopmentCard mockCard = org.easymock.EasyMock.createMock(domain.model.development_cards.DevelopmentCard.class);
+    org.easymock.EasyMock.replay(mockCard);
+    player.addDevelopmentCard(mockCard);
+    player.removeDevelopmentCard(mockCard);
+    assertEquals(0, player.getDevelopmentCards().size());
+    org.easymock.EasyMock.verify(mockCard);
+  }
 }
