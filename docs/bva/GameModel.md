@@ -259,7 +259,7 @@ Step 3:
 | Test Case 1 | GENERAL_PLAY, bank has 1 card (at boundary), valid trade | success                        | :white_check_mark: |
 | Test Case 2 | GENERAL_PLAY, bank has 0 cards (empty)                   | InsufficientResourcesException | :white_check_mark: |
 | Test Case 3 | GENERAL_PLAY, bank has 19 cards (max), valid trade       | success                        | :white_check_mark: |
-| Test Case 4 | BEFORE_ROLL (invalid phase)                              | IllegalGamePhaseException      | x                  |
+| Test Case 4 | BEFORE_ROLL (invalid phase)                              | IllegalGamePhaseException      | :white_check_mark: |
 
 ---
 
