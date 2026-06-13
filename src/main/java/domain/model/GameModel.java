@@ -49,6 +49,7 @@ public class GameModel {
     private final ResourceDeck woolDeck;
     private final Map<Resource, ResourceDeck> decks;
     private final TradeManager tradeManager;
+    private final Random random;
 
     //constructor for injecting mocks/stubs
     GameModel(ResourceDeck lumberDeck, ResourceDeck brickDeck,
@@ -56,7 +57,8 @@ public class GameModel {
               ResourceDeck woolDeck,
               Map<PlayerColor, Player> playerColorToPlayerObject,
               BoardHandler board,
-              TradeManager tradeManager) {
+              TradeManager tradeManager,
+              Random random) {
         this.lumberDeck = lumberDeck;
         this.brickDeck = brickDeck;
         this.grainDeck = grainDeck;
@@ -73,6 +75,7 @@ public class GameModel {
         this.board = board;
         this.currentLongestRoadPlayerColor = PlayerColor.SETUP;
         this.tradeManager = tradeManager;
+        this.random = random;
     }
 
     public GameModel(List<Player> players, BoardHandler board) {
@@ -103,6 +106,7 @@ public class GameModel {
         this.currentLongestRoadPlayerColor = PlayerColor.SETUP;
         this.currentGamePhase = GamePhase.BEFORE_ROLL;
         this.tradeManager = new TradeManager();
+        this.random = new Random();
     }
 
     public List<Player> getTurnOrder() {
@@ -408,7 +412,7 @@ public List<Player> getOtherPlayers() {
             }
 
             if (!available.isEmpty()) {
-                Resource stolen = available.get(0);
+                Resource stolen = available.get(random.nextInt(available.size()));
                 target.updateResources(stolen, -1);
                 getCurrentPlayer().updateResources(stolen, 1);
             }
