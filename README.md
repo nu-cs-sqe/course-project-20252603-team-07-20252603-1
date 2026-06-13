@@ -24,4 +24,4 @@ We have decided to use JavaFX as the core GUI engine for this project, because J
 Professor Yiji Zhang, Northwestern CS 380
 
 ## Rule Exceptions
-In our development of Catan, there were certain rules that were not implemented. For one, when a 7 is rolled, the player is not currently forced to discard any resources if their resource count is higher than 7. Similarly, players are not immediately granted resources when placing their second settlement. To the best of our knowledge, all other rules of the game are implemented. 
+In our development of Catan, there were certain rules that were not implemented. For one, when a 7 is rolled, the player is not currently forced to discard any resources if their resource count is higher than 7. Similarly, players are not immediately granted resources when placing their second settlement. Finally, a player is not able to trade in four resources for any resource of their choosing, they must either trade with other players or own a port. To the best of our knowledge, all other rules of the game are implemented. 
