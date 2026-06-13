@@ -66,5 +66,6 @@ public class GameLoopController {
     }
 
     public void moveRobberAndSteal(GameModel model, int targetHexID, PlayerColor victimColor) {
+        model.moveRobberAndSteal(targetHexID, victimColor);
     }
 }
